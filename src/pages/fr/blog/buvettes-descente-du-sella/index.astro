@@ -1,0 +1,268 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "Combien y a-t-il de buvettes sur la descente du Sella ?",
+    a: "<p>Il y a <strong>6 buvettes principales</strong> réparties le long du parcours : Riverland (km 1), El Oasis (km 3), El Prau (km 3), El Bosque (km 4), La Mediana (km 4) et Toraño (fin du Mini Sella). Toutes accessibles depuis le fleuve en canoë, avec une rampe ou une plage fluviale pour aborder.</p>",
+  },
+  {
+    q: "Vend-on de l'alcool aux buvettes de la descente ?",
+    a: "<p><strong>Non.</strong> Sur le Sella, la consommation d'alcool est interdite pendant l'activité, et les buvettes du parcours ne servent pas de boissons alcoolisées. Le menu est centré sur <strong>les sodas, jus, glaces, eau</strong> et collations légères. Si tu veux un cidre ou une bière, c'est pour après, à Arriondas, Toraño ou Ribadesella.</p>",
+  },
+  {
+    q: "Faut-il réserver dans les buvettes du Sella ?",
+    a: "<p>Généralement non pour une consommation rapide (boisson, jus, glace). Si tu veux quelque chose de plus élaboré en août, surtout les samedis, <strong>certaines acceptent les réservations</strong> — arrive avec de la marge ou appelle en chemin. En moyenne ou basse saison, il est rare d'attendre.</p>",
+  },
+  {
+    q: "Que peut-on prendre aux buvettes de la descente ?",
+    a: "<p>L'offre est typique d'une buvette au bord du fleuve <strong>sans alcool</strong> : sodas, jus, eau, glaces et <strong>collations simples</strong> (sandwichs, omelette, snacks). Certaines travaillent avec quelque chose de plus élaboré à l'heure du repas, mais l'étoile est généralement un court arrêt pour se rafraîchir, manger léger et retourner au canoë.</p>",
+  },
+  {
+    q: "Puis-je sauter les buvettes si je veux ?",
+    a: "<p>Bien sûr. Les buvettes sont <strong>optionnelles</strong>, le pique-nique asturien (empanada au thon + petit pain asturien + eau) est inclus dans la réservation. Beaucoup de clients font la descente d'un trait, ne s'arrêtent que pour une baignade et mangent le pique-nique sur une plage fluviale.</p>",
+  },
+  {
+    q: "Les buvettes du Sella prennent-elles la carte ?",
+    a: "<p>La plupart oui, mais <strong>pas toutes</strong>, et la couverture mobile est irrégulière sur certains tronçons du fleuve — les terminaux peuvent échouer. Nous recommandons d'emporter <strong>un peu d'espèces dans le bidon étanche</strong> : avec 10-15 € par personne tu auras large pour un arrêt complet.</p>",
+  },
+  {
+    q: "Les buvettes sont-elles ouvertes hors haute saison ?",
+    a: "<p>En <strong>juillet et août</strong>, elles sont toutes ouvertes tous les jours. En <strong>juin et septembre</strong>, la plupart ouvrent les week-ends et plusieurs en semaine. En <strong>avril, mai et octobre</strong>, généralement seulement 1 ou 2 sont en service, normalement les week-ends.</p>",
+  },
+];
+---
+
+<BlogPostLayout slug="buvettes-descente-du-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Six buvettes, six prétextes</strong> pour s'arrêter sur la descente du Sella. Riverland, El Oasis, El Prau, El Bosque, La Mediana, Toraño. Important : <strong>on ne consomme pas d'alcool sur le fleuve</strong> et les buvettes du parcours ne servent pas de boissons alcoolisées — sodas, jus, glaces, eau et collations. Ce que tu trouveras à chaque arrêt, sans tape-à-l'œil.
+  </p>
+
+  <p>
+    La descente du Sella n'est pas un fleuve perdu : le long du parcours, tu as <strong>six buvettes</strong> où tu peux poser le canoë et te rafraîchir. Elles font partie de l'expérience depuis des décennies et sont la raison pour laquelle beaucoup planifient la journée comme « descente avec arrêt » plutôt que comme activité sportive.
+  </p>
+
+  <h2 class="post__h2" id="map">Carte mentale <span class="serif-italic">du parcours</span></h2>
+
+  <p>Six arrêts sur les 14,5 km · quand et à quoi chacun se prête.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">1</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Riverland <span class="serif-italic">· départ</span></h3>
+        <p class="post__zone__desc">Arrêt rapide « tant qu'on passe » · avant même d'atteindre ton rythme sur le fleuve.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Oasis <span class="serif-italic">· premier tiers</span></h3>
+        <p class="post__zone__desc">Premier arrêt réel · ambiance animée · groupes d'amis.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Prau <span class="serif-italic">· premier tiers</span></h3>
+        <p class="post__zone__desc">Alternative calme à El Oasis · même zone, ambiance différente.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Bosque <span class="serif-italic">· milieu</span></h3>
+        <p class="post__zone__desc">Ombre naturelle · le plus équilibré pour un long arrêt sans soleil.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">La Mediana <span class="serif-italic">· milieu</span></h3>
+        <p class="post__zone__desc">Terrasse spacieuse · longue pause en milieu de parcours sur le complet.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">7</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Toraño <span class="serif-italic">· fin du Mini Sella</span></h3>
+        <p class="post__zone__desc">Boisson finale pendant que le transfert retour vers Arriondas arrive.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Si tu fais le parcours complet (14,5 km · Arriondas → Fríes) tu passes les six. Si tu fais le Mini Sella (7 km · Arriondas → Toraño) tu passes les cinq premières et finis à Toraño.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="chiringuito-prao"
+      alt="Buvette El Prau au bord du Sella — un arrêt typique de la descente"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>El Prau · une des six buvettes au bord du Sella. Une boisson, de l'ombre et le canoë amarré sur la rive pendant que les bras se reposent.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="riverland">1 · Riverland <span class="serif-italic">(km 1 · départ)</span></h2>
+
+  <p>
+    La buvette d'ouverture. Pratiquement au début du parcours, on l'atteint avant même de sentir le rythme du fleuve. Pour beaucoup c'est <em>« un peu tôt pour s'arrêter »</em>, mais elle a un avantage évident : <strong>si tu veux juste essayer le Sella sans engagement</strong> ou tu es avec des enfants déjà affamés, Riverland permet un arrêt rapide avant de s'engager pour toute la journée.
+  </p>
+
+  <p><strong>À quoi s'attendre :</strong> menu typique de buvette au bord du fleuve <strong>sans alcool</strong> (sodas, jus, eau, glaces, sandwichs), ambiance calme, terrasse avec vue sur le fleuve.</p>
+
+  <h2 class="post__h2" id="oasis-prau">2-3 · El Oasis <span class="serif-italic">et El Prau · km 3</span></h2>
+
+  <p>
+    Les deux arrivent ensemble dans le premier tiers du parcours. <strong>El Oasis</strong> est la plus animée : ambiance animée, musique, sensation de « fête fluviale » en août. <strong>El Prau</strong> est à un jet de pierre et fonctionne comme une alternative plus calme — même zone, ambiance différente.
+  </p>
+
+  <p>
+    Si tu es avec un groupe d'amis et veux « l'ambiance », Oasis. Si tu es en couple ou en famille et préfères ne pas rivaliser avec des enceintes, Prau. Toutes deux ont des menus <strong>sodas, jus, glaces et eau</strong> (sans alcool, comme tout le parcours) + quelques tapas légères.
+  </p>
+
+  <div class="post__callout">
+    <strong>L'astuce d'Oasis en août</strong>
+    <p>Si tu passes là entre 13h et 14h30 un samedi, tu verras le lieu à son ambiance maximale. Si tu veux ça, parfait. Si tu veux un arrêt calme, continue et arrête-toi à El Bosque ou La Mediana.</p>
+  </div>
+
+  <h2 class="post__h2" id="bosque">4 · El Bosque <span class="serif-italic">(km 4 · milieu)</span></h2>
+
+  <p>
+    Pour nous, la buvette la plus équilibrée du parcours. Elle se trouve dans une <strong>zone ombragée avec de grands arbres</strong> qui fournissent une ombre naturelle à la terrasse. Un bon endroit pour un long arrêt si tu n'es pas pressé(e).
+  </p>
+
+  <p>
+    <strong>À quoi s'attendre :</strong> sodas, jus, glaces, eau, sandwichs et collations légères — l'offre typique d'une buvette au bord du fleuve, <strong>sans alcool</strong>. Prix normaux pour une zone touristique.
+  </p>
+
+  <p>Si tu es avec de petits enfants, l'ombre en fait le meilleur arrêt pour se rafraîchir sans personne ne fonde aux heures de soleil de pointe.</p>
+
+  <h2 class="post__h2" id="mediana">5 · La Mediana <span class="serif-italic">(km 4 · milieu)</span></h2>
+
+  <p>
+    Très proche d'El Bosque, La Mediana est un arrêt spacieux avec terrasse et bonne ambiance dans la zone centrale du parcours. Si tu fais le parcours complet et veux une longue pause, ça convient bien.
+  </p>
+
+  <p>
+    <strong>À quoi s'attendre :</strong> la même ligne que le reste des buvettes du Sella — sodas, jus, eau, glaces et collations, pas d'alcool.
+  </p>
+
+  <p class="post__pull">
+    La différence entre une journée « correcte » et une « mémorable » sur le Sella tient souvent à l'arrêt que tu choisis. Pique-nique au Pozo del Arco, une boisson à l'ombre d'El Bosque, une longue pause à La Mediana. Chaque option change le rythme de la journée.
+  </p>
+
+  <h2 class="post__h2" id="torano">6 · Toraño <span class="serif-italic">(km 7 · fin du Mini Sella)</span></h2>
+
+  <p>
+    Si tu fais le Mini Sella, Toraño est le point final du parcours. Il y a une grande buvette à côté de la rampe de sortie, parfaite pour <strong>une boisson ou une glace en attendant le transfert</strong> retour à Arriondas. Si tu fais le parcours complet, c'est un arrêt intermédiaire.
+  </p>
+
+  <p>
+    Ambiance détendue, large terrasse, menu de buvette au bord du fleuve sans alcool. Boissons fraîches, glaces, collations. Rien de gastronomique, mais honnête.
+  </p>
+
+  <h2 class="post__h2" id="choose">Comment choisir <span class="serif-italic">selon ton plan</span></h2>
+
+  <p>Six profils de journée, six arrêts différents. Trouve le tien.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Groupe cherchant l'ambiance</h3>
+      <p class="post__essential__desc">
+        El Oasis · premier arrêt animé · plus un court arrêt final à Toraño.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Famille avec enfants</h3>
+      <p class="post__essential__desc">
+        El Bosque · ombre naturelle et zone abritée pour se rafraîchir aux heures de pleine chaleur.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Couple cherchant le calme</h3>
+      <p class="post__essential__desc">
+        Pique-nique au <a href="/fr/blog/pozo-del-arco-sella/">Pozo del Arco</a> · boisson à El Prau · pas d'enceintes.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Longue pause en milieu de parcours</h3>
+      <p class="post__essential__desc">
+        La Mediana · large terrasse et zone centrale du parcours · idéal sur le parcours complet.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plan express · Mini rapide</h3>
+      <p class="post__essential__desc">
+        Ignore toutes les buvettes et arrête-toi seulement à la fin, à Toraño, pendant que le transfert arrive.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Repas complet correct</h3>
+      <p class="post__essential__desc">
+        Mieux après la descente · cidreries à Arriondas, Toraño ou Ribadesella · sans pressé.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="practical">Règles pratiques <span class="serif-italic">de buvette</span></h2>
+
+  <ul>
+    <li><strong>Atterrissage correct.</strong> Toutes ont une plage ou rampe. Ne laisse pas le canoë bloquer le passage.</li>
+    <li><strong>Gilet de sauvetage pendant que tu es dans l'eau.</strong> Si tu nages près de la buvette, c'est toujours le fleuve.</li>
+    <li><strong>Pas d'alcool sur le fleuve.</strong> C'est interdit et les buvettes du parcours n'en servent pas. Si tu veux un cidre ou une bière, laisse ça pour Arriondas ou Ribadesella après.</li>
+    <li><strong>Paiement.</strong> Beaucoup acceptent la carte, mais la couverture est irrégulière. Apporte <strong>10-15 € d'espèces par personne</strong> dans le bidon.</li>
+    <li><strong>Pas de verre dans le fleuve.</strong> Consomme à la buvette, ne ramène pas de bouteilles au canoë.</li>
+    <li><strong>Respecte l'environnement.</strong> Déchets à la poubelle, rien jeté sur le gravier.</li>
+    <li><strong>Gestion du temps.</strong> Si tu fais le parcours complet, surveille l'heure : le transfert a des horaires fixés. Mieux vaut s'arrêter 30 min à deux buvettes que 90 min à une.</li>
+  </ul>
+
+  <h2 class="post__h2" id="picnic">Pique-nique ou buvette · <span class="serif-italic">ou les deux</span></h2>
+
+  <p>
+    Nous le rappelons parce que ça compte : le <strong>pique-nique asturien est inclus</strong> dans le prix de la descente (empanada au thon, petit pain asturien, eau 500 ml). Le pique-nique est <strong>fixe et identique pour tous les clients</strong> — il n'y a pas d'option végétalienne ou végétarienne. Tu peux parfaitement faire le parcours sans t'arrêter à aucune buvette et manger le pique-nique sur une plage fluviale. Ou alterner.
+  </p>
+
+  <p>
+    Il n'y a pas de dépense obligatoire sur le parcours. Les buvettes sont un <em>plus</em>, pas une exigence. Si tu fais un budget, <a href="/fr/tarifs/">les tarifs de la descente du Sella</a> incluent déjà tout l'essentiel pour la journée.
+  </p>
+
+  <p>
+    Si tu n'as pas encore réservé, <a href="/fr/reservation-premium/">choisis une date dans le calendrier</a> et planifie le rythme.
+  </p>
+
+  <p>
+    Et si ta question ressemblait plutôt au classique — <em>« et à quelle buvette mangerons-nous quand mon cousin viendra en août avec trois enfants ? »</em> — <a href="/fr/contact/">écris-nous</a>. Avec des données réelles, nous faisons un plan plus fin que ce guide générique.
+  </p>
+</BlogPostLayout>

@@ -1,0 +1,260 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: '¿Tengo que elegir una hora de salida?',
+    a: '<p>No. Tu reserva es <strong>Premium · horario abierto</strong>: llegas a nuestras instalaciones de Arriondas <strong>cuando te venga bien entre las 10:30 y las 12:30</strong>, sin elegir hora concreta. Es una de las <strong>ventajas Premium</strong> · te equipamos al llegar y sales al río según estés listo. La Confederación Hidrográfica marca permanencia en el río hasta las 18:00 (por eso cerramos llegadas a las 12:30 · margen seguro). <strong>Excepciones</strong>: el sábado del <a href="/descenso-internacional-del-sella/">Descenso Internacional</a> (salida única) y los días con condiciones del río que requieran entrada con monitor (te avisamos con antelación).</p>',
+  },
+  {
+    q: '¿A qué hora del rango 10:30–12:30 me conviene llegar?',
+    a: '<p>Depende de lo que busques. Llegada <strong>pronto (10:30)</strong>: luz bonita para fotos, río más tranquilo, menos afluencia · acabas con tarde libre. Llegada <strong>media (11:30–12:00)</strong>: ambiente animado, más vida en chiringuitos y playas. Llegada <strong>al cierre (12:30)</strong>: la parte final del recorrido pilla luz de tarde, perfecto si te gusta acabar con luz dorada y menos gente en el río.</p>',
+  },
+  {
+    q: '¿Cuál es la mejor hora para el descenso si voy con niños?',
+    a: '<p>Llega pronto, sin duda. <strong>10:30</strong> es ideal porque los peques rinden mejor con energía fresca, comen en el río a buena hora y llegáis de vuelta a Arriondas con margen para ducharse y descansar sin prisas. Lo explicamos con detalle en <a href="/blog/descenso-sella-con-ninos-pequenos/">descenso del Sella con niños pequeños</a>.</p>',
+  },
+  {
+    q: '¿Hay atascos o colas en el río a cierta hora?',
+    a: '<p>En julio y agosto, los <strong>sábados entre las 12:00 y las 14:00</strong> concentran la mayor afluencia en la zona del Pozo del Arco y los primeros chiringuitos. No es un atasco real, pero sí notas que hay más canoas. Si buscas tranquilidad, elige entre semana o llega a primera hora del horario abierto (10:30).</p>',
+  },
+  {
+    q: '¿Se puede hacer el descenso del Sella al atardecer?',
+    a: '<p>No como actividad nocturna. La Confederación Hidrográfica <strong>solo permite permanecer en el río hasta las 18:00</strong>, por eso cerramos las llegadas a las <strong>12:30</strong> (12:30 + 5 h del Completo = 17:30 · margen seguro). Si llegas al cierre del horario abierto, acabas con luz de tarde en la segunda mitad del recorrido — especialmente bonita en junio, julio y septiembre. Muchas de las mejores fotos del Sella se sacan así.</p>',
+  },
+  {
+    q: '¿Hay alguna excepción al horario abierto Premium?',
+    a: '<p>Sí, dos. El <strong>sábado del <a href="/descenso-internacional-del-sella/">Descenso Internacional</a></strong> (sábado de agosto que fija cada año la Federación · en 2026 cae el <strong>8 de agosto</strong>) tiene salida única en hora concreta — comunicada al hacer la reserva. Y si por <strong>temporal o condiciones del río</strong> (crecida, lluvia fuerte) necesitamos que entres a una hora específica o salgas con monitor, <strong>te avisamos con antelación desde nuestra parte</strong>. El resto de días del año el horario es completamente abierto entre 10:30 y 12:30.</p>',
+  },
+  {
+    q: '¿Afecta la hora del día al caudal del río?',
+    a: '<p>El caudal del Sella es estable durante la jornada — no es un río con variaciones horarias significativas, a diferencia de ríos alpinos con deshielo. Lo que sí cambia es la <strong>temperatura del agua</strong> (un poco más cálida a media tarde) y la <strong>luz</strong>, que afecta a las fotos y a la sensación térmica.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="mejor-hora-descenso-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Lo primero, importante:</strong> tu reserva es <strong>Premium · horario abierto</strong>. No eliges hora de salida concreta — llegas a nuestras instalaciones <strong>cuando te venga bien entre las 10:30 y las 12:30</strong>. La pregunta entonces no es "qué hora elegir", sino <strong>"¿a qué hora del rango me conviene llegar?"</strong>. Eso sí cambia mucho la experiencia · y aquí lo desglosamos.
+  </p>
+
+  <p>
+    La pregunta viene cada semana en el mostrador, y tiene más miga de lo que parece. No es lo mismo llegar a las 10:30 en junio que a las 12:30 en agosto. Te contamos lo que observamos cada temporada —luz, afluencia, temperatura, ritmo— para que decidas a qué hora del horario abierto llegar.
+  </p>
+
+  <h2 class="post__h2" id="horario-abierto">Cómo funciona<br/><span class="serif-italic">el horario abierto Premium</span></h2>
+
+  <p>
+    En <strong>Aventura en el Sella todas las reservas son Premium</strong>, y eso incluye una ventaja que pocos operadores ofrecen: el <strong>horario es abierto</strong>. No tienes que cumplir una hora exacta de salida · llegas a nuestras instalaciones de Arriondas <strong>cuando te venga bien entre las 10:30 y las 12:30</strong>. Te equipamos al llegar (papeleo breve, vestuarios, mini clase con monitor titulado) y sales al río según estés listo.
+  </p>
+
+  <p>
+    Por <strong>normativa de la Confederación Hidrográfica del Cantábrico</strong>, la permanencia en el río es <strong>hasta las 18:00 h</strong>. Por eso cerramos las llegadas a las 12:30 (12:30 + hasta 5 h del Completo = 17:30, margen seguro). Excepciones: el <strong>sábado del Descenso Internacional</strong> tiene salida única en hora concreta · y si hay temporal o condiciones del río que requieran entrada con monitor, te avisamos con antelación.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-mejorhora-inline"
+      alt="Río Sella en julio · ambiente del descenso turístico en plena temporada"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Primera hora del horario abierto · río en calma, luz limpia y la sensación de tener el Sella casi entero para uno mismo.</figcaption>
+  </figure>
+
+  <p>Las tres franjas de llegada más populares dentro del horario abierto.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">10:30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Primera hora <span class="serif-italic">· hasta las 11:00</span></h3>
+        <p class="post__zone__desc">Familias con niños · parejas fotógrafas · gente madrugadora. <strong>Luz limpia · río tranquilo · menos afluencia.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11:30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Media mañana <span class="serif-italic">· hasta las 12:00</span></h3>
+        <p class="post__zone__desc">Grupos de amigos · visitantes desde Oviedo o Gijón. <strong>Más ambiente · paradas animadas · temperatura agradable.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">12:00</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Cierre del horario <span class="serif-italic">· hasta las 12:30</span></h3>
+        <p class="post__zone__desc">Parejas · amantes de la luz de tarde · gente sin prisa. <strong>Acabas con luz dorada · río más vacío en la segunda mitad.</strong></p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="primera-hora">Llegar a primera hora<br/><span class="serif-italic">(10:30 – 11:00)</span></h2>
+
+  <p>
+    Esta es nuestra franja favorita, y no lo decimos por decirlo: es la que elegimos cuando invitamos a amigos. El río amanece con esa calma plana que solo tiene antes de que lleguen las primeras canoas, y la luz cae lateral sobre el valle, perfecta para fotos.
+  </p>
+
+  <p><strong>Por qué encaja bien:</strong></p>
+
+  <ul>
+    <li><strong>Luz óptima</strong> — especialmente entre mayo y septiembre, sol bajo, sombras alargadas, tonos dorados en el agua.</li>
+    <li><strong>Menos afluencia</strong> — las canoas están repartidas, no agolpadas en las playas fluviales.</li>
+    <li><strong>Temperatura más fresca</strong> — ideal en pleno agosto, cuando a mediodía el calor aprieta.</li>
+    <li><strong>Comes en el río a buena hora</strong> — llegas al picnic con hambre real, no a deshora.</li>
+    <li><strong>Terminas con margen</strong> — si tardas 4 horas, acabas hacia las 14:30: tiempo de ducharte, comer algo más si te apetece y seguir con el día.</li>
+  </ul>
+
+  <p class="post__pull">
+    Si vas con niños pequeños, llegar a primera hora no es una opción: es <em>la</em> opción. A las 10:30 están frescos, a las 13 pasan hambre de verdad, a las 15 se duermen en el coche como angelitos.
+  </p>
+
+  <h2 class="post__h2" id="media-manana">Llegar a media mañana<br/><span class="serif-italic">(11:30 – 12:00)</span></h2>
+
+  <p>
+    La franja más popular en julio y agosto. Si buscas ambiente de verano —chiringuitos con música, canoas compartiendo parada, el típico "¡eh, mirad a aquellos!"— esta es la hora. A cambio, también es la más concurrida.
+  </p>
+
+  <p><strong>Ventajas:</strong></p>
+
+  <ul>
+    <li>Agua templada, cómoda para bañarse en las pozas del Sella.</li>
+    <li>Los <a href="/blog/chiringuitos-descenso-sella/">chiringuitos</a> están en su mejor momento de ambiente.</li>
+    <li>Temperatura estable — ni fría al amanecer ni de calor a media tarde.</li>
+  </ul>
+
+  <p><strong>A tener en cuenta:</strong></p>
+
+  <ul>
+    <li>En fin de semana de agosto puede haber algo más de cola en <strong>la rampa de salida</strong>.</li>
+    <li>Las playas fluviales (especialmente el Pozo del Arco) están muy concurridas entre 12:30 y 13:30.</li>
+    <li>Si eres de los que prefiere "el río para ti solo", esta no es tu franja.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>Truco para la franja de mediodía</strong>
+    <p>Si llegas a las 12:00 y planeas ritmo tranquilo, llegarás al <a href="/blog/pozo-del-arco-sella/">Pozo del Arco</a> hacia las 13:30 — momento en que la mayoría de canoas de primera hora ya ha pasado. Comes en el picnic un poco más tarde (hacia las 14:15) y acabas entre las 16:00 y 17:00 con luz de media tarde. Plan muy cómodo si no te importa cenar temprano.</p>
+  </div>
+
+  <h2 class="post__h2" id="cierre-horario">Llegar al cierre<br/><span class="serif-italic">(12:00 – 12:30)</span></h2>
+
+  <p>
+    La franja más tranquila. Mucha gente ya está en el río o cerca de terminar, la afluencia en la segunda mitad del recorrido baja y, si haces el Completo, acabarás con <strong>luz de tarde</strong>. Muchas de las fotos más bonitas del Sella se sacan así, especialmente entre <strong>junio y septiembre</strong>.
+  </p>
+
+  <p><strong>Por qué funciona tan bien:</strong></p>
+
+  <ul>
+    <li><strong>Luz de tarde</strong> en las últimas horas del recorrido — los acantilados del Sella pasan de verde oscuro a cobrizo.</li>
+    <li><strong>Menos canoas</strong> — sobre todo en las playas fluviales, que recuperan su aspecto natural.</li>
+    <li><strong>Temperatura perfecta</strong> en julio/agosto — ya no aprieta el sol de mediodía.</li>
+    <li><strong>Paradas más tranquilas</strong> — menos movimiento en los chiringuitos del recorrido.</li>
+  </ul>
+
+  <p><strong>Dos precauciones:</strong> (1) si haces el Completo llegando a las 12:30, vuelves a Arriondas al final de la tarde — calcula tiempo para duchas y transfer (llegas al río hacia las 17:30). (2) En primavera y principios de otoño, llegar tarde puede acabar con algo de fresco al final — el sol se esconde antes. Si vas en esas épocas, revisa también <a href="/mejor-epoca/">la mejor época para el descenso del Sella</a>.</p>
+
+  <h2 class="post__h2" id="por-mes">La mejor hora <span class="serif-italic">por mes</span></h2>
+
+  <p>Como el sol y la afluencia cambian cada mes, esta es nuestra recomendación basada en años de ver bajar el río.</p>
+
+  <div class="post__zones post__zones--wide">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Mayo</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:30 <span class="serif-italic">– 12:00</span></h3>
+        <p class="post__zone__desc">Evita el frío de primera hora · coge sol de mediodía.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Junio</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">o 12:30</span></h3>
+        <p class="post__zone__desc">Cualquier franja es buena · luz larga hasta tarde.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Julio</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">o 12:30</span></h3>
+        <p class="post__zone__desc">Evita el pico de calor y afluencia de mediodía.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Agosto</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">· con antelación</span></h3>
+        <p class="post__zone__desc">Mes más concurrido · primera hora = más tranquilidad.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Septiembre</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:30 <span class="serif-italic">o 12:30</span></h3>
+        <p class="post__zone__desc">Todas las franjas son buenas · afluencia baja.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Octubre</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:00 <span class="serif-italic">– 12:00</span></h3>
+        <p class="post__zone__desc">Aprovecha la franja central para sol y temperatura.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="duracion">¿Y cuánto voy a tardar <span class="serif-italic">en realidad?</span></h2>
+
+  <p>
+    La hora de llegada marca la experiencia, pero la <strong>duración</strong> también. Nosotras trabajamos dos recorridos:
+  </p>
+
+  <ul>
+    <li><strong>Mini Sella (7 km · Arriondas → Toraño)</strong> — entre 1h 30 y 2h 30.</li>
+    <li><strong>Descenso Completo (14,5 km · Arriondas → Fríes)</strong> — entre 3 y 5 horas con paradas.</li>
+  </ul>
+
+  <p>
+    Hemos hecho una guía aparte sobre tiempos reales: <a href="/cuanto-dura/">cuánto dura el descenso del Sella</a>. Úsala para encajar la hora de llegada con lo que tienes planeado hacer después.
+  </p>
+
+  <h2 class="post__h2" id="decision">Cómo decidir <span class="serif-italic">en 30 segundos</span></h2>
+
+  <p>El método de la casa, depurado en años de preguntas:</p>
+
+  <ol>
+    <li>Si vienes con <strong>niños pequeños</strong> → llega a primera hora (10:30).</li>
+    <li>Si quieres <strong>ambiente</strong> en las paradas → media mañana (11:30–12:00).</li>
+    <li>Si te gustan las <strong>fotos y la tranquilidad</strong> → llega al cierre (12:00–12:30).</li>
+    <li>Si vienes un <strong>sábado de agosto</strong> → primera hora o entre semana, no hay debate.</li>
+    <li>Si llegas desde <strong>Oviedo o Gijón</strong> y no te apetece madrugar → 11:30 da margen para un buen desayuno antes.</li>
+  </ol>
+
+  <p>
+    ¿Todavía no lo tienes claro? Mira el <a href="/reservar/">calendario de reserva</a> — verás qué franjas tienen disponibilidad cada día, y con eso la decisión se toma sola. Y si prefieres <a href="/contacto/">preguntarnos directamente</a>, dinos cuántos vais, edades y qué esperáis del día. Te recomendamos la franja concreta sin rodeos.
+  </p>
+</BlogPostLayout>

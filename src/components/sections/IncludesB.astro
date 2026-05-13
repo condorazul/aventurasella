@@ -1,0 +1,329 @@
+---
+/**
+ * IncludesEditorial — Variante editorial minimalista con números gigantes
+ * Inspirado en la referencia "Reservar es más fácil que pedalear"
+ * Fondo sage sutil para crear corte visual con la sección anterior
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, localizeUrl } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: 'Qué incluye tu reserva',
+    title_l1: 'Un solo precio,',
+    title_l2: 'sin sorpresas',
+    cta: 'Reservar en 2 minutos',
+    foot_prefix: 'Edad mínima:',
+    foot_value: '5 años y 1,15 m',
+    foot_suffix: '· por seguridad, sin excepciones.',
+    blocks: [
+      {
+        num: '01',
+        title: 'Todo incluido',
+        kicker: 'Sin sorpresas',
+        text: 'Canoa insumergible K1/K2/K3, pala doble, chaleco homologado, bidón estanco, neopreno en fechas frías, mini clase con monitores titulados y campeones del Sella, rampa de embarque (opcional), transfer de regreso, picnic asturiano, vestuarios con duchas, taquillas con llave, parking privado vigilado y seguros obligatorios. <strong>Desde 30&nbsp;€ por persona</strong>. Sin extras.',
+      },
+      {
+        num: '02',
+        title: 'Solo bajo reserva',
+        kicker: 'Tu plaza, garantizada',
+        text: 'Trabajamos con <strong>reserva previa siempre</strong> — así aseguramos tu plaza en el día y hora que eliges, sin colas ni incertidumbre. Confirmamos al instante por WhatsApp o email, con todos los detalles de tu descenso.',
+      },
+      {
+        num: '03',
+        title: 'Pagar es fácil',
+        kicker: 'Como prefieras',
+        text: 'Reserva sin pagar ahora y <strong>paga el día al recoger la canoa</strong>, o <strong>con tarjeta por adelantado</strong> si lo prefieres — lo que te sea más cómodo. Puedes cambiar o cancelar antes del día de la actividad; si pagaste con tarjeta, el reembolso requiere 48&nbsp;h de antelación. Estamos conectados 24/7 para cualquier duda.',
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'What your booking includes',
+    title_l1: 'One single price,',
+    title_l2: 'no surprises',
+    cta: 'Book in 2 minutes',
+    foot_prefix: 'Minimum age:',
+    foot_value: '5 years and 1.15 m',
+    foot_suffix: '· for safety reasons, no exceptions.',
+    blocks: [
+      {
+        num: '01',
+        title: 'All inclusive',
+        kicker: 'No surprises',
+        text: 'Unsinkable K1/K2/K3 canoe, double paddle, certified life jacket, waterproof barrel, wetsuit on cold days, mini-class with certified instructors and Sella champions, boarding ramp (optional), return transfer, Asturian picnic, changing rooms with showers, locked lockers, guarded private parking and compulsory insurance. <strong>From €30 per person</strong>. No extras.',
+      },
+      {
+        num: '02',
+        title: 'Booking only',
+        kicker: 'Your spot, guaranteed',
+        text: 'We work <strong>by prior booking always</strong> — that way we secure your spot for the day and time you choose, with no queues or uncertainty. We confirm instantly by WhatsApp or email, with every detail of your descent.',
+      },
+      {
+        num: '03',
+        title: 'Paying is easy',
+        kicker: 'However you prefer',
+        text: 'Book without paying now and <strong>pay on the day when you pick up the canoe</strong>, or <strong>by card in advance</strong> if you prefer — whichever suits you best. You can change or cancel before the day of the activity; if you paid by card, refunds require 48&nbsp;h notice. We are connected 24/7 for any questions.',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: 'Ce que comprend ta réservation',
+    title_l1: 'Un seul prix,',
+    title_l2: 'sans surprises',
+    cta: 'Réserver en 2 minutes',
+    foot_prefix: 'Âge minimum :',
+    foot_value: '5 ans et 1,15 m',
+    foot_suffix: '· pour des raisons de sécurité, sans exception.',
+    blocks: [
+      {
+        num: '01',
+        title: 'Tout inclus',
+        kicker: 'Sans surprises',
+        text: 'Canoë insubmersible K1/K2/K3, pagaie double, gilet de sauvetage homologué, bidon étanche, combinaison néoprène par temps frais, mini-cours avec moniteurs diplômés et champions du Sella, rampe d\'embarquement (en option), transfert retour, pique-nique asturien, vestiaires avec douches, casiers avec clé, parking privé surveillé et assurance obligatoire. <strong>Dès 30&nbsp;€ par personne</strong>. Sans extras.',
+      },
+      {
+        num: '02',
+        title: 'Uniquement sur réservation',
+        kicker: 'Ta place, garantie',
+        text: 'Nous travaillons <strong>toujours sur réservation préalable</strong> — ainsi nous assurons ta place au jour et à l\'heure que tu choisis, sans files d\'attente ni incertitude. Nous confirmons immédiatement par WhatsApp ou email, avec tous les détails de ta descente.',
+      },
+      {
+        num: '03',
+        title: 'Payer est simple',
+        kicker: 'Comme tu préfères',
+        text: 'Réserve sans payer maintenant et <strong>paie le jour-même en récupérant le canoë</strong>, ou <strong>par carte à l\'avance</strong> si tu préfères — comme cela t\'arrange. Tu peux modifier ou annuler avant le jour de l\'activité ; si tu as payé par carte, le remboursement requiert un préavis de 48&nbsp;h. Nous sommes connectés 24/7 pour toute question.',
+      },
+    ],
+  },
+  pt: {
+    eyebrow: 'O que inclui a tua reserva',
+    title_l1: 'Um único preço,',
+    title_l2: 'sem surpresas',
+    cta: 'Reservar em 2 minutos',
+    foot_prefix: 'Idade mínima:',
+    foot_value: '5 anos e 1,15 m',
+    foot_suffix: '· por segurança, sem exceções.',
+    blocks: [
+      {
+        num: '01',
+        title: 'Tudo incluído',
+        kicker: 'Sem surpresas',
+        text: 'Canoa insubmersível K1/K2/K3, pá dupla, colete salva-vidas homologado, bidão estanque, fato de neoprene em datas frias, mini-aula com monitores qualificados e campeões do Sella, rampa de embarque (opcional), transfer de regresso, piquenique asturiano, balneários com duches, cacifos com chave, estacionamento privado vigiado e seguros obrigatórios. <strong>Desde 30&nbsp;€ por pessoa</strong>. Sem extras.',
+      },
+      {
+        num: '02',
+        title: 'Apenas por reserva',
+        kicker: 'O teu lugar, garantido',
+        text: 'Trabalhamos <strong>sempre com reserva prévia</strong> — assim asseguramos o teu lugar no dia e hora que escolheres, sem filas nem incerteza. Confirmamos de imediato por WhatsApp ou email, com todos os detalhes da tua descida.',
+      },
+      {
+        num: '03',
+        title: 'Pagar é fácil',
+        kicker: 'Como preferires',
+        text: 'Reserva sem pagar agora e <strong>paga no dia ao recolher a canoa</strong>, ou <strong>com cartão antecipadamente</strong> se preferires — o que te for mais cómodo. Podes alterar ou cancelar antes do dia da atividade; se pagaste com cartão, o reembolso requer 48&nbsp;h de antecedência. Estamos ligados 24/7 para qualquer dúvida.',
+      },
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+const reservarHref = localizeUrl('/reservar/', lang);
+---
+
+<section class="incEd">
+  <div class="container container--lg">
+    <header class="incEd__header" data-reveal>
+      <span class="incEd__eyebrow">{t.eyebrow}</span>
+      <h2 class="incEd__title">
+        {t.title_l1}<br/><span class="serif-italic">{t.title_l2}</span>
+      </h2>
+    </header>
+
+    <div class="incEd__grid">
+      {t.blocks.map((b, i) => (
+        <article class="incEd__block" data-reveal data-reveal-delay={i + 1}>
+          <span class="incEd__num" aria-hidden="true">{b.num}</span>
+          <div class="incEd__body">
+            <h3 class="incEd__h3">{b.title}</h3>
+            <span class="incEd__kicker">{b.kicker}</span>
+            <p class="incEd__text" set:html={b.text}></p>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="incEd__footer" data-reveal>
+      <a href={reservarHref} class="incEd__cta">
+        {t.cta}
+        <span class="incEd__cta-dot" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+      <p class="incEd__foot">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>{t.foot_prefix} <strong>{t.foot_value}</strong> {t.foot_suffix}</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .incEd {
+    padding-block: clamp(5rem, 10vw, 8rem);
+    background: var(--color-bg-warm, #F5F1E8);
+    position: relative;
+  }
+  /* Ligero separador orgánico arriba y abajo — borde sutil que refuerza el corte */
+  .incEd::before,
+  .incEd::after {
+    content: "";
+    position: absolute; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(61, 79, 58, 0.12) 20%,
+      rgba(61, 79, 58, 0.12) 80%,
+      transparent 100%);
+    pointer-events: none;
+  }
+  .incEd::before { top: 0; }
+  .incEd::after  { bottom: 0; }
+
+  .incEd__header {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto clamp(3rem, 6vw, 5rem);
+  }
+  .incEd__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: var(--s-4);
+  }
+  .incEd__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .incEd__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-weight: 400;
+    font-style: italic;
+    font-family: var(--font-serif);
+    letter-spacing: -0.01em;
+  }
+
+  .incEd__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(3rem, 6vw, 5rem);
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  @media (min-width: 900px) {
+    .incEd__grid { grid-template-columns: repeat(3, 1fr); gap: clamp(2rem, 3.5vw, 3.5rem); }
+  }
+
+  .incEd__block {
+    position: relative;
+    padding-top: clamp(3.5rem, 5vw, 4.5rem);
+  }
+
+  .incEd__num {
+    position: absolute;
+    top: -0.5rem;
+    left: -0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 10vw, 8rem);
+    font-weight: 900;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    color: rgba(61, 79, 58, 0.12);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .incEd__body {
+    position: relative;
+    z-index: 1;
+    max-width: 36ch;
+  }
+
+  .incEd__h3 {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 4px;
+  }
+
+  .incEd__kicker {
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: var(--s-3);
+  }
+
+  .incEd__text {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .incEd__text strong {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+
+  /* Footer con CTA y nota */
+  .incEd__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-4);
+  }
+
+  .incEd__cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 0.875rem 1.25rem 0.875rem 1.75rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: var(--color-text-on-dark, #FBF8F1);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.3px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .incEd__cta:hover {
+    background: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(233, 133, 111, 0.4);
+  }
+  .incEd__cta-dot {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--color-text-on-dark, #FBF8F1);
+    color: var(--color-text-primary, #1A1F2E);
+    transition: transform 220ms var(--ease-out);
+  }
+  .incEd__cta:hover .incEd__cta-dot { transform: translateX(3px); }
+
+  .incEd__foot {
+    display: flex; align-items: center; gap: var(--s-2);
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-align: center;
+  }
+  .incEd__foot svg { color: var(--color-primary); flex-shrink: 0; }
+  .incEd__foot strong { color: var(--color-text-primary); font-weight: 600; }
+</style>

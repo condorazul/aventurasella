@@ -1,0 +1,319 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: '¿Desde qué edad pueden los niños hacer el descenso del Sella?',
+    a: '<p>La edad mínima es <strong>5 años cumplidos y 1,15 m de altura</strong>, por seguridad con el chaleco salvavidas. No es un capricho: el chaleco más pequeño que existe está diseñado para esa talla, y con peques más pequeños no ajusta correctamente. Esto es norma general del sector en el Sella, no solo nuestra.</p>',
+  },
+  {
+    q: '¿Es seguro el descenso del Sella con niños pequeños?',
+    a: '<p>Sí. El río Sella es un <strong>cauce tranquilo (clase I–II)</strong> sin rápidos técnicos ni saltos. Antes de salir os damos una <strong>mini clase con monitor titulado</strong>, y durante el descenso hay <strong>monitores en kayaks de seguridad vigilando el recorrido</strong> por si alguien los necesita. Las canoas son insumergibles (aunque volcasen vuelven a flotar) y los chalecos están homologados. <strong>Eso sí — es obligatorio que los niños sepan nadar</strong>, y que no padezcan enfermedades graves ni embarazo en el caso de acompañantes. Si las condiciones del río o el clima lo requieren, un monitor puede acompañar al grupo · te avisamos con antelación con los detalles.</p>',
+  },
+  {
+    q: '¿Qué recorrido es mejor si vamos con niños pequeños?',
+    a: '<p>Para primera experiencia con peques de 5 a 8 años recomendamos el <strong>Mini Sella (7 km · 1h 30 – 2h 30)</strong>. Es el tramo más dulce, con menos tiempo en canoa y tiempo real para bañarse y comer sin agobios. A partir de 9–10 años pueden hacer el Completo (14,5 km · 3–5 h) si son peques activos y acostumbrados al agua.</p>',
+  },
+  {
+    q: '¿Los niños pagan precio completo?',
+    a: '<p>No. Los <strong>menores de 12 años pagan 30 €</strong> (frente a los 40 € de adulto), incluyendo el mismo equipo, picnic y servicios. Consulta la tarifa completa en <a href="/precios/">precios</a>.</p>',
+  },
+  {
+    q: '¿Y si el niño se cansa o se agobia a mitad del descenso?',
+    a: '<p>Pasa, y está previsto. El monitor del río lo detecta y reorganiza la canoa —normalmente rema más el adulto, el peque descansa o se cambia de posición. Si hace falta, se hace una parada más larga en una playa fluvial. En casos excepcionales (muy raros) se puede abandonar el recorrido en el siguiente chiringuito y recogeros con el transfer. <strong>Nadie se queda tirado en mitad del río</strong>.</p>',
+  },
+  {
+    q: '¿Pueden ir bebés o niños menores de 5 años?',
+    a: '<p>No, lo sentimos. La edad mínima es <strong>5 años y 1,15 m</strong> sin excepción. No es una decisión comercial: es una restricción técnica del chaleco salvavidas homologado más pequeño disponible. Si viajáis con un bebé, podéis planificar el descenso con adultos y dejarlo con uno de ellos en Arriondas, donde hay plazas, cafeterías y paseos fluviales.</p>',
+  },
+  {
+    q: '¿Qué hacemos si llueve el día que vamos con niños?',
+    a: '<p>Si es <strong>lluvia ligera</strong>, la actividad se mantiene: mojados vais a estar igual, y a los niños les suele parecer "un día más divertido". Solo cancelamos cuando hay <strong>riesgo real</strong> (tormenta eléctrica, crecida del río, corrientes fuertes) o por recomendación de la Confederación. En ese caso te reubicamos gratis en otro día o te devolvemos el importe. Detalles en <a href="/legal/terminos-contratacion/">términos de contratación</a>.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descenso-sella-con-ninos-pequenos" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Respuesta rápida:</strong> sí, se puede — desde 5 años y 1,15 m. Recorrido Mini (7 km), llegada a primera hora del horario abierto Premium (10:30), crema solar cada dos horas, muda seca en taquilla. El río Sella es tranquilo, los chalecos son homologados y hay monitores titulados vigilando el recorrido. Los miedos típicos que aparecen cuando vas con peques, resueltos uno a uno.
+  </p>
+
+  <p>
+    No hay pregunta más honesta en el mostrador que la de cualquier familia preguntando <em>"¿pero seguro que mi hija de 6 está bien?"</em> — venga de cualquier madre, padre, abuelos o tíos. La respuesta corta es sí; la larga te la contamos aquí, porque sabemos que un "sí" sin detalles no tranquiliza a nadie cuando te juegas el día con los peques.
+  </p>
+
+  <p>
+    Esta guía complementa nuestra página <a href="/con-ninos/">descenso del Sella con niños</a>, centrada en información práctica de reserva. Aquí hablamos de lo otro: los miedos típicos, cómo organizar el día, qué esperar a cada edad.
+  </p>
+
+  <h2 class="post__h2" id="edad">La edad mínima, <span class="serif-italic">sin rodeos</span></h2>
+
+  <p>
+    <strong>5 años cumplidos y 1,15 m de altura.</strong> Esto no es negociable y no es nuestro capricho: el chaleco salvavidas homologado más pequeño está diseñado para esa medida mínima. Con peques más pequeños, el chaleco puede deslizarse hacia arriba por la cabeza si caen al agua, y deja de cumplir su función.
+  </p>
+
+  <p>
+    Si tu peque cumple 5 años en el mes que venís, revisa su altura con cinta métrica: si no llega al 1,15, mejor esperar al año siguiente o reservar solo para los adultos. Hemos tenido que dar la vuelta a familias en el mostrador por este motivo, y es una conversación muy incómoda que preferimos evitarte.
+  </p>
+
+  <div class="post__callout">
+    <strong>Y una cosa más: obligatorio saber nadar</strong>
+    <p>El chaleco mantiene a flote, pero es imprescindible que el niño sepa nadar y no tenga miedo cerval al agua. Si es su primera vez con contacto de agua profunda, valora hacer unas sesiones de piscina antes. No es una prueba técnica — es para que <em>él</em> esté tranquilo, no nosotras.</p>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="madre-y-nino"
+      alt="Adulto y niño bajando juntos el río Sella en canoa con chaleco salvavidas"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Desde 5 años y 1,15 m. Con el chaleco bien ajustado y un adulto a remo, los peques disfrutan el descenso sin miedo.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="recorrido">Qué recorrido elegir <span class="serif-italic">según la edad</span></h2>
+
+  <p>Tenemos dos recorridos · los recomendamos así para familias.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–7</span>
+        <span class="post__zone__unit">años</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini Sella <span class="serif-italic">· 7 km</span></h3>
+        <p class="post__zone__desc"><strong>1h 30 – 2h 30.</strong> La primera experiencia ideal · sin agobios.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">8–10</span>
+        <span class="post__zone__unit">años</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini <span class="serif-italic">o Completo</span></h3>
+        <p class="post__zone__desc"><strong>Mini o 3h 30.</strong> Si es peque activo y le gusta el agua, el Completo va bien.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11–12</span>
+        <span class="post__zone__unit">años</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Completo <span class="serif-italic">· 14,5 km</span></h3>
+        <p class="post__zone__desc"><strong>3 – 4h.</strong> Suelen disfrutarlo más que los adultos.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    El Mini Sella (Arriondas → Toraño) es el tramo más dulce: llega al <a href="/blog/pozo-del-arco-sella/">Pozo del Arco</a>, una playa fluvial espectacular, y termina en Toraño con transfer de vuelta. Suficiente Sella para enamorarse, sin llegar al punto de "¿cuánto queda?".
+  </p>
+
+  <h2 class="post__h2" id="miedos">Los <span class="serif-italic">cuatro miedos</span> típicos</h2>
+
+  <p>
+    Los que aparecen una y otra vez en el mostrador — los repiten madres, padres, parejas, abuelos y cualquier figura familiar que viene con peques. Resueltos uno a uno con la franqueza de quien lleva 25 años viendo bajar familias.
+  </p>
+
+  <div class="post__concerns">
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"¿Y si vuelca la canoa?"</h3>
+        <p>
+          El Sella es de <strong>clase I–II</strong> · cauce tranquilo con corrientes suaves, sin rápidos. Las canoas son insumergibles —aunque entrara agua, vuelven a flotar solas— y están dimensionadas para que vuelquen con dificultad. Cuando ocurre (rara vez), suele ser por hacer el tonto en una poza poco profunda y se resuelve poniéndose de pie. Los monitores del río están atentos precisamente a eso.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"¿Y si se cansa a mitad y no puedo con él?"</h3>
+        <p>
+          Los peques no reman de forma continua · reman un rato, miran el paisaje, mojan la mano, picotean algo, vuelven a remar. No es una travesía exigente sino un paseo en el que participan cuando quieren. El adulto compensa, y el <strong>Mini Sella</strong> está dimensionado para que un solo adulto pueda llevarlo si el peque se cansa.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"¿Y si tiene frío, calor o hambre en mitad del río?"</h3>
+        <p>
+          El <strong>bidón estanco</strong> permite llevar snack extra, una prenda seca y crema. En el picnic paráis a comer (empanada de bonito, bollín preñao, agua) y os bañáis si os apetece. Y los <a href="/blog/chiringuitos-descenso-sella/">chiringuitos del recorrido</a> tienen cocina para resolver cualquier capricho. No es un entorno hostil · es un río con paradas cada pocos kilómetros.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"¿Y si se asusta y quiere salir?"</h3>
+        <p>
+          Pasa, aunque es poco habitual. En los <strong>seis chiringuitos</strong> repartidos por el recorrido se puede parar todo el tiempo que haga falta para reorganizarse. En casos extremos, el monitor valora si conviene abandonar y os recoge el transfer en el siguiente punto de acceso. <em>Nadie se queda atrapado en mitad del río</em> · resolver un agobio infantil es una parte normal de nuestro trabajo.
+        </p>
+      </div>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    El Sella con peques no es una prueba de resistencia. Es un paseo en canoa con paradas, baños, picnic, fotos y —con un poco de suerte— la cara de un niño de 6 años que no se creerá que <em>eso</em> lo ha hecho él.
+  </p>
+
+  <h2 class="post__h2" id="dia">El día, <span class="serif-italic">hora por hora</span></h2>
+
+  <p>Un día tipo con familia, con primera llegada al horario abierto Premium (recomendada con peques):</p>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10:30</time>
+      <div class="post__timeline__body"><strong>Llegada a Arriondas.</strong> Parking vigilado de 300 plazas, registro, vestuarios. Los peques al baño antes de salir (regla de oro).</div>
+    </li>
+    <li>
+      <time>10:50</time>
+      <div class="post__timeline__body"><strong>Mini clase.</strong> Os explicamos cómo coger la pala, cómo girar, qué hacer si volcáis. Diez minutos que resuelven el 90% de las dudas.</div>
+    </li>
+    <li>
+      <time>11:00</time>
+      <div class="post__timeline__body"><strong>Salida.</strong> Primera foto obligada desde la rampa. A los cinco minutos ya estáis en el río con ritmo.</div>
+    </li>
+    <li>
+      <time>12:00</time>
+      <div class="post__timeline__body"><strong>Primera parada.</strong> Playa fluvial, baño corto, fruta del bidón, risas.</div>
+    </li>
+    <li>
+      <time>13:00</time>
+      <div class="post__timeline__body"><strong>Pozo del Arco.</strong> La parada grande · aguas cristalinas, arena fina, tiempo para el picnic asturiano o para seguir un poco más.</div>
+    </li>
+    <li>
+      <time>13:45</time>
+      <div class="post__timeline__body"><strong>Última etapa tranquila.</strong> Los peques ya pilotan la canoa a su manera.</div>
+    </li>
+    <li>
+      <time>14:30</time>
+      <div class="post__timeline__body"><strong>Llegada a Toraño.</strong> Salida de la canoa, transfer de vuelta a Arriondas.</div>
+    </li>
+    <li>
+      <time>15:00</time>
+      <div class="post__timeline__body"><strong>Duchas calientes y ropa seca.</strong> Los peques caen rendidos en el camino al coche · tú con una sonrisa.</div>
+    </li>
+  </ol>
+
+  <h2 class="post__h2" id="equipaje">Qué llevar <span class="post__h2__sub">(y qué <em>NO</em>)</span></h2>
+
+  <p>Tenemos una guía completa sobre <a href="/blog/que-llevar-al-descenso-del-sella/">qué llevar al descenso del Sella</a>. Para peques, estos son los añadidos específicos · ocho detalles que marcan la diferencia.</p>
+
+  <div class="post__checklist">
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Bañador puesto desde casa</span>
+        <span class="post__checklist__desc">Ahorras 15 minutos de lío en vestuarios.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Camiseta técnica manga larga o licra UV</span>
+        <span class="post__checklist__desc">Protege los hombros de tres horas de sol reflejado en el agua.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M5 12V8a7 7 0 0 1 14 0v4"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Gorra con cordón interno</span>
+        <span class="post__checklist__desc">Sin cordón, la primera brisa la lleva al agua.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Crema solar pediátrica SPF 50+</span>
+        <span class="post__checklist__desc">Aplicada antes de salir de casa y repetida en el picnic.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a2 2 0 0 1 2-2h2v3l3 1V6h2a2 2 0 0 1 2 2v6"/><path d="M2 14h20v6H2z"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Escarpines o sandalias con cierre</span>
+        <span class="post__checklist__desc">Las chanclas simples se salen al primer empujón de corriente.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Muda entera seca en la taquilla</span>
+        <span class="post__checklist__desc">Ropa interior incluida · acabarás duchada en una hora.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9" cy="9" r="0.6" fill="currentColor"/><circle cx="15" cy="13" r="0.6" fill="currentColor"/><circle cx="11" cy="15" r="0.6" fill="currentColor"/><circle cx="14" cy="8" r="0.6" fill="currentColor"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Snack extra al bidón</span>
+        <span class="post__checklist__desc">Galletas, barrita, fruta fácil · para los antojos del medio del río.</span>
+      </div>
+    </article>
+
+    <article class="post__checklist__item">
+      <span class="post__checklist__icon" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="15" r="4"/><circle cx="18" cy="15" r="4"/><path d="M10 15h4"/><path d="M3 11l2-6h2"/><path d="M21 11l-2-6h-2"/></svg>
+      </span>
+      <div class="post__checklist__body">
+        <span class="post__checklist__label">Gafas de sol con cordón</span>
+        <span class="post__checklist__desc">Opcional pero muy recomendado · cualquier giro brusco las pierde.</span>
+      </div>
+    </article>
+  </div>
+
+  <div class="post__callout">
+    <strong>Lo que NO hace falta</strong>
+    <p>No necesitas comprar chaleco infantil, pala pequeña, casco ni bidón. Nosotras ponemos todo eso, con tallas infantiles homologadas, incluido en el precio. Si has leído listas de otros descensos más técnicos, olvídate: el Sella está preparado para familias de serie.</p>
+  </div>
+
+  <h2 class="post__h2" id="precio">Cuánto cuesta <span class="serif-italic">con niños</span></h2>
+
+  <p>
+    <strong>30 € por niño (hasta 12 años) y 40 € por adulto.</strong> Todo incluido: canoa, pala doble, chaleco infantil, bidón estanco, picnic, transfer, taquilla, duchas, seguros. Una familia de 4 (2 adultos + 2 niños) sale a <strong>140 € en total</strong>, con todas las comidas y servicios cubiertos — suele salir más barato que un día de playa organizado en casi cualquier destino costero.
+  </p>
+
+  <p>
+    La tarifa completa y las condiciones (política de cancelación, días de actividad, horarios) están en <a href="/precios/">precios</a>. Si tienes dudas específicas sobre tu familia <a href="/contacto/">escríbenos</a>: edad de los peques, si alguno tiene alguna condición médica, si el adulto nunca ha remado… no es interrogatorio, es para recomendarte bien.
+  </p>
+
+  <h2 class="post__h2" id="resumen">Resumen <span class="serif-italic">en 5 líneas</span></h2>
+
+  <ul>
+    <li>Sí, se puede con niños <strong>desde 5 años y 1,15 m</strong>.</li>
+    <li>Recorrido <strong>Mini Sella</strong> (7 km) si es primera vez o peque de menos de 8.</li>
+    <li>Llega pronto (10:30 · horario abierto Premium), <strong>bañador puesto</strong>, muda seca en taquilla.</li>
+    <li><strong>30 €/niño, 40 €/adulto</strong>, todo incluido.</li>
+    <li>Lluvia ligera no cancela; tormentas sí — reubicación o devolución garantizada.</li>
+  </ul>
+
+  <p>
+    Y si después de leerlo todo sigues con esa pregunta de madre o padre que no se va con ninguna página web, <a href="/contacto/">llámanos</a>. Prometemos no leerte un folleto: te contamos qué haríamos nosotras con nuestros propios hijos.
+  </p>
+</BlogPostLayout>

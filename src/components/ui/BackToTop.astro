@@ -1,0 +1,106 @@
+---
+/**
+ * Botón "volver arriba" — aparece tras 400px de scroll, esquina inferior izquierda.
+ * Se incluye desde BaseLayout.astro. Diseño discreto, sage, círculo pequeño.
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    label: 'Volver arriba',
+    title: 'Volver arriba',
+  },
+  en: {
+    label: 'Back to top',
+    title: 'Back to top',
+  },
+  fr: {
+    label: 'Retour en haut',
+    title: 'Retour en haut',
+  },
+  pt: {
+    label: 'Voltar ao topo',
+    title: 'Voltar ao topo',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<button
+  type="button"
+  class="back-to-top"
+  aria-label={t.label}
+  title={t.title}
+  data-back-to-top
+>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <polyline points="18 15 12 9 6 15"/>
+  </svg>
+</button>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('[data-back-to-top]');
+  if (btn) {
+    const toggle = () => {
+      if (window.scrollY > 400) btn.classList.add('is-visible');
+      else btn.classList.remove('is-visible');
+    };
+    toggle();
+    window.addEventListener('scroll', toggle, { passive: true });
+    btn.addEventListener('click', () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+    });
+  }
+</script>
+
+<style>
+  .back-to-top {
+    position: fixed;
+    bottom: clamp(1rem, 3vw, 1.5rem);
+    left: clamp(1rem, 3vw, 1.5rem);
+    z-index: 9998;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background: rgba(251, 248, 241, 0.92);
+    color: var(--color-sage, #3D4F3A);
+    border: 1px solid rgba(61, 79, 58, 0.18);
+    border-radius: 50%;
+    box-shadow: 0 6px 18px rgba(26, 31, 46, 0.12);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transform: translateY(12px);
+    pointer-events: none;
+    transition: opacity 280ms ease, transform 280ms ease,
+                background-color 200ms ease, box-shadow 200ms ease,
+                color 200ms ease;
+  }
+  .back-to-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  .back-to-top:hover {
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    box-shadow: 0 10px 24px rgba(61, 79, 58, 0.32);
+    transform: translateY(-2px);
+  }
+  .back-to-top:focus-visible {
+    outline: 2px solid var(--color-sage, #3D4F3A);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .back-to-top { transition: opacity 200ms ease; }
+    .back-to-top:hover { transform: none; }
+  }
+</style>

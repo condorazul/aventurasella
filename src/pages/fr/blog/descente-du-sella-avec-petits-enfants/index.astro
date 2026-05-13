@@ -1,0 +1,248 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "À partir de quel âge les enfants peuvent-ils faire la descente du Sella ?",
+    a: "<p>L'âge minimum est de <strong>5 ans et 1,15 m</strong> de hauteur, pour la sécurité avec le gilet de sauvetage. Ce n'est pas arbitraire : le plus petit gilet disponible est conçu pour cette taille, et sur des enfants plus petits il ne tient pas correctement. C'est une règle du secteur sur le Sella, pas seulement la nôtre.</p>",
+  },
+  {
+    q: "La descente du Sella est-elle sûre avec de petits enfants ?",
+    a: "<p>Oui. Le Sella est un <strong>fleuve calme (classe I-II)</strong> sans rapides ni chutes techniques. Avant le départ, nous donnons un <strong>mini-cours avec moniteur diplômé</strong>, et pendant la descente, des <strong>moniteurs en kayaks de sécurité surveillent le parcours</strong>. Les canoës sont insubmersibles et les gilets de sauvetage homologués. <strong>Cela dit — les enfants doivent savoir nager</strong>, et les adultes accompagnants ne doivent pas avoir de conditions médicales graves ou être enceintes.</p>",
+  },
+  {
+    q: "Quel parcours est le meilleur si nous sommes avec de petits enfants ?",
+    a: '<p>Pour une première expérience avec des enfants de 5 à 8 ans, nous recommandons le <strong>Mini Sella (7 km · 1h30 – 2h30)</strong>. C\'est le tronçon le plus doux, moins de temps en canoë et du temps réel pour se baigner et manger sans précipitation. À partir de 9-10 ans, ils peuvent faire le parcours complet (14,5 km · 3-5 h) si ce sont des enfants actifs et habitués à l\'eau.</p>',
+  },
+  {
+    q: "Les enfants paient-ils le plein tarif ?",
+    a: '<p>Non. <strong>Les enfants de moins de 12 ans paient 30 €</strong> (contre 40 € adulte), incluant le même équipement, pique-nique et services. Voir le tarif complet sur <a href="/fr/tarifs/">tarifs</a>.</p>',
+  },
+  {
+    q: "Et si un enfant fatigue ou est dépassé en cours de descente ?",
+    a: "<p>Cela arrive et c'est prévu. Le moniteur sur le fleuve le repère et réorganise le canoë — habituellement l'adulte pagaie plus, l'enfant se repose ou change de position. Si nécessaire, un arrêt plus long est fait sur une plage fluviale. Dans de rares cas, le parcours peut être abandonné au prochain quiosque et le transfert vous récupère. <strong>Personne n'est laissé sur le fleuve</strong>.</p>",
+  },
+  {
+    q: "Les bébés ou enfants de moins de 5 ans peuvent-ils venir ?",
+    a: "<p>Non, désolé. L'âge minimum est de <strong>5 ans et 1,15 m</strong> sans exception. Ce n'est pas une décision commerciale : c'est une restriction technique du plus petit gilet de sauvetage homologué disponible. Si tu voyages avec un bébé, tu peux planifier la descente avec des adultes et l'un reste avec lui à Arriondas, où il y a des places, des cafés et une promenade au bord du fleuve.</p>",
+  },
+  {
+    q: "Que faisons-nous s'il pleut le jour où nous y allons avec des enfants ?",
+    a: '<p>Si c\'est une <strong>pluie légère</strong>, l\'activité a lieu : on se mouille de toute façon, et les enfants trouvent généralement ça « plus amusant ». Nous n\'annulons que lorsqu\'il y a un <strong>risque réel</strong> (orage électrique, fleuve en crue, courants forts) ou sur recommandation de la Confédération. Dans ce cas, nous te reprogrammons sans frais ou remboursons le montant. Détails dans <a href="/fr/legal/conditions/">conditions de service</a>.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descente-du-sella-avec-petits-enfants" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Réponse rapide :</strong> oui, tu peux — à partir de 5 ans et 1,15 m. Mini parcours (7 km), arrivée tôt sur les horaires ouverts Premium (10h30), crème solaire toutes les deux heures, change sec au casier. Le Sella est calme, les gilets de sauvetage sont homologués et des moniteurs qualifiés surveillent le parcours. Les inquiétudes typiques quand on voyage avec des enfants, résolues une par une.
+  </p>
+
+  <p>
+    Il n'y a pas de question plus honnête à l'accueil que celle qu'une famille pose : <em>« mais ma fille de 6 ans va vraiment aller bien ? »</em>. La réponse courte est oui ; la longue, nous la partageons ici, car nous savons qu'un « oui » sans détail ne rassure personne quand tu joues la journée sur les enfants.
+  </p>
+
+  <p>
+    Ce guide complète notre page <a href="/fr/avec-enfants/">descente du Sella avec enfants</a>, axée sur l'information pratique de réservation. Ici, nous parlons de l'autre côté : les peurs typiques, comment organiser la journée, à quoi s'attendre à chaque âge.
+  </p>
+
+  <h2 class="post__h2" id="age">L'âge minimum, <span class="serif-italic">sans fioritures</span></h2>
+
+  <p>
+    <strong>5 ans et 1,15 m de hauteur.</strong> Non négociable et pas notre caprice : le plus petit gilet de sauvetage homologué est conçu pour cette taille minimum. Sur des enfants plus petits, le gilet peut glisser au-dessus de la tête s'ils tombent dans l'eau et il cesse de faire son travail.
+  </p>
+
+  <p>
+    Si ton enfant a 5 ans le mois où vous venez, vérifie sa taille avec un mètre : s'il est en dessous de 1,15, mieux vaut attendre l'année suivante ou réserver uniquement pour les adultes.
+  </p>
+
+  <div class="post__callout">
+    <strong>Et autre chose : savoir nager est obligatoire</strong>
+    <p>Le gilet de sauvetage maintient à flot, mais il est essentiel que l'enfant sache nager et n'ait pas peur de l'eau. Si c'est leur premier contact avec l'eau profonde, envisage quelques séances de piscine avant. Ce n'est pas un test technique — c'est pour que <em>eux</em> se sentent calmes, pas nous.</p>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="madre-y-nino"
+      alt="Adulte et enfant pagayant ensemble le Sella en canoë avec gilet de sauvetage"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>À partir de 5 ans et 1,15 m. Avec un gilet bien ajusté et un adulte à la pagaie, les enfants profitent de la descente sans peur.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="route">Quel parcours choisir <span class="serif-italic">par âge</span></h2>
+
+  <p>Nous avons deux parcours · voici comment nous les recommandons pour les familles.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–7</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini Sella <span class="serif-italic">· 7 km</span></h3>
+        <p class="post__zone__desc"><strong>1h30 – 2h30.</strong> La première expérience idéale · pas de pression.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">8–10</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini <span class="serif-italic">ou parcours complet</span></h3>
+        <p class="post__zone__desc"><strong>Mini ou 3h30.</strong> S'ils sont actifs et adorent l'eau, le parcours complet fonctionne.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11–12</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Parcours complet <span class="serif-italic">· 14,5 km</span></h3>
+        <p class="post__zone__desc"><strong>3-4h.</strong> Ils en profitent généralement plus que les adultes.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Le Mini Sella (Arriondas → Toraño) est le tronçon le plus doux : il atteint le <a href="/fr/blog/pozo-del-arco-sella/">Pozo del Arco</a>, une plage fluviale spectaculaire, et se termine à Toraño avec un transfert retour. Assez de Sella pour tomber amoureux, sans atteindre le stade « combien de temps reste-t-il ? ».
+  </p>
+
+  <h2 class="post__h2" id="fears">Les <span class="serif-italic">quatre peurs</span> typiques</h2>
+
+  <p>
+    Celles qui reviennent encore et encore à l'accueil. Résolues une par une avec la franchise de ceux qui ont passé 25 ans à voir des familles descendre.
+  </p>
+
+  <div class="post__concerns">
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">« Et si le canoë chavire ? »</h3>
+        <p>
+          Le Sella est en <strong>classe I-II</strong> · un canal calme avec des courants doux, sans rapides. Les canoës sont insubmersibles — même si l'eau y entrait, ils remontent — et sont conçus pour être difficiles à faire chavirer. Quand cela arrive (rarement), c'est généralement en chahutant dans une fosse peu profonde et tu résous en te levant. Les moniteurs sur le fleuve sont attentifs précisément à cela.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">« Et s'ils fatiguent à mi-chemin et que je ne gère pas ? »</h3>
+        <p>
+          Les enfants ne pagaient pas en continu · ils pagaient un moment, regardent le paysage, trempent la main, grignotent, puis pagaient à nouveau. Ce n'est pas une traversée exigeante mais une promenade où ils participent quand ils veulent. L'adulte compense, et le <strong>Mini Sella</strong> est dimensionné pour qu'un seul adulte puisse le gérer si l'enfant fatigue.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">« Et s'ils ont froid, chaud ou faim sur le fleuve ? »</h3>
+        <p>
+          Le <strong>bidon étanche</strong> permet d'emporter un goûter supplémentaire, une couche sèche et de la crème. Au pique-nique on s'arrête pour manger (empanada au thon, petit pain asturien, eau) et se baigner si on veut. Et les <a href="/fr/blog/buvettes-descente-du-sella/">buvettes au bord du fleuve</a> ont des cuisines pour résoudre toute envie.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">« Et s'ils ont peur et veulent sortir ? »</h3>
+        <p>
+          Cela arrive, bien que rarement. Aux <strong>six buvettes</strong> réparties le long du parcours, tu peux t'arrêter aussi longtemps qu'il le faut pour te ressaisir. Dans les cas extrêmes, le moniteur pèse l'abandon et le transfert vous récupère au prochain point d'accès. <em>Personne n'est piégé au milieu du fleuve</em>.
+        </p>
+      </div>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    Le Sella avec des enfants n'est pas un test d'endurance. C'est une promenade en canoë avec arrêts, baignades, pique-nique, photos et — avec un peu de chance — le visage d'un enfant de 6 ans qui n'arrive pas à croire que <em>lui</em> l'a fait.
+  </p>
+
+  <h2 class="post__h2" id="day">La journée, <span class="serif-italic">heure par heure</span></h2>
+
+  <p>Une journée typique avec une famille, avec arrivée tôt sur les horaires ouverts Premium (recommandé avec enfants) :</p>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10h30</time>
+      <div class="post__timeline__body"><strong>Arrivée à Arriondas.</strong> Parking gardé de 300 places, inscription, vestiaires. Les enfants aux toilettes avant le départ (règle d'or).</div>
+    </li>
+    <li>
+      <time>10h50</time>
+      <div class="post__timeline__body"><strong>Mini-cours.</strong> Nous expliquons comment tenir la pagaie, comment tourner, que faire en cas de chavirage. Dix minutes qui résolvent 90 % des doutes.</div>
+    </li>
+    <li>
+      <time>11h00</time>
+      <div class="post__timeline__body"><strong>Départ.</strong> Première photo obligatoire depuis la rampe. Cinq minutes plus tard, vous êtes déjà sur le fleuve avec le rythme.</div>
+    </li>
+    <li>
+      <time>12h00</time>
+      <div class="post__timeline__body"><strong>Premier arrêt.</strong> Plage fluviale, courte baignade, fruits du bidon, rires.</div>
+    </li>
+    <li>
+      <time>13h00</time>
+      <div class="post__timeline__body"><strong>Pozo del Arco.</strong> Le grand arrêt · eaux cristallines, gravier fin, temps pour le pique-nique asturien ou pour pousser un peu plus.</div>
+    </li>
+    <li>
+      <time>13h45</time>
+      <div class="post__timeline__body"><strong>Tronçon final calme.</strong> Les enfants pilotent le canoë à leur manière.</div>
+    </li>
+    <li>
+      <time>14h30</time>
+      <div class="post__timeline__body"><strong>Arrivée à Toraño.</strong> Sortie du canoë, transfert retour à Arriondas.</div>
+    </li>
+    <li>
+      <time>15h00</time>
+      <div class="post__timeline__body"><strong>Douches chaudes et vêtements secs.</strong> Les enfants s'endorment en chemin vers la voiture · toi avec le sourire.</div>
+    </li>
+  </ol>
+
+  <h2 class="post__h2" id="packing">Quoi apporter <span class="post__h2__sub">(et quoi <em>NON</em>)</span></h2>
+
+  <p>Nous avons un guide complet sur <a href="/fr/blog/quoi-apporter-descente-du-sella/">quoi apporter pour la descente du Sella</a>. Pour les enfants, ce sont les ajouts spécifiques · huit détails qui font la différence.</p>
+
+  <ul>
+    <li><strong>Maillot enfilé depuis la maison</strong> — économise 15 minutes de chaos dans les vestiaires.</li>
+    <li><strong>T-shirt technique manches longues ou rashguard UV</strong> — protège les épaules de trois heures de soleil réfléchi sur l'eau.</li>
+    <li><strong>Casquette avec sangle de menton</strong> — sans sangle, la première brise l'envoie dans l'eau.</li>
+    <li><strong>Crème solaire enfants SPF 50+</strong> — appliquée avant de sortir de la maison et renouvelée au pique-nique.</li>
+    <li><strong>Chaussons néoprène ou sandales avec sangle</strong> — les simples tongs glissent au premier courant.</li>
+    <li><strong>Change sec complet au casier</strong> — sous-vêtements compris · tu finis douché en une heure.</li>
+    <li><strong>Goûter supplémentaire dans le bidon</strong> — biscuits, barres, fruits faciles · pour les envies en plein fleuve.</li>
+    <li><strong>Lunettes de soleil avec sangle</strong> — optionnel mais fortement recommandé · le moindre virage brusque et elles partent.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>Ce dont tu n'as PAS besoin</strong>
+    <p>Tu n'as pas besoin d'acheter un gilet de sauvetage enfant, une petite pagaie, un casque ou un bidon. Nous fournissons tout cela, avec des tailles enfants homologuées, inclus dans le prix.</p>
+  </div>
+
+  <h2 class="post__h2" id="price">Combien ça coûte <span class="serif-italic">avec des enfants</span></h2>
+
+  <p>
+    <strong>30 € par enfant (jusqu'à 12 ans) et 40 € par adulte.</strong> Tout inclus : canoë, pagaie double, gilet enfant, bidon étanche, pique-nique, transfert, casier, douches, assurance. Une famille de 4 (2 adultes + 2 enfants) revient à <strong>140 € au total</strong>, avec tous les repas et services couverts.
+  </p>
+
+  <p>
+    Tarif complet et conditions à <a href="/fr/tarifs/">tarifs</a>. Si tu as des questions spécifiques sur ta famille <a href="/fr/contact/">écris-nous</a> : âges des enfants, conditions médicales, si un adulte n'a jamais pagayé… ce n'est pas un interrogatoire, c'est pour bien te conseiller.
+  </p>
+
+  <h2 class="post__h2" id="summary">Résumé <span class="serif-italic">en 5 lignes</span></h2>
+
+  <ul>
+    <li>Oui, c'est possible avec des enfants <strong>à partir de 5 ans et 1,15 m</strong>.</li>
+    <li><strong>Mini Sella</strong> (7 km) si c'est la première fois ou si l'enfant a moins de 8 ans.</li>
+    <li>Arrive tôt (10h30 · horaires ouverts Premium), <strong>maillot enfilé</strong>, change sec au casier.</li>
+    <li><strong>30 €/enfant, 40 €/adulte</strong>, tout inclus.</li>
+    <li>Pluie légère n'annule pas ; orages oui — reprogrammation garantie ou remboursement.</li>
+  </ul>
+
+  <p>
+    Et si après tout cela tu as encore cette question parentale qu'aucun site ne résout entièrement, <a href="/fr/contact/">appelle-nous</a>. Promis, nous ne te lirons pas une brochure : nous te disons ce que nous ferions avec nos propres enfants.
+  </p>
+</BlogPostLayout>

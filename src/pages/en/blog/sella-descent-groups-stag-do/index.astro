@@ -1,0 +1,266 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'From how many people is it considered a group?',
+    a: '<p>In practice, from <strong>8 people</strong> we already talk about a group, because it involves coordinating canoes, schedules and transfer. From 15 people we treat it as a group booking with a single contact and margin to customise the picnic, time and stops. No strict minimum: in 25 years we have organised everything from couples to coaches of 60 people.</p>',
+  },
+  {
+    q: 'Do you do Sella descents for stag or hen parties?',
+    a: '<p>Yes. Stag/hen parties are <strong>one of our favourite plans</strong> — good vibes, laughs and the Sella takes care of the rest. Since the schedule is <strong>Premium · open hours</strong>, you arrive at the facilities <strong>between 10:30 and 12:30</strong> · no fixed time. If you want the calmer river feel, arrive early (10:30-11:00) · if you prefer a lively midday, arrive around 12:00. Remember to book in advance (August fills up fast) and that <strong>no alcohol is consumed on the river</strong> — leave it for the post-descent meal.</p>',
+  },
+  {
+    q: 'Can the descent be booked exclusively for a group?',
+    a: '<p>The river is public, so <strong>it cannot be "privatised"</strong>. We can reserve a specific time slot so the whole group launches together, with <strong>explanatory class adapted to the group size</strong>, certified instructors watching the river during the day and special treatment at reception. If you are a very large group (30+), write to us and we will see how to organise it.</p>',
+  },
+  {
+    q: 'What do we do if some of the group do not want to paddle?',
+    a: '<p>It is common: in almost every stag/hen or family event there is someone who prefers not to paddle. Arriondas has <strong>cafés, a square and a riverside walk</strong> for them to wait calmly, and they can join the group at the final snack bar. Those who paddle pay normal price, those who do not, do not pay.</p>',
+  },
+  {
+    q: 'Is there a group discount?',
+    a: '<p>It depends on volume. From <strong>15-20 people</strong> we can consider special terms. Write to the <a href="/en/contact/">contact form</a> with exact number of people, preferred date and ages (to separate kids/adults) and we will send a closed quote.</p>',
+  },
+  {
+    q: 'What clothes do you recommend for groups?',
+    a: '<p>The same list as for any descent — we have it in full at <a href="/en/blog/what-to-bring-sella-descent/">what to bring for the Sella descent</a>. A specific group tip: <strong>matching colour or slogan t-shirts</strong> look great in photos from the river. Many hen parties do it and the images are spectacular.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="sella-descent-groups-stag-do" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Coverage:</strong> stag and hen parties, birthdays, silver weddings, friend gatherings, companies with real <em>team building</em>, big families, friend crews. If you thought the Sella descent was only for 2 people in a canoe, here we explain how it is organised when there are 8, 20 or 50 of you.
+  </p>
+
+  <p>
+    In the last 25 years we have seen everything on the Sella: hen parties with costumes, weddings that complete the weekend with the descent on Saturday, companies measuring team cohesion on the river, crews who have been paddling together since they were 18. The river adapts well to groups — you just need to organise it with a bit of head.
+  </p>
+
+  <p>
+    This guide explains how we approach the descent in groups, what advantages it has, what to think about in advance and what questions always come up in group bookings.
+  </p>
+
+  <h2 class="post__h2" id="why-sella">Why <span class="serif-italic">the Sella works</span> for groups</h2>
+
+  <p>Six reasons stag/hen parties, companies and big families come back to the Sella year after year.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <h3 class="post__essential__label">For everyone</h3>
+      <p class="post__essential__desc">
+        Athletes and non-athletes enjoy it equally · no fitness required to step into the canoe.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Built-in atmosphere</h3>
+      <p class="post__essential__desc">
+        Snack bars, stops, photos · it is not just the river, it is a full day plan.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+      </span>
+      <h3 class="post__essential__label">Bounded price</h3>
+      <p class="post__essential__desc">
+        <strong>€30 kids · €40 adults</strong>, all included. No surprises at the end.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </span>
+      <h3 class="post__essential__label">Manageable duration</h3>
+      <p class="post__essential__desc">
+        Mini Sella · 1h 30-2h 30. Full route · 3-5h. You choose according to the group's pace.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Memorable photos</h3>
+      <p class="post__essential__desc">
+        Canoes in line, splashes at Pozo del Arco, picnic on the bank. Plenty of content for socials.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/><polyline points="9 12 11 14 15 10"/></svg>
+      </span>
+      <h3 class="post__essential__label">Flexibility</h3>
+      <p class="post__essential__desc">
+        If someone does not want to paddle, they stay in Arriondas without trouble · cafés, square and riverside walk nearby.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-grupos-inline"
+      alt="Group of friends on a hen party paddling the Sella River in a canoe — the plan that fits big crews"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Crews, hen/stag parties, company teams, big families. The Sella adapts to the group · you just need to organise the morning with head.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="stag-hen">Stag <span class="serif-italic">and hen parties</span></h2>
+
+  <p>
+    If there is one type of group that asks for the Sella again and again, it is stag/hen parties. And rightly: it is a full outdoor day plan, compatible with mixed ages (grandma, cousin, friend from work), with photos for the bride or groom, and an atmosphere that does not tire.
+  </p>
+
+  <h3 class="post__h3">The typical recipe for a hen party on the Sella</h3>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10:30</time>
+      <div class="post__timeline__body"><strong>Arrival in Arriondas.</strong> Registration, changing rooms, costumes if you brought them (they fit in the locked lockers).</div>
+    </li>
+    <li>
+      <time>10:50</time>
+      <div class="post__timeline__body"><strong>Mini-class.</strong> Ten minutes · used for the first jokes and a photo before going down to the river.</div>
+    </li>
+    <li>
+      <time>11:30</time>
+      <div class="post__timeline__body"><strong>Launch.</strong> Mandatory group photo from the ramp before starting.</div>
+    </li>
+    <li>
+      <time>12:30</time>
+      <div class="post__timeline__body"><strong>Stop at <a href="/en/blog/pozo-del-arco-sella/">Pozo del Arco</a>.</strong> Swim, group photo, Asturian picnic at a good hour if you fancy.</div>
+    </li>
+    <li>
+      <time>13:30</time>
+      <div class="post__timeline__body"><strong>Stop at a <a href="/en/blog/sella-descent-riverside-bars/">snack bar on the route</a>.</strong> Drink, music, laughs · usually El Oasis or El Bosque. <em>No alcohol on the river · leave it for after.</em></div>
+    </li>
+    <li>
+      <time>14:30</time>
+      <div class="post__timeline__body"><strong>Arrival at Toraño or Fríes.</strong> Return transfer to Arriondas.</div>
+    </li>
+    <li>
+      <time>15:00</time>
+      <div class="post__timeline__body"><strong>Showers and change.</strong> At the facilities · hot water and changing rooms included.</div>
+    </li>
+    <li>
+      <time>16:00</time>
+      <div class="post__timeline__body"><strong>Post-descent meal.</strong> Cider house in Arriondas, Cangas or Ribadesella · we recommend places if you ask.</div>
+    </li>
+  </ol>
+
+  <div class="post__callout">
+    <strong>House tips for stag/hen parties</strong>
+    <ul class="post__callout__items">
+      <li>Book <strong>2-3 weeks ahead in August</strong> · Saturdays fill up fast.</li>
+      <li><strong>Matching-colour t-shirts</strong> for the whole group · memorable photos from the river.</li>
+      <li><strong>No alcohol on the river.</strong> It is prohibited by regulation and the snack bars do not serve it · leave it for the post-descent meal.</li>
+      <li>Be careful with <strong>bulky costumes</strong> in the canoe · they should be comfortable and able to get wet.</li>
+      <li>Let us know if anyone is <strong>pregnant</strong> · they cannot paddle, but they can wait in Arriondas without trouble.</li>
+    </ul>
+  </div>
+
+  <h2 class="post__h2" id="companies">Companies and <span class="serif-italic">team building</span></h2>
+
+  <p>
+    The Sella works well as a company activity because <strong>it has no physical entry barrier</strong> (nobody is left out for not being in shape), it generates conversation between colleagues who normally do not interact, and it leaves a shared memory that lasts months.
+  </p>
+
+  <p>For companies we usually offer:</p>
+
+  <ul>
+    <li><strong>Dedicated time slot</strong> — the whole group launches together.</li>
+    <li><strong>Certified instructors</strong> on the river watching the route (briefing class beforehand + safety kayaks during the day).</li>
+    <li><strong>Asturian picnic</strong> reinforced if it is a long event — pie, traditional bun, cheese, extra fruit.</li>
+    <li><strong>Tax invoice</strong> to the company's tax ID.</li>
+    <li><strong>Coordination with local accommodation or catering</strong> if needed.</li>
+  </ul>
+
+  <p>
+    The typical company plan is early arrival on Premium open hours (10:30-11:00), <a href="/en/how-long-does-it-take/">Full route descent</a>, post-meal at a cider house near Arriondas or Cangas. With 30-40 people it is comfortably organised. If you are 60+, let's talk and we will see how.
+  </p>
+
+  <h2 class="post__h2" id="families">Birthdays, families and <span class="serif-italic">big gatherings</span></h2>
+
+  <p>
+    Birthdays (especially <strong>40, 50, 60</strong>) and anniversaries are another classic. The key here is that in a family group there are very mixed ages — from 8-year-old cousins to 75-year-old grandparents. The Sella descent handles it well because:
+  </p>
+
+  <ul>
+    <li><strong>Canoes up to 3 seats (K3)</strong> allow combinations of couples + a child, three friends, or a grandparent with two grandchildren. For big groups we spread across several canoes by age.</li>
+    <li><strong>Mini Sella</strong> adapts to elders' level — 7 km is enough to celebrate the day.</li>
+    <li><strong>Everyone sees everyone</strong> at the stops. It is not a solitary activity, it is a shared experience.</li>
+  </ul>
+
+  <p class="post__pull">
+    Family dinners are forgotten. Sella descents with three generations are remembered — and usually end up on someone's living-room wall printed at A3.
+  </p>
+
+  <h2 class="post__h2" id="organisation">How we organise <span class="serif-italic">the booking</span></h2>
+
+  <p>Step by step what we ask big groups for:</p>
+
+  <ol>
+    <li><strong>Exact number of people</strong> — broken down by adults and children (up to 12).</li>
+    <li><strong>Specific date</strong> + one alternative.</li>
+    <li><strong>Preferred arrival time</strong> — hours are open between 10:30 and 12:30. If you have a preference (more empty river in the morning, more atmosphere at midday), tell us and we will advise.</li>
+    <li><strong>Route</strong> — Mini Sella (7 km) or Full route (14.5 km).</li>
+    <li><strong>Notes</strong> — pregnancies (excluded), people with special needs, picnic allergies, name of the birthday person or the bride/groom.</li>
+    <li><strong>Single contact details</strong> — one person responsible for coordinating with us.</li>
+  </ol>
+
+  <p>
+    With that we send you a closed quote, payment options (Bizum, transfer, card, payment link) and confirm the booking. For groups of 15+ we ask for <strong>30-50% deposit</strong> to lock the slot, the rest on arrival.
+  </p>
+
+  <h2 class="post__h2" id="dates">The <span class="serif-italic">best dates</span> for a group</h2>
+
+  <ul>
+    <li><strong>June and September:</strong> the two best months. Mild climate, lively river, fewer crowds, better prices at nearby accommodation.</li>
+    <li><strong>July and August:</strong> the classics. More atmosphere at the snack bars, but you need to book ahead (2-3 weeks minimum) and Saturdays fill up.</li>
+    <li><strong>May and October:</strong> valid if you go with adults and technical clothing. Less operating but very calm.</li>
+    <li><strong>Saturday of the <a href="/en/international-sella-descent/">International Sella Descent</a>:</strong> the Saturday in August set by the Federation (in 2026 · <strong>8 August</strong>). Spectacular plan if the event interests you · that day we offer <strong>a single tourist launch at 12:00</strong> (€35 per person, limited spots, booking up to 2 days before). If you are a large group, plan the date weeks ahead.</li>
+  </ul>
+
+  <p>
+    Details on flow, crowds and climate by month at <a href="/en/best-time/">the best time of year for the Sella descent</a>.
+  </p>
+
+  <h2 class="post__h2" id="price">Group <span class="serif-italic">price</span></h2>
+
+  <p>
+    The base rate is the same as individuals: <strong>€30 per child (≤12) and €40 per adult</strong>, all included. See full breakdown at <a href="/en/prices/">Sella descent prices</a>. From 15-20 people we can consider special terms — we do not promise discounts as standard, but we do study it by date, slot and services.
+  </p>
+
+  <p>
+    If you are after the <strong>top-of-mind plan</strong>, <a href="/en/premium-booking/">Premium Booking</a> reinforces the picnic, adds services and makes a very well-crafted detail for special occasions — ideal for stag/hen parties and round-number birthdays.
+  </p>
+
+  <h2 class="post__h2" id="summary">What you need to know <span class="serif-italic">in 6 points</span></h2>
+
+  <ul>
+    <li>From <strong>8-10 people</strong> it is handled as a group.</li>
+    <li>You can book a <strong>dedicated time slot</strong>, but you cannot "close" the river.</li>
+    <li>Base price <strong>€30 kid / €40 adult</strong>, all included.</li>
+    <li>Book <strong>2-3 weeks in advance</strong> in August.</li>
+    <li>People who do not want to paddle <strong>wait in Arriondas</strong> without trouble.</li>
+    <li>For groups <strong>15+ write to us</strong> with date, number and slot for a closed quote.</li>
+  </ul>
+
+  <p>
+    Have a group in mind and want ideas? <a href="/en/contact/">Write to us</a> with the basics and we will give you a concrete proposal within 24 hours. In August, two weeks ahead is the reasonable minimum — in June or September you have margin.
+  </p>
+</BlogPostLayout>

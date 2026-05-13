@@ -1,0 +1,625 @@
+---
+import Picture from '@components/ui/Picture.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    hero_alt: 'Canoa en el descenso del Sella con la sierra de Asturias al fondo',
+    hero_eyebrow: 'Arriondas · Asturias · Desde 1998',
+    hero_title_top: 'Descenso del',
+    hero_title_big: 'Sella',
+    hero_title_italic: 'en canoa',
+    hero_subtitle_before: 'Vive el ',
+    hero_subtitle_strong: 'descenso del Sella',
+    hero_subtitle_after: ' en canoa por Arriondas, uno de los ríos más bonitos de Asturias. Experiencia todo incluido para familias, parejas y grupos — sin prisa, sin sorpresas.',
+    cta_primary: 'Reservar ahora',
+    cta_phone_aria: 'Llamar al 681 093 673',
+    cta_phone: 'Llamar',
+    cta_ghost: 'Ver precios',
+    microcopy_all: 'Todo incluido',
+    microcopy_picnic: 'Picnic asturiano de regalo',
+    info_start_label: 'Salida',
+    info_start_value: 'Arriondas',
+    info_distance_label: 'Distancia',
+    info_duration_label: 'Duración',
+    info_from_label: 'Desde',
+    sticker_text: '· RESERVA PREMIUM · TODO INCLUIDO ·',
+    sticker_stars_aria: '4.5 sobre 5',
+  },
+  en: {
+    hero_alt: 'Canoe on the Sella River descent with the Asturian mountains in the background',
+    hero_eyebrow: 'Arriondas · Asturias · Since 1998',
+    hero_title_top: 'Sella River',
+    hero_title_big: 'Descent',
+    hero_title_italic: 'by canoe',
+    hero_subtitle_before: 'Experience the ',
+    hero_subtitle_strong: 'Sella River descent',
+    hero_subtitle_after: ' by canoe from Arriondas, one of the most beautiful rivers in Asturias. An all-inclusive experience for families, couples and groups — unhurried, no surprises.',
+    cta_primary: 'Book now',
+    cta_phone_aria: 'Call 681 093 673',
+    cta_phone: 'Call',
+    cta_ghost: 'See prices',
+    microcopy_all: 'All inclusive',
+    microcopy_picnic: 'Asturian picnic on us',
+    info_start_label: 'Start',
+    info_start_value: 'Arriondas',
+    info_distance_label: 'Distance',
+    info_duration_label: 'Duration',
+    info_from_label: 'From',
+    sticker_text: '· PREMIUM BOOKING · ALL INCLUSIVE ·',
+    sticker_stars_aria: '4.5 out of 5',
+  },
+  fr: {
+    hero_alt: 'Canoë sur la descente du Sella avec les montagnes des Asturies en arrière-plan',
+    hero_eyebrow: 'Arriondas · Asturias · Depuis 1998',
+    hero_title_top: 'Descente du',
+    hero_title_big: 'Sella',
+    hero_title_italic: 'en canoë',
+    hero_subtitle_before: 'Vivez la ',
+    hero_subtitle_strong: 'descente du Sella',
+    hero_subtitle_after: ' en canoë depuis Arriondas, l\'une des plus belles rivières des Asturies. Une expérience tout inclus pour familles, couples et groupes — sans hâte, sans surprises.',
+    cta_primary: 'Réserver maintenant',
+    cta_phone_aria: 'Appeler le 681 093 673',
+    cta_phone: 'Appeler',
+    cta_ghost: 'Voir les tarifs',
+    microcopy_all: 'Tout inclus',
+    microcopy_picnic: 'Pique-nique asturien offert',
+    info_start_label: 'Départ',
+    info_start_value: 'Arriondas',
+    info_distance_label: 'Distance',
+    info_duration_label: 'Durée',
+    info_from_label: 'À partir de',
+    sticker_text: '· RÉSERVATION PREMIUM · TOUT INCLUS ·',
+    sticker_stars_aria: '4,5 sur 5',
+  },
+  pt: {
+    hero_alt: 'Canoa na descida do Sella com a serra das Astúrias ao fundo',
+    hero_eyebrow: 'Arriondas · Asturias · Desde 1998',
+    hero_title_top: 'Descida do',
+    hero_title_big: 'Sella',
+    hero_title_italic: 'de canoa',
+    hero_subtitle_before: 'Viva a ',
+    hero_subtitle_strong: 'descida do Sella',
+    hero_subtitle_after: ' de canoa por Arriondas, um dos rios mais bonitos das Astúrias. Experiência tudo incluído para famílias, casais e grupos — sem pressa, sem surpresas.',
+    cta_primary: 'Reservar agora',
+    cta_phone_aria: 'Ligar para 681 093 673',
+    cta_phone: 'Ligar',
+    cta_ghost: 'Ver preços',
+    microcopy_all: 'Tudo incluído',
+    microcopy_picnic: 'Piquenique asturiano de oferta',
+    info_start_label: 'Saída',
+    info_start_value: 'Arriondas',
+    info_distance_label: 'Distância',
+    info_duration_label: 'Duração',
+    info_from_label: 'Desde',
+    sticker_text: '· RESERVA PREMIUM · TUDO INCLUÍDO ·',
+    sticker_stars_aria: '4,5 de 5',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__frame">
+    <div class="hero__media" aria-hidden="true">
+      <Picture
+        src="hero-canoa-lago"
+        alt={t.hero_alt}
+        priority="high"
+        sizes="100vw"
+        width={1920}
+        height={1080}
+        class="hero__media-img"
+        bare={true}
+      />
+      <div class="hero__overlay"></div>
+      <div class="hero__grain"></div>
+    </div>
+
+
+    <div class="hero__content">
+      <span class="hero__eyebrow" data-reveal>
+        <span class="hero__eyebrow-dot"></span>
+        {t.hero_eyebrow}
+      </span>
+
+      <h1 id="hero-title" class="hero__title" data-reveal data-reveal-delay="1">
+        <span class="hero__title-line hero__title-line--top">{t.hero_title_top}</span>
+        <span class="hero__title-line hero__title-line--big">{t.hero_title_big}</span>
+        <span class="hero__title-line hero__title-line--italic">
+          <span class="serif-italic">{t.hero_title_italic}</span>
+        </span>
+      </h1>
+
+      <p class="hero__subtitle body-lg" data-reveal data-reveal-delay="2">
+        {t.hero_subtitle_before}<strong>{t.hero_subtitle_strong}</strong>{t.hero_subtitle_after}
+      </p>
+
+      <div class="hero__actions" data-reveal data-reveal-delay="3">
+        <a href={getLocalePath('reservar', lang)} class="hero__cta-primary">
+          <span>{t.cta_primary}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="tel:+34681093673" class="hero__cta-phone" aria-label={t.cta_phone_aria}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>{t.cta_phone}</span>
+        </a>
+        <a href="#modalidades" class="hero__cta-ghost">
+          {t.cta_ghost}
+        </a>
+      </div>
+
+      <p class="hero__microcopy" data-reveal data-reveal-delay="4">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+        {t.microcopy_all}
+        <span class="hero__microcopy-dot" aria-hidden="true">·</span>
+        <strong>{t.microcopy_picnic}</strong>
+      </p>
+
+      <!-- Info row editorial — flujo normal, debajo del microcopy -->
+      <div class="hero__info-row" data-reveal data-reveal-delay="5">
+        <div class="hero__info-item">
+          <span class="hero__info-label">{t.info_start_label}</span>
+          <span class="hero__info-value">{t.info_start_value}</span>
+        </div>
+        <div class="hero__info-divider" aria-hidden="true"></div>
+        <div class="hero__info-item">
+          <span class="hero__info-label">{t.info_distance_label}</span>
+          <span class="hero__info-value">7 — 15 km</span>
+        </div>
+        <div class="hero__info-divider" aria-hidden="true"></div>
+        <div class="hero__info-item">
+          <span class="hero__info-label">{t.info_duration_label}</span>
+          <span class="hero__info-value">2 — 5 h</span>
+        </div>
+        <div class="hero__info-divider" aria-hidden="true"></div>
+        <div class="hero__info-item">
+          <span class="hero__info-label">{t.info_from_label}</span>
+          <span class="hero__info-value hero__info-value--primary">30 €</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticker rotatorio -->
+    <div class="hero__sticker" data-reveal data-reveal-delay="6">
+      <svg class="hero__sticker-bg" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <path id="circle-text" d="M 60, 60 m -44, 0 a 44,44 0 1,1 88,0 a 44,44 0 1,1 -88,0" />
+        </defs>
+        <text font-family="Inter Variable, Inter, sans-serif" font-size="9" font-weight="600" letter-spacing="2.4" fill="currentColor">
+          <textPath href="#circle-text" startOffset="0">
+            {t.sticker_text}
+          </textPath>
+        </text>
+      </svg>
+      <div class="hero__sticker-center">
+        <span class="hero__sticker-value">4.5</span>
+        <div class="hero__sticker-stars" aria-label={t.sticker_stars_aria}>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding: var(--frame-inset);
+    padding-bottom: 0;
+    background: var(--color-bg-base);
+  }
+
+  .hero__frame {
+    position: relative;
+    width: 100%;
+    min-height: clamp(640px, 92vh, 900px);
+    border-radius: var(--frame-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    isolation: isolate;
+    background: var(--color-bg-dark);
+  }
+
+  /* ============== MEDIA ============== */
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero__media :global(picture),
+  .hero__media :global(img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero__media :global(img.hero__media-img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    animation: heroZoom 20s var(--ease-out) forwards;
+    will-change: transform;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.1); }
+    to   { transform: scale(1.0); }
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(26,31,46,0.35) 0%, transparent 45%),
+      linear-gradient(180deg, rgba(26,31,46,0.15) 0%, transparent 30%, rgba(26,31,46,0.35) 65%, rgba(26,31,46,0.72) 100%);
+  }
+
+  .hero__grain {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,0.03) 1px, transparent 0);
+    background-size: 3px 3px;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* ============== CONTENT ============== */
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding: clamp(6.5rem, 16vh, 11rem) clamp(1.5rem, 4vw, 4.5rem) clamp(3rem, 6vh, 5rem);
+    max-width: 1300px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    opacity: 0.92;
+    margin-bottom: var(--s-10);
+    padding: 0.625rem 1.125rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .hero__eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(233, 133, 111, 0.28);
+    animation: pulse 2.4s var(--ease-in-out) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(233, 133, 111, 0.28); }
+    50% { box-shadow: 0 0 0 7px rgba(233, 133, 111, 0.08); }
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    color: var(--color-text-on-dark);
+    margin-bottom: var(--s-8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.25rem, 0.5vw, 0.5rem);
+  }
+
+  .hero__title-line {
+    display: block;
+    line-height: 0.92;
+  }
+
+  .hero__title-line--top {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: var(--fw-medium);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-wider);
+    opacity: 0.85;
+    margin-bottom: var(--s-2);
+  }
+
+  .hero__title-line--big {
+    font-size: clamp(5rem, 14vw, 13rem);
+    font-weight: var(--fw-black);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-tightest);
+    line-height: 0.85;
+    background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.78) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .hero__title-line--italic {
+    font-size: clamp(2rem, 4.5vw, 3.75rem);
+    margin-top: clamp(0.5rem, 1vw, 1rem);
+  }
+
+  .hero__title-line--italic .serif-italic {
+    color: var(--color-primary-soft);
+    font-weight: var(--fw-regular);
+  }
+
+  .hero__subtitle {
+    max-width: 600px;
+    color: rgba(251, 248, 241, 0.82);
+    text-wrap: balance;
+    margin-bottom: var(--s-10);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* CTA primary */
+  .hero__cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: 1.375rem 2.25rem;
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    box-shadow: var(--shadow-lg), var(--shadow-glow-primary);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .hero__cta-primary:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), var(--shadow-glow-primary);
+  }
+
+  /* ============== MICROCOPY ============== */
+  .hero__microcopy {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-top: var(--s-6);
+    padding: 0.625rem 1.125rem;
+    background: rgba(26, 31, 46, 0.35);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(251, 248, 241, 0.14);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-medium);
+    color: rgba(251, 248, 241, 0.9);
+    line-height: 1;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-wrap: balance;
+  }
+
+  .hero__microcopy svg {
+    color: var(--color-primary-soft);
+    flex-shrink: 0;
+  }
+
+  .hero__microcopy-dot {
+    color: rgba(251, 248, 241, 0.4);
+    margin-inline: 0.125rem;
+  }
+
+  .hero__microcopy strong {
+    color: var(--color-primary-soft);
+    font-weight: var(--fw-semibold);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+  }
+
+  /* CTA ghost */
+  .hero__cta-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 1.375rem 2.125rem;
+    background: rgba(251, 248, 241, 0.08);
+    color: var(--color-text-on-dark);
+    border: 1px solid rgba(251, 248, 241, 0.28);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .hero__cta-ghost:hover {
+    background: rgba(251, 248, 241, 0.18);
+    border-color: rgba(251, 248, 241, 0.48);
+    transform: translateY(-3px);
+  }
+
+  /* CTA phone · pill ghost con icono */
+  .hero__cta-phone {
+    display: inline-flex; align-items: center;
+    gap: 0.5rem;
+    padding: 1.375rem 1.625rem;
+    background: rgba(251, 248, 241, 0.08);
+    color: var(--color-text-on-dark);
+    border: 1px solid rgba(251, 248, 241, 0.28);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.875rem;
+    font-weight: var(--fw-bold); letter-spacing: 0.5px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: all var(--duration-base) var(--ease-out);
+    white-space: nowrap;
+  }
+  .hero__cta-phone:hover {
+    background: rgba(251, 248, 241, 0.22);
+    border-color: rgba(251, 248, 241, 0.5);
+    transform: translateY(-3px);
+  }
+  .hero__cta-phone svg { transition: transform 260ms ease; }
+  .hero__cta-phone:hover svg { transform: rotate(-10deg); }
+
+  /* ============== INFO ROW ============== */
+  .hero__info-row {
+    align-self: stretch;
+    width: 100%;
+    margin-top: clamp(2.5rem, 5vh, 4rem);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: clamp(1rem, 3vw, 3rem);
+    flex-wrap: wrap;
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.75rem, 4vw, 3rem);
+    background: rgba(26, 31, 46, 0.4);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(251, 248, 241, 0.16);
+    border-radius: var(--radius-2xl);
+    color: var(--color-text-on-dark);
+  }
+
+  .hero__info-item {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  @media (max-width: 640px) {
+    .hero__info-row {
+      justify-content: center;
+    }
+  }
+
+  .hero__info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .hero__info-label {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    opacity: 0.64;
+  }
+
+  .hero__info-value {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    font-weight: var(--fw-semibold);
+    letter-spacing: -0.01em;
+  }
+
+  .hero__info-value--primary {
+    color: var(--color-primary-soft);
+  }
+
+  .hero__info-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(251, 248, 241, 0.22);
+  }
+
+  /* ============== STICKER ==============
+     Posicionado con margen generoso bajo el header para no solapar con los
+     pills del nav (Contacto + Reservar) */
+  .hero__sticker {
+    position: absolute;
+    right: clamp(1.5rem, 4vw, 4rem);
+    top: clamp(13rem, 25vh, 17rem);
+    z-index: 2;
+    width: clamp(108px, 11vw, 136px);
+    height: clamp(108px, 11vw, 136px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-on-dark);
+    animation: rotate-slow 30s linear infinite;
+  }
+
+  .hero__sticker-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .hero__sticker-center {
+    position: absolute;
+    inset: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    box-shadow: var(--shadow-lg);
+    animation: rotate-slow-rev 30s linear infinite;
+  }
+
+  .hero__sticker-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2vw, 1.625rem);
+    font-weight: var(--fw-black);
+    line-height: 1;
+    color: white;
+  }
+
+  .hero__sticker-stars {
+    display: flex;
+    gap: 1px;
+    color: #fff3d4;
+  }
+
+  @media (min-width: 1100px) {
+    .hero__sticker { display: flex; }
+  }
+
+  @keyframes rotate-slow { to { transform: rotate(360deg); } }
+  @keyframes rotate-slow-rev { to { transform: rotate(-360deg); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__media-img { animation: none; }
+    .hero__sticker, .hero__sticker-center { animation: none; }
+    .hero__eyebrow-dot { animation: none; }
+  }
+</style>

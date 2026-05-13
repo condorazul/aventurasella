@@ -1,0 +1,235 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "Faut-il être en bonne forme pour pagayer le Sella ?",
+    a: "<p>Non. Le Sella est un fleuve calme (classe I-II) où le <strong>courant fait la majeure partie du travail</strong>. Tu dois pouvoir pagayer par intermittence et tenir 2-4 heures dans un canoë — c'est quelque chose que presque tout adulte sans conditions médicales particulières peut faire. <strong>Ce n'est pas un sport</strong> : c'est une promenade avec une pagaie.</p>",
+  },
+  {
+    q: "La descente du Sella est-elle très fatigante physiquement ?",
+    a: "<p>Très peu. La plupart des gens qui arrivent à Arriondas avec peur de « ne pas y arriver » finissent la journée surpris de la <strong>facilité</strong>. Les bras ressentent quelque chose le lendemain, similaire à une journée de randonnée douce, mais tu n'as pas besoin d'être athlète.</p>",
+  },
+  {
+    q: "Le Mini Sella ou le parcours complet est-il plus fatigant ?",
+    a: "<p>Proportionnellement. Le <strong>Mini Sella (7 km)</strong> tout le monde le finit sans problème — 1h30 à 2h30 de fleuve. Le <strong>parcours complet (14,5 km)</strong> prend 3-5 heures et, bien que toujours calme, peut être long si tu es très sédentaire ou as plus de 70 ans. Pour une première expérience, nous recommandons le Mini.</p>",
+  },
+  {
+    q: "Les personnes avec des problèmes de dos peuvent-elles pagayer le Sella ?",
+    a: '<p>Cela dépend de la condition spécifique. La descente exige de s\'asseoir dans un canoë avec un siège à dossier bas pendant 2-4 heures et de faire des mouvements doux de pagaie. <strong>Si tu as des hernies actives, des douleurs lombaires chroniques ou des problèmes cervicaux graves</strong>, consulte ton médecin et écris-nous avant de réserver pour évaluer le cas.</p>',
+  },
+  {
+    q: "Y a-t-il un âge maximum pour la descente du Sella ?",
+    a: '<p>Pas de limite officielle. Nous avons emmené des <strong>personnes de 70 et 80 ans</strong> qui en ont profité sans problème, surtout sur le Mini Sella. Ce qui compte, c\'est l\'état général et l\'absence de maladies graves. En cas de doute, appelle ou <a href="/fr/contact/">écris-nous</a>.</p>',
+  },
+  {
+    q: "Et si je fatigue à mi-parcours ?",
+    a: '<p>C\'est prévu. On fait un <strong>arrêt plus long</strong> sur une plage fluviale, tu te reposes une demi-heure, manges le pique-nique, nages. L\'adulte le plus en forme pagaie davantage dans la seconde moitié. Dans des cas exceptionnels, la descente est abandonnée à une buvette et <a href="/fr/contact/">le transfert vous récupère</a>. Tu ne restes pas « coincé » sur le fleuve.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descente-du-sella-fatigante" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Réponse courte :</strong> non, ce n'est pas très fatigant. Le Sella est un fleuve calme qui coule vers la mer sans que tu doives pousser. Tu pagaies pour diriger et ne pas dériver — pas pour avancer. Si tu peux monter quatre étages d'escalier sans tomber dans les pommes, tu peux pagayer le Sella.
+  </p>
+
+  <p>
+    C'est probablement la question que nous entendons le plus à l'accueil, sur WhatsApp et par email. Chaque fois, elle vient avec une variante : <em>« est-ce très fatigant ? »</em>, <em>« faut-il être en forme ? »</em>, <em>« arriverai-je jusqu'au bout ? »</em>. Et c'est logique : quand tu vois les photos des pagayeurs de la Descente Internationale, ça ressemble à un sport. <strong>Ce n'est pas ce que toi et moi allons faire.</strong>
+  </p>
+
+  <p>
+    Ce guide est la réponse honnête d'une équipe avec 25 ans à voir des milliers de gens pagayer le Sella. Sans hyperbole, sans minimiser les risques — juste ce qu'il y a.
+  </p>
+
+  <h2 class="post__h2" id="why-not-tiring">Pourquoi <span class="serif-italic">ce n'est pas si fatigant</span></h2>
+
+  <p>
+    Trois raisons objectives pour lesquelles la descente touristique du Sella est plus douce que les gens imaginent.
+  </p>
+
+  <div class="post__essentials post__essentials--three">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Le courant fait le travail</h3>
+      <p class="post__essential__desc">
+        Le Sella a une <strong>pente douce et constante</strong>. Le canoë avance seul · pagayer sert à corriger la course, pas à pousser. Rien à voir avec pagayer sur un lac ou en mer.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Le canoë est stable</h3>
+      <p class="post__essential__desc">
+        Insubmersible, <strong>1 à 3 places</strong>, coque large et pagaie double ergonomique. Pas de rotation du tronc ni de postures forcées · c'est une activité différente d'un canoë de compétition.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Arrêts constants</h3>
+      <p class="post__essential__desc">
+        Tous les 1-2 km il y a une <strong>plage fluviale ou une buvette</strong>. Normal de faire 3-5 arrêts sur le parcours complet · l'effort se divise, ce n'est pas une traversée mais une <em>promenade par étapes</em>.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="frias-final"
+      alt="Fin de la descente du Sella à Fríes — le sourire d'avoir terminé le parcours complet"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Fríes · fin du parcours complet. Après 14,5 km, le visage du canoë dit tout : ça fatigue juste assez, ça fait sourire assez.</figcaption>
+  </figure>
+
+  <p class="post__pull">
+    Les gens qui vivent en ascenseur, les grands-mères avec des genoux fragiles, les ados qui détestent le sport, les employés de bureau qui ne mettent jamais le pied dans une salle de gym : tous pagaient le Sella et tous finissent en souriant. Le secret, c'est que ce n'est pas un effort — c'est un après-midi.
+  </p>
+
+  <h2 class="post__h2" id="should-think">Qui <span class="serif-italic">devrait</span> y réfléchir</h2>
+
+  <p>
+    Cela dit, ce n'est pas une activité adaptée à tous. Il y a des conditions à évaluer :
+  </p>
+
+  <ul>
+    <li><strong>Grossesse.</strong> Par protocole de sécurité, nous n'autorisons pas la descente pendant la grossesse. Ce n'est pas le côté physique — il serait gérable — mais le risque minimal de tomber à l'eau.</li>
+    <li><strong>Maladies graves en cours.</strong> Cardiaque, respiratoire grave, post-opératoire récent. Vérifie avec ton médecin d'abord.</li>
+    <li><strong>Ne pas savoir nager.</strong> Savoir nager est obligatoire, même avec gilet de sauvetage. C'est une règle de sécurité.</li>
+    <li><strong>Problèmes de dos graves.</strong> Hernies actives, douleurs cervicales avec mobilité réduite. Si tu peux conduire 3 heures sans douleur, tu peux probablement pagayer le Sella.</li>
+    <li><strong>Panique de l'eau profonde.</strong> Si l'eau au-dessus de la taille te paralyse, le Sella ne sera pas relaxant, et mieux vaut l'admettre avant.</li>
+    <li><strong>Moins de 5 ans.</strong> Question de gilet de sauvetage homologué, pas d'effort. Plus de contexte dans <a href="/fr/avec-enfants/">descente du Sella avec enfants</a>.</li>
+  </ul>
+
+  <h2 class="post__h2" id="by-age">À quoi s'attendre <span class="serif-italic">par âge</span></h2>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–12</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> idéal · profit maximal. <strong>Parcours complet ·</strong> seulement si actif et ≥ 9 ans.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">13–17</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> trop court. <strong>Parcours complet ·</strong> parfait · ils en veulent généralement plus.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">18–50</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> facile · détendu. <strong>Parcours complet ·</strong> facile · choisis ton rythme.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">50–65</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> facile. <strong>Parcours complet ·</strong> gérable avec rythme calme et arrêts.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">65–75</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> gérable · bonne option. <strong>Parcours complet ·</strong> évaluer la forme.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">75+</span>
+        <span class="post__zone__unit">ans</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> possible avec bonne santé générale. <strong>Parcours complet ·</strong> consulter.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Comme tu vois, même à des âges avancés, le Mini Sella est parfaitement gérable. De nombreuses personnes à la retraite pagaient le Sella avec nous chaque saison sans incident — avec le Mini et un rythme détendu, c'est plus doux qu'une marche de 3 km.
+  </p>
+
+  <h2 class="post__h2" id="soreness">Y aura-t-il des <span class="serif-italic">courbatures le lendemain ?</span></h2>
+
+  <p>Très peu. Les gens rapportent :</p>
+
+  <ul>
+    <li><strong>Petites tensions aux épaules</strong> — surtout les débutants. Elles disparaissent en 24-48h.</li>
+    <li><strong>Une certaine fatigue générale</strong> — plus du soleil et de l'air frais que de l'effort. Tu dors magnifiquement cette nuit-là.</li>
+    <li><strong>Coup de soleil si tu ne mets pas de crème</strong> — c'est le vrai ennemi. Le soleil réfléchi sur l'eau est intense. Plus que la fatigue physique, ce qui te dérange vraiment le lendemain, c'est de ne pas avoir mis assez de crème. Plus de détails dans <a href="/fr/blog/quoi-apporter-descente-du-sella/">quoi apporter pour la descente du Sella</a>.</li>
+  </ul>
+
+  <h2 class="post__h2" id="reduce">Comment réduire l'effort<br/><span class="serif-italic">(si tu t'inquiètes)</span></h2>
+
+  <p>Cinq conseils que nous donnons à ceux qui arrivent craintifs :</p>
+
+  <ol>
+    <li><strong>Choisis le <a href="/fr/duree/">Mini Sella</a> si c'est ta première fois.</strong> 7 km · 1h30-2h30. Assez pour une expérience complète et tu finis en voulant plus.</li>
+    <li><strong>Arrive tôt sur les horaires ouverts (10h30).</strong> Moins de soleil de midi, température fraîche, tu rentres nourri et douché avant la sieste. Rappel · ta réservation Premium a des <strong>horaires ouverts entre 10h30 et 12h30</strong>. Comparaison des créneaux dans <a href="/fr/blog/meilleure-heure-descente-du-sella/">meilleure heure du jour pour la descente du Sella</a>.</li>
+    <li><strong>Va en canoë 3 places (K3) si vous êtes 3.</strong> Répartit l'effort entre plus de pagaies et rend la descente plus gérable.</li>
+    <li><strong>Pagaie doucement et constamment.</strong> Plus efficace que 5 coups forts et arrêt. La douceur gagne.</li>
+    <li><strong>Bois de l'eau et grignote chaque heure.</strong> La déshydratation t'assomme avant l'effort.</li>
+  </ol>
+
+  <h2 class="post__h2" id="vs-others">Par rapport à <span class="serif-italic">d'autres activités</span></h2>
+
+  <p>Pour avoir une vraie idée de l'effort :</p>
+
+  <div class="post__table">
+    <table>
+      <thead>
+        <tr>
+          <th>Activité</th>
+          <th>Effort relatif</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Descente du Sella (Mini)</strong></td><td>Faible · similaire à une marche plate de 5 km</td></tr>
+        <tr><td><strong>Descente du Sella (parcours complet)</strong></td><td>Moyen-faible · similaire à une marche en campagne de 10 km</td></tr>
+        <tr><td>Tour des Lacs de Covadonga à pied</td><td>Moyen</td></tr>
+        <tr><td>Kayak en mer 2h</td><td>Moyen-élevé</td></tr>
+        <tr><td>Ruta del Cares (complète)</td><td>Élevé</td></tr>
+        <tr><td>50 km de vélo de route</td><td>Élevé</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    La descente du Sella se situe à l'extrémité douce de la gamme des activités de plein air asturiennes. Si tu aimerais faire les Lacs mais n'as pas les jambes pour, le Sella est un plan avec <strong>une satisfaction similaire et la moitié de l'exigence</strong>.
+  </p>
+
+  <h2 class="post__h2" id="summary">En résumé<br/><span class="serif-italic">(sans détour)</span></h2>
+
+  <ul>
+    <li>C'est une <strong>promenade en canoë</strong>, pas un sport.</li>
+    <li>Le <strong>courant fait le travail</strong> — tu pagaies pour diriger, pas pour avancer.</li>
+    <li><strong>Mini Sella</strong> pratiquement n'importe qui le fait · <strong>parcours complet</strong> est gérable à un rythme calme.</li>
+    <li>Les <strong>courbatures du lendemain</strong> sont minimes.</li>
+    <li><strong>Exceptions réelles</strong> : grossesse, ne pas savoir nager, maladie grave en cours.</li>
+    <li>Si tu as des doutes sur ton cas spécifique, <a href="/fr/contact/">appelle-nous</a> — nous évaluons avec toi si ça va bien se passer.</li>
+  </ul>
+
+  <p>
+    Doute résolu — si tu veux passer à l'étape suivante, consulte <a href="/fr/tarifs/">tarifs et options</a> ou <a href="/fr/reservation-premium/">choisis une date</a> et réserve. La plupart des clients reviennent au comptoir avec la même phrase : <em>« je ne savais pas que c'était si facile »</em>. C'est la confirmation la plus fréquente que nous recevons.
+  </p>
+</BlogPostLayout>

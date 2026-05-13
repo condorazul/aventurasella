@@ -1,0 +1,1756 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import MapaInteractivoSella from '@components/sections/MapaInteractivoSella.astro';
+import { localBusinessSchema } from '@data/business-schema';
+
+const title = 'Recorrido y mapa del descenso del Sella · Arriondas → Fríes';
+const description = 'Mapa interactivo y recorrido del descenso del Sella: 14,5 km desde Arriondas a Fríes. Chiringuitos, rápidos, pasarelas y playas fluviales del camino.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/recorrido-y-mapa/`;
+
+// Hitos editoriales del recorrido · narrativa complementaria al mapa
+const hitos = [
+  { km: 0,    tag: 'INICIO',          name: 'Arriondas',            kind: 'Punto de partida',     photo: 'arriondas-inicio',  alt: 'Arriondas · punto de partida del descenso del Sella',     text: 'Donde todo empieza. Check-in en nuestras oficinas, equipación, picnic asturiano y mini clase antes de entrar al agua. Capital turística del concejo de Parres.' },
+  { km: 1,    tag: 'RÁPIDO',          name: 'La Remolina',          kind: 'Primer rabión',        photo: 'remolina-rapido',   alt: 'La Remolina · primer rabión del descenso del Sella',      text: 'El primer rápido suave del camino — clase I moderada. Lo único que necesitas es remar con calma: el río te guía.' },
+  { km: 3,    tag: 'CHIRINGUITO',     name: 'El Oasis · El Prau',   kind: 'Dos paradas míticas',  photo: 'chiringuito-prao',  alt: 'Chiringuito El Prau junto al río Sella',                  text: 'Los primeros chiringuitos donde la gente para a beber algo o refrescarse. Ambiente animado en temporada alta.' },
+  { km: 4,    tag: 'PASARELA',        name: 'Pasarela de Fuentes',  kind: 'Coto salmonero',       photo: 'pasarela-fuentes',  alt: 'Pasarela de Fuentes sobre el Sella en el coto salmonero', text: 'Cruzas el coto salmonero histórico de Los Llaos. Pueblos asturianos en las orillas, encinas y hayedo. Uno de los tramos más bonitos.' },
+  { km: 6,    tag: 'PLAYA',           name: 'Pozo del Arco',        kind: 'Playa fluvial',        photo: 'pozo-del-arco',     alt: 'Pozo del Arco · playa fluvial del río Sella',             text: 'Aguas tranquilas y playa fluvial. Parada ideal para bañarse — sobre todo en julio y agosto cuando el agua está más cálida.' },
+  { km: 7,    tag: 'FIN MINI',        name: 'Toraño',               kind: 'Fin del Mini Sella',   photo: 'torano-mini-fin',   alt: 'Toraño · final de la ruta Mini Sella',                    text: 'Punto de recogida de quienes eligen la <strong>Mini Sella</strong>. Quien sigue hacia Fríes atraviesa la parte más abierta del valle.' },
+  { km: 10,   tag: 'PARADA',          name: 'Llordón',              kind: 'Media jornada',        photo: 'llordon-parada',    alt: 'Llordón · parada de media jornada en el descenso del Sella', text: 'Parada habitual para comer el picnic con calma o refrescarse antes del tramo final. Atardeceres espectaculares.' },
+  { km: 14.5, tag: 'FINAL',           name: 'Fríes',                kind: 'Final del Completo',   photo: 'frias-final',       alt: 'Fríes · final del Descenso Completo del Sella',           text: 'Fin del <strong>Descenso Completo</strong>. Nuestro transfer os recoge y os lleva de vuelta a Arriondas. Vestuarios con duchas calientes esperan.' },
+];
+
+// 15 tramos detallados del recorrido · timeline editorial para SEO long-tail
+// Fuente: estudio del recorrido + complementado con nomenclatura del río (parajes canónicos)
+const tramos = [
+  { km: 0,    type: 'Salida',              name: 'Arriondas · Puente de las Piraguas', highlight: true,
+    photo: 'arriondas-inicio', alt: 'Arriondas · punto de partida del descenso del Sella',
+    text: 'Punto de partida del descenso. Sales desde nuestra <strong>rampa de más de 35 m</strong> o directamente desde la orilla, junto al mítico <strong>Puente de las Piraguas</strong> — el mismo puente donde cada agosto se da la salida oficial del <a href="/descenso-internacional-del-sella/">Descenso Internacional</a>.' },
+  { km: 0.2,  type: 'Rápido',              name: 'La Raíz',
+    text: 'El primer rápido del día. La corriente acelera y el río se estrecha. <strong>Clase I moderada</strong> — se pasa sin problema, la canoa coge algo de velocidad y te da el primer subidón.' },
+  { km: 1,    type: 'Rabión',              name: 'La Remolina',
+    text: 'Segundo rabión con aguas en forma de <strong>V</strong>. Lo único importante es mantenerse centrado entre las dos corrientes que convergen — un empujón divertido.' },
+  { km: 2,    type: 'Coto salmonero',      name: 'El Ricao',
+    text: 'Tramo más estrecho con <strong>aguas tranquilas serpenteantes</strong>. Coto salmonero histórico — encontrarás pescadores en las orillas durante la temporada del salmón.' },
+  { km: 4,    type: 'Pasarela · pueblo',   name: 'Pasarela de Fuentes · Los Llaos',   highlight: true,
+    photo: 'pasarela-fuentes', alt: 'Pasarela de Fuentes sobre el río Sella en Triongo',
+    text: 'Cruzas por debajo de la <strong>pasarela de la parroquia de Triongo</strong> (Cangas de Onís). Segundo coto salmonero y uno de los tramos más bonitos del río — pueblos asturianos en las orillas, encinas y hayedo.' },
+  { km: 5,    type: 'Tramo rocoso',        name: 'Triongo',
+    text: 'Tramo lleno de <strong>pequeños rápidos</strong> y piedras. En la margen derecha queda un espigón destruido que forma parte del paisaje fluvial histórico.' },
+  { km: 6,    type: 'Playa fluvial',       name: 'Pozo del Arco',                      highlight: true,
+    photo: 'pozo-del-arco', alt: 'Pozo del Arco · playa fluvial en el descenso del Sella',
+    text: 'Una de las zonas favoritas del recorrido. <strong>Aguas tranquilas y profundas</strong>, playa fluvial ideal para bañarse — imprescindible parar aquí en julio y agosto cuando el agua está más cálida.' },
+  { km: 6.5,  type: 'Rabión · frontera',   name: 'El Picu La Vieya',
+    text: 'Marca la <strong>frontera entre Cangas de Onís y Ribadesella</strong>, en Margolles. Pequeño rabión en la margen derecha que recuerda que el río sigue vivo.' },
+  { km: 7,    type: 'Fin Mini Sella',      name: 'Puente de Toraño',                   highlight: true,
+    photo: 'torano-mini-fin', alt: 'Puente de Toraño · fin de la ruta Mini Sella',
+    text: '<strong>Fin del Mini Sella</strong>. Tras unas <strong>2 horas de remada</strong>, aguas tranquilas y dos chiringuitos en la orilla. Nuestro transfer recoge desde las <strong>14:30 h</strong> a quienes eligen la ruta corta.' },
+  { km: 8,    type: 'Rápido espectacular', name: 'Rabión del Diablu',
+    text: 'Tramo <strong>espectacular y muy rocoso</strong>. Uno de los momentos más emocionantes del Descenso Completo — clase I intensa, siempre seguro con chaleco homologado y la mini clase previa.' },
+  { km: 9,    type: 'Tramo recto',         name: 'La Requexada',
+    text: 'El tramo <strong>recto más largo</strong> del recorrido, con aguas muy profundas. Tiempo perfecto para remar con ritmo, disfrutar del valle abierto y conversar sin sobresaltos.' },
+  { km: 10,   type: 'Parada',              name: 'Llordón',
+    text: 'Parada habitual para <strong>comer el picnic</strong> o refrescarse antes del tramo final. Orillas amplias y atardeceres espectaculares si bajas en otoño.' },
+  { km: 12,   type: 'Pasarela',            name: 'Pasarela de Cuevas',
+    text: 'Pueblo de Ribadesella famoso por su <strong>cueva natural</strong>. La pasarela sobre el río es acceso peatonal y de pescadores — tramo muy fotogénico.' },
+  { km: 13,   type: 'Pasarela',            name: 'Pasarela de La Uña',
+    text: 'La <strong>última pasarela</strong> del recorrido. A partir de aquí el río se calma, aparecen más <strong>playas fluviales</strong> y el valle se abre suavemente hacia el mar.' },
+  { km: 14.5, type: 'Final',               name: 'Fríes · Llovio',                     highlight: true,
+    photo: 'frias-final', alt: 'Fríes · final del Descenso Completo del Sella',
+    text: '<strong>Final del Descenso Completo</strong>. Entre 3 h 30 y 4 h 30 desde Arriondas según ritmo. Nuestro transfer te recoge y te lleva de vuelta a las oficinas, donde te esperan <strong>vestuarios con duchas calientes</strong>.' },
+];
+
+// Iconos del timeline · un glifo limpio por tipo de tramo
+const iconFor = (type) => {
+  const t = type.toLowerCase();
+  if (t.includes('fin mini')) return 'flag-mini';
+  if (t.includes('salida'))   return 'flag-start';
+  if (t.includes('final'))    return 'flag-finish';
+  if (t.includes('rápido') || t.includes('rabión')) return 'wave';
+  if (t.includes('coto'))     return 'fish';
+  if (t.includes('pasarela')) return 'bridge';
+  if (t.includes('rocoso'))   return 'mountain';
+  if (t.includes('playa'))    return 'beach';
+  if (t.includes('recto'))    return 'arrow';
+  if (t.includes('parada'))   return 'coffee';
+  return 'dot';
+};
+
+const iconPaths = {
+  'flag-start':  '<path d="M6 21V4m0 0h12l-3 4 3 4H6"/>',
+  'flag-finish': '<path d="M6 21V4m0 0h12l-3 4 3 4H6m0-4h12"/>',
+  'flag-mini':   '<path d="M6 21V5m0 0h11l-2 3 2 3H6"/>',
+  'wave':        '<path d="M3 10c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M3 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+  'fish':        '<path d="M3 12c3-3 7-5 11-5 3 0 6 2 7 5-1 3-4 5-7 5-4 0-8-2-11-5z"/><circle cx="15.5" cy="10.5" r="0.9" fill="currentColor" stroke="none"/>',
+  'bridge':      '<path d="M3 19V13a9 9 0 0 1 18 0v6M3 19h18M9 19v-3M15 19v-3"/>',
+  'mountain':    '<path d="M3 20l5-9 4 6 3-4 6 7z"/>',
+  'beach':       '<circle cx="12" cy="8" r="3"/><path d="M3 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>',
+  'arrow':       '<line x1="4" y1="12" x2="20" y2="12"/><polyline points="14 6 20 12 14 18"/>',
+  'coffee':      '<path d="M4 10h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-6zm12 2h2a2 2 0 0 1 2 2v1a2 2 0 0 1-2 2h-2"/><line x1="8" y1="3" x2="8" y2="6"/><line x1="12" y1="3" x2="12" y2="6"/>',
+  'parasol':     '<path d="M3 11a9 9 0 0 1 18 0z"/><line x1="12" y1="11" x2="12" y2="20"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  'dot':         '<circle cx="12" cy="12" r="3"/>',
+};
+
+// 6 chiringuitos reales del recorrido (memoria reference_chiringuitos_recorrido.md)
+const chiringuitos = [
+  { km: 1, name: 'Riverland',  nota: 'Inicio del recorrido',    icon: 'flag-start' },
+  { km: 3, name: 'El Oasis',   nota: 'Primer tercio · orilla',  icon: 'coffee'     },
+  { km: 3, name: 'El Prau',    nota: 'Primer tercio · playa',   icon: 'parasol'    },
+  { km: 4, name: 'El Bosque',  nota: 'Medio · tras la pasarela',icon: 'bridge'     },
+  { km: 4, name: 'La Mediana', nota: 'Medio · otra orilla',     icon: 'wave'       },
+  { km: 8, name: 'Toraño',     nota: 'Fin del Mini Sella',      icon: 'flag-finish'},
+];
+
+// FAQ específico del recorrido
+const faqs = [
+  { q: '¿Cuántos kilómetros tiene el descenso del Sella?',
+    a: 'El <strong>Descenso Completo</strong> tiene <strong>14,5 km</strong> desde Arriondas hasta Fríes. La <strong>Mini Sella</strong>, opción corta, son <strong>7 km</strong> entre Arriondas y Toraño. Ambas comparten el mismo tramo inicial.' },
+  { q: '¿Dónde empieza y termina el descenso del Sella?',
+    a: 'El descenso <strong>empieza en Arriondas</strong> (Asturias), en nuestras oficinas. El recorrido Completo <strong>termina en Fríes</strong> tras 14,5 km. La Mini Sella termina antes, en <strong>Toraño</strong> (km 7). En ambos casos nuestro transfer te recoge y te lleva de vuelta al punto de partida.' },
+  { q: '¿Cuáles son los chiringuitos del recorrido?',
+    a: 'En el descenso hay <strong>6 chiringuitos</strong> a lo largo del camino: <strong>Riverland</strong> (km 1), <strong>El Oasis</strong> y <strong>El Prau</strong> (km 3), <strong>El Bosque</strong> y <strong>La Mediana</strong> (km 4) y <strong>Toraño</strong> (km 8, fin del Mini Sella). Puedes parar a descansar, tomar algo o simplemente disfrutar del ambiente.' },
+  { q: '¿Hay playas fluviales donde bañarse?',
+    a: 'Sí. La más conocida es el <strong>Pozo del Arco</strong> (km 6), con aguas tranquilas perfectas para baño. Además hay varias <strong>orillas y playas informales</strong> a lo largo del recorrido — especialmente tras Pasarela de Fuentes y antes de Llordón.' },
+  { q: '¿Qué rápidos o tramos difíciles hay?',
+    a: 'El Sella en su tramo turístico es <strong>fluvial suave</strong> — no white-water. Tiene algún rabión <strong>clase I moderada</strong> como <strong>La Raíz</strong> (km 0,2) y <strong>La Remolina</strong> (km 1). Con la mini clase previa y chaleco homologado se hacen con total seguridad.' },
+  { q: '¿Se puede parar en cualquier punto del recorrido?',
+    a: 'Sí, <strong>marcáis vosotros el ritmo</strong>. Paráis donde queráis: en playas fluviales, en chiringuitos o simplemente en orilla para estirar. Lo único que hay que cumplir es la <strong>permanencia máxima hasta las 18:00 h</strong> por normativa de la Confederación Hidrográfica del Cantábrico.' },
+  { q: '¿Qué diferencia hay entre Mini Sella y Completo en el recorrido?',
+    a: 'Ambos comparten los primeros 7 km (Arriondas → Toraño). La <strong>Mini Sella</strong> termina ahí — ideal con niños pequeños o media jornada. El <strong>Descenso Completo</strong> continúa otros 7,5 km hasta Fríes, añadiendo paisaje abierto, la pasarela de Cuevas, la de La Uña y el cierre del valle. <a href="/cuanto-dura/">Más detalle de tiempos aquí</a>.' },
+  { q: '¿Qué vamos a ver en el camino?',
+    a: 'Pueblos asturianos (Fuentes, Margolles, Toraño, Cuevas), <strong>bosque cantábrico</strong> con encinas y hayedos, <strong>6 chiringuitos</strong> en las orillas, el <strong>coto salmonero</strong> de Los Llaos, <strong>playas fluviales</strong>, rápidos suaves y varias pasarelas históricas. Es el plan más panorámico de Asturias.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl),
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Recorrido y mapa del descenso del Sella · Arriondas a Fríes',
+      description: 'Guía completa del recorrido del descenso del Sella: 14,5 km con mapa interactivo, chiringuitos, rápidos, pasarelas y playas fluviales.',
+      inLanguage: 'es-ES',
+      mainEntityOfPage: canonicalUrl,
+      image: { '@type': 'ImageObject', url: `${baseUrl}/images/optimized/rio-sella-hermoso-lg.jpg`, width: 1920, height: 1280 },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-21',
+      dateModified: '2026-04-22',
+      about: 'Recorrido y mapa del descenso del Sella en canoa, 14,5 km entre Arriondas y Fríes',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',            item: baseUrl },
+        { '@type': 'ListItem', position: 2, name: 'Recorrido y mapa',  item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/recorrido-y-mapa/">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== 1 · HERO · editorial con watermark "Sella" + stats ============== -->
+  <section class="rrh" aria-labelledby="rrh-title">
+
+    <div class="rrh__shapes" aria-hidden="true">
+      <span class="rrh__shape rrh__shape--1"></span>
+      <span class="rrh__shape rrh__shape--2"></span>
+    </div>
+    <span class="rrh__watermark" aria-hidden="true">Sella</span>
+
+    <div class="rrh__inner">
+      <nav class="rrh__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Recorrido y mapa</span>
+      </nav>
+
+      <span class="rrh__eyebrow">— Recorrido del descenso</span>
+
+      <h1 id="rrh-title" class="rrh__title">
+        El mapa del<br/>
+        <span class="serif-italic">Sella.</span>
+      </h1>
+
+      <p class="rrh__lead">
+        El descenso del Sella en canoa recorre <strong>14,5 km entre Arriondas y Fríes</strong>,
+        atravesando pueblos asturianos, rápidos suaves, pasarelas históricas, playas fluviales
+        y <strong>6 chiringuitos</strong>. Aquí tienes el mapa interactivo con todos los puntos
+        del camino.
+      </p>
+
+      <ul class="rrh__stats" aria-label="Cifras del recorrido">
+        <li class="rrh__stat">
+          <strong>14,5<small>km</small></strong>
+          <span>recorrido completo</span>
+        </li>
+        <li class="rrh__stat">
+          <strong>7<small>km</small></strong>
+          <span>Mini Sella</span>
+        </li>
+        <li class="rrh__stat">
+          <strong>6</strong>
+          <span>chiringuitos</span>
+        </li>
+      </ul>
+
+      <div class="rrh__ctas">
+        <a href="#rrh-mapa" class="rrh__cta rrh__cta--primary">Ver mapa interactivo</a>
+        <a href="/reservar/" class="rrh__cta rrh__cta--link">
+          Reservar descenso
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2 · MAPA INTERACTIVO (componente reutilizado) ============== -->
+  <div id="rrh-mapa">
+    <MapaInteractivoSella />
+  </div>
+
+  <!-- ============== 3 · HITOS DEL RECORRIDO · feature spread editorial ============== -->
+  <section class="rrs" aria-labelledby="rrs-title">
+    <div class="container container--xl">
+      <header class="rrs__header" data-reveal>
+        <div class="rrs__headerMain">
+          <span class="rrs__eyebrow">— Hitos del camino</span>
+          <h2 id="rrs-title" class="rrs__title">8 paradas<br/><span class="serif-italic">canónicas.</span></h2>
+        </div>
+        <div class="rrs__nav" role="group" aria-label="Navegación hitos">
+          <span class="rrs__counter" aria-live="polite">
+            <span class="rrs__counterCurrent" data-rrs-current>01</span>
+            <small class="rrs__counterTotal">/{String(hitos.length).padStart(2, '0')}</small>
+          </span>
+          <button type="button" class="rrs__navBtn" data-rrs-nav="prev" aria-label="Hito anterior">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          </button>
+          <button type="button" class="rrs__navBtn is-dark" data-rrs-nav="next" aria-label="Hito siguiente">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="rrs__track" data-rrs-track data-drag-scroll role="region" aria-label="Hitos del recorrido">
+        {hitos.map((h, i) => (
+          <article class="rrsItem" data-rrs-item={i}>
+            <span class="rrsItem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="rrsItem__media">
+              <Picture src={h.photo} alt={h.alt} sizes="(min-width: 960px) 52vw, 90vw" bare />
+            </div>
+            <div class="rrsItem__body">
+              <span class="rrsItem__tag">KM {h.km === Math.floor(h.km) ? h.km : h.km.toFixed(1).replace('.', ',')} · {h.tag}</span>
+              <h3 class="rrsItem__name">{h.name}</h3>
+              <p class="rrsItem__kind">{h.kind}</p>
+              <p class="rrsItem__text" set:html={h.text} />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3.25 · BANNER oscuro · ¿Listo para hacer el descenso? ============== -->
+  <section class="rrb" aria-label="Llamada a la acción · reservar descenso">
+    <div class="container container--xl">
+      <div class="rrb__inner" data-reveal>
+        <div class="rrb__text">
+          <span class="rrb__eyebrow">— Aventura en el Sella</span>
+          <h2 class="rrb__title">¿Listo para <span class="serif-italic">hacer el descenso?</span></h2>
+        </div>
+        <a href="/reservar/" class="rrb__cta">
+          <span>Reservar ahora</span>
+          <span class="rrb__ctaIcon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3.5 · TRAMO POR TRAMO · timeline editorial con historia ============== -->
+  <section class="rrt" aria-labelledby="rrt-title">
+    <div class="container container--xl">
+      <header class="rrt__header" data-reveal>
+        <span class="rrt__eyebrow">— Paso a paso</span>
+        <h2 id="rrt-title" class="rrt__title">
+          Tramo por tramo<br/>
+          <span class="serif-italic">del Sella.</span>
+        </h2>
+        <p class="rrt__lead">
+          El descenso del Sella en canoa nació en <strong>1929</strong>, cuando tres asturianos
+          — Manés Fernández, Dionisio de la Huerta y Benigno Morán — bajaron por primera vez entre
+          Coya y Arriondas. Hoy, el <strong>recorrido turístico entre Arriondas y Fríes</strong>
+          mantiene cada uno de los accidentes históricos del río: rápidos suaves, pasarelas,
+          playas fluviales y tramos inolvidables. Esta es la guía completa, paraje a paraje.
+        </p>
+      </header>
+
+      <div class="rrt__track">
+        <div class="rrt__spine" aria-hidden="true">
+          <span class="rrt__spineBg"></span>
+          <span class="rrt__spineFg" data-rrt-spine></span>
+        </div>
+
+        <ol class="rrt__timeline" data-rrt-timeline>
+          {tramos.map((t, i) => (
+            <li class={`rrtItem${t.highlight ? ' is-highlight' : ''}`} data-rrt-item>
+              <div class="rrtItem__pane" data-reveal data-reveal-delay={(i % 3) + 1}>
+                <div class="rrtItem__meta">
+                  <span class="rrtItem__km">km {t.km === Math.floor(t.km) ? t.km : t.km.toFixed(1).replace('.', ',')}</span>
+                  <span class="rrtItem__sep" aria-hidden="true"></span>
+                  <span class="rrtItem__tag">{t.type}</span>
+                </div>
+                <h3 class="rrtItem__name">{t.name}</h3>
+                <p class="rrtItem__text" set:html={t.text} />
+              </div>
+
+              <div class="rrtItem__axis" aria-hidden="true">
+                <span class="rrtItem__node">
+                  <svg class="rrtItem__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[iconFor(t.type)]} />
+                </span>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 4 · CHIRINGUITOS DEL CAMINO · intro + grid 6 celdas iguales ============== -->
+  <section class="rrc" aria-labelledby="rrc-title">
+    <div class="container container--xl">
+      <header class="rrc__intro" data-reveal>
+        <span class="rrc__eyebrow">— Paradas del camino</span>
+        <h2 id="rrc-title" class="rrc__title">
+          6 chiringuitos<br/>
+          <span class="serif-italic">a lo largo del Sella.</span>
+        </h2>
+        <p class="rrc__lead">
+          A lo largo del recorrido puedes parar en cualquiera de los <strong>6 chiringuitos</strong>
+          en las orillas del río — para refrescarte, comer o simplemente descansar antes de
+          seguir bajando.
+        </p>
+      </header>
+
+      <div class="rrc__panel" data-reveal data-reveal-delay="1">
+        <ol class="rrc__grid">
+          {chiringuitos.map((c) => (
+            <li class="rrc__cell">
+              <div class="rrc__cellBody">
+                <h3 class="rrc__cellName">{c.name}</h3>
+                <span class="rrc__cellKm">Km {c.km}</span>
+                <span class="rrc__cellNota">{c.nota}</span>
+              </div>
+              <span class="rrc__cellIcon" aria-hidden="true">
+                <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[c.icon]} />
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5 · MINI vs COMPLETO · split editorial abierto ============== -->
+  <section class="rrv" aria-labelledby="rrv-title">
+    <div class="container container--xl">
+      <header class="rrv__header" data-reveal>
+        <span class="rrv__eyebrow">— Dos recorridos</span>
+        <h2 id="rrv-title" class="rrv__title">
+          Mini Sella o<br/>
+          <span class="serif-italic">Descenso Completo.</span>
+        </h2>
+        <p class="rrv__lead">
+          Ambos salen del mismo sitio (Arriondas) y comparten los primeros 7 km.
+          La diferencia: <strong>dónde terminas</strong>.
+        </p>
+      </header>
+
+      <div class="rrv__split">
+        <article class="rrv__col" data-reveal>
+          <span class="rrv__colTag">Mini Sella</span>
+          <h3 class="rrv__colTitle">Arriondas <span class="rrv__arrow" aria-hidden="true">→</span> Toraño</h3>
+          <div class="rrv__stats">
+            <div class="rrv__stat">
+              <strong>7<small>km</small></strong>
+              <span>distancia</span>
+            </div>
+            <div class="rrv__statSep" aria-hidden="true"></div>
+            <div class="rrv__stat">
+              <strong>2 – 3<small>h</small></strong>
+              <span>duración</span>
+            </div>
+          </div>
+          <p class="rrv__colText">
+            El tramo corto. Ideal para <strong>familias con niños pequeños</strong> o media jornada.
+            Termina en el chiringuito de Toraño, con recogida desde las 14:30 h.
+          </p>
+          <a href="/cuanto-dura/" class="rrv__colLink">
+            Ver detalle Mini Sella
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+
+        <article class="rrv__col" data-reveal data-reveal-delay="1">
+          <span class="rrv__colTag">Descenso Completo</span>
+          <h3 class="rrv__colTitle">Arriondas <span class="rrv__arrow" aria-hidden="true">→</span> Fríes</h3>
+          <div class="rrv__stats">
+            <div class="rrv__stat">
+              <strong>14,5<small>km</small></strong>
+              <span>distancia</span>
+            </div>
+            <div class="rrv__statSep" aria-hidden="true"></div>
+            <div class="rrv__stat">
+              <strong>4 – 5<small>h</small></strong>
+              <span>duración</span>
+            </div>
+          </div>
+          <p class="rrv__colText">
+            La experiencia clásica entera. Más kilómetros, más paisaje, <strong>pasarelas históricas</strong>
+            y playas fluviales hasta Fríes. Jornada completa al río.
+          </p>
+          <a href="/cuanto-dura/" class="rrv__colLink">
+            Ver detalle Completo
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 7 · INTERLINKING + Panel Reserva (sage dark) ============== -->
+  <section class="rrx">
+    <div class="container container--xl">
+      <header class="rrx__header" data-reveal>
+        <span class="rrx__eyebrow">— Antes de reservar</span>
+        <h2 class="rrx__title">Organiza bien<br/><span class="serif-italic">tu descenso del Sella.</span></h2>
+      </header>
+
+      <div class="rrx__grid">
+        <aside class="rrx__reserva" data-reveal>
+          <div class="rrx__reservaBg" aria-hidden="true">
+            <Picture src="rio-sella-hermoso" alt="" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="rrx__reservaScrim" aria-hidden="true"></div>
+          </div>
+          <div class="rrx__reservaInner">
+            <span class="rrx__reservaKicker">
+              <span class="rrx__reservaDot" aria-hidden="true"></span>
+              Reserva previa obligatoria
+            </span>
+            <h3 class="rrx__reservaT">
+              Elige fecha<br/>
+              <span class="serif-italic">y reserva.</span>
+            </h3>
+            <p class="rrx__reservaS">
+              Atendemos en minutos por cualquier vía. Pago con tarjeta al reservar o
+              <strong>el día que recojas tu canoa</strong>.
+            </p>
+            <ul class="rrx__channels">
+              <li><a href="tel:+34681093673" class="rrx__ch rrx__ch--phone"><span class="rrx__chIcon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span><span class="rrx__chBody"><span class="rrx__chLabel">Llámanos</span><span class="rrx__chValue">+34 681 093 673</span></span><span class="rrx__chArrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></li>
+              <li><a href="https://wa.me/34681093673?text=Hola%2C+me+gustar%C3%ADa+reservar+el+descenso+del+Sella." target="_blank" rel="noopener noreferrer" class="rrx__ch rrx__ch--wa"><span class="rrx__chIcon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg></span><span class="rrx__chBody"><span class="rrx__chLabel">WhatsApp</span><span class="rrx__chValue">Respuesta en minutos</span></span><span class="rrx__chArrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></li>
+              <li><a href="/reservar/" class="rrx__ch rrx__ch--web"><span class="rrx__chIcon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span><span class="rrx__chBody"><span class="rrx__chLabel">Reservar online</span><span class="rrx__chValue">Motor de reservas</span></span><span class="rrx__chArrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></li>
+              <li><a href="/contacto/" class="rrx__ch rrx__ch--mail"><span class="rrx__chIcon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span><span class="rrx__chBody"><span class="rrx__chLabel">Escríbenos</span><span class="rrx__chValue">Formulario de contacto</span></span><span class="rrx__chArrow" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a></li>
+            </ul>
+          </div>
+        </aside>
+
+        <nav class="rrx__list" aria-label="Páginas relacionadas">
+          <details class="rrx__item" name="rrx-links" open>
+            <summary class="rrx__sum">
+              <span class="rrx__eyerow"><span class="rrx__num" aria-hidden="true">01</span><span class="rrx__smallE">Tiempos</span></span>
+              <h3 class="rrx__t">Cuánto dura el descenso</h3>
+              <span class="rrx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="rrx__body">
+              <p>Entre <strong>3 y 5 horas</strong>. Mini Sella 2-3 h · Descenso Completo 4-5 h. Factores que influyen + consejos para calcular con realismo.</p>
+              <a href="/cuanto-dura/" class="rrx__link2">Ver guía de tiempos <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="rrx__item" name="rrx-links">
+            <summary class="rrx__sum">
+              <span class="rrx__eyerow"><span class="rrx__num" aria-hidden="true">02</span><span class="rrx__smallE">Temporada</span></span>
+              <h3 class="rrx__t">Mejor época del año</h3>
+              <span class="rrx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="rrx__body">
+              <p>Junio y septiembre son <strong>ideales</strong>. Agosto el más animado. Guía mes a mes con clima, caudal y afluencia.</p>
+              <a href="/mejor-epoca/" class="rrx__link2">Ver mejor época <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="rrx__item" name="rrx-links">
+            <summary class="rrx__sum">
+              <span class="rrx__eyerow"><span class="rrx__num" aria-hidden="true">03</span><span class="rrx__smallE">Tarifas</span></span>
+              <h3 class="rrx__t">Precios del descenso</h3>
+              <span class="rrx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="rrx__body">
+              <p>30 € niños · 40 € adultos · mascotas gratis. Todo incluido sin extras.</p>
+              <a href="/precios/" class="rrx__link2">Ver precios <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="rrx__item" name="rrx-links">
+            <summary class="rrx__sum">
+              <span class="rrx__eyerow"><span class="rrx__num" aria-hidden="true">04</span><span class="rrx__smallE">Cómo llegar</span></span>
+              <h3 class="rrx__t">Llegar a Arriondas</h3>
+              <span class="rrx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="rrx__body">
+              <p>52 km de Oviedo · 75 km de Gijón. Coche, <strong>ALSA</strong> o <strong>Renfe Cercanías AM</strong>.</p>
+              <a href="/como-llegar/" class="rrx__link2">Ver cómo llegar <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 8 · FAQ sage sidebar (REUSE inmutable) ============== -->
+  <section class="rrf">
+    <div class="container container--xl">
+      <div class="rrf__grid">
+        <aside class="rrf__aside" data-reveal>
+          <span class="rrf__eyebrow">— Preguntas frecuentes</span>
+          <h2 class="rrf__title">Dudas sobre<br/><span class="serif-italic">el recorrido.</span></h2>
+          <p class="rrf__lead">
+            Las preguntas más repetidas sobre el recorrido del descenso del Sella. Si te falta
+            alguna, <a href="/contacto/">estamos a un mensaje</a>.
+          </p>
+        </aside>
+        <div class="rrf__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="rrfI" name="rrf-faq" open={i === 0}>
+              <summary class="rrfI__q">
+                {f.q}
+                <svg class="rrfI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="rrfI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 9 · CTA FINAL dark photo ============== -->
+  <section class="rrcta" aria-labelledby="rrcta-title">
+    <div class="rrcta__bg" aria-hidden="true">
+      <Picture src="camino-te-espera" alt="" sizes="100vw" bare />
+    </div>
+    <div class="rrcta__inner">
+      <span class="rrcta__eyebrow">— El camino te espera</span>
+      <h2 id="rrcta-title" class="rrcta__title">
+        Tu viaje por<br/>
+        <span class="serif-italic">el Sella.</span>
+      </h2>
+      <p class="rrcta__lead">
+        Ya conoces los 14,5 km, los chiringuitos, las paradas y los hitos. Elige fecha y
+        <strong>reserva sin pagar ahora</strong> — paga con tarjeta o el día que recojas la canoa.
+      </p>
+      <div class="rrcta__ctas">
+        <a href="/reservar/" class="rrcta__primary">
+          Reservar mi descenso
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/precios/" class="rrcta__ghost">Consultar precios</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== 1 · HERO ============== */
+  .rrh {
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 55% at 90% 0%, rgba(184, 210, 230, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 10% 100%, rgba(61, 79, 58, 0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #F9F5EA 0%, #F0E9D3 100%);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: hidden; isolation: isolate;
+  }
+  .rrh__shapes { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .rrh__shape { position: absolute; border-radius: 50%; filter: blur(60px); }
+  .rrh__shape--1 { top: 10%; right: -10%; width: 380px; height: 380px; background: radial-gradient(circle, rgba(184, 210, 230, 0.42) 0%, transparent 70%); }
+  .rrh__shape--2 { bottom: -10%; left: -8%; width: 320px; height: 320px; background: radial-gradient(circle, rgba(61, 79, 58, 0.2) 0%, transparent 70%); }
+  .rrh__watermark {
+    position: absolute; bottom: 2rem; right: -0.05em;
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(11rem, 32vw, 26rem);
+    line-height: 0.8; letter-spacing: -0.04em;
+    color: rgba(61, 79, 58, 0.07);
+    pointer-events: none; user-select: none; white-space: nowrap; z-index: 0;
+  }
+
+  .rrh__inner {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+  .rrh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .rrh__breadcrumb a { color: var(--color-sage, #3D4F3A); }
+  .rrh__breadcrumb a:hover { color: var(--color-primary); }
+  .rrh__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.5rem;
+  }
+  .rrh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    font-weight: 900; line-height: 0.96;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.5rem;
+    max-width: 14ch;
+  }
+  .rrh__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+    color: var(--color-primary);
+  }
+  .rrh__lead {
+    font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.7;
+    color: var(--color-text-secondary);
+    max-width: 620px; margin: 0 0 2rem;
+  }
+  .rrh__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Stats hero */
+  .rrh__stats {
+    list-style: none; padding: 0;
+    display: flex; flex-wrap: wrap; gap: clamp(1.5rem, 3vw, 3rem);
+    margin: 0 0 clamp(2rem, 4vw, 2.75rem);
+    padding-block: 1.25rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.12);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.12);
+  }
+  .rrh__stat { display: flex; flex-direction: column; gap: 2px; }
+  .rrh__stat strong {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    line-height: 1; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    display: flex; align-items: baseline; gap: 0.15em;
+  }
+  .rrh__stat strong small {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-left: 2px;
+  }
+  .rrh__stat span:last-child {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.875rem;
+    color: var(--color-sage, #3D4F3A);
+  }
+
+  .rrh__ctas { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+  .rrh__cta { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-weight: 700; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .rrh__cta--primary {
+    padding: 0.95rem 1.6rem;
+    background: var(--color-sage, #3D4F3A); color: #FBF8F1;
+    border-radius: var(--radius-pill, 999px);
+    font-size: 0.8125rem; letter-spacing: 1.2px; text-transform: uppercase;
+    box-shadow: 0 12px 26px rgba(61, 79, 58, 0.3);
+  }
+  .rrh__cta--primary:hover { transform: translateY(-2px); background: #4A5E47; }
+  .rrh__cta--link {
+    color: var(--color-text-primary); font-size: 0.9375rem;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 2px;
+  }
+  .rrh__cta--link:hover { color: var(--color-primary); }
+  .rrh__cta--link svg { transition: transform 200ms; }
+  .rrh__cta--link:hover svg { transform: translateX(3px); }
+
+  /* ============== 3 · HITOS · feature spread editorial (Variante C elegida) ============== */
+  .rrs {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-warm, #F6F1E3);
+    overflow: hidden;
+  }
+  .rrs__header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 1.5rem; flex-wrap: wrap;
+    max-width: 1300px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .rrs__headerMain { min-width: 0; }
+  .rrs__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.875rem;
+  }
+  .rrs__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .rrs__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+
+  .rrs__nav { display: inline-flex; align-items: center; gap: 0.625rem; flex-shrink: 0; }
+  .rrs__counter {
+    display: inline-flex; align-items: baseline; gap: 2px;
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 1.25rem; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-right: 0.5rem;
+  }
+  .rrs__counterTotal {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-text-muted); font-weight: 700;
+  }
+  .rrs__navBtn {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--color-text-primary);
+    color: var(--color-text-primary);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 200ms, transform 200ms, color 200ms;
+  }
+  .rrs__navBtn:hover:not(:disabled) { transform: translateY(-2px); }
+  .rrs__navBtn.is-dark {
+    background: var(--color-text-primary); color: var(--color-bg-warm, #F6F1E3);
+  }
+  .rrs__navBtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .rrs__track {
+    display: flex; gap: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 1300px; margin: 0 auto;
+    overflow-x: auto; overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-bottom: 0.5rem;
+  }
+  .rrs__track::-webkit-scrollbar { display: none; }
+
+  .rrsItem {
+    flex: 0 0 min(920px, 92vw);
+    scroll-snap-align: start;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    position: relative;
+    align-items: center;
+  }
+  @media (max-width: 820px) {
+    .rrsItem { grid-template-columns: 1fr; }
+  }
+  .rrsItem__num {
+    position: absolute;
+    top: -1.25rem; right: 1rem;
+    font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(4rem, 7vw, 6rem);
+    font-weight: 400; line-height: 1;
+    color: rgba(26, 31, 46, 0.08);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .rrsItem__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-2xl, 2rem);
+    overflow: hidden;
+    z-index: 1;
+  }
+  .rrsItem__media :global(picture),
+  .rrsItem__media :global(img) {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .rrsItem__body {
+    display: flex; flex-direction: column;
+    gap: 1rem;
+    z-index: 1;
+  }
+  .rrsItem__tag {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .rrsItem__name {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0;
+  }
+  .rrsItem__kind {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1rem;
+    color: var(--color-sage); margin: 0;
+  }
+  .rrsItem__text {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.8;
+    color: var(--color-text-secondary); margin: 0;
+    max-width: 440px;
+  }
+  .rrsItem__text strong { color: var(--color-text-primary); font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rrs__navBtn { transition: none; }
+    .rrs__navBtn:hover:not(:disabled) { transform: none; }
+  }
+
+  /* ============== 3.25 · BANNER oscuro · ¿Listo para hacer el descenso? ============== */
+  .rrb {
+    padding-block: clamp(2.25rem, 4vw, 3rem);
+    background: var(--color-bg-dark, #1A1F2E);
+    color: var(--color-text-on-dark, #F4F0E8);
+  }
+  .rrb__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  @media (max-width: 720px) {
+    .rrb__inner { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+  .rrb__text { min-width: 0; }
+  .rrb__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary, #E9856F);
+    margin-bottom: 0.625rem;
+  }
+  .rrb__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  .rrb__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--color-primary-soft, #F5C5B5);
+  }
+  .rrb__cta {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    background: #FFFFFF;
+    color: var(--color-text-primary, #1A1F2E);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+    white-space: nowrap;
+    justify-self: end;
+  }
+  @media (max-width: 720px) { .rrb__cta { justify-self: start; } }
+  .rrb__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -12px rgba(0, 0, 0, 0.45);
+  }
+  .rrb__ctaIcon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .rrb__cta:hover .rrb__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  /* ============== 3.5 · TRAMO POR TRAMO · timeline editorial ============== */
+  .rrt {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-base, #FBF8F1);
+    position: relative;
+  }
+  .rrt::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(26, 31, 46, 0.1), transparent);
+  }
+  .rrt__header { max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+  .rrt__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1.25rem;
+  }
+  .rrt__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0 0 1.25rem;
+  }
+  .rrt__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .rrt__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .rrt__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rrt__lead a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.4); }
+
+  /* Timeline centrado · spine con fill por scroll + cards alternas + iconos limpios */
+  .rrt__track {
+    position: relative;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding-block: 1rem;
+  }
+
+  /* Spine vertical centrado (desktop) · 26 px (mobile) · 4 px grosor */
+  .rrt__spine {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 4px;
+    transform: translateX(-2px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  @media (max-width: 768px) {
+    .rrt__spine { left: 26px; transform: translateX(-2px); }
+  }
+  .rrt__spineBg {
+    position: absolute; inset: 0;
+    background: rgba(61, 79, 58, 0.16);
+    border-radius: 4px;
+  }
+  .rrt__spineFg {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      var(--color-sage, #3D4F3A) 0%,
+      var(--color-sage, #3D4F3A) 50%,
+      var(--color-primary, #E9856F) 100%);
+    border-radius: 4px;
+    transform-origin: top;
+    transform: scaleY(var(--rrt-progress, 0));
+    transition: transform 120ms linear;
+    box-shadow: 0 0 16px rgba(233, 133, 111, 0.22);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rrt__spineFg { transition: none; transform: scaleY(1); }
+  }
+
+  .rrt__timeline {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    position: relative;
+    z-index: 1;
+  }
+
+  .rrtItem {
+    display: grid;
+    grid-template-columns: 1fr 96px 1fr;
+    column-gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: start;
+    position: relative;
+  }
+
+  /* Pane · texto directo sobre el fondo claro de la sección, sin recuadro */
+  .rrtItem__pane {
+    padding: 0.25rem 0;
+    min-width: 0;
+    transition: transform 420ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .rrtItem:hover .rrtItem__pane {
+    transform: translateY(-2px);
+  }
+
+  /* Alternancia: item impar → card a la izquierda, axis centro, col 3 vacía */
+  .rrtItem:nth-child(odd) .rrtItem__pane {
+    grid-column: 1;
+    text-align: right;
+  }
+  .rrtItem:nth-child(even) .rrtItem__pane {
+    grid-column: 3;
+    text-align: left;
+  }
+
+  /* Axis con nodo circular · icono de alto contraste */
+  .rrtItem__axis {
+    grid-column: 2;
+    justify-self: center;
+    display: flex; align-items: flex-start; justify-content: center;
+    padding-top: 1.25rem;
+    position: relative;
+    z-index: 2;
+  }
+  .rrtItem__node {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--color-sage, #3D4F3A);
+    color: var(--color-bg-base, #FBF8F1);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow:
+      0 0 0 6px var(--color-bg-base, #FBF8F1),
+      0 12px 28px -10px rgba(26, 31, 46, 0.3);
+    transition: transform 420ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 320ms ease;
+  }
+  .rrtItem:hover .rrtItem__node { transform: scale(1.08); }
+  .rrtItem__icon { display: block; flex-shrink: 0; }
+
+  /* Meta · km + separador + tag en una línea */
+  .rrtItem__meta {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+  }
+  .rrtItem:nth-child(odd) .rrtItem__pane > .rrtItem__meta {
+    flex-direction: row-reverse;
+  }
+  .rrtItem__km {
+    color: var(--color-sage, #3D4F3A);
+  }
+  .rrtItem.is-highlight .rrtItem__km {
+    color: var(--color-primary, #E9856F);
+  }
+  .rrtItem__sep {
+    width: 4px; height: 4px; border-radius: 50%;
+    background: rgba(26, 31, 46, 0.25);
+    flex-shrink: 0;
+  }
+  .rrtItem__tag {
+    color: var(--color-text-muted, #8A8578);
+    font-weight: 700;
+  }
+
+  .rrtItem__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.1875rem, 2.1vw, 1.5rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary, #1A1F2E);
+    margin: 0 0 0.875rem;
+  }
+  .rrtItem__text {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary, #4A5267);
+    margin: 0;
+  }
+  .rrtItem__text strong { color: var(--color-text-primary, #1A1F2E); font-weight: 700; }
+  .rrtItem__text a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 220ms, border-color 220ms;
+  }
+  .rrtItem__text a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rrtItem__pane, .rrtItem__node { transition: none; }
+    .rrtItem:hover .rrtItem__pane { transform: none; }
+    .rrtItem:hover .rrtItem__node { transform: none; }
+  }
+
+  /* Mobile · single-column left-aligned (spine a la izquierda) */
+  @media (max-width: 768px) {
+    .rrt__timeline { gap: 2rem; }
+    .rrtItem,
+    .rrtItem:nth-child(odd),
+    .rrtItem:nth-child(even) {
+      grid-template-columns: 52px 1fr;
+      column-gap: 1rem;
+    }
+    .rrtItem__axis,
+    .rrtItem:nth-child(odd) .rrtItem__axis,
+    .rrtItem:nth-child(even) .rrtItem__axis {
+      grid-column: 1;
+      justify-self: start;
+      padding-top: 0.5rem;
+    }
+    .rrtItem__pane,
+    .rrtItem:nth-child(odd) .rrtItem__pane,
+    .rrtItem:nth-child(even) .rrtItem__pane {
+      grid-column: 2;
+      text-align: left;
+    }
+    .rrtItem:nth-child(odd) .rrtItem__pane > .rrtItem__meta {
+      flex-direction: row;
+    }
+    .rrtItem__node { width: 44px; height: 44px; }
+    .rrtItem__icon { width: 19px; height: 19px; }
+  }
+
+  /* ============== 4 · CHIRINGUITOS · intro arriba + panel 6 celdas iguales ============== */
+  .rrc {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-sand, #F1E9D4);
+  }
+
+  .rrc__intro {
+    max-width: 760px;
+    margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .rrc__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  }
+  .rrc__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1rem, 2vw, 1.25rem);
+  }
+  .rrc__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .rrc__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .rrc__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Panel abierto · hairlines directas sobre el fondo sand, sin card blanca */
+  .rrc__panel {
+    max-width: 1200px; margin: 0 auto;
+  }
+  .rrc__grid {
+    list-style: none; padding: 0; margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    gap: 0;
+    border-top: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  @media (min-width: 560px) { .rrc__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .rrc__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .rrc__cell {
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    min-height: 168px;
+    border-right: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+    transition: background 300ms ease;
+  }
+  /* Desktop 3-col · última columna sin border-right + última fila sin border-bottom */
+  @media (min-width: 960px) {
+    .rrc__cell:nth-child(3n) { border-right: none; }
+    .rrc__cell:nth-last-child(-n+3) { border-bottom: none; }
+  }
+  /* Tablet 2-col */
+  @media (min-width: 560px) and (max-width: 959.98px) {
+    .rrc__cell:nth-child(2n) { border-right: none; }
+    .rrc__cell:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  /* Mobile 1-col · sin border-right nunca, último sin border-bottom */
+  @media (max-width: 559.98px) {
+    .rrc__cell { border-right: none; }
+    .rrc__cell:last-child { border-bottom: none; }
+  }
+  .rrc__cell:hover {
+    background: rgba(255, 255, 255, 0.35);
+  }
+
+  .rrc__cellBody {
+    display: flex; flex-direction: column;
+    min-width: 0;
+    flex: 1;
+  }
+  .rrc__cellName {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.2vw, 1.875rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary, #1A1F2E);
+    margin: 0 0 0.875rem;
+    text-transform: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .rrc__cellKm {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary, #E9856F);
+    margin-bottom: 0.3rem;
+    white-space: nowrap;
+  }
+  .rrc__cellNota {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted, #8A8578);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .rrc__cellIcon {
+    flex-shrink: 0;
+    color: rgba(26, 31, 46, 0.18);
+    transition: color 320ms ease, transform 320ms ease;
+    margin-top: 0.125rem;
+  }
+  .rrc__cellIcon svg { display: block; }
+  .rrc__cell:hover .rrc__cellIcon {
+    color: var(--color-primary, #E9856F);
+    transform: rotate(-6deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .rrc__cell, .rrc__cellIcon { transition: none; }
+    .rrc__cell:hover .rrc__cellIcon { transform: none; }
+  }
+
+  /* ============== 5 · MINI vs COMPLETO · split editorial abierto con hairline ============== */
+  .rrv {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-base, #FBF8F1);
+  }
+  .rrv__header {
+    max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .rrv__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  }
+  .rrv__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1rem, 2vw, 1.25rem);
+  }
+  .rrv__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .rrv__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .rrv__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Split 2 columnas con hairline vertical (desktop) / horizontal (mobile) */
+  .rrv__split {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  @media (min-width: 820px) {
+    .rrv__split { grid-template-columns: 1fr 1fr; }
+  }
+  .rrv__col {
+    display: flex; flex-direction: column;
+    gap: clamp(1rem, 2vw, 1.25rem);
+    padding: clamp(1.75rem, 3vw, 2.5rem) 0;
+  }
+  .rrv__col:nth-child(1) {
+    padding-bottom: clamp(2rem, 4vw, 2.5rem);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  .rrv__col:nth-child(2) { padding-top: clamp(2rem, 4vw, 2.5rem); }
+  @media (min-width: 820px) {
+    .rrv__col:nth-child(1) {
+      padding: clamp(1rem, 2vw, 1.25rem) clamp(2rem, 4vw, 3rem) clamp(1rem, 2vw, 1.25rem) 0;
+      border-bottom: none;
+      border-right: 1px solid rgba(26, 31, 46, 0.14);
+    }
+    .rrv__col:nth-child(2) {
+      padding: clamp(1rem, 2vw, 1.25rem) 0 clamp(1rem, 2vw, 1.25rem) clamp(2rem, 4vw, 3rem);
+    }
+  }
+  .rrv__colTag {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    align-self: flex-start;
+  }
+  .rrv__colTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.8vw, 2rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0;
+  }
+  .rrv__arrow {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0.15em;
+  }
+  .rrv__stats {
+    display: flex; align-items: center; gap: clamp(1rem, 2vw, 1.5rem);
+    padding: clamp(0.75rem, 1.5vw, 1rem) 0;
+  }
+  .rrv__stat { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+  .rrv__stat strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    display: flex; align-items: baseline; gap: 3px;
+  }
+  .rrv__stat strong small {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .rrv__stat span:last-child {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .rrv__statSep {
+    width: 1px; height: 36px;
+    background: rgba(26, 31, 46, 0.14);
+    flex-shrink: 0;
+  }
+  .rrv__colText {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+    max-width: 440px;
+  }
+  .rrv__colText strong { color: var(--color-text-primary); font-weight: 700; }
+  .rrv__colLink {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-text-primary);
+    border-bottom: 1.5px solid var(--color-sage, #3D4F3A);
+    padding-bottom: 2px;
+    align-self: flex-start;
+    transition: color 220ms, border-color 220ms;
+  }
+  .rrv__colLink:hover {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+  }
+  .rrv__colLink svg { transition: transform 220ms; }
+  .rrv__colLink:hover svg { transform: translateX(3px); }
+
+  /* ============== 7 · INTERLINKING · sage dark (compact version of .cdx) ============== */
+  .rrx {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 100%, rgba(244, 181, 163, 0.12) 0%, transparent 65%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1; overflow: hidden;
+    position: relative; isolation: isolate;
+  }
+  .rrx::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 10%, transparent 80%);
+  }
+  .rrx__header { max-width: 900px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .rrx__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: 1rem;
+  }
+  .rrx__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: #FBF8F1; margin: 0;
+  }
+  .rrx__title .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .rrx__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1200px; margin: 0 auto; align-items: stretch;
+  }
+  @media (min-width: 900px) { .rrx__grid { grid-template-columns: 1fr 1.05fr; gap: clamp(2.5rem, 4vw, 3.5rem); } }
+
+  .rrx__reserva { position: relative; border-radius: var(--radius-xl, 1.5rem); overflow: hidden; box-shadow: 0 24px 56px rgba(0, 0, 0, 0.4); align-self: stretch; min-height: 100%; }
+  .rrx__reservaBg { position: absolute; inset: 0; overflow: hidden; }
+  .rrx__reservaBg :global(picture), .rrx__reservaBg :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transform-origin: 50% 60%;
+    animation: rrxKen 24s ease-in-out infinite alternate;
+  }
+  @keyframes rrxKen { 0% { transform: scale(1.02); } 100% { transform: scale(1.12) translate(-1%, 1%); } }
+  .rrx__reservaScrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.65) 0%, rgba(15, 20, 30, 0.55) 35%, rgba(15, 20, 30, 0.9) 100%),
+      radial-gradient(ellipse 60% 45% at 15% 80%, rgba(61, 79, 58, 0.4) 0%, transparent 70%);
+  }
+  .rrx__reservaInner {
+    position: relative; height: 100%;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 1.25rem);
+  }
+  .rrx__reservaKicker {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0.875rem 0.4rem 0.625rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.25);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    align-self: flex-start;
+  }
+  .rrx__reservaDot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-primary); animation: rrxResPulse 2.2s ease-in-out infinite; }
+  @keyframes rrxResPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.5); } 50% { box-shadow: 0 0 0 6px rgba(233, 133, 111, 0); } }
+  .rrx__reservaT {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 3.2vw, 2.125rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1; margin: 0;
+  }
+  .rrx__reservaT .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .rrx__reservaS { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.65; color: rgba(251, 248, 241, 0.8); margin: 0 0 0.25rem; }
+  .rrx__reservaS strong { color: #FBF8F1; font-weight: 700; }
+
+  .rrx__channels { list-style: none; padding: 0; margin: auto 0 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .rrx__ch {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 0.875rem;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: rgba(251, 248, 241, 0.08);
+    border: 1px solid rgba(251, 248, 241, 0.14);
+    border-radius: var(--radius-md, 0.75rem);
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .rrx__ch:hover { background: rgba(251, 248, 241, 0.14); border-color: rgba(244, 181, 163, 0.5); transform: translateX(3px); }
+  .rrx__chIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(251, 248, 241, 0.12);
+    color: var(--color-primary-soft, #F4B5A3);
+    transition: background 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .rrx__ch--wa .rrx__chIcon { color: #25D366; }
+  .rrx__ch:hover .rrx__chIcon { background: var(--color-primary); color: #FBF8F1; }
+  .rrx__ch--wa:hover .rrx__chIcon { background: #25D366; color: #FBF8F1; }
+  .rrx__chBody { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .rrx__chLabel { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; color: #FBF8F1; letter-spacing: 0.3px; }
+  .rrx__chValue { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; color: rgba(251, 248, 241, 0.65); letter-spacing: 0.3px; }
+  .rrx__chArrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: rgba(251, 248, 241, 0.5);
+    transition: transform 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .rrx__ch:hover .rrx__chArrow { color: var(--color-primary-soft, #F4B5A3); transform: translateX(4px); }
+
+  .rrx__list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .rrx__item { background: rgba(251, 248, 241, 0.05); border: 1px solid rgba(251, 248, 241, 0.12); border-radius: var(--radius-md, 0.875rem); overflow: hidden; transition: background 300ms ease, border-color 300ms ease; }
+  .rrx__item[open] { background: rgba(251, 248, 241, 0.09); border-color: rgba(244, 181, 163, 0.4); }
+  .rrx__sum {
+    list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 1rem;
+    align-items: center; padding: 1.125rem 1.25rem;
+    cursor: pointer; position: relative;
+    transition: padding 300ms ease;
+  }
+  .rrx__sum::-webkit-details-marker { display: none; }
+  .rrx__item[open] .rrx__sum { padding-bottom: 0.625rem; }
+  .rrx__eyerow { display: flex; align-items: center; gap: 0.75rem; grid-row: 1; grid-column: 1; margin-bottom: 0.375rem; }
+  .rrx__num { font-family: var(--font-serif); font-style: italic; font-size: 0.875rem; color: var(--color-primary-soft, #F4B5A3); }
+  .rrx__smallE { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(251, 248, 241, 0.55); }
+  .rrx__t {
+    font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+    font-weight: 800; line-height: 1.2; letter-spacing: -0.005em;
+    color: #FBF8F1; margin: 0;
+    grid-row: 2; grid-column: 1;
+  }
+  .rrx__chev {
+    grid-row: 1 / span 2; grid-column: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: var(--color-primary);
+    color: #FBF8F1;
+    border-radius: 50%;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease;
+    flex-shrink: 0;
+  }
+  .rrx__item[open] .rrx__chev {
+    transform: rotate(90deg);
+    background: var(--color-primary-soft, #F4B5A3);
+    color: var(--color-text-primary, #1A1F2E);
+  }
+  .rrx__body {
+    padding: 0 1.25rem 1.25rem;
+    animation: rrxBodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes rrxBodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .rrx__body p { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: rgba(251, 248, 241, 0.8); margin: 0.375rem 0 1rem; }
+  .rrx__body p strong { color: #FBF8F1; font-weight: 700; }
+  .rrx__link2 {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    color: var(--color-primary-soft, #F4B5A3);
+    border-bottom: 1px solid rgba(244, 181, 163, 0.4);
+    padding-bottom: 2px;
+  }
+  .rrx__link2:hover { color: #FBF8F1; border-bottom-color: #FBF8F1; }
+  .rrx__link2 svg { transition: transform 200ms ease; }
+  .rrx__link2:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rrx__body, .rrx__reservaBg :global(img), .rrx__reservaBg :global(picture), .rrx__reservaDot { animation: none; }
+    .rrx__ch:hover, .rrx__ch:hover .rrx__chArrow { transform: none; }
+    .rrx__chev { transition: background-color 200ms ease; }
+    .rrx__item[open] .rrx__chev { transform: rotate(90deg); }
+  }
+
+  /* ============== 8 · FAQ sage sidebar ============== */
+  .rrf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .rrf__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 4rem); max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+  @media (min-width: 960px) { .rrf__grid { grid-template-columns: 1fr 1.3fr; } }
+  .rrf__aside { position: sticky; top: 6rem; align-self: start; }
+  .rrf__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.25rem;
+  }
+  .rrf__title {
+    font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 900;
+    line-height: 1; letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0 0 1.25rem;
+  }
+  .rrf__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .rrf__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .rrf__lead a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.35); }
+
+  .rrf__list { display: flex; flex-direction: column; gap: 0.625rem; }
+  .rrfI {
+    background: #fff; border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: var(--radius-md, 0.875rem); overflow: hidden;
+    transition: all 300ms ease;
+  }
+  .rrfI[open] { background: rgba(61, 79, 58, 0.05); border-color: rgba(61, 79, 58, 0.3); }
+  .rrfI__q {
+    list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem; padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    line-height: 1.3; color: var(--color-text-primary);
+  }
+  .rrfI__q::-webkit-details-marker { display: none; }
+  .rrfI__chev { flex-shrink: 0; color: var(--color-sage, #3D4F3A); transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .rrfI[open] .rrfI__chev { transform: rotate(180deg); }
+  .rrfI__a {
+    padding: 0 1.5rem 1.5rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary); margin: 0;
+    animation: rrfABodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes rrfABodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .rrfI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .rrfI__a a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.35); }
+
+  /* ============== 9 · CTA FINAL dark photo ============== */
+  .rrcta {
+    position: relative;
+    min-height: 420px;
+    color: #FBF8F1;
+    overflow: hidden; isolation: isolate;
+    display: flex; align-items: center;
+    padding-block: clamp(4rem, 8vw, 6rem);
+  }
+  .rrcta__bg { position: absolute; inset: 0; z-index: 0; }
+  .rrcta__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.62) 0%, rgba(15, 20, 30, 0.82) 100%),
+      radial-gradient(ellipse 60% 45% at 80% 20%, rgba(233, 133, 111, 0.18) 0%, transparent 70%);
+  }
+  .rrcta__bg :global(picture), .rrcta__bg :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .rrcta__inner {
+    position: relative; z-index: 1;
+    max-width: 820px; margin: 0 auto;
+    padding: 0 clamp(1.5rem, 4vw, 4rem);
+    text-align: center;
+  }
+  .rrcta__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: 1.25rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+  }
+  .rrcta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  }
+  .rrcta__title .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    text-transform: none;
+  }
+  .rrcta__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.7;
+    color: #FBF8F1;
+    max-width: 620px; margin: 0 auto 2rem;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  }
+  .rrcta__lead strong { color: #FFFFFF; font-weight: 700; }
+  .rrcta__ctas { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+  .rrcta__primary {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 1rem 1.75rem;
+    background: var(--color-primary); color: #FBF8F1;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(233, 133, 111, 0.4);
+  }
+  .rrcta__primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(233, 133, 111, 0.55); background: var(--color-primary-hover, #D66F59); }
+  .rrcta__primary svg { transition: transform 200ms; }
+  .rrcta__primary:hover svg { transform: translateX(3px); }
+  .rrcta__ghost {
+    display: inline-flex; align-items: center;
+    padding: 1rem 1.75rem;
+    background: transparent; color: #FBF8F1;
+    border: 1.5px solid rgba(251, 248, 241, 0.5);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 200ms ease;
+  }
+  .rrcta__ghost:hover { background: rgba(251, 248, 241, 0.1); border-color: rgba(251, 248, 241, 0.8); }
+
+  @media (prefers-reduced-motion: reduce) { .rrcta__primary:hover { transform: none; } }
+</style>
+
+<!-- JS · carrusel hitos (feature spread) -->
+<script>
+  (function () {
+    const track = document.querySelector<HTMLElement>('[data-rrs-track]');
+    const prev  = document.querySelector<HTMLButtonElement>('[data-rrs-nav="prev"]');
+    const next  = document.querySelector<HTMLButtonElement>('[data-rrs-nav="next"]');
+    const cur   = document.querySelector<HTMLElement>('[data-rrs-current]');
+    if (!track || !prev || !next) return;
+    const items = track.querySelectorAll<HTMLElement>('[data-rrs-item]');
+    const cw = () => {
+      if (!items[0]) return 0;
+      const r = items[0].getBoundingClientRect();
+      const s = getComputedStyle(track);
+      const g = parseFloat(s.columnGap || s.gap || '16') || 16;
+      return r.width + g;
+    };
+    const upd = () => {
+      const sMax = track.scrollWidth - track.clientWidth;
+      const width = cw();
+      const idx = width > 0 ? Math.round(track.scrollLeft / width) : 0;
+      const c = Math.max(0, Math.min(idx, items.length - 1));
+      if (cur) cur.textContent = String(c + 1).padStart(2, '0');
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= sMax - 1;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -cw(), behavior: 'smooth' }));
+    next.addEventListener('click', () => track.scrollBy({ left: cw(),  behavior: 'smooth' }));
+    track.addEventListener('scroll', () => requestAnimationFrame(upd), { passive: true });
+    window.addEventListener('resize', upd);
+    upd();
+  })();
+
+  /* Timeline · spine fill progresivo según scroll */
+  (function () {
+    const spine    = document.querySelector<HTMLElement>('[data-rrt-spine]');
+    const timeline = document.querySelector<HTMLElement>('[data-rrt-timeline]');
+    if (!spine || !timeline) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { spine.style.setProperty('--rrt-progress', '1'); return; }
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const rect = timeline.getBoundingClientRect();
+      const anchor = window.innerHeight * 0.62;
+      const progressed = anchor - rect.top;
+      const pct = Math.max(0, Math.min(1, progressed / Math.max(rect.height, 1)));
+      spine.style.setProperty('--rrt-progress', pct.toFixed(4));
+    };
+    const onScroll = () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+  })();
+</script>

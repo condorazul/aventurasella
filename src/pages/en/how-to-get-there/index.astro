@@ -1,0 +1,1692 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'en';
+const title = 'How to get to Arriondas · 50 m from the bus and train stations';
+const description = 'How to get to Arriondas for the Sella descent: 50 m from the bus and train stations. By car (A-8, A-64), ALSA bus or Renfe train. Parking 300 spaces + motorhomes.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/en/how-to-get-there/`;
+const ogImage = '/images/optimized/como-llegar-cta-lg.jpg';
+
+// Most relevant origin cities · road distances (recommended routes)
+const ciudades = [
+  { c: 'Oviedo',    km: 52,  tiempo: '50 min',     ruta: 'A-64 + N-634',      destacado: true  },
+  { c: 'Gijón',     km: 75,  tiempo: '55 min',     ruta: 'A-8 + AS-114',       destacado: true  },
+  { c: 'Santander', km: 160, tiempo: '1 h 55 min', ruta: 'A-8',                destacado: false },
+  { c: 'Bilbao',    km: 255, tiempo: '2 h 45 min', ruta: 'A-8',                destacado: false },
+  { c: 'Madrid',    km: 440, tiempo: '4 h 30 min', ruta: 'A-6 + A-66 + A-64',  destacado: false },
+];
+
+// 3 transport options in tabs
+const medios = [
+  {
+    id: 'coche',
+    tab: 'By car',
+    eyebrow: 'By car',
+    route: 'The most flexible option',
+    stats: [
+      { v: '52',  u: 'km',  l: 'from Oviedo' },
+      { v: '75',  u: 'km',  l: 'from Gijón' },
+      { v: 'A-8', u: '',    l: 'motorway' },
+    ],
+    desc: 'The most convenient way to reach Arriondas is <strong>by car on the A-8</strong> (Cantabrian motorway) from Santander, Bilbao or Gijón, or on the <strong>A-64 + N-634</strong> from Oviedo. Access is well signposted; the last section is on a secondary road (AS-114 or N-634) that crosses beautiful Asturian villages. Next to our offices we have <strong>private guarded parking with 300 spaces — also for motorhomes</strong>, free and with no restrictions.',
+    features: ['A-8 motorway', 'A-64 direct from Oviedo', 'AS-114 from Gijón', 'Free parking', 'Total flexibility', 'No timetables'],
+    photo: 'como-llegar-coche',
+    badges: ['Flexible', 'Direct', 'Comfortable'],
+  },
+  {
+    id: 'bus',
+    tab: 'By bus',
+    eyebrow: 'ALSA bus',
+    route: 'Affordable and frequent',
+    stats: [
+      { v: '~1h15', u: '',  l: 'from Oviedo' },
+      { v: '~1h06', u: '',  l: 'from Gijón' },
+      { v: 'From €6', u: '', l: 'one way' },
+    ],
+    desc: '<strong>ALSA</strong> connects Arriondas with the main Asturian cities. From <strong>Oviedo (Pepe Cosmen station)</strong> there are <strong>~20 buses per day</strong> (approx. every 30 min, first service 06:25 and last 22:15), journey ~1 h 15 min. From <strong>Gijón</strong> there are 4 direct services per day, journey ~1 h 06 min. The stop in Arriondas is at the <strong>bus station</strong>, a few minutes walk from our offices. Check timetables and buy at <a href="https://www.alsa.com" target="_blank" rel="noopener noreferrer">alsa.com</a>.',
+    features: ['~20 services/day Oviedo', '4 services/day Gijón', 'From €6 one way', 'Central station', 'No car needed', 'Buy online'],
+    photo: 'como-llegar-bus',
+    badges: ['ALSA', 'Frequent', 'Affordable'],
+  },
+  {
+    id: 'tren',
+    tab: 'By train',
+    eyebrow: 'Renfe Cercanías AM',
+    route: 'Scenic journey through Asturias',
+    stats: [
+      { v: '~1h50', u: '',  l: 'from Oviedo' },
+      { v: '3/day', u: '',  l: 'frequency' },
+      { v: 'From €5', u: '', l: 'one way' },
+    ],
+    desc: 'The <strong>Renfe Cercanías AM</strong> line (former FEVE) from Oviedo to Llanes <strong>has a stop in Arriondas</strong>. A slower but very scenic journey through Asturian landscapes: <strong>~1 h 50 min</strong>, first train around 07:57 and last around 19:07, <strong>3 services per day</strong>. From €5 per trip. Arriondas station is in the centre of town. Check updated timetables at <a href="https://www.renfe.com/es/es/cercanias/cercanias-am" target="_blank" rel="noopener noreferrer">renfe.com/cercanias-am</a>.',
+    features: ['Cercanías AM', '3 trains/day', 'From €5 one way', 'Central station', 'Scenic route', 'No car needed'],
+    photo: 'como-llegar-tren',
+    badges: ['Renfe', 'Scenic', 'Quiet'],
+  },
+];
+
+// Practical tips (6)
+const consejos = [
+  { t: 'Open hours · 10:30–12:30', s: 'Since your booking is <strong>Premium</strong>, the timetable is open: arrive at our facilities <strong>whenever it suits you between 10:30 and 12:30</strong>, with no need to choose a specific time. We kit you out on arrival and you set off down the river as soon as you\'re ready.' },
+  { t: 'High season · avoid bank holidays', s: 'In July and August, especially at weekends, the A-8 can have heavy traffic towards Asturias. If you\'re coming from Madrid or Santander, leave early or consider arriving the previous afternoon.' },
+  { t: 'Private parking · 300 spaces', s: 'We have <strong>private guarded parking, free, with capacity for 300 cars and also for motorhomes</strong>. No worries — leave the car and we take care of the rest.' },
+  { t: 'Bus · buy in advance', s: 'In high season ALSA tickets sell out. Buy <strong>1-2 days in advance</strong> online if you\'re coming by bus from Oviedo or Gijón, especially in August.' },
+  { t: 'Train · check frequencies', s: 'The Renfe Cercanías AM line has <strong>few daily services</strong> (3-4). Check outbound and return times before planning your day.' },
+  { t: 'From Madrid · consider sleeping nearby', s: 'If you\'re coming from Madrid, it\'s <strong>4 h 30 by car</strong>. It may be more comfortable to spend the night before in Oviedo, Gijón or Cangas de Onís and head down the Sella fresh the next day.' },
+];
+
+// Specific how-to-get-there FAQ (8) · data verified with ALSA and Renfe official sources
+const faqs = [
+  { q: 'How do I get to Arriondas from Oviedo?',
+    a: 'From Oviedo it\'s <strong>about 52 km · 50 min by car</strong> on the A-64 and N-634. By bus with <strong>ALSA</strong>, ~20 daily services from Pepe Cosmen station (from €6, journey ~1 h 15 min, first bus 06:25 and last 22:15). By train <strong>Renfe Cercanías AM</strong>, ~1 h 50 min, with 3 services per day from €5.' },
+  { q: 'And from Gijón?',
+    a: 'From Gijón it\'s <strong>about 75 km · 55 min by car</strong> on the A-8 and AS-114. By <strong>ALSA bus</strong> there are <strong>4 direct services per day</strong>, with a journey of ~1 h 06 min and prices from €7. Buy your tickets at <a href="https://www.alsa.com" target="_blank" rel="noopener noreferrer">alsa.com</a>.' },
+  { q: 'Is there parking at the office? Do you accept motorhomes?',
+    a: 'Yes. We have <strong>private guarded parking with 300 spaces</strong> next to our reception offices in Arriondas, <strong>free and also suitable for motorhomes</strong>. You won\'t have any problem leaving your car while you do the descent — and the return transfer drops you off in the same place.' },
+  { q: 'Do people come to the Sella descent without a car?',
+    a: 'Lots of them. A significant share of our customers arrive by <strong>ALSA bus</strong> or <strong>Renfe Cercanías AM train</strong> from Oviedo or Gijón. Our shop is <strong>just 50 metres on foot</strong> from both the <strong>bus station</strong> and the <strong>train station</strong> of Arriondas — practically a <strong>door-to-door</strong> arrival. Leaving Oviedo by bus and starting the Sella descent without leaving the centre of Arriondas is perfectly feasible.' },
+  { q: 'Until what time can we arrive?',
+    a: `Your booking is <strong>Premium · open hours</strong>. Arrive at our facilities <strong>whenever it suits you between 10:30 and 12:30</strong>, with no obligation to keep to a specific time — it's a Premium perk. We kit you out on arrival and you set off down the river as soon as you're ready. The <strong>Cantabrian Hydrographic Confederation</strong> rules that <strong>river closes at 18:00</strong> · that's why we close arrivals at 12:30 (safe margin). Exceptions: the Saturday of the <a href="/en/international-sella-descent/">International Sella Descent</a> has a single departure at a specific time · and if there's a storm or river conditions requiring entry with an instructor, we'll let you know in advance.` },
+  { q: 'How far is it from Madrid?',
+    a: 'Madrid is <strong>about 440 km · 4 h 30 min by car</strong> on the A-6 (to Benavente), A-66 (Ruta de la Plata) and A-64 (Oviedo → Arriondas). Many travellers prefer to sleep the night before in Asturias — Oviedo, Gijón or Cangas de Onís — so they can start the day of the descent fresh.' },
+  { q: 'How many buses/trains are there per day between Oviedo and Arriondas?',
+    a: '<strong>ALSA: ~20 daily buses</strong> (approx. every 30 min). <strong>Renfe Cercanías AM: 3 trains per day</strong>. The bus is faster (~1 h 15 min) and more frequent; the train is more scenic (~1 h 50 min). Both stop in Arriondas, in the centre of town.' },
+  { q: 'Can I leave backpacks or luggage before the descent?',
+    a: 'Yes. At our offices you can leave small luggage or backpacks during the descent. When you return on our transfer, you\'ll have access to <strong>changing rooms with hot showers</strong> to change before continuing your day.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'How to get to Arriondas · Car, bus and train',
+      description: 'Complete guide on how to get to Arriondas for the Sella descent: car, ALSA bus and Renfe train from the main cities of northern Spain. Private parking 300 spaces also for motorhomes.',
+      inLanguage: 'en-GB',
+      mainEntityOfPage: canonicalUrl,
+      url: canonicalUrl,
+      image: { '@type': 'ImageObject', url: `${baseUrl}/images/optimized/como-llegar-cta-lg.jpg`, width: 1920, height: 1080 },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-20',
+      dateModified:  '2026-05-12',
+      articleSection: 'Planning · How to get there',
+      keywords: ['how to get to Arriondas', 'how to get to the Sella', 'Sella descent without car', 'bus station Arriondas', 'train station Arriondas', 'parking Arriondas Sella descent', 'motorhomes Arriondas', 'ALSA Oviedo Arriondas', 'Renfe Cercanías AM Arriondas', 'distance Oviedo Arriondas'],
+      isPartOf: { '@type': 'WebSite', '@id': `${baseUrl}/#website`, name: 'Aventura en el Sella', url: baseUrl },
+      about: { '@type': 'Thing', name: 'How to get to Arriondas (Asturias) for the Sella canoe descent' },
+    },
+    {
+      '@type': 'Place',
+      '@id': `${canonicalUrl}#place`,
+      name: 'Aventura en el Sella · Arriondas',
+      description: 'Aventura en el Sella facilities in Arriondas (Asturias). Private guarded parking with 300 spaces, also for motorhomes. Changing rooms with hot showers.',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        addressCountry: 'ES',
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude:  43.3874223,
+        longitude: -5.1866022,
+      },
+      sameAs: 'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+      hasMap: 'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+      url: canonicalUrl,
+      amenityFeature: [
+        { '@type': 'LocationFeatureSpecification', name: '50 m from the bus station (ALSA)',            value: true },
+        { '@type': 'LocationFeatureSpecification', name: '50 m from the train station (Renfe Cercanías AM)', value: true },
+        { '@type': 'LocationFeatureSpecification', name: 'Private parking · 300 spaces',                value: true },
+        { '@type': 'LocationFeatureSpecification', name: 'Motorhomes accepted',                         value: true },
+        { '@type': 'LocationFeatureSpecification', name: 'Changing rooms with hot showers',             value: true },
+        { '@type': 'LocationFeatureSpecification', name: 'Lockers with key',                            value: true },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home',              item: `${baseUrl}/en/` },
+        { '@type': 'ListItem', position: 2, name: 'How to get there',  item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage} currentPath="/en/how-to-get-there/" translationKey="como_llegar">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== 1 · HERO · Editorial con signpost card (distinto) ============== -->
+  <section class="clh" aria-labelledby="clh-title">
+
+    <div class="clh__shapes" aria-hidden="true">
+      <span class="clh__shape clh__shape--1"></span>
+      <span class="clh__shape clh__shape--2"></span>
+    </div>
+    <span class="clh__watermark" aria-hidden="true">Arriondas</span>
+
+    <div class="clh__inner">
+      <div class="clh__left">
+        <nav class="clh__breadcrumb" aria-label="Breadcrumb">
+          <a href={getLocalePath('home', lang)}>Home</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">How to get there</span>
+        </nav>
+        <span class="clh__eyebrow">— How to get to Arriondas</span>
+        <h1 id="clh-title" class="clh__title">
+          How to get<br/>
+          <span class="serif-italic">to Arriondas.</span>
+        </h1>
+        <p class="clh__lead">
+          Arriondas is in <strong>eastern central Asturias</strong>, 50 km from Oviedo and
+          75 km from Gijón. Well connected by car (A-8 and A-64), ALSA bus and Renfe train.
+          Our shop is <strong>50 metres on foot from the bus and train stations</strong> ·
+          door-to-door from Oviedo, Gijón or Llanes.
+        </p>
+        <div class="clh__ctas">
+          <a href="#clh-medios" class="clh__cta clh__cta--primary">See transport options</a>
+          <a href={getLocalePath('reservar', lang)} class="clh__cta clh__cta--link">
+            Book descent
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <aside class="clh__signpost" aria-label="50 metres from the bus and train stations of Arriondas">
+        <header class="clh__sigHead">
+          <span class="clh__sigKicker">— No car · no problem</span>
+          <h2 class="clh__sigT"><span class="clh__sigBig">50&nbsp;m</span><br/><span class="serif-italic">from the stations</span></h2>
+          <p class="clh__sigLead">
+            Our shop is <strong>50 metres on foot</strong> from both the <strong>bus station</strong>
+            and the <strong>train station</strong> of Arriondas. Door-to-door arrival from Oviedo, Gijón or Llanes.
+          </p>
+        </header>
+        <ul class="clh__sigList">
+          <li class="clh__sigRow is-featured">
+            <span class="clh__sigCity">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><circle cx="8.5" cy="15" r="1" fill="currentColor"/><circle cx="15.5" cy="15" r="1" fill="currentColor"/><path d="M7 19l-2 2"/><path d="M17 19l2 2"/></svg>
+              <span>Bus station · ALSA</span>
+            </span>
+            <span class="clh__sigKm"><strong>50</strong><small> m</small></span>
+          </li>
+          <li class="clh__sigRow is-featured">
+            <span class="clh__sigCity">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 12h18"/><path d="M7 19l-2 3"/><path d="M17 19l2 3"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg>
+              <span>Train station · Renfe AM</span>
+            </span>
+            <span class="clh__sigKm"><strong>50</strong><small> m</small></span>
+          </li>
+          <li class="clh__sigRow">
+            <span class="clh__sigCity">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="7" rx="1"/><path d="M5 11l2-5h10l2 5"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/></svg>
+              <span>Own parking · 300 spaces</span>
+            </span>
+            <span class="clh__sigKm"><strong>0</strong><small> m</small></span>
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============== 2 · Distancias cards (grid 5) ============== -->
+  <section class="cld">
+    <div class="container container--xl">
+      <header class="cld__header" data-reveal>
+        <span class="cld__eyebrow">— Distance by car</span>
+        <h2 class="cld__title">
+          From the main<br/>
+          <span class="serif-italic">northern cities.</span>
+        </h2>
+        <p class="cld__lead">
+          Km, estimated time and main routes from the most common origins of our
+          customers. Without heavy traffic and respecting limits, of course.
+        </p>
+      </header>
+
+      <ol class="cld__grid">
+        {ciudades.map((c, i) => (
+          <li class="cld__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <span class="cld__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <span class="cld__city">{c.c}</span>
+            <div class="cld__stats">
+              <div class="cld__stat">
+                <strong>{c.km}<small>km</small></strong>
+                <span>distance</span>
+              </div>
+              <div class="cld__stat">
+                <strong>{c.tiempo}</strong>
+                <span>by car</span>
+              </div>
+            </div>
+            <p class="cld__route">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              {c.ruta}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============== 3 · TABS 3 MEDIOS (Coche / Bus / Tren) ============== -->
+  <section id="clh-medios" class="clt" aria-labelledby="clt-title">
+    <div class="container container--xl">
+      <header class="clt__head" data-reveal>
+        <div class="clt__headL">
+          <span class="clt__kicker">— Transport options</span>
+          <h2 id="clt-title" class="clt__title">
+            Choose your<br/>
+            <span class="serif-italic">way to arrive.</span>
+          </h2>
+        </div>
+        <div class="clt__tabs" role="tablist" aria-label="Choose transport option">
+          {medios.map((m, i) => (
+            <button type="button" role="tab" id={`clt-tab-${m.id}`}
+                    aria-selected={i === 0 ? 'true' : 'false'}
+                    aria-controls={`clt-panel-${m.id}`}
+                    class={`clt__tab${i === 0 ? ' is-active' : ''}`}
+                    data-tab={m.id} tabindex={i === 0 ? 0 : -1}>
+              {m.tab}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div class="clt__card" data-reveal data-reveal-delay="1">
+        {medios.map((m, i) => (
+          <div class={`clt__panel${i === 0 ? ' is-active' : ''}`}
+               id={`clt-panel-${m.id}`} role="tabpanel"
+               aria-labelledby={`clt-tab-${m.id}`} data-panel={m.id} hidden={i !== 0}>
+            <div class="clt__content">
+              <span class={`clt__eyebrow clt__eyebrow--${m.id}`}>{m.eyebrow}</span>
+              <h3 class="clt__route">{m.route}</h3>
+              <div class="clt__stats">
+                {m.stats.map(s => (
+                  <div class="clt__stat">
+                    <strong>{s.v}<small>{s.u}</small></strong>
+                    <span>{s.l}</span>
+                  </div>
+                ))}
+              </div>
+              <p class="clt__desc" set:html={m.desc} />
+              <ul class="clt__features">{m.features.map(f => <li>{f}</li>)}</ul>
+              <a href={getLocalePath('reservar', lang)} class="clt__cta">
+                Book descent
+                <span class="clt__ctaIcon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+            </div>
+            <div class="clt__photo">
+              <Picture src={m.photo} alt={`How to get to Arriondas ${m.tab.toLowerCase()}`} sizes="(min-width: 960px) 45vw, 100vw" bare />
+              <div class="clt__badges" aria-hidden="true">
+                {m.badges.map(b => <span class="clt__badge">{b}</span>)}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3b · ESTAMOS AQUÍ · Mapa Google Maps + card dirección ============== -->
+  <section id="estamos-aqui" class="clmap" aria-labelledby="clmap-title">
+    <div class="container container--xl">
+      <header class="clmap__header" data-reveal>
+        <span class="clmap__eyebrow">— We're here</span>
+        <h2 id="clmap-title" class="clmap__title">
+          Find us in the<br/>
+          <span class="serif-italic">centre of Arriondas.</span>
+        </h2>
+        <p class="clmap__lead">
+          Very easy access from <strong>motorway, bus and train</strong> · <strong>50 metres on foot</strong>
+          from the bus and train stations, next to the Sella River.
+        </p>
+      </header>
+
+      <div class="clmap__grid" data-reveal data-reveal-delay="1">
+        <div class="clmap__map">
+          <iframe
+            src="https://maps.google.com/maps?q=43.3874223,-5.1866022+(Aventura+en+el+Sella)&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            allowfullscreen
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Location of Aventura en el Sella in Arriondas, Asturias"
+          ></iframe>
+        </div>
+
+        <aside class="clmap__info">
+          <span class="clmap__kicker">
+            <span class="clmap__kickerDot" aria-hidden="true"></span>
+            Aventura en el Sella
+          </span>
+          <p class="clmap__addr">
+            <strong>Arriondas</strong><br/>
+            Council of Parres · Asturias
+          </p>
+
+          <ul class="clmap__features">
+            <li>
+              <span class="clmap__featIcon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><circle cx="8.5" cy="15" r="1" fill="currentColor"/><circle cx="15.5" cy="15" r="1" fill="currentColor"/></svg>
+              </span>
+              <span><strong>50 m</strong> · bus station (ALSA)</span>
+            </li>
+            <li>
+              <span class="clmap__featIcon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 12h18"/><circle cx="8" cy="16" r="1" fill="currentColor"/><circle cx="16" cy="16" r="1" fill="currentColor"/></svg>
+              </span>
+              <span><strong>50 m</strong> · train station (Renfe AM)</span>
+            </li>
+            <li>
+              <span class="clmap__featIcon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="7" rx="1"/><path d="M5 11l2-5h10l2 5"/><circle cx="7.5" cy="18" r="1.5"/><circle cx="16.5" cy="18" r="1.5"/></svg>
+              </span>
+              <span><strong>Own parking</strong> · 300 spaces · free · motorhomes</span>
+            </li>
+            <li>
+              <span class="clmap__featIcon" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/></svg>
+              </span>
+              <span><strong>A-8</strong> + <strong>A-64</strong> · direct motorway access</span>
+            </li>
+          </ul>
+
+          <div class="clmap__ctas">
+            <a href="https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!3m1!4b1!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!8m2!3d43.3874223!4d-5.1866022!16s%2Fg%2F11s4chj1vp"
+               target="_blank" rel="noopener noreferrer"
+               class="clmap__cta clmap__cta--primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Open in Google Maps
+            </a>
+            <a href="https://www.google.com/maps/dir//Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0xd36195b04532889:0x9b2face87069ecfc!2m2!1d-5.1866022!2d43.3874223!3e0"
+               target="_blank" rel="noopener noreferrer"
+               class="clmap__cta clmap__cta--ghost">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              How to get there (directions)
+            </a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============== 4 · CTA intermedio sage dark (REUSE pattern) ============== -->
+  <section class="clm">
+    <div class="container container--md">
+      <div class="clm__wrap" data-reveal>
+        <p class="clm__quote">
+          Before <em>setting off</em>,
+          <strong>book your spot</strong> · arrive whenever it suits you between 10:30 and 12:30.
+        </p>
+        <div class="clm__rule">
+          <span class="clm__ruleLine" aria-hidden="true"></span>
+          <a href={getLocalePath('reservar', lang)} class="clm__pill">
+            <span class="clm__pillDot" aria-hidden="true"></span>
+            <span>Book spot</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <span class="clm__ruleLine" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5 · CONSEJOS (radial fill sage · variación) ============== -->
+  <section class="clq">
+    <div class="container container--xl">
+      <header class="clq__header" data-reveal>
+        <span class="clq__eyebrow">— Tips for your journey</span>
+        <h2 class="clq__title">
+          Arrive easily,<br/>
+          <span class="serif-italic">without surprises.</span>
+        </h2>
+        <p class="clq__lead">
+          Practical so that the journey to Arriondas is as comfortable as the descent itself.
+        </p>
+      </header>
+
+      <ul class="clqL">
+        {consejos.map((c, i) => (
+          <li class="clqItem" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <div class="clqItem__body">
+              <span class="clqItem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="clqItem__t">{c.t}</h3>
+              <p class="clqItem__s" set:html={c.s} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== 6 · INTERLINKING + Panel Reserva (REUSE, sage dark) ============== -->
+  <section class="clx">
+    <div class="container container--xl">
+      <header class="clx__header" data-reveal>
+        <span class="clx__eyebrow">— Plan your day</span>
+        <h2 class="clx__title">
+          You know how to get here,<br/>
+          <span class="serif-italic">now organise the day.</span>
+        </h2>
+      </header>
+
+      <div class="clx__grid">
+        <aside class="clx__reserva" data-reveal>
+          <div class="clx__reservaBg" aria-hidden="true">
+            <Picture src="rio-sella-hermoso" alt="" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="clx__reservaScrim" aria-hidden="true"></div>
+          </div>
+          <div class="clx__reservaInner">
+            <span class="clx__reservaKicker">
+              <span class="clx__reservaDot" aria-hidden="true"></span>
+              Advance booking required
+            </span>
+            <h3 class="clx__reservaT">
+              Secure your spot<br/>
+              <span class="serif-italic">before coming.</span>
+            </h3>
+            <p class="clx__reservaS">
+              We reply in minutes. Card payment on booking or <strong>on the day you collect the canoe</strong>.
+            </p>
+            <ul class="clx__channels">
+              <li>
+                <a href="tel:+34681093673" class="clx__ch clx__ch--phone">
+                  <span class="clx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="clx__chBody">
+                    <span class="clx__chLabel">Call us</span>
+                    <span class="clx__chValue">+34 681 093 673</span>
+                  </span>
+                  <span class="clx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Hi%2C+I'd+like+to+book+the+Sella+descent." target="_blank" rel="noopener noreferrer" class="clx__ch clx__ch--wa">
+                  <span class="clx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="clx__chBody">
+                    <span class="clx__chLabel">WhatsApp</span>
+                    <span class="clx__chValue">Reply in minutes</span>
+                  </span>
+                  <span class="clx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href={getLocalePath('reservar', lang)} class="clx__ch clx__ch--web">
+                  <span class="clx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </span>
+                  <span class="clx__chBody">
+                    <span class="clx__chLabel">Book online</span>
+                    <span class="clx__chValue">Booking engine</span>
+                  </span>
+                  <span class="clx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href={getLocalePath('contacto', lang)} class="clx__ch clx__ch--mail">
+                  <span class="clx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <span class="clx__chBody">
+                    <span class="clx__chLabel">Message us</span>
+                    <span class="clx__chValue">Contact form</span>
+                  </span>
+                  <span class="clx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <nav class="clx__list" aria-label="Related pages">
+          <details class="clx__item" name="clx-links" open>
+            <summary class="clx__sum">
+              <span class="clx__eyerow"><span class="clx__num" aria-hidden="true">01</span><span class="clx__smallE">Prices</span></span>
+              <h3 class="clx__t">Descent prices</h3>
+              <span class="clx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="clx__body">
+              <p>€30 children · €40 adults · pets free. All inclusive.</p>
+              <a href={getLocalePath('precios', lang)} class="clx__link">See detailed prices <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="clx__item" name="clx-links">
+            <summary class="clx__sum">
+              <span class="clx__eyerow"><span class="clx__num" aria-hidden="true">02</span><span class="clx__smallE">Duration</span></span>
+              <h3 class="clx__t">How long the descent takes</h3>
+              <span class="clx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="clx__body">
+              <p>Between 3 and 5 hours depending on the route. Mini Sella 2-3 h · Full 4-5 h.</p>
+              <a href={getLocalePath('cuanto_dura', lang)} class="clx__link">Time guide <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="clx__item" name="clx-links">
+            <summary class="clx__sum">
+              <span class="clx__eyerow"><span class="clx__num" aria-hidden="true">03</span><span class="clx__smallE">Season</span></span>
+              <h3 class="clx__t">Best time to come</h3>
+              <span class="clx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="clx__body">
+              <p>June and September are ideal · August is the liveliest · spring is quietest.</p>
+              <a href={getLocalePath('mejor_epoca', lang)} class="clx__link">Month-by-month guide <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+          <details class="clx__item" name="clx-links">
+            <summary class="clx__sum">
+              <span class="clx__eyerow"><span class="clx__num" aria-hidden="true">04</span><span class="clx__smallE">Home</span></span>
+              <h3 class="clx__t">Sella canoe descent</h3>
+              <span class="clx__chev" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </summary>
+            <div class="clx__body">
+              <p>General info, routes, reviews and gallery.</p>
+              <a href={getLocalePath('home', lang)} class="clx__link">Back to home <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+            </div>
+          </details>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 7 · FAQ ============== -->
+  <section class="clf">
+    <div class="container container--xl">
+      <div class="clf__grid">
+        <aside class="clf__aside" data-reveal>
+          <span class="clf__eyebrow">— Frequently asked questions</span>
+          <h2 class="clf__title">
+            Questions about<br/>
+            <span class="serif-italic">how to get there.</span>
+          </h2>
+          <p class="clf__lead">
+            The most repeated questions about the journey to Arriondas. If you're missing any,
+            <a href={getLocalePath('contacto', lang)}>we're one message away</a>.
+          </p>
+
+          <!-- More questions? · panel with direct channels -->
+          <div class="clfMore" data-reveal data-reveal-delay="1">
+            <span class="clfMore__eyebrow">— Still any left?</span>
+            <h3 class="clfMore__title">
+              Got more<br/>
+              <span class="serif-italic">questions?</span>
+            </h3>
+            <p class="clfMore__lead">
+              We reply <strong>in minutes</strong> · no forms, no waiting.
+            </p>
+            <ul class="clfMore__channels">
+              <li>
+                <a href="tel:+34681093673" class="clfMore__ch clfMore__ch--phone" aria-label="Call 681 093 673">
+                  <span class="clfMore__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="clfMore__chBody">
+                    <strong>Call us</strong>
+                    <small>+34 681 093 673</small>
+                  </span>
+                  <span class="clfMore__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Hi%2C%20I%20have%20a%20question%20about%20how%20to%20get%20to%20Arriondas" target="_blank" rel="noopener noreferrer" class="clfMore__ch clfMore__ch--wa" aria-label="Write on WhatsApp">
+                  <span class="clfMore__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="clfMore__chBody">
+                    <strong>WhatsApp</strong>
+                    <small>Reply in minutes</small>
+                  </span>
+                  <span class="clfMore__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <div class="clf__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="clfI" name="clf-faq" open={i === 0}>
+              <summary class="clfI__q">
+                {f.q}
+                <svg class="clfI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="clfI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 8 · CTA FINAL ============== -->
+  <section class="clcta" aria-labelledby="clcta-title">
+    <div class="clcta__bg" aria-hidden="true">
+      <Picture src="como-llegar-cta" alt="Arriondas and the Sella valley · journey destination" sizes="100vw" bare />
+    </div>
+    <div class="clcta__inner">
+      <span class="clcta__eyebrow">— The river awaits you</span>
+      <h2 id="clcta-title" class="clcta__title">
+        Your route to<br/>
+        <span class="serif-italic">the Sella descent.</span>
+      </h2>
+      <p class="clcta__lead">
+        You know how to get here. Choose your date, book your spot and enjoy Asturias. <strong>We'll see you in Arriondas</strong>.
+      </p>
+      <div class="clcta__ctas">
+        <a href={getLocalePath('reservar', lang)} class="clcta__primary">
+          Book now
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href={getLocalePath('contacto', lang)} class="clcta__ghost">Message the team</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== HERO · Editorial con signpost ============== */
+  .clh {
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 55% at 90% 0%, rgba(184, 210, 230, 0.24) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 10% 100%, rgba(61, 79, 58, 0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #F8F5EC 0%, #EEE9DA 100%);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .clh__shapes { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .clh__shape { position: absolute; border-radius: 50%; filter: blur(60px); }
+  .clh__shape--1 { top: 8%; right: -8%; width: 360px; height: 360px; background: radial-gradient(circle, rgba(184, 210, 230, 0.4) 0%, transparent 70%); }
+  .clh__shape--2 { bottom: -10%; left: -8%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(61, 79, 58, 0.18) 0%, transparent 70%); }
+
+  .clh__watermark {
+    position: absolute;
+    bottom: 2rem; left: -0.08em;
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(9rem, 24vw, 19rem);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: rgba(61, 79, 58, 0.07);
+    pointer-events: none; user-select: none; white-space: nowrap; z-index: 0;
+  }
+
+  .clh__inner {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(3rem, 5vw, 4rem);
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+  }
+  @media (min-width: 900px) { .clh__inner { grid-template-columns: 1.2fr 1fr; } }
+
+  .clh__left { min-width: 0; }
+  .clh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .clh__breadcrumb a { color: var(--color-sage, #3D4F3A); }
+  .clh__breadcrumb a:hover { color: var(--color-primary); }
+  .clh__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.5rem;
+  }
+  .clh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.5rem;
+  }
+  .clh__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
+  .clh__lead {
+    font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.7;
+    color: var(--color-text-secondary); max-width: 520px;
+    margin: 0 0 2rem;
+  }
+  .clh__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .clh__ctas { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+  .clh__cta { font-family: var(--font-sans); font-weight: 700; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1); display: inline-flex; align-items: center; gap: 0.5rem; }
+  .clh__cta--primary {
+    padding: 0.95rem 1.6rem;
+    background: var(--color-sage, #3D4F3A); color: #FBF8F1;
+    border-radius: 999px;
+    font-size: 0.8125rem; letter-spacing: 1.2px; text-transform: uppercase;
+    box-shadow: 0 12px 26px rgba(61, 79, 58, 0.3);
+  }
+  .clh__cta--primary:hover { transform: translateY(-2px); background: #4A5E47; box-shadow: 0 16px 34px rgba(61, 79, 58, 0.44); }
+  .clh__cta--link {
+    color: var(--color-text-primary); font-size: 0.9375rem;
+    border-bottom: 2px solid var(--color-primary); padding-bottom: 2px;
+  }
+  .clh__cta--link:hover { color: var(--color-primary); }
+  .clh__cta--link svg { transition: transform 200ms; }
+  .clh__cta--link:hover svg { transform: translateX(3px); }
+
+  /* Signpost card · distancias rápidas */
+  .clh__signpost {
+    background: rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(61, 79, 58, 0.14);
+    border-radius: 1.25rem;
+    padding: clamp(1.5rem, 2.8vw, 2rem);
+    box-shadow: 0 24px 52px rgba(26, 31, 46, 0.08);
+  }
+  .clh__sigHead { margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid rgba(26, 31, 46, 0.08); }
+  .clh__sigKicker {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+  .clh__sigT {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .clh__sigBig {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4vw, 2.75rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-primary);
+    letter-spacing: -0.03em;
+    margin: 0 0.15em 0 0.05em;
+  }
+  .clh__sigT .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .clh__sigLead {
+    margin: 0.85rem 0 0;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .clh__sigLead strong { color: var(--color-text-primary); font-weight: 700; }
+  .clh__sigList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .clh__sigRow {
+    display: grid; grid-template-columns: 1fr auto; gap: 0.625rem 1rem;
+    align-items: center;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.5rem;
+    transition: background 220ms ease;
+  }
+  .clh__sigRow:hover { background: rgba(61, 79, 58, 0.04); }
+  .clh__sigRow.is-featured { background: rgba(233, 133, 111, 0.08); }
+  .clh__sigRow.is-featured:hover { background: rgba(233, 133, 111, 0.14); }
+  .clh__sigCity {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: 0.2px; text-transform: uppercase;
+  }
+  .clh__sigCity svg { color: var(--color-sage, #3D4F3A); flex-shrink: 0; }
+  .is-featured .clh__sigCity svg { color: var(--color-primary); }
+  .clh__sigKm {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 1.0625rem; color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+  }
+  .clh__sigKm small {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-left: 2px;
+  }
+  .clh__sigTime {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+  }
+
+  /* ============== 2 · Distancias cards ============== */
+  .cld {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-base);
+  }
+  .cld__header { max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+  .cld__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.25rem;
+  }
+  .cld__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.25rem;
+  }
+  .cld__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -0.01em; text-transform: none; }
+  .cld__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+
+  .cld__grid {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 1200px;
+    display: grid; grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 540px)  { .cld__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px)  { .cld__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1200px) { .cld__grid { grid-template-columns: repeat(5, 1fr); } }
+
+  .cld__item {
+    position: relative;
+    padding: clamp(1.5rem, 2.5vw, 2rem) 1.25rem 1.25rem;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.875rem;
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 300ms ease, border-color 300ms ease;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .cld__item::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--color-sage, #3D4F3A), var(--color-primary));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cld__item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(61, 79, 58, 0.25);
+    box-shadow: 0 20px 40px rgba(26, 31, 46, 0.08);
+  }
+  .cld__item:hover::before { transform: scaleX(1); }
+  .cld__num {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: 0.8125rem;
+    color: var(--color-primary-soft, #F4B5A3);
+    opacity: 0.75;
+  }
+  .cld__city {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.5rem); font-weight: 900;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+  }
+  .cld__stats { display: flex; gap: 1rem; padding: 0.75rem 0; border-top: 1px solid rgba(26, 31, 46, 0.08); border-bottom: 1px solid rgba(26, 31, 46, 0.08); margin-bottom: 0.75rem; }
+  .cld__stat { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .cld__stat strong {
+    font-family: var(--font-display); font-size: 1.0625rem; font-weight: 900;
+    color: var(--color-text-primary);
+    letter-spacing: -0.02em;
+    display: flex; align-items: baseline; gap: 2px;
+  }
+  .cld__stat strong small { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--color-text-muted); }
+  .cld__stat span:last-child {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .cld__route {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+  .cld__route svg { color: var(--color-sage, #3D4F3A); flex-shrink: 0; }
+
+  /* ============== 3 · TABS medios (CLONE del patrón .met con prefijo clt) ============== */
+  .clt { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); position: relative; }
+  .clt__head {
+    display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: flex-start; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 900px) { .clt__head { flex-direction: row; align-items: flex-end; } }
+  .clt__kicker {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 0.875rem;
+  }
+  .clt__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0;
+  }
+  .clt__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -0.01em; text-transform: none; }
+
+  .clt__tabs {
+    display: inline-flex; align-items: center;
+    padding: 0.25rem;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.1);
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(26, 31, 46, 0.05);
+    flex-wrap: wrap;
+  }
+  .clt__tab {
+    padding: 0.7rem 1.1rem;
+    background: transparent; border: 0; border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    white-space: nowrap;
+  }
+  .clt__tab:hover:not(.is-active) { color: var(--color-text-primary); }
+  .clt__tab.is-active { background: var(--color-text-primary, #1A1F2E); color: #FBF8F1; box-shadow: 0 6px 16px rgba(26, 31, 46, 0.25); }
+  .clt__tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+
+  .clt__card { max-width: 1200px; margin: 0 auto; background: #fff; border: 1px solid rgba(26, 31, 46, 0.08); border-radius: clamp(1.25rem, 2.5vw, 2rem); box-shadow: 0 30px 60px rgba(26, 31, 46, 0.08); overflow: hidden; }
+  .clt__panel { display: grid; grid-template-columns: 1fr; }
+  @media (min-width: 900px) { .clt__panel { grid-template-columns: 1fr 1.5fr; } }
+  .clt__panel[hidden] { display: none; }
+  .clt__panel.is-active { animation: cltPanelIn 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes cltPanelIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .clt__content {
+    padding: clamp(2rem, 4vw, 3.25rem);
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .clt__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .clt__eyebrow--coche { color: var(--color-sage, #3D4F3A); }
+  .clt__eyebrow--bus   { color: var(--color-primary); }
+  .clt__eyebrow--tren  { color: #8B6914; }
+
+  .clt__route {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 3.6vw, 2.25rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .clt__stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+    width: 100%;
+    padding: 1rem 0 0.5rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .clt__stat { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0.5rem 0.75rem 0; }
+  .clt__stat strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 2.4vw, 1.625rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    display: flex; align-items: baseline; gap: 0.15em;
+    white-space: nowrap;
+  }
+  .clt__stat strong small { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-text-muted); }
+  .clt__stat span:last-child { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--color-text-muted); }
+
+  .clt__desc { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .clt__desc strong { color: var(--color-text-primary); font-weight: 700; }
+  .clt__desc a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.4); transition: color 200ms, border-color 200ms; }
+  .clt__desc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .clt__features { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; width: 100%; }
+  @media (min-width: 500px) { .clt__features { grid-template-columns: repeat(3, 1fr); } }
+  .clt__features li {
+    padding: 0.55rem 0.9rem;
+    background: rgba(61, 79, 58, 0.06);
+    border: 1px solid rgba(61, 79, 58, 0.15);
+    border-radius: 8px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+  .clt__features li:hover { background: rgba(61, 79, 58, 0.12); border-color: rgba(61, 79, 58, 0.3); transform: translateY(-2px); }
+
+  .clt__cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    margin-top: 0.5rem;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 24px rgba(26, 31, 46, 0.2);
+  }
+  .clt__cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(26, 31, 46, 0.32); }
+  .clt__ctaIcon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #FBF8F1; color: var(--color-text-primary, #1A1F2E); transition: transform 240ms ease; }
+  .clt__cta:hover .clt__ctaIcon { transform: rotate(-12deg) translateX(2px); }
+
+  /* Variante A · foto dominante 40/60 · llena todo el alto del panel en desktop */
+  .clt__photo { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--color-bg-warm, #F5F1E8); }
+  @media (min-width: 900px) { .clt__photo { aspect-ratio: auto; min-height: 100%; } }
+  .clt__photo :global(picture), .clt__photo :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; position: absolute; inset: 0; }
+  .clt__badges { position: absolute; top: clamp(1rem, 2vw, 1.5rem); left: clamp(1rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.5rem; z-index: 1; }
+  .clt__badge {
+    padding: 0.5rem 0.9rem;
+    background: rgba(26, 31, 46, 0.75);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    color: #FBF8F1; border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  @media (max-width: 899.98px) { .clt__photo { aspect-ratio: 4 / 3; min-height: 0; } }
+  @media (prefers-reduced-motion: reduce) { .clt__panel.is-active { animation: none; } .clt__cta:hover { transform: none; } }
+
+  /* ============== 4 · CTA intermedio sage dark ============== */
+  .clm {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 15% 20%, rgba(244, 181, 163, 0.14) 0%, transparent 60%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    position: relative; isolation: isolate;
+  }
+  .clm::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
+  }
+  .clm__wrap { max-width: 780px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .clm__quote {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.45;
+    color: #FBF8F1; margin: 0 0 clamp(2.25rem, 4vw, 2.75rem);
+  }
+  .clm__quote em { color: var(--color-primary-soft, #F4B5A3); font-style: italic; }
+  .clm__quote strong { font-style: normal; font-weight: 700; }
+  .clm__rule { display: flex; align-items: center; gap: 1rem; }
+  .clm__ruleLine { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(251, 248, 241, 0.3), transparent); }
+  .clm__pill {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.9rem 1.6rem 0.9rem 1.35rem;
+    background: #FBF8F1; color: var(--color-sage, #3D4F3A);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  }
+  .clm__pill:hover { transform: translateY(-3px); background: var(--color-primary-soft, #F4B5A3); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42); }
+  .clm__pillDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: clmPillPulse 2s ease-in-out infinite;
+  }
+  @keyframes clmPillPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(233,133,111,0.6); } 50% { box-shadow: 0 0 0 6px rgba(233,133,111,0); } }
+  .clm__pill svg { transition: transform 220ms; }
+  .clm__pill:hover svg { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) { .clm__pillDot { animation: none; } }
+
+  /* ============== 5 · CONSEJOS (radial fill sage) ============== */
+  .clq {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 90% 20%, rgba(61, 79, 58, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 10% 100%, rgba(244, 181, 163, 0.08) 0%, transparent 60%),
+      #F2F4EC;
+    position: relative;
+  }
+  .clq::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(61, 79, 58, 0.2), transparent); }
+  .clq__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .clq__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-sage, #3D4F3A); margin-bottom: 1.25rem; }
+  .clq__title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 900; line-height: 1; letter-spacing: -0.015em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 1rem; }
+  .clq__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -0.01em; text-transform: none; }
+  .clq__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+
+  .clqL { list-style: none; padding: 0; margin: clamp(2.5rem, 5vw, 3.5rem) auto 0; display: grid; grid-template-columns: 1fr; gap: var(--s-4); max-width: 1100px; }
+  @media (min-width: 640px) { .clqL { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) { .clqL { grid-template-columns: repeat(3, 1fr); } }
+
+  /* Card con radial fill SAGE (variante del consejos /mejor-epoca/ pero sage) */
+  .clqItem {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 1.25rem;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    min-height: 180px;
+    display: flex; flex-direction: column;
+    overflow: hidden; isolation: isolate;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 360ms cubic-bezier(0.22, 1, 0.36, 1), border-color 360ms ease;
+  }
+  .clqItem::before {
+    content: ""; position: absolute; top: 50%; left: 50%;
+    width: 150%; aspect-ratio: 1;
+    transform: translate(-50%, -50%) scale(0);
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #4A5E47 0%, #3D4F3A 45%, #2C3B2A 100%);
+    transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: -1; pointer-events: none;
+  }
+  .clqItem:hover::before { transform: translate(-50%, -50%) scale(1); }
+  .clqItem:hover { transform: translateY(-6px); box-shadow: 0 30px 60px rgba(61, 79, 58, 0.35); border-color: transparent; }
+
+  .clqItem__body { position: relative; display: flex; flex-direction: column; gap: 0.5rem; }
+  .clqItem__num {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: 1.25rem;
+    color: rgba(61, 79, 58, 0.55);
+    line-height: 1;
+    transition: color 360ms cubic-bezier(0.22, 1, 0.36, 1), transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .clqItem:hover .clqItem__num { color: var(--color-primary-soft, #F4B5A3); transform: scale(1.08); }
+  .clqItem__t {
+    font-family: var(--font-display); font-size: clamp(1rem, 1.4vw, 1.125rem); font-weight: 900;
+    line-height: 1.25; letter-spacing: -0.005em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0 0 0.25rem;
+    transition: color 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .clqItem:hover .clqItem__t { color: #FBF8F1; }
+  .clqItem__s {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary); margin: 0;
+    transition: color 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .clqItem:hover .clqItem__s { color: rgba(251, 248, 241, 0.92); }
+  .clqItem__s strong { color: var(--color-text-primary); font-weight: 700; transition: color 360ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .clqItem:hover .clqItem__s strong { color: #FBF8F1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clqItem, .clqItem::before, .clqItem__num, .clqItem__t, .clqItem__s, .clqItem__s strong { transition: none; }
+    .clqItem:hover { transform: none; }
+    .clqItem:hover::before { transform: translate(-50%, -50%) scale(1); }
+  }
+
+  /* ============== 6 · Interlinking + Reserva (REUSE sage dark) ============== */
+  .clx {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 100%, rgba(244, 181, 163, 0.12) 0%, transparent 65%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1; overflow: hidden;
+    position: relative; isolation: isolate;
+  }
+  .clx::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image: linear-gradient(rgba(251,248,241,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(251,248,241,0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 10%, transparent 80%);
+  }
+  .clx__header { max-width: 900px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .clx__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary-soft, #F4B5A3); margin-bottom: 1rem; }
+  .clx__title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; color: #FBF8F1; margin: 0; }
+  .clx__title .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; }
+
+  .clx__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); max-width: 1200px; margin: 0 auto; align-items: stretch; }
+  @media (min-width: 900px) { .clx__grid { grid-template-columns: 1fr 1.05fr; gap: clamp(2.5rem, 4vw, 3.5rem); } }
+
+  .clx__reserva { position: relative; border-radius: 1.25rem; overflow: hidden; box-shadow: 0 24px 56px rgba(0, 0, 0, 0.4); align-self: stretch; }
+  .clx__reservaBg { position: absolute; inset: 0; overflow: hidden; }
+  .clx__reservaBg :global(picture), .clx__reservaBg :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 60%; animation: clxKen 24s ease-in-out infinite alternate; }
+  @keyframes clxKen { 0% { transform: scale(1.02); } 100% { transform: scale(1.12) translate(-1%, 1%); } }
+  .clx__reservaScrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.65) 0%, rgba(15, 20, 30, 0.55) 35%, rgba(15, 20, 30, 0.9) 100%),
+      radial-gradient(ellipse 60% 45% at 15% 80%, rgba(61, 79, 58, 0.4) 0%, transparent 70%);
+  }
+  .clx__reservaInner { position: relative; height: 100%; padding: clamp(1.75rem, 3vw, 2.25rem); display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 1.25rem); }
+  .clx__reservaKicker { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.875rem 0.4rem 0.625rem; background: rgba(251,248,241,0.1); border: 1px solid rgba(251,248,241,0.25); border-radius: 999px; font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-primary-soft, #F4B5A3); align-self: flex-start; }
+  .clx__reservaDot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-primary); animation: clxResPulse 2.2s ease-in-out infinite; }
+  @keyframes clxResPulse { 0%,100% { box-shadow: 0 0 0 0 rgba(233,133,111,0.5); } 50% { box-shadow: 0 0 0 6px rgba(233,133,111,0); } }
+  .clx__reservaT { font-family: var(--font-display); font-size: clamp(1.625rem, 3.2vw, 2.125rem); font-weight: 900; line-height: 1; letter-spacing: -0.025em; text-transform: uppercase; color: #FBF8F1; margin: 0; }
+  .clx__reservaT .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .clx__reservaS { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.65; color: rgba(251,248,241,0.8); margin: 0 0 0.25rem; }
+  .clx__reservaS strong { color: #FBF8F1; font-weight: 700; }
+
+  .clx__channels { list-style: none; padding: 0; margin: auto 0 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .clx__ch { display: grid; grid-template-columns: auto 1fr auto; gap: 0.875rem; align-items: center; padding: 0.875rem 1rem; background: rgba(251,248,241,0.08); border: 1px solid rgba(251,248,241,0.14); border-radius: 0.75rem; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .clx__ch:hover { background: rgba(251,248,241,0.14); border-color: rgba(244,181,163,0.5); transform: translateX(3px); }
+  .clx__chIcon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(251,248,241,0.12); color: var(--color-primary-soft, #F4B5A3); transition: background 260ms ease, color 260ms ease; flex-shrink: 0; }
+  .clx__ch--wa .clx__chIcon { color: #25D366; }
+  .clx__ch:hover .clx__chIcon { background: var(--color-primary); color: #FBF8F1; }
+  .clx__ch--wa:hover .clx__chIcon { background: #25D366; color: #FBF8F1; }
+  .clx__chBody { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .clx__chLabel { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; color: #FBF8F1; letter-spacing: 0.3px; }
+  .clx__chValue { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; color: rgba(251,248,241,0.65); letter-spacing: 0.3px; }
+  .clx__chArrow { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; color: rgba(251,248,241,0.5); transition: transform 260ms ease, color 260ms ease; flex-shrink: 0; }
+  .clx__ch:hover .clx__chArrow { color: var(--color-primary-soft, #F4B5A3); transform: translateX(4px); }
+
+  .clx__list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .clx__item { background: rgba(251,248,241,0.05); border: 1px solid rgba(251,248,241,0.12); border-radius: 0.875rem; overflow: hidden; transition: background 300ms ease, border-color 300ms ease; }
+  .clx__item[open] { background: rgba(251,248,241,0.09); border-color: rgba(244,181,163,0.4); }
+  .clx__item:hover:not([open]) { background: rgba(251,248,241,0.07); border-color: rgba(251,248,241,0.2); }
+  .clx__sum { list-style: none; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; padding: 1.125rem 1.25rem; cursor: pointer; position: relative; transition: padding 300ms ease; }
+  .clx__sum::-webkit-details-marker { display: none; }
+  .clx__item[open] .clx__sum { padding-bottom: 0.625rem; }
+  .clx__eyerow { display: flex; align-items: center; gap: 0.75rem; grid-row: 1; grid-column: 1; margin-bottom: 0.375rem; }
+  .clx__num { font-family: var(--font-serif); font-style: italic; font-size: 0.875rem; color: var(--color-primary-soft, #F4B5A3); }
+  .clx__smallE { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(251,248,241,0.55); }
+  .clx__t { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.005em; color: #FBF8F1; margin: 0; grid-row: 2; grid-column: 1; }
+  .clx__chev { grid-row: 1 / span 2; grid-column: 2; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: var(--color-primary); color: #FBF8F1; border-radius: 50%; transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease; flex-shrink: 0; }
+  .clx__item[open] .clx__chev { transform: rotate(90deg); background: var(--color-primary-soft, #F4B5A3); color: var(--color-text-primary, #1A1F2E); }
+  .clx__item:hover .clx__chev { transform: translateX(3px); }
+  .clx__item[open]:hover .clx__chev { transform: rotate(90deg); }
+  .clx__body { padding: 0 1.25rem 1.25rem; animation: clxBodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes clxBodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .clx__body p { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: rgba(251,248,241,0.8); margin: 0.375rem 0 1rem; }
+  .clx__body p strong { color: #FBF8F1; font-weight: 700; }
+  .clx__link { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; color: var(--color-primary-soft, #F4B5A3); border-bottom: 1px solid rgba(244,181,163,0.4); padding-bottom: 2px; }
+  .clx__link:hover { color: #FBF8F1; border-bottom-color: #FBF8F1; }
+  .clx__link svg { transition: transform 200ms ease; }
+  .clx__link:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clx__body { animation: none; }
+    .clx__reservaBg :global(img), .clx__reservaBg :global(picture), .clx__reservaDot { animation: none; }
+    .clx__ch:hover, .clx__ch:hover .clx__chArrow { transform: none; }
+    .clx__chev { transition: background-color 200ms ease; }
+    .clx__item[open] .clx__chev { transform: rotate(90deg); }
+  }
+
+  /* ============== 7 · FAQ (REUSE) ============== */
+  .clf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .clf__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 4rem); max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+  @media (min-width: 960px) { .clf__grid { grid-template-columns: 1fr 1.3fr; } }
+  .clf__aside { position: sticky; top: 6rem; align-self: start; display: flex; flex-direction: column; gap: clamp(2rem, 3.5vw, 2.5rem); }
+  @media (max-width: 959.98px) { .clf__aside { position: static; } }
+
+  /* ¿Tienes más preguntas? · sin caja · hairline top + canales directos */
+  .clfMore {
+    background: transparent;
+    border-radius: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    padding: clamp(1.5rem, 2.6vw, 1.9rem) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .clfMore__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .clfMore__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.7rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-transform: none;
+  }
+  .clfMore__title .serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-sage, #3d4f3a);
+    letter-spacing: 0;
+  }
+  .clfMore__lead {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0 0 0.4rem;
+  }
+  .clfMore__channels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .clfMore__ch {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.9rem 0.7rem 0.7rem;
+    background: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: background 280ms ease, transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+  }
+  .clfMore__ch:hover {
+    background: var(--color-text-primary);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px -18px rgba(26, 31, 46, 0.28);
+  }
+  .clfMore__chIcon {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-sage-subtle, #e8ece6);
+    color: var(--color-sage, #3d4f3a);
+    transition: background 280ms ease, color 280ms ease;
+  }
+  .clfMore__ch--wa .clfMore__chIcon {
+    background: rgba(37, 211, 102, 0.16);
+    color: #25D366;
+  }
+  .clfMore__ch:hover .clfMore__chIcon {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .clfMore__chBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+  .clfMore__chBody strong {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .clfMore__chBody small {
+    font-size: 0.74rem;
+    color: var(--color-text-muted);
+    transition: color 280ms ease;
+  }
+  .clfMore__ch:hover .clfMore__chBody small {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .clfMore__chArrow {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), color 280ms ease;
+  }
+  .clfMore__ch:hover .clfMore__chArrow {
+    transform: translateX(4px);
+    color: #fff;
+  }
+  .clf__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-sage, #3D4F3A); margin-bottom: 1.25rem; }
+  .clf__title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 1.25rem; }
+  .clf__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .clf__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .clf__lead a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.35); }
+  .clf__list { display: flex; flex-direction: column; gap: 0.625rem; }
+  .clfI { background: #fff; border: 1px solid rgba(26, 31, 46, 0.08); border-radius: 0.875rem; overflow: hidden; transition: all 300ms ease; }
+  .clfI[open] { background: rgba(61, 79, 58, 0.05); border-color: rgba(61, 79, 58, 0.3); }
+  .clfI__q { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 1.25rem 1.5rem; cursor: pointer; font-family: var(--font-display); font-size: 1rem; font-weight: 800; line-height: 1.3; color: var(--color-text-primary); }
+  .clfI__q::-webkit-details-marker { display: none; }
+  .clfI__chev { flex-shrink: 0; color: var(--color-sage, #3D4F3A); transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .clfI[open] .clfI__chev { transform: rotate(180deg); }
+  .clfI__a { padding: 0 1.5rem 1.5rem; font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; animation: clfABodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes clfABodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .clfI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .placeholder-inline {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(232, 179, 57, 0.18);
+    border: 1px dashed rgba(232, 179, 57, 0.5);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8125rem;
+    color: #8B6914;
+  }
+
+  /* ============== 8 · CTA FINAL ============== */
+  .clcta { position: relative; min-height: 420px; color: #FBF8F1; overflow: hidden; isolation: isolate; display: flex; align-items: center; padding-block: clamp(4rem, 8vw, 6rem); }
+  .clcta__bg { position: absolute; inset: 0; z-index: 0; }
+  .clcta__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.55) 0%, rgba(15, 20, 30, 0.7) 100%),
+      radial-gradient(ellipse 60% 45% at 80% 20%, rgba(233, 133, 111, 0.25) 0%, transparent 70%);
+  }
+  .clcta__bg :global(picture), .clcta__bg :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .clcta__inner { position: relative; z-index: 1; max-width: 820px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); text-align: center; }
+  .clcta__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary-soft, #F4B5A3); margin-bottom: 1.25rem; }
+  .clcta__title { font-family: var(--font-display); font-size: clamp(2.25rem, 5.5vw, 3.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.025em; text-transform: uppercase; color: #FBF8F1; margin: 0 0 1.5rem; text-shadow: 0 2px 24px rgba(15, 20, 30, 0.4); }
+  .clcta__title .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; }
+  .clcta__lead { font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.7; color: rgba(251, 248, 241, 0.9); max-width: 620px; margin: 0 auto 2rem; }
+  .clcta__lead strong { color: #FBF8F1; font-weight: 700; }
+  .clcta__ctas { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; }
+  .clcta__primary {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 1rem 1.75rem;
+    background: var(--color-primary); color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(233, 133, 111, 0.4);
+  }
+  .clcta__primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(233, 133, 111, 0.55); background: var(--color-primary-hover, #D66F59); }
+  .clcta__primary svg { transition: transform 200ms; }
+  .clcta__primary:hover svg { transform: translateX(3px); }
+  .clcta__ghost { display: inline-flex; align-items: center; padding: 1rem 1.75rem; background: transparent; color: #FBF8F1; border: 1.5px solid rgba(251,248,241,0.5); border-radius: 999px; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; transition: all 200ms ease; }
+  .clcta__ghost:hover { background: rgba(251, 248, 241, 0.1); border-color: rgba(251, 248, 241, 0.8); }
+
+  @media (prefers-reduced-motion: reduce) { .clcta__primary:hover { transform: none; } }
+
+  /* ============== ESTAMOS AQUÍ · Mapa + info card ============== */
+  .clmap { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .clmap__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .clmap__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .clmap__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  .clmap__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    color: var(--color-sage, #3D4F3A);
+    text-transform: none; letter-spacing: -0.01em;
+  }
+  .clmap__lead {
+    font-family: var(--font-sans); font-size: clamp(1rem, 1.4vw, 1.0625rem);
+    line-height: 1.7; color: var(--color-text-secondary);
+    max-width: 56ch; margin: 0 auto;
+  }
+  .clmap__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .clmap__grid {
+    max-width: 1180px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 2.5vw, 2rem);
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: clamp(1.25rem, 2.5vw, 1.75rem);
+    overflow: hidden;
+    box-shadow: 0 24px 60px -28px rgba(26, 31, 46, 0.18);
+  }
+  @media (min-width: 900px) { .clmap__grid { grid-template-columns: 1.4fr 1fr; gap: 0; } }
+
+  .clmap__map { position: relative; min-height: 360px; background: var(--color-bg-warm, #F5F1E8); }
+  @media (min-width: 900px) { .clmap__map { min-height: 480px; } }
+  .clmap__map iframe { display: block; width: 100%; height: 100%; position: absolute; inset: 0; }
+
+  .clmap__info {
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    display: flex; flex-direction: column; gap: 1.25rem;
+    background: var(--color-bg-warm, #F5F1E8);
+  }
+  .clmap__kicker {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font: 700 0.72rem/1 var(--font-sans);
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .clmap__kickerDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(233, 133, 111, 0.18);
+  }
+  .clmap__addr {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .clmap__addr strong { color: var(--color-text-primary); }
+  .clmap__addr br + * { font-family: var(--font-sans); font-size: 0.92rem; font-weight: 500; color: var(--color-text-secondary); letter-spacing: 0; }
+
+  .clmap__features {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.65rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .clmap__features li {
+    display: flex; align-items: center; gap: 0.75rem;
+    font: 400 0.92rem/1.45 var(--font-sans);
+    color: var(--color-text-secondary);
+  }
+  .clmap__features li strong { color: var(--color-text-primary); font-weight: 700; }
+  .clmap__featIcon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #fff;
+    color: var(--color-sage, #3D4F3A);
+    border-radius: 50%;
+    border: 1px solid rgba(61, 79, 58, 0.14);
+  }
+
+  .clmap__ctas {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .clmap__cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.15rem;
+    border-radius: 999px;
+    font: 700 0.78rem/1 var(--font-sans);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    text-decoration: none;
+    transition: all 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .clmap__cta--primary {
+    background: var(--color-text-primary, #1a1f2e);
+    color: #FBF8F1;
+  }
+  .clmap__cta--primary:hover {
+    background: var(--color-primary);
+    transform: translateY(-1px);
+  }
+  .clmap__cta--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid rgba(26, 31, 46, 0.2);
+  }
+  .clmap__cta--ghost:hover {
+    background: var(--color-sage-subtle, #e8ece6);
+    border-color: var(--color-sage, #3D4F3A);
+  }
+</style>
+
+<!-- JS · tabs medios transporte -->
+<script>
+  (function () {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.clt__tab');
+    const panels = document.querySelectorAll<HTMLElement>('.clt__panel');
+    if (!tabs.length) return;
+    const activate = (key: string) => {
+      tabs.forEach((t) => {
+        const isActive = t.dataset.tab === key;
+        t.classList.toggle('is-active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        t.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+      panels.forEach((p) => {
+        const isActive = p.dataset.panel === key;
+        p.classList.toggle('is-active', isActive);
+        if (isActive) p.removeAttribute('hidden'); else p.setAttribute('hidden', '');
+      });
+    };
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => { const k = t.dataset.tab; if (k) activate(k); });
+      t.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const arr = Array.from(tabs);
+        const idx = arr.indexOf(t);
+        const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % arr.length : (idx - 1 + arr.length) % arr.length;
+        const next = arr[nextIdx];
+        const k = next.dataset.tab;
+        if (k) { activate(k); next.focus(); }
+      });
+    });
+  })();
+</script>

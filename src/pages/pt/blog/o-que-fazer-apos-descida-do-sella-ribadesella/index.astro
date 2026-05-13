@@ -1,0 +1,211 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'A que horas acaba a descida do Sella?',
+    a: '<p>Depende de quando chegas e do percurso. Como o horário é <strong>Premium · aberto entre as 10:30 e as 12:30</strong>: se chegas cedo (10:30) e fazes o Mini Sella, acabas pelas <strong>12:30-13:30</strong>; com o percurso completo, pelas <strong>14:00-15:30</strong>. Se chegas ao último horário (12:30), acabas entre as <strong>15:00 e 17:30</strong> consoante o percurso e o ritmo. O transfer de regresso a Arriondas está incluído. A Confederação Hidrográfica fixa a permanência no rio até às 18:00.</p>',
+  },
+  {
+    q: 'O que ver em Ribadesella depois da descida?',
+    a: '<p>Ribadesella é uma das <strong>vilas mais bonitas do oriente das Astúrias</strong>. Imperdíveis: a <strong>Praia de Santa Marina</strong> (passeio marítimo com casarões modernistas), o <strong>centro histórico</strong> com a igreja Santa María, a <strong>Gruta de Tito Bustillo</strong> (pinturas rupestres Património UNESCO) e as cidrarias do porto. Em 2-3 horas tens uma tarde completa.</p>',
+  },
+  {
+    q: 'Quanto demora de Arriondas a Ribadesella?',
+    a: '<p>De carro, cerca de <strong>25 minutos</strong> pela N-634 (18 km). De autocarro ALSA há várias frequências diárias (35-40 min). Se queres planear transporte em detalhe, vemos em <a href="/pt/como-chegar/">como chegar</a>.</p>',
+  },
+  {
+    q: 'Vale a pena ir a Covadonga ou aos Lagos no mesmo dia?',
+    a: '<p>Se fizeste o Mini Sella e acabas cedo, o <strong>Santuário de Covadonga</strong> está a 30 minutos de Arriondas e pode ver-se em 1 hora — vale a pena. <strong>Os Lagos</strong> precisam de mais tempo (2-3 horas com subida, caminhada e descida) e com pernas cansadas do Sella não é o melhor plano. Melhor deixar para outro dia.</p>',
+  },
+  {
+    q: 'Onde comer bem após a descida?',
+    a: '<p>Três opções clássicas: (1) <strong>Cidrarias em Arriondas</strong> — perto, comida asturiana honesta. (2) <strong>Cangas de Onís</strong> — 15 minutos de carro, mais turística mas com bom ambiente. (3) <strong>Porto de Ribadesella</strong> — peixe fresco, sidra escanchada, vista para o mar.</p>',
+  },
+  {
+    q: 'Pode-se ir à praia depois da descida?',
+    a: '<p>Claro. A <strong>Praia de Santa Marina em Ribadesella</strong> é a mais próxima (25 min de carro) e muito familiar. Se queres uma praia mais selvagem, a <strong>Playa de Vega</strong> (10 min de Ribadesella) é espetacular.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="o-que-fazer-apos-descida-do-sella-ribadesella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Resumo:</strong> se acabaste a descida antes das 15:00, podes encaixar Ribadesella (vila + praia), Cangas de Onís (ponte romana + jogo de bola) ou Covadonga (Santuário) numa tarde. Se já são 17:00, escolhe um e fá-lo bem. Não recomendamos forçar até aos Lagos: cansa as pernas que acabaste de usar.
+  </p>
+
+  <p>
+    Muitas pessoas reservam a descida do Sella e deixam-na como "a atividade do dia". Mas depois da descida a tarde continua, e o oriente das Astúrias tem o suficiente em 30 km para completar um plano que faz a viagem inteira valer a pena.
+  </p>
+
+  <p>
+    Estas são cinco opções reais para depois da descida, com tempos honestos e sem treta. Escolhes pela energia, tempo e apetite.
+  </p>
+
+  <h2 class="post__h2" id="ribadesella">1 · Ribadesella <span class="serif-italic">· a escolha óbvia</span></h2>
+
+  <p>
+    <strong>25 minutos de Arriondas</strong>, Ribadesella é a vila onde termina a <a href="/pt/descida-internacional-do-sella/">Descida Internacional do Sella</a> e onde a tradição do rio desagua no Cantábrico (ver a sua <a href="/pt/blog/historia-descida-do-sella/">história desde 1929</a>). Se escolhes só um plano para a tarde, que seja este.
+  </p>
+
+  <h3 class="post__h3">O que ver em 2-3 horas</h3>
+  <ul>
+    <li><strong>Praia de Santa Marina</strong> — quilómetro e meio de areia, passeio marítimo com casarões modernistas do início do século XX. Excelente sítio para passear ao pôr do sol.</li>
+    <li><strong>Gruta de Tito Bustillo</strong> — pinturas rupestres Património UNESCO. Visitas guiadas com reserva prévia.</li>
+    <li><strong>Porto de pesca</strong> — barcos, cheiro a mar, cidrarias com esplanadas. Melhor ambiente ao fim do dia.</li>
+    <li><strong>Igreja Santa María Magdalena</strong> — neogótica, vistas da vila desde os arredores.</li>
+    <li><strong>Miradouro da Atalaya</strong> — subida curta que recompensa com vista panorâmica do estuário e praia. As melhores fotografias de Ribadesella.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>Plano mínimo em Ribadesella (90 minutos)</strong>
+    <p>Caminha pelo passeio desde a praia de Santa Marina até ao porto · uma cerveja ou sidra numa esplanada com vista · sobe ao miradouro da Atalaya para a fotografia · regresso ao carro na luz da tarde.</p>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-despues-inline"
+      alt="Paisagem asturiana do oriente perto do Sella · campo, montanhas e costa entre Ribadesella, Cangas e Covadonga"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Ribadesella, Cangas, Covadonga · em 30 km há mais que uma tarde. A hora dourada no oriente asturiano fecha o dia com dignidade.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="cangas">2 · Cangas de Onís <span class="serif-italic">· ponte e cidrarias</span></h2>
+
+  <p>
+    15 minutos de Arriondas em direção aos Picos de Europa. É a <strong>capital histórica do primeiro reino das Astúrias</strong> (séc. VIII) e hoje uma vila turística animada, boa para comer.
+  </p>
+
+  <ul>
+    <li><strong>Ponte Romana</strong> (na verdade medieval, séc. XIII). Icónica, com a Cruz da Vitória pendurada no arco principal. Foto obrigatória.</li>
+    <li><strong>Pista de bolos asturianos</strong> — num fim de semana encontras jogos reais.</li>
+    <li><strong>Cidrarias no passeio</strong> — porções generosas de cachopo, fabada, queijos. Boa paragem para uma refeição farta.</li>
+    <li><strong>Mercado de domingo</strong> — se vens num domingo de manhã, vale uma volta.</li>
+  </ul>
+
+  <p>
+    Cangas encaixa bem se o Sella te deixou genuinamente com fome e procuras uma refeição tradicional. É também a <strong>porta de entrada para Covadonga</strong> — o Santuário fica a 20 minutos de Cangas.
+  </p>
+
+  <h2 class="post__h2" id="covadonga">3 · Santuário de Covadonga <span class="serif-italic">· a 30 minutos</span></h2>
+
+  <p>
+    Se acabas o Mini Sella pelas 13:00 e ainda tens energia, <strong>Covadonga é viável</strong>. O Santuário com a Basílica vermelha e a Santa Gruta vê-se confortavelmente em uma hora. A ligação com a história asturiana (a batalha de Don Pelayo, o reino asturiano) é significativa e vale a pena mesmo que não sejas religioso.
+  </p>
+
+  <p>
+    <strong>Não recomendamos subir aos Lagos de Covadonga</strong> no mesmo dia da descida. São 2-3 horas extra no melhor caso (e em época alta só se sobe em autocarro lançadeira desde Cangas), e as pernas cansadas do Sella não vão aproveitar como merece.
+  </p>
+
+  <h2 class="post__h2" id="beaches">4 · Praias do oriente asturiano <span class="serif-italic">· plano horizontal</span></h2>
+
+  <p>
+    Se o que queres depois da descida é <strong>estender-te</strong>, o oriente asturiano tem praias espetaculares a menos de 30 minutos de Arriondas.
+  </p>
+
+  <ul>
+    <li><strong>Praia de Santa Marina (Ribadesella)</strong> — a mais acessível e familiar. Estacionamento, passeio, serviços.</li>
+    <li><strong>Playa de Vega (Ribadesella)</strong> — 1,5 km de areia escura, dunas protegidas, menos turística. Espetacular.</li>
+    <li><strong>Playa de la Vega (Berbes)</strong> — mais selvagem, ideal para casais que procuram calma.</li>
+    <li><strong>Praia de Gulpiyuri</strong> — a famosa "praia interior". Pequena e sobrelotada em agosto, mas curiosa.</li>
+    <li><strong>Praia do Silencio (Castañeras)</strong> — mais longe, 1h15 de carro. Só se tens o dia inteiro livre.</li>
+  </ul>
+
+  <h2 class="post__h2" id="gastronomy">5 · Comer asturiano <span class="serif-italic">a sério</span></h2>
+
+  <p>
+    Sem uma refeição asturiana tradicional, a viagem não fica completa. Três níveis por apetite e orçamento · escolhe o teu.
+  </p>
+
+  <div class="post__essentials post__essentials--three">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plano leve · 20-25 €</h3>
+      <p class="post__essential__desc">
+        Tábua de <strong>queijos asturianos</strong> (Cabrales, Gamoneu, Afuega'l Pitu) com sidra escanchada. Esplanada em Ribadesella ou Cangas.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plano clássico · 25-35 €</h3>
+      <p class="post__essential__desc">
+        <strong>Cachopo, fabada ou fabes com amêijoas</strong> numa cidraria em Arriondas, Cangas ou Ribadesella. Sobremesa com arroz doce ou casadiellas.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plano peixe · 35-50 €</h3>
+      <p class="post__essential__desc">
+        <strong>Robalo selvagem, tamboril ou lulas</strong> com vista para o porto de Ribadesella. Reserva com antecedência, sobretudo aos fins-de-semana.
+      </p>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    O oriente asturiano não se entende sem sidra escanchada, queijo Cabrales e uma fabada bem feita. Se desceste o Sella, ganhaste o direito a experimentar os três.
+  </p>
+
+  <h2 class="post__h2" id="complete-plans">Modelos de plano <span class="serif-italic">para copiar</span></h2>
+
+  <p>Pela hora a que acabas a descida · cinco itinerários honestos para fechar o dia.</p>
+
+  <ol class="post__timeline">
+    <li>
+      <time>13:00</time>
+      <div class="post__timeline__body"><strong>Tarde confortável.</strong> Refeição em Cangas · Covadonga à tarde · regresso cedo a casa.</div>
+    </li>
+    <li>
+      <time>14:30</time>
+      <div class="post__timeline__body"><strong>Refeição rápida e Ribadesella.</strong> Vila, passeio, Praia de Santa Marina · jantar lá.</div>
+    </li>
+    <li>
+      <time>16:00</time>
+      <div class="post__timeline__body"><strong>Plano horizontal.</strong> Playa de Vega ou Santa Marina · jantar no porto de Ribadesella.</div>
+    </li>
+    <li>
+      <time>17:30</time>
+      <div class="post__timeline__body"><strong>Desaceleração calma.</strong> Passeio rápido por Ribadesella ou Arriondas · jantar calmo · cedo para a cama.</div>
+    </li>
+    <li>
+      <time>18:30</time>
+      <div class="post__timeline__body"><strong>Última partida do dia.</strong> Direto para jantar numa cidraria · noite curta sem mais planos.</div>
+    </li>
+  </ol>
+
+  <h2 class="post__h2" id="accommodation">Se vais <span class="serif-italic">ficar a dormir</span></h2>
+
+  <p>
+    O oriente asturiano tem uma oferta vasta em 30 km:
+  </p>
+
+  <ul>
+    <li><strong>Arriondas:</strong> hotéis rurais, apartamentos. O mais cómodo se fazes a descida e voltas no dia seguinte.</li>
+    <li><strong>Cangas de Onís:</strong> hotéis com mais charme, ideal se vais aos Picos de Europa no dia seguinte.</li>
+    <li><strong>Ribadesella:</strong> hotéis com vista para o mar, apartamentos no passeio. Melhor para plano de praia e gastronomia.</li>
+    <li><strong>Casas rurais nas aldeias</strong> — para quem procura uma fuga total.</li>
+  </ul>
+
+  <p>
+    Temos um guia separado com detalhe por aldeia e tipo: <a href="/pt/blog/onde-ficar-perto-descida-do-sella/">onde ficar perto da descida do Sella</a>.
+  </p>
+
+  <h2 class="post__h2" id="summary">Cinco planos, uma escolha <span class="serif-italic">por tarde</span></h2>
+
+  <ul>
+    <li><strong>Ribadesella</strong> — vila + praia + jantar. O clássico plano completo.</li>
+    <li><strong>Cangas de Onís</strong> — ponte romana + cidraria + Covadonga se houver tempo.</li>
+    <li><strong>Covadonga</strong> — Santuário em 1 hora. Os Lagos outro dia.</li>
+    <li><strong>Praias</strong> — estender-se ao sol em Santa Marina, Vega ou Gulpiyuri.</li>
+    <li><strong>Gastronomia asturiana</strong> — tábua de queijo, cachopo, peixe do porto.</li>
+  </ul>
+
+  <p>
+    Qualquer que seja o teu plano, a chave é <strong>não tentar cobrir tudo</strong>. A descida já é tarefa. Escolhe <em>uma</em> coisa a mais, fá-la com calma, e pára de correr: o oriente asturiano recompensa quem vai devagar.
+  </p>
+
+  <p>
+    Ainda não reservaste a descida? Consulta <a href="/pt/precos/">preços</a> ou <a href="/pt/reserva-premium/">escolhe uma data</a>. E se a tua viagem inclui vários dias nas Astúrias, vê também <a href="/pt/melhor-epoca/">a melhor época para a descida</a> e <a href="/pt/quanto-tempo-dura/">quanto tempo demora</a>.
+  </p>
+</BlogPostLayout>

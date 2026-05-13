@@ -1,0 +1,726 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'pt';
+const title = 'Contacto · Aventura en el Sella · Arriondas (Astúrias)';
+const description = 'Contacto da Aventura en el Sella: +34 681 09 36 73 · info@aventuraenelsella.es · Arriondas, Astúrias. Respondemos por WhatsApp, email ou telefone.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/contacto/`;
+
+const faqs = [
+  { q: 'Qual é a forma mais rápida de entrar em contacto?',
+    a: '<strong>WhatsApp</strong>, sempre. Respondemos em minutos, 24/7, e podes enviar-nos fotos, datas ou dúvidas longas sem problema. Se preferires falar, o <strong>telefone</strong> está disponível das 9:00 às 19:00. Para consultas longas ou reservas com muitos detalhes, o <strong>email</strong> é ideal.' },
+  { q: 'Qual é o vosso horário?',
+    a: 'Estamos no <strong>WhatsApp 24/7</strong> (respondemos em minutos) e o <strong>telefone</strong> está aberto das <strong>9:00 às 19:00 todos os dias</strong>. Em época alta respondemos aos emails no mesmo dia.' },
+  { q: 'Como chego às vossas instalações?',
+    a: 'Estamos no centro de Arriondas (Astúrias), acesso pelo edifício Aipol — Calle Juan Carlos I, 18, Bajo II. A 40 min de Oviedo, 30 min de Cangas de Onís e 25 min de Ribadesella. Tens o mapa mesmo acima.' },
+  { q: 'Posso reservar no próprio dia?',
+    a: 'Sim — <strong>desde que o calendário de reserva mostre disponibilidade</strong> para esse dia. A nossa recomendação sincera é <strong>reservar com antecedência</strong>, sobretudo em época alta (julho-agosto) ou fins de semana, porque os lugares esgotam rapidamente. O <a href="/pt/reservar/">calendário</a> mostra-te em tempo real os dias livres. Reservar demora 2 minutos e <strong>não tens de pagar nada nesse momento</strong>.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'ContactPage',
+      '@id': `${canonicalUrl}#page`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: 'pt-PT',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+      about: { '@id': `${baseUrl}/#business` },
+    },
+    {
+      '@type': 'LocalBusiness',
+      additionalType: ['https://schema.org/TouristAttraction', 'https://schema.org/SportsActivityLocation'],
+      '@id': `${baseUrl}/#business`,
+      name: 'Aventura en el Sella',
+      alternateName: 'Descida do Sella Astúrias · Aventura en el Sella · Aluguer de Canoas',
+      url: baseUrl,
+      telephone: '+34681093673',
+      email: 'info@aventuraenelsella.es',
+      image: `${baseUrl}/images/logo/logo-schema.png`,
+      priceRange: '€€',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Calle Juan Carlos I, 18, BAJO II (acesso por Aipol)',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        postalCode: '33540',
+        addressCountry: 'ES',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: 43.3874223, longitude: -5.1866022 },
+      hasMap: 'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+      openingHoursSpecification: [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens: '09:00',
+        closes: '20:00',
+      }],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '147',
+        bestRating: '5',
+        worstRating: '1',
+      },
+      sameAs: [
+        'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+        'https://share.google/huLLaIz31FiYohuTV',
+        'https://www.tripadvisor.es/Attraction_Review-g608995-d12635919-Reviews-Aventura_en_el_Sella-Arriondas_Parres_Municipality_Asturias.html',
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início',   item: `${baseUrl}/pt/` },
+        { '@type': 'ListItem', position: 2, name: 'Contacto', item: canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/contacto/" translationKey="contacto">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO ============== -->
+  <section class="ctoh" aria-labelledby="ctoh-title">
+
+    <div class="ctoh__inner">
+      <nav class="ctoh__breadcrumb" aria-label="Breadcrumb">
+        <a href={getLocalePath('home', lang)}>Início</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Contacto</span>
+      </nav>
+
+      <span class="ctoh__eyebrow">
+        <span class="ctoh__eyebrow-dot" aria-hidden="true"></span>
+        Aventura en el Sella · Arriondas
+      </span>
+
+      <h1 id="ctoh-title" class="ctoh__title">
+        Contacto<br/>
+        <span class="serif-italic">estamos a uma mensagem</span>
+      </h1>
+
+      <p class="ctoh__lead">
+        Respondemos em minutos pelo <strong>WhatsApp</strong>, <strong>email</strong> ou
+        <strong>telefone</strong>. Resolvemos qualquer dúvida antes, durante ou depois
+        da tua reserva da <strong>descida do Sella</strong> — sem robôs nem tickets,
+        atende-te alguém da equipa.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== CANAIS DIRETOS ============== -->
+  <section class="ctc">
+    <div class="container container--xl">
+      <header class="ctc__header" data-reveal>
+        <span class="ctc__eyebrow">— Canais diretos</span>
+        <h2 class="ctc__title">
+          Escolhe o canal<br/>
+          <span class="serif-italic">que mais te convém</span>
+        </h2>
+      </header>
+
+      <div class="ctc__grid">
+        <a href="https://wa.me/34681093673?text=Olá,%20tenho%20uma%20questão%20sobre%20a%20descida%20do%20Sella." class="ctcCard ctcCard--wa" target="_blank" rel="noopener" data-reveal data-reveal-delay="1">
+          <span class="ctcCard__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20.52 3.48A11.87 11.87 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.56 4.18 1.62 6L0 24l6.18-1.6A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22c-1.86 0-3.68-.5-5.27-1.45l-.38-.22-3.67.95.98-3.58-.25-.4A9.94 9.94 0 0 1 2 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/></svg>
+          </span>
+          <div class="ctcCard__body">
+            <span class="ctcCard__kicker">Resposta em minutos</span>
+            <h3 class="ctcCard__title">WhatsApp</h3>
+            <p class="ctcCard__value">+34 681 09 36 73</p>
+            <span class="ctcCard__meta">24/7 · todos os dias</span>
+          </div>
+          <span class="ctcCard__arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a href="mailto:info@aventuraenelsella.es" class="ctcCard ctcCard--email" data-reveal data-reveal-delay="2">
+          <span class="ctcCard__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <div class="ctcCard__body">
+            <span class="ctcCard__kicker">Para reservas e consultas longas</span>
+            <h3 class="ctcCard__title">Email</h3>
+            <p class="ctcCard__value">info@aventuraenelsella.es</p>
+            <span class="ctcCard__meta">Respondemos em menos de 24h</span>
+          </div>
+          <span class="ctcCard__arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a href="tel:+34681093673" class="ctcCard ctcCard--tel" data-reveal data-reveal-delay="3">
+          <span class="ctcCard__icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          </span>
+          <div class="ctcCard__body">
+            <span class="ctcCard__kicker">Atendimento direto</span>
+            <h3 class="ctcCard__title">Telefone</h3>
+            <p class="ctcCard__value">+34 681 09 36 73</p>
+            <span class="ctcCard__meta">Seg-Dom · 9:00 às 19:00</span>
+          </div>
+          <span class="ctcCard__arrow" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== ENDEREÇO + MAPA ============== -->
+  <section class="ctm">
+    <div class="container container--xl">
+      <div class="ctm__grid">
+        <div class="ctm__info" data-reveal>
+          <span class="ctm__eyebrow">— Onde estamos</span>
+          <h2 class="ctm__title">
+            Arriondas,<br/>
+            <span class="serif-italic">coração do Sella</span>
+          </h2>
+          <p class="ctm__lead">
+            As nossas instalações ficam no <strong>centro de Arriondas</strong>,
+            a um passo da Ponte dos Canoístas — de onde parte todos os anos
+            a <a href={getLocalePath('descenso_internacional', lang)}>Descida Internacional do Sella</a>.
+          </p>
+
+          <address class="ctm__nap">
+            <div class="ctmNap">
+              <span class="ctmNap__label">Endereço</span>
+              <span class="ctmNap__value">
+                Calle Juan Carlos&nbsp;I, 18 — Bajo II<br/>
+                <em>(acesso pelas instalações da Aipol)</em><br/>
+                33540 Arriondas · Astúrias
+              </span>
+            </div>
+            <div class="ctmNap">
+              <span class="ctmNap__label">Atendimento presencial</span>
+              <span class="ctmNap__value">
+                Recebemos-te nas nossas instalações <strong>apenas com reserva prévia</strong>.<br/>
+                Aberto <strong>9:00 – 20:00</strong> todos os dias.<br/>
+                <em>Se ainda não reservaste, escreve-nos primeiro no WhatsApp ou por email.</em>
+              </span>
+            </div>
+            <div class="ctmNap">
+              <span class="ctmNap__label">Atendimento remoto</span>
+              <span class="ctmNap__value">
+                Telefone · 9:00 – 19:00<br/>
+                <em>WhatsApp 24/7 · respondemos em minutos</em>
+              </span>
+            </div>
+            <div class="ctmNap">
+              <span class="ctmNap__label">Como chegar</span>
+              <span class="ctmNap__value">
+                40 min desde Oviedo · 30 min desde Cangas de Onís<br/>
+                25 min desde Ribadesella · 1 h desde Gijón
+              </span>
+            </div>
+          </address>
+
+          <div class="ctm__actions">
+            <a href="https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!3m1!4b1!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!8m2!3d43.3874223!4d-5.1866022!16s%2Fg%2F11s4chj1vp" class="ctm__btn" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Abrir no Google Maps
+            </a>
+            <a href="https://www.google.com/maps/dir//Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m9!4m8!1m0!1m5!1m1!1s0xd36195b04532889:0x9b2face87069ecfc!2m2!1d-5.1866022!2d43.3874223!3e0" class="ctm__btn ctm__btn--ghost" target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Como chegar (direções)
+            </a>
+          </div>
+        </div>
+
+        <div class="ctm__map" data-reveal>
+          <iframe
+            src="https://maps.google.com/maps?q=43.3874223,-5.1866022+(Aventura+en+el+Sella)&z=17&output=embed"
+            width="100%"
+            height="100%"
+            style="border:0;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Localização da Aventura en el Sella em Arriondas, Astúrias"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FAQ CONTACTO ============== -->
+  <section class="ctf">
+    <div class="container container--lg">
+      <header class="ctf__header" data-reveal>
+        <span class="ctf__eyebrow">— Antes de nos contactar</span>
+        <h2 class="ctf__title">
+          Talvez a tua resposta<br/>
+          <span class="serif-italic">já esteja aqui</span>
+        </h2>
+      </header>
+
+      <div class="ctf__list">
+        {faqs.map((f, i) => (
+          <details class="ctfRow" name="faq-contacto" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="ctfRow__sign" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="ctfRow__a" set:html={f.a}></div>
+          </details>
+        ))}
+      </div>
+
+      <p class="ctf__more">
+        Não vês a tua dúvida aqui? <a href={`${getLocalePath('home', lang)}#faq`}>Consulta a FAQ completa</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== REDES / SOCIAL ============== -->
+  <section class="cts">
+    <div class="container container--lg">
+      <header class="cts__header">
+        <span class="cts__eyebrow">— Segue-nos</span>
+        <h2 class="cts__title">
+          Avaliações e novidades<br/>
+          <span class="serif-italic">nos nossos perfis</span>
+        </h2>
+      </header>
+
+      <div class="cts__grid">
+        <a href="https://share.google/huLLaIz31FiYohuTV" class="ctsLink" target="_blank" rel="noopener">
+          <span class="ctsLink__icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/></svg>
+          </span>
+          <div class="ctsLink__body">
+            <strong>Google</strong>
+            <span>Perfil e avaliações verificadas</span>
+          </div>
+        </a>
+        <a href="https://www.tripadvisor.es/Attraction_Review-g608995-d12635919-Reviews-Aventura_en_el_Sella-Arriondas_Parres_Municipality_Asturias.html" class="ctsLink" target="_blank" rel="noopener">
+          <span class="ctsLink__icon" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-3-8c0-1.7-1.3-3-3-3s-3 1.3-3 3 1.3 3 3 3 3-1.3 3-3zm9 0c0-1.7-1.3-3-3-3s-3 1.3-3 3 1.3 3 3 3 3-1.3 3-3z"/></svg>
+          </span>
+          <div class="ctsLink__body">
+            <strong>TripAdvisor</strong>
+            <span>4,5 / 5 · +147 avaliações</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== HERO ============== */
+  .ctoh {
+    position: relative;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: linear-gradient(180deg, #1A1F2E 0%, #243040 100%);
+    color: var(--color-text-on-dark, #FBF8F1);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .ctoh::before {
+    content: "";
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 10%, transparent 70%);
+  }
+  .ctoh__inner {
+    position: relative; z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+  .ctoh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.45);
+    margin-bottom: var(--s-8);
+  }
+  .ctoh__breadcrumb a { color: rgba(251, 248, 241, 0.7); transition: color 200ms; }
+  .ctoh__breadcrumb a:hover { color: var(--color-primary); }
+
+  .ctoh__eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: var(--s-6);
+  }
+  .ctoh__eyebrow-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: pulseDot 2.2s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+
+  .ctoh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8vw, 6.5rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 var(--s-6);
+  }
+  .ctoh__title .serif-italic {
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .ctoh__lead {
+    font-family: var(--font-sans); font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+    line-height: 1.65;
+    color: rgba(251, 248, 241, 0.8);
+    max-width: 60ch; margin: 0;
+  }
+  .ctoh__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  /* ============== CANAIS ============== */
+  .ctc { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .ctc__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 4rem); text-align: center; }
+  .ctc__eyebrow,
+  .ctm__eyebrow,
+  .ctf__eyebrow,
+  .cts__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .ctc__title,
+  .ctm__title,
+  .ctf__title,
+  .cts__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .ctc__title .serif-italic,
+  .ctm__title .serif-italic,
+  .ctf__title .serif-italic,
+  .cts__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+  }
+
+  .ctc__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--s-3);
+    max-width: 1100px; margin: 0 auto;
+  }
+  @media (min-width: 900px) { .ctc__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .ctcCard {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--s-4);
+    align-items: center;
+    padding: clamp(1.25rem, 2vw, 1.75rem);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-3xl);
+    text-decoration: none;
+    transition: all 260ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .ctcCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(26, 31, 46, 0.08);
+  }
+  .ctcCard--wa:hover { border-color: rgba(37, 211, 102, 0.4); }
+  .ctcCard--email:hover { border-color: rgba(233, 133, 111, 0.45); }
+  .ctcCard--tel:hover { border-color: rgba(61, 79, 58, 0.4); }
+
+  .ctcCard__icon {
+    width: 48px; height: 48px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: transform 260ms var(--ease-out);
+  }
+  .ctcCard:hover .ctcCard__icon { transform: scale(1.08); }
+  .ctcCard--wa .ctcCard__icon { background: rgba(37, 211, 102, 0.15); color: #128C7E; }
+  .ctcCard--email .ctcCard__icon { background: rgba(233, 133, 111, 0.15); color: var(--color-primary); }
+  .ctcCard--tel .ctcCard__icon { background: rgba(61, 79, 58, 0.12); color: var(--color-sage, #3D4F3A); }
+
+  .ctcCard__body { min-width: 0; }
+  .ctcCard__kicker {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 4px;
+  }
+  .ctcCard__title {
+    font-family: var(--font-display); font-size: 1.125rem; font-weight: 800;
+    line-height: 1;
+    color: var(--color-text-primary);
+    margin: 0 0 4px;
+  }
+  .ctcCard__value {
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 600;
+    color: var(--color-text-primary);
+    margin: 0 0 4px;
+    word-break: break-word;
+  }
+  .ctcCard__meta {
+    display: block;
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .ctcCard__arrow {
+    width: 34px; height: 34px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    transition: all 200ms var(--ease-out);
+  }
+  .ctcCard:hover .ctcCard__arrow {
+    background: var(--color-primary);
+    color: #fff;
+    transform: translateX(3px);
+  }
+
+  /* ============== ENDEREÇO + MAPA ============== */
+  .ctm { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .ctm__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: stretch;
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 900px) { .ctm__grid { grid-template-columns: 1fr 1.15fr; } }
+  .ctm__info { display: flex; flex-direction: column; }
+
+  .ctm__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 var(--s-6);
+    max-width: 44ch;
+  }
+  .ctm__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .ctm__lead a {
+    color: var(--color-primary); font-weight: 600;
+    border-bottom: 1px dashed var(--color-primary);
+  }
+
+  .ctm__nap {
+    font-style: normal;
+    display: flex; flex-direction: column;
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--color-border-subtle);
+    margin-bottom: var(--s-6);
+  }
+  .ctmNap {
+    display: grid; grid-template-columns: 1fr;
+    gap: 4px;
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .ctmNap:last-child { border-bottom: 0; }
+  @media (min-width: 540px) { .ctmNap { grid-template-columns: 130px 1fr; gap: var(--s-4); } }
+  .ctmNap__label {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-primary);
+    align-self: start;
+  }
+  .ctmNap__value {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.55;
+    color: var(--color-text-primary);
+  }
+  .ctmNap__value em {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+  .ctmNap__value strong { font-weight: 700; }
+
+  .ctm__actions {
+    display: flex; flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+  .ctm__btn {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.875rem 1.5rem;
+    background: var(--color-text-primary); color: var(--color-text-on-dark);
+    border: 1px solid var(--color-text-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    transition: all 220ms var(--ease-out);
+    text-decoration: none;
+  }
+  .ctm__btn:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+  .ctm__btn--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border-color: var(--color-text-primary);
+  }
+  .ctm__btn--ghost:hover {
+    background: var(--color-text-primary);
+    color: var(--color-text-on-dark);
+    border-color: var(--color-text-primary);
+  }
+
+  .ctm__map {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-3xl);
+    overflow: hidden;
+    box-shadow: 0 14px 32px rgba(26, 31, 46, 0.08);
+    border: 1px solid var(--color-border-subtle);
+    min-height: 420px;
+  }
+  @media (min-width: 900px) {
+    .ctm__map { aspect-ratio: auto; height: 100%; min-height: 100%; }
+  }
+  .ctm__map iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+  /* ============== FAQ MINI ============== */
+  .ctf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .ctf__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .ctf__list {
+    max-width: 820px; margin: 0 auto;
+    display: flex; flex-direction: column;
+  }
+  .ctfRow {
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: border-color 200ms;
+  }
+  .ctfRow[open] { border-color: rgba(233, 133, 111, 0.35); }
+  .ctfRow > summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
+    font-weight: 700; line-height: 1.35;
+    color: var(--color-text-primary);
+    transition: color 200ms;
+  }
+  .ctfRow > summary::-webkit-details-marker { display: none; }
+  .ctfRow > summary:hover { color: var(--color-primary); }
+
+  .ctfRow__sign {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+    transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms;
+  }
+  .ctfRow[open] .ctfRow__sign { transform: rotate(45deg); color: var(--color-primary); }
+
+  .ctfRow__a {
+    padding: 0 0 var(--s-5);
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 65ch;
+  }
+  .ctfRow__a :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .ctfRow__a :global(a) {
+    color: var(--color-primary); font-weight: 600;
+    border-bottom: 1px dashed var(--color-primary);
+  }
+
+  .ctf__more {
+    max-width: 820px; margin: var(--s-8) auto 0;
+    text-align: center;
+    font-family: var(--font-sans); font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+  .ctf__more a {
+    color: var(--color-primary); font-weight: 600;
+    border-bottom: 1px dashed var(--color-primary);
+  }
+
+  /* ============== SOCIAL ============== */
+  .cts { padding-block: clamp(3rem, 6vw, 5rem); background: var(--color-bg-warm, #F5F1E8); }
+  .cts__header { max-width: 720px; margin: 0 auto clamp(2rem, 4vw, 3rem); text-align: center; }
+
+  .cts__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--s-3);
+    max-width: 720px; margin: 0 auto;
+  }
+  @media (min-width: 640px) { .cts__grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .ctsLink {
+    display: flex; align-items: center; gap: var(--s-4);
+    padding: var(--s-5);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    text-decoration: none;
+    transition: all 220ms var(--ease-out);
+  }
+  .ctsLink:hover {
+    border-color: rgba(233, 133, 111, 0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(26, 31, 46, 0.06);
+  }
+  .ctsLink__icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px;
+    background: rgba(233, 133, 111, 0.14);
+    color: var(--color-primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .ctsLink__body { display: flex; flex-direction: column; gap: 2px; }
+  .ctsLink__body strong {
+    font-family: var(--font-display); font-size: 0.9375rem; font-weight: 800;
+    color: var(--color-text-primary);
+  }
+  .ctsLink__body span {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+</style>

@@ -1,0 +1,294 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: '¿Cuántos chiringuitos hay en el descenso del Sella?',
+    a: '<p>Hay <strong>6 chiringuitos principales</strong> repartidos a lo largo del recorrido: Riverland (km 1), El Oasis (km 3), El Prau (km 3), El Bosque (km 4), La Mediana (km 4) y Toraño (final del Mini Sella). Todos son accesibles desde el río con canoa, con rampa o playa fluvial para varar.</p>',
+  },
+  {
+    q: '¿Se vende alcohol en los chiringuitos del descenso?',
+    a: '<p><strong>No.</strong> En el río Sella está prohibido el consumo de alcohol durante la actividad, y los chiringuitos del recorrido no sirven bebidas alcohólicas. La carta se centra en <strong>refrescos, zumos, helados, agua</strong> y picoteo ligero. Si quieres una sidra o una caña, será al acabar, en Arriondas, Toraño o Ribadesella.</p>',
+  },
+  {
+    q: '¿Hace falta reservar en los chiringuitos del Sella?',
+    a: '<p>No suele hacer falta para una consumición rápida (refresco, zumo, helado). Si buscas algo más elaborado en agosto, sobre todo los sábados, <strong>algunos sí aceptan reserva</strong> — llega con margen o llama de camino. En temporada media o baja es raro que haya espera.</p>',
+  },
+  {
+    q: '¿Qué se puede tomar en los chiringuitos del descenso?',
+    a: '<p>La oferta es la propia de chiringuito fluvial <strong>sin alcohol</strong>: refrescos, zumos, agua, helados y <strong>picoteo sencillo</strong> (bocadillos, tortilla, snacks). Algunos chiringuitos trabajan con algo más elaborado a la hora de comer, pero la estrella suele ser una parada corta para refrescarse, comer algo ligero y volver a la canoa.</p>',
+  },
+  {
+    q: '¿Puedo saltarme los chiringuitos si quiero?',
+    a: '<p>Por supuesto. Los chiringuitos son <strong>opcionales</strong>, el picnic asturiano (empanada de bonito + bollín preñao + agua) va incluido en la reserva. Muchos clientes hacen el descenso directo, paran solo para un baño y comen del picnic en una playa fluvial. Otros alternan: picnic en una parada + un refresco en un chiringuito. Como prefieras.</p>',
+  },
+  {
+    q: '¿Los chiringuitos del Sella admiten tarjeta?',
+    a: '<p>La mayoría sí, pero <strong>no todos</strong>, y la cobertura móvil es irregular en algunos tramos del río — los datáfonos pueden fallar. Recomendamos llevar <strong>algo suelto en el bidón estanco</strong>: con 10–15 € por persona vas sobrado para una parada completa.</p>',
+  },
+  {
+    q: '¿Hay chiringuitos abiertos fuera de la temporada alta?',
+    a: '<p>En <strong>julio y agosto</strong> están todos abiertos todos los días. En <strong>junio y septiembre</strong> la mayoría abre en fin de semana y varios entre semana. En <strong>abril, mayo y octubre</strong> suele haber solo 1 o 2 operativos, normalmente fines de semana. Llama antes si el chiringuito en concreto importa para tu plan.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="chiringuitos-descenso-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Seis chiringuitos, seis excusas</strong> para parar en el descenso del Sella. Riverland, El Oasis, El Prau, El Bosque, La Mediana, Toraño. Importante: <strong>en el río no se consume alcohol</strong> y los chiringuitos del recorrido no sirven bebida alcohólica — refrescos, zumos, helados, agua y picoteo. Lo que te vas a encontrar en cada parada, sin vender humo.
+  </p>
+
+  <p>
+    El descenso del Sella no es un río en medio de la nada: a lo largo del recorrido tienes <strong>seis chiringuitos</strong> a los que puedes atracar la canoa y refrescarte. Son parte de la experiencia desde hace décadas y el motivo de que mucha gente plantee el día como "descenso con parada" en vez de como actividad deportiva.
+  </p>
+
+  <p>
+    Aquí los repasamos uno a uno, con el tipo de parada que invita cada uno y los trucos de la casa. Si quieres solo el mapa mental rápido, <a href="#resumen">salta al resumen</a>.
+  </p>
+
+  <h2 class="post__h2" id="mapa">El mapa mental <span class="serif-italic">del recorrido</span></h2>
+
+  <p>Seis paradas a lo largo de los 14,5 km · cuándo y para qué encaja cada una.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">1</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Riverland <span class="serif-italic">· inicio</span></h3>
+        <p class="post__zone__desc">Parada rápida "ya que pasamos" · antes incluso de coger ritmo en el río.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Oasis <span class="serif-italic">· primer tercio</span></h3>
+        <p class="post__zone__desc">Primera parada de verdad · ambiente animado · grupos de amigos.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Prau <span class="serif-italic">· primer tercio</span></h3>
+        <p class="post__zone__desc">Alternativa tranquila al Oasis · misma zona, otra vibe.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Bosque <span class="serif-italic">· medio</span></h3>
+        <p class="post__zone__desc">Sombra natural · el más equilibrado para parada larga sin sol.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">La Mediana <span class="serif-italic">· medio</span></h3>
+        <p class="post__zone__desc">Terraza amplia · descanso largo a media ruta del Completo.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">7</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Toraño <span class="serif-italic">· fin Mini Sella</span></h3>
+        <p class="post__zone__desc">Refresco final mientras llega el transfer de vuelta a Arriondas.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Si haces el Completo (14,5 km · Arriondas → Fríes) pasas por todos. Si haces el Mini Sella (7 km · Arriondas → Toraño) pasas por los cinco primeros y acabas en Toraño.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="chiringuito-prao"
+      alt="Chiringuito El Prau junto al río Sella — parada típica del descenso"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>El Prau · uno de los seis chiringuitos del Sella. Refresco, sombra y la canoa atracada en la orilla mientras descansan los brazos.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="riverland">1 · Riverland <span class="serif-italic">(km 1 · inicio)</span></h2>
+
+  <p>
+    El chiringuito de apertura. Prácticamente al principio del recorrido, lo tienes antes incluso de empezar a sentir el ritmo del río. Para muchos es <em>"un poco pronto para parar"</em>, pero tiene una ventaja obvia: <strong>si solo quieres probar el Sella sin compromiso</strong> o vas con peques que ya están hambrientos, Riverland permite una parada rápida antes de comprometerte con el día entero.
+  </p>
+
+  <p><strong>Qué esperar:</strong> carta típica de chiringuito fluvial <strong>sin alcohol</strong> (refrescos, zumos, agua, helados, bocadillos), ambiente tranquilo, terraza con vistas al río. Ideal para una foto temprana y tirar.</p>
+
+  <h2 class="post__h2" id="oasis-prau">2–3 · El Oasis <span class="serif-italic">y El Prau · km 3</span></h2>
+
+  <p>
+    Los dos llegan juntos en el primer tercio del recorrido. <strong>El Oasis</strong> es el más concurrido: ambiente animado, música, tipo "fiesta fluvial" en agosto. <strong>El Prau</strong> está a tiro de piedra y funciona como alternativa más calmada — misma zona del río, otra vibe.
+  </p>
+
+  <p>
+    Si vas con grupo de amigos y quieres "el ambiente", Oasis. Si vas en pareja o en familia y prefieres no rivalizar con altavoces, Prau. Ambos tienen carta de <strong>refrescos, zumos, helados y agua</strong> (sin alcohol, como todo el recorrido) + algunas tapas ligeras.
+  </p>
+
+  <div class="post__callout">
+    <strong>El truco del Oasis en agosto</strong>
+    <p>Si pasas por ahí entre las 13:00 y las 14:30 un sábado, vas a ver el lugar en su máximo ambiente. Si buscas eso, perfecto. Si buscas parar tranquilo, mejor sigue y para en El Bosque o La Mediana.</p>
+  </div>
+
+  <h2 class="post__h2" id="bosque">4 · El Bosque <span class="serif-italic">(km 4 · medio)</span></h2>
+
+  <p>
+    Para nosotras, el chiringuito más equilibrado del recorrido. Está en una zona <strong>umbría, con árboles grandes</strong> que hacen sombra natural a la terraza. Buen sitio para una parada larga si vas sin prisa.
+  </p>
+
+  <p>
+    <strong>Qué esperar:</strong> refrescos, zumos, helados, agua, bocadillos y picoteo ligero — la oferta típica de chiringuito fluvial, <strong>sin alcohol</strong>. Precios normales para zona turística.
+  </p>
+
+  <p>Si vas con niños pequeños, la sombra lo convierte en la mejor parada para refrescarse sin que nadie se derrita en plena hora del sol.</p>
+
+  <h2 class="post__h2" id="mediana">5 · La Mediana <span class="serif-italic">(km 4 · medio)</span></h2>
+
+  <p>
+    Muy cerca de El Bosque, La Mediana es una parada amplia con terraza y buen ambiente en plena zona central del recorrido. Si haces el Completo y quieres un descanso largo, encaja bien.
+  </p>
+
+  <p>
+    <strong>Qué esperar:</strong> la misma línea que el resto de chiringuitos del Sella — refrescos, zumos, agua, helados y picoteo, sin alcohol. Precio algo más alto que las paradas rápidas, coherente con una parada más larga.
+  </p>
+
+  <p>
+    Si haces el descenso Completo y piensas parar a descansar tranquilo, La Mediana + El Bosque son las dos opciones principales.
+  </p>
+
+  <p class="post__pull">
+    La diferencia entre un día "bien" y un día "para recordar" en el Sella suele estar en la parada que eliges. Picnic en el Pozo del Arco, refresco a la sombra en El Bosque, descanso largo en La Mediana. Cada opción cambia el ritmo del día.
+  </p>
+
+  <h2 class="post__h2" id="torano">6 · Toraño <span class="serif-italic">(km 7 · fin del Mini Sella)</span></h2>
+
+  <p>
+    Si haces el Mini Sella, Toraño es el punto final del recorrido. Hay un chiringuito grande al lado de la rampa de salida, perfecto para <strong>un refresco o un helado mientras esperas el transfer</strong> de vuelta a Arriondas. Si haces el Completo, es una parada intermedia — la última antes de la segunda mitad del recorrido, ya con menos chiringuitos.
+  </p>
+
+  <p>
+    Ambiente relajado, terraza amplia, carta tipo bar de ribera sin alcohol (que en Asturias es coherente con cualquier chiringuito del río). Refrescos fríos, helados, picoteo. Nada gourmet, pero honesto.
+  </p>
+
+  <h2 class="post__h2" id="elegir">Cómo elegir <span class="serif-italic">según tu plan</span></h2>
+
+  <p>Seis perfiles de día, seis paradas distintas. Encuentra el tuyo.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <h3 class="post__essential__label">Grupo buscando ambiente</h3>
+      <p class="post__essential__desc">
+        El Oasis · primera parada animada · más una parada corta final en Toraño.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="9" r="2"/><path d="M21 17v-1a3 3 0 0 0-3-3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Familia con niños</h3>
+      <p class="post__essential__desc">
+        El Bosque · sombra natural y zona resguardada para refrescarse en plena hora del sol.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Pareja buscando tranquilidad</h3>
+      <p class="post__essential__desc">
+        Picnic en el <a href="/blog/pozo-del-arco-sella/">Pozo del Arco</a> · refresco en El Prau · sin altavoces.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+      </span>
+      <h3 class="post__essential__label">Descanso largo a media ruta</h3>
+      <p class="post__essential__desc">
+        La Mediana · terraza amplia y zona central del recorrido · ideal en el Completo.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </span>
+      <h3 class="post__essential__label">Plan express · Mini rápido</h3>
+      <p class="post__essential__desc">
+        Ignora todos los chiringuitos y para solo al final, en Toraño, mientras llega el transfer.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Comida completa de verdad</h3>
+      <p class="post__essential__desc">
+        Mejor al acabar el descenso · sidrerías de Arriondas, Toraño o Ribadesella · sin prisas.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="practicas">Normas prácticas <span class="serif-italic">del chiringuito</span></h2>
+
+  <ul>
+    <li><strong>Varada correcta.</strong> Todos tienen zona de playa o rampa. No dejes la canoa donde obstruya el paso — el personal del chiringuito o los monitores que vigilan el río en kayaks pueden indicarte la zona correcta si dudas.</li>
+    <li><strong>Chaleco puesto mientras estás en el agua.</strong> Si te bañas cerca del chiringuito, sigue siendo río.</li>
+    <li><strong>En el río no se consume alcohol.</strong> Está prohibido y los chiringuitos del recorrido no lo sirven. Si te apetece una sidra o una caña, déjalo para Arriondas o Ribadesella al acabar.</li>
+    <li><strong>Pago.</strong> Muchos aceptan tarjeta, pero la cobertura es irregular. Lleva <strong>10–15 € sueltos por persona</strong> en el bidón.</li>
+    <li><strong>Nada de vidrio al río.</strong> Consume en el chiringuito, no te lleves botellas a la canoa.</li>
+    <li><strong>Respeta el entorno.</strong> Basura al contenedor, nada tirado en la grava. Lo mantenemos así entre todos.</li>
+    <li><strong>Tiempo controlado.</strong> Si haces el Completo, vigila el reloj: el transfer tiene horarios. Mejor parar 30 min en dos chiringuitos que 90 min en uno solo.</li>
+  </ul>
+
+  <h2 class="post__h2" id="picnic">Picnic o chiringuito · <span class="serif-italic">o los dos</span></h2>
+
+  <p>
+    Te lo recordamos porque es importante: el <strong>picnic asturiano va incluido</strong> en el precio del descenso (empanada de bonito, bollín preñao, agua 500 ml). El picnic es <strong>fijo y el mismo para todos los clientes</strong> — no hay opción vegana ni vegetariana. Puedes perfectamente hacer el recorrido sin parar en ningún chiringuito y comer del picnic en una playa fluvial. O alternar: picnic en una parada + refresco en un chiringuito. O ignorar el picnic y pasarlo todo en chiringuitos.
+  </p>
+
+  <p>
+    No hay gasto obligatorio en el recorrido. Los chiringuitos son un <em>plus</em>, no una condición. Si estás valorando presupuesto, <a href="/precios/">los precios del descenso</a> ya incluyen todo lo esencial del día.
+  </p>
+
+  <p>
+    Si aún no has reservado, <a href="/reservar/">elige día en el calendario</a> y planea el ritmo: el Sella cambia mucho según si haces el Completo con dos paradas largas o el Mini con un refresco al final.
+  </p>
+
+  <p>
+    Y si tu pregunta era más bien la de siempre —<em>"¿y en qué chiringuito comemos el día de agosto que viene mi prima con tres niños?"</em>— <a href="/contacto/">escríbenos</a>. Con datos reales te hacemos un plan más fino que esta guía genérica.
+  </p>
+</BlogPostLayout>

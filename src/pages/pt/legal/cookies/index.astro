@@ -1,0 +1,358 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'pt';
+const title = 'Política de cookies · Aventura en el Sella';
+const description = 'Política de cookies de Aventura en el Sella. Que cookies utilizamos, para que servem e como pode configurá-las ou desativá-las.';
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/legal/cookies/`;
+const lastUpdated = '2026-05-12';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#page`,
+  name: 'Política de cookies',
+  description,
+  inLanguage: 'pt-PT',
+  url: canonicalUrl,
+  isPartOf: { '@type': 'WebSite', name: 'Aventura en el Sella', url: baseUrl },
+  dateModified: lastUpdated,
+};
+
+const cookies = [
+  { nombre: 'astro-*',                tipo: 'Técnica · própria',      duracion: 'Sessão',     finalidad: 'Funcionamento básico do website (navegação, renderização, preferências).' },
+  { nombre: '_ga / _ga_*',            tipo: 'Analítica · Google',     duracion: '24 meses',    finalidad: 'Estatísticas de utilização agregadas (páginas visitadas, dispositivo, duração).' },
+  { nombre: '_gid',                   tipo: 'Analítica · Google',     duracion: '24 horas',    finalidad: 'Distinguir utilizadores em sessões curtas.' },
+  { nombre: 'cookies-consent',        tipo: 'Técnica · própria',      duracion: '6 meses',     finalidad: 'Memorizar a sua escolha no banner de cookies.' },
+];
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/legal/cookies/" translationKey="legal_cookies">
+  <Fragment slot="head">
+    <meta name="robots" content="index, follow" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="lgl">
+
+    <div class="lgl__inner">
+      <nav class="lgl__breadcrumb" aria-label="Trilho de navegação">
+        <a href={getLocalePath('home', lang)}>Início</a>
+        <span aria-hidden="true">/</span>
+        <a href={getLocalePath('legal_aviso', lang)}>Legal</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Cookies</span>
+      </nav>
+
+      <span class="lgl__eyebrow">— Informação legal</span>
+      <h1 class="lgl__title">Política de cookies</h1>
+      <p class="lgl__updated">Última atualização: <time datetime={lastUpdated}>12 de maio de 2026</time></p>
+
+      <nav class="lgl__toc" aria-label="Índice">
+        <h2 class="lgl__tocTitle">Índice</h2>
+        <ol>
+          <li><a href="#o-que-sao">1. O que são cookies?</a></li>
+          <li><a href="#tipos">2. Tipos de cookies que utilizamos</a></li>
+          <li><a href="#detalhe">3. Detalhe das cookies</a></li>
+          <li><a href="#consentimento">4. Consentimento</a></li>
+          <li><a href="#configurar">5. Como configurar ou desativar as cookies</a></li>
+          <li><a href="#terceiros">6. Cookies de terceiros</a></li>
+          <li><a href="#atualizacoes">7. Atualizações</a></li>
+        </ol>
+      </nav>
+
+      <article class="lgl__prose">
+
+        <section id="o-que-sao">
+          <h2>1. O que são cookies?</h2>
+          <p>
+            As cookies são pequenos ficheiros de texto que os websites armazenam no seu
+            dispositivo (computador, telemóvel, tablet) quando os visita. Permitem
+            recordar informação sobre a visita — como o idioma preferido, o estado da
+            sua sessão ou estatísticas agregadas de utilização — para melhorar a sua
+            experiência em futuros acessos.
+          </p>
+          <p>
+            A utilização de cookies neste website rege-se pela
+            <strong>Lei espanhola 34/2002, de Serviços da Sociedade da Informação
+            (LSSI-CE, artigo 22.2)</strong>, pelo
+            <strong>Regulamento (UE) 2016/679 (RGPD)</strong> e pela
+            <strong>Lei Orgânica espanhola 3/2018 de Proteção de Dados (LOPDGDD)</strong>,
+            bem como pelas <strong>diretrizes da AEPD</strong> sobre o uso de cookies.
+          </p>
+        </section>
+
+        <section id="tipos">
+          <h2>2. Tipos de cookies que utilizamos</h2>
+          <p>Classificamos as cookies por <strong>titularidade</strong>, <strong>finalidade</strong> e <strong>duração</strong>:</p>
+          <ul>
+            <li><strong>Por titularidade:</strong>
+              <ul>
+                <li><strong>Próprias:</strong> geridas diretamente por nós.</li>
+                <li><strong>De terceiros:</strong> geridas por um prestador externo (p. ex. Google Analytics).</li>
+              </ul>
+            </li>
+            <li><strong>Por finalidade:</strong>
+              <ul>
+                <li><strong>Técnicas (estritamente necessárias):</strong> permitem a navegação e o uso das funcionalidades básicas. <strong>Não requerem consentimento</strong>.</li>
+                <li><strong>De preferências ou personalização:</strong> recordam os seus ajustes.</li>
+                <li><strong>Analíticas:</strong> permitem medir a utilização do site de forma agregada e anónima.</li>
+                <li><strong>Publicitárias ou de marketing:</strong> utilizadas para rastrear visitantes em websites com o objetivo de mostrar anúncios relevantes. <strong>Atualmente não utilizamos cookies de marketing ativas</strong> neste site. Esta categoria está prevista para possíveis integrações futuras (Google Ads, Meta Pixel, etc.) que requererão sempre o seu <strong>consentimento prévio</strong>.</li>
+              </ul>
+            </li>
+            <li><strong>Por duração:</strong>
+              <ul>
+                <li><strong>De sessão:</strong> são eliminadas ao fechar o navegador.</li>
+                <li><strong>Persistentes:</strong> permanecem no seu dispositivo durante um prazo determinado.</li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section id="detalhe">
+          <h2>3. Detalhe das cookies</h2>
+          <p>Segue a lista de cookies atualmente utilizadas neste website:</p>
+          <div class="lgl__table">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Duração</th>
+                  <th scope="col">Finalidade</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cookies.map(c => (
+                  <tr>
+                    <td><code>{c.nombre}</code></td>
+                    <td>{c.tipo}</td>
+                    <td>{c.duracion}</td>
+                    <td>{c.finalidad}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p class="lgl__note">
+            <strong>Nota:</strong> esta tabela é mantida atualizada. Se detetar alguma cookie não listada,
+            escreva-nos para <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>.
+          </p>
+        </section>
+
+        <section id="consentimento">
+          <h2>4. Consentimento</h2>
+          <p>
+            Ao entrar pela primeira vez no website, mostramos um <strong>banner informativo</strong>
+            onde pode:
+          </p>
+          <ul>
+            <li><strong>Aceitar todas</strong> as cookies.</li>
+            <li><strong>Rejeitar</strong> as cookies não estritamente necessárias.</li>
+            <li><strong>Configurar as preferências</strong> por categoria.</li>
+          </ul>
+          <p>
+            As cookies <strong>técnicas</strong> são imprescindíveis para o funcionamento
+            do site e não requerem consentimento conforme o artigo 22.2 LSSI-CE. As demais
+            categorias só são ativadas se aceitar expressamente.
+          </p>
+          <p>
+            Pode <strong>modificar ou retirar o seu consentimento</strong> a qualquer
+            momento através da ligação "Configurar cookies" no rodapé, sem que isso
+            afete a licitude do tratamento prévio.
+          </p>
+        </section>
+
+        <section id="configurar">
+          <h2>5. Como configurar ou desativar as cookies</h2>
+          <p>
+            Além do banner do nosso site, pode gerir as cookies diretamente a partir do
+            seu navegador. Ligações para os guias oficiais:
+          </p>
+          <ul>
+            <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
+            <li><a href="https://support.mozilla.org/pt-PT/kb/Activar%20e%20desactivar%20cookies" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
+            <li><a href="https://support.apple.com/pt-pt/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Apple Safari</a></li>
+            <li><a href="https://support.microsoft.com/pt-pt/windows/eliminar-e-gerir-cookies-168dab11-0753-043d-7c16-ede5947fc64d" target="_blank" rel="noopener noreferrer">Microsoft Edge</a></li>
+          </ul>
+          <p>
+            <strong>Importante:</strong> se desativar todas as cookies, algumas
+            funcionalidades do site podem deixar de operar corretamente.
+          </p>
+        </section>
+
+        <section id="terceiros">
+          <h2>6. Cookies de terceiros</h2>
+          <p>
+            Quando utiliza determinadas funcionalidades (por exemplo, ver um mapa do
+            Google, estatísticas com o Google Analytics ou pagar através de uma
+            plataforma externa), podem instalar-se cookies de terceiros. Estes
+            prestadores regem-se pelas suas próprias políticas de privacidade:
+          </p>
+          <ul>
+            <li><strong>Google LLC</strong> (Google Analytics, Google Maps, possíveis integrações futuras de Google Ads): <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">policies.google.com/privacy</a></li>
+            <li><strong>Plataforma de pagamento</strong>: quando processamos cobranças online com cartão utilizamos uma <strong>plataforma PCI-DSS externa certificada</strong>. A plataforma rege-se pela sua própria política de privacidade e não armazenamos dados de cartões nos nossos sistemas.</li>
+          </ul>
+        </section>
+
+        <section id="atualizacoes">
+          <h2>7. Atualizações</h2>
+          <p>
+            Poderemos atualizar esta Política de Cookies sempre que se alterem as
+            cookies utilizadas ou a normativa aplicável. A data da última atualização
+            consta do início do documento. Recomendamos a sua revisão periódica.
+          </p>
+        </section>
+
+        <div class="lgl__contact" aria-label="Contacto cookies">
+          <p>
+            Para dúvidas sobre esta Política de Cookies, escreva-nos para
+            <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            ou ligue para <a href="tel:+34681093673">+34 681 09 36 73</a>.
+          </p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lgl {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 10% 0%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-base);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    min-height: 80vh;
+  }
+  .lgl__inner { max-width: 900px; margin: 0 auto; padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 3rem) 0; }
+  .lgl__breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .lgl__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .lgl__breadcrumb a:hover { color: var(--color-primary); }
+  .lgl__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1rem;
+  }
+  .lgl__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .lgl__updated {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .lgl__toc {
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.12);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .lgl__tocTitle {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0 1rem;
+  }
+  .lgl__toc ol { padding-left: 1.25rem; margin: 0; columns: 1; column-gap: 2rem; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-secondary); }
+  @media (min-width: 720px) { .lgl__toc ol { columns: 2; } }
+  .lgl__toc ol li { margin-bottom: 0.5rem; }
+  .lgl__toc a { color: var(--color-text-primary); transition: color 200ms; border-bottom: 1px solid transparent; }
+  .lgl__toc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .lgl__prose { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .lgl__prose section { padding-top: clamp(2rem, 4vw, 3rem); scroll-margin-top: 5rem; }
+  .lgl__prose section:first-child { padding-top: 0; }
+  .lgl__prose h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  .lgl__prose p { margin: 0 0 1rem; color: var(--color-text-secondary); }
+  .lgl__prose p strong { color: var(--color-text-primary); font-weight: 700; }
+  .lgl__prose ul { padding-left: 1.25rem; margin: 0 0 1rem; }
+  .lgl__prose ul li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+  .lgl__prose ul ul { margin-top: 0.5rem; }
+
+  .lgl__table {
+    overflow-x: auto;
+    margin: 0 0 1rem;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+  }
+  .lgl__table table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans); font-size: 0.875rem;
+    background: #fff;
+  }
+  .lgl__table thead { background: rgba(61, 79, 58, 0.06); }
+  .lgl__table th {
+    padding: 0.875rem 1rem;
+    text-align: left;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .lgl__table td {
+    padding: 0.875rem 1rem;
+    color: var(--color-text-secondary);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.05);
+    vertical-align: top;
+  }
+  .lgl__table tr:last-child td { border-bottom: 0; }
+  .lgl__table code {
+    font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+    font-size: 0.8125rem;
+    color: var(--color-text-primary);
+    background: rgba(61, 79, 58, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .lgl__note {
+    padding: 0.875rem 1.25rem;
+    background: rgba(232, 179, 57, 0.1);
+    border-left: 3px solid #E8B339;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-size: 0.9375rem;
+  }
+  .lgl__note strong { color: var(--color-text-primary); font-weight: 800; }
+
+  .lgl__prose a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 200ms, border-color 200ms;
+  }
+  .lgl__prose a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .lgl__contact {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding: 1.5rem 1.75rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 3px solid var(--color-sage, #3D4F3A);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .lgl__contact p { margin: 0; }
+</style>

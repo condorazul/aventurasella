@@ -1,0 +1,226 @@
+/* ============================================================
+   SELLA ALPINE PRO — Design tokens v2
+   Editorial travel magazine — crema cálido + sage + coral
+   Referencias: Wild Ride, See the World Differently, RanCak,
+                Hallstatt, Extraordinary Natural & Cultural Charm
+   ============================================================ */
+
+:root {
+  /* ============================================================
+     COLOR — SURFACES
+     Crema claro muy luminoso — tonos más claros como pidió el cliente
+     ============================================================ */
+  --color-bg-base:                  #fbf8f1;  /* Crema muy claro — casi blanco cálido */
+  --color-bg-warm:                  #f6f1e3;  /* Crema ligeramente más cálido */
+  --color-bg-elevated:              #ffffff;  /* Blanco puro para cards */
+  --color-bg-subtle:                #fdfbf6;  /* Casi blanco, muy sutil */
+  --color-bg-sand:                  #f1e9d4;  /* Arena para bandas alternas */
+  --color-bg-cream:                 #f9f4e8;  /* Crema intermedio */
+  --color-bg-dark:                  #1a1f2e;  /* Navy profundo */
+  --color-bg-dark-warm:             #252233;  /* Dark ligeramente más cálido */
+  --color-bg-sage:                  #3d4f3a;  /* Verde sage profundo */
+
+  /* COLOR — TEXT */
+  --color-text-primary:             #1a1f2e;  /* Soft navy — NO #000 */
+  --color-text-secondary:           #4a5267;  /* Gris secundario */
+  --color-text-muted:               #8a8578;  /* Warm grey muted */
+  --color-text-on-dark:             #f4f0e8;  /* Crema sobre fondo oscuro */
+  --color-text-on-dark-muted:       rgba(244, 240, 232, 0.72);
+  --color-text-on-primary:          #ffffff;
+
+  /* ============================================================
+     COLOR — BRAND
+     Coral peach dominante (femenino elegante)
+     Verde sage como secundario natural
+     ============================================================ */
+
+  /* PRIMARY — coral peach (CTAs y highlights) */
+  --color-primary:                  #e9856f;  /* Coral peach cálido */
+  --color-primary-hover:            #dd7359;
+  --color-primary-active:           #c85c44;
+  --color-primary-subtle:           #fcebe4;
+  --color-primary-soft:             #f5c5b5;
+
+  /* SAGE — verde natural profundo (ancla brand) */
+  --color-sage:                     #3d4f3a;
+  --color-sage-hover:                #324029;
+  --color-sage-subtle:               #e8ece6;
+  --color-sage-soft:                 #c9d4c3;
+
+  /* OCHRE — amarillo mostaza cálido (acentos raros, badges, stickers) */
+  --color-ochre:                    #c49a3a;
+  --color-ochre-subtle:             #f5ecd4;
+
+  /* COPPER — cobre vintage (acentos editoriales opcionales) */
+  --color-copper:                   #b06a3b;
+
+  /* ============================================================
+     SEMÁNTICOS
+     ============================================================ */
+  --color-success:                  #5a8a4e;
+  --color-success-subtle:           #ecf1e6;
+  --color-warning:                  #d4911c;
+  --color-warning-subtle:           #fdf4e3;
+  --color-danger:                   #c53838;
+  --color-danger-subtle:            #fbe9e9;
+
+  /* ============================================================
+     BORDERS — ghost, nunca opacos
+     ============================================================ */
+  --color-border-subtle:            rgba(26, 31, 46, 0.08);
+  --color-border-default:           rgba(26, 31, 46, 0.14);
+  --color-border-strong:            rgba(26, 31, 46, 0.22);
+  --color-border-on-dark:           rgba(244, 240, 232, 0.18);
+
+  /* ============================================================
+     GRADIENTS
+     ============================================================ */
+  --gradient-primary:               linear-gradient(135deg, #e9856f 0%, #f5a88d 100%);
+  --gradient-hero-overlay:          linear-gradient(180deg, rgba(26,31,46,0.15) 0%, rgba(26,31,46,0.55) 55%, rgba(26,31,46,0.78) 100%);
+  --gradient-dark-glass:            linear-gradient(135deg, rgba(26,31,46,0.92) 0%, rgba(45,42,36,0.88) 100%);
+
+  /* ============================================================
+     TYPOGRAPHY
+     Display: Inter (sans geométrica uppercase)
+     Serif italic: Fraunces (editorial, toque femenino)
+     ============================================================ */
+  --font-sans:       'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-serif:      'Fraunces Variable', 'Times New Roman', Georgia, serif;
+  --font-display:    'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-body:       'Inter Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono:       'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Sizes — escala fluid */
+  --fs-display-2xl:  clamp(3.75rem, 10vw, 9rem);    /* 60-144px — hero MASIVO */
+  --fs-display-xl:   clamp(3rem, 7vw, 6rem);        /* 48-96px */
+  --fs-display-lg:   clamp(2.5rem, 5.5vw, 4.25rem); /* 40-68px */
+  --fs-display-md:   clamp(2rem, 4.5vw, 3.25rem);   /* 32-52px */
+  --fs-h1:           clamp(2rem, 4vw, 3rem);
+  --fs-h2:           clamp(1.625rem, 3vw, 2.25rem);
+  --fs-h3:           1.5rem;
+  --fs-h4:           1.25rem;
+  --fs-body-xl:      1.25rem;
+  --fs-body-lg:      1.125rem;
+  --fs-body:         1rem;
+  --fs-body-sm:      0.9375rem;
+  --fs-caption:      0.875rem;
+  --fs-label:        0.75rem;
+  --fs-label-sm:     0.6875rem;
+
+  /* Weights */
+  --fw-regular:      400;
+  --fw-medium:       500;
+  --fw-semibold:     600;
+  --fw-bold:         700;
+  --fw-black:        900;
+
+  /* Line heights */
+  --lh-none:         1;
+  --lh-tight:        1.02;
+  --lh-heading:      1.1;
+  --lh-snug:         1.3;
+  --lh-body:         1.6;
+  --lh-relaxed:      1.75;
+
+  /* Letter spacing */
+  --ls-tightest:     -0.05em;  /* display masivo uppercase */
+  --ls-tighter:      -0.03em;
+  --ls-tight:        -0.02em;
+  --ls-normal:       0;
+  --ls-wide:         0.02em;
+  --ls-wider:        0.08em;   /* labels uppercase */
+  --ls-widest:       0.14em;   /* eyebrow labels muy caps */
+
+  /* ============================================================
+     SPACING (base 4px)
+     ============================================================ */
+  --s-0:    0;
+  --s-0-5:  0.125rem;
+  --s-1:    0.25rem;
+  --s-2:    0.5rem;
+  --s-3:    0.75rem;
+  --s-4:    1rem;
+  --s-5:    1.25rem;
+  --s-6:    1.5rem;
+  --s-7:    1.75rem;
+  --s-8:    2rem;
+  --s-10:   2.5rem;
+  --s-12:   3rem;
+  --s-14:   3.5rem;
+  --s-16:   4rem;
+  --s-20:   5rem;
+  --s-24:   6rem;
+  --s-32:   8rem;
+  --s-40:   10rem;
+  --s-48:   12rem;
+
+  /* SECTION PADDING */
+  --section-padding-sm:  clamp(4rem, 8vw, 6rem);
+  --section-padding-md:  clamp(6rem, 10vw, 10rem);
+  --section-padding-lg:  clamp(8rem, 12vw, 12rem);
+  --section-padding-xl:  clamp(10rem, 14vw, 14rem);
+
+  /* CONTAINER */
+  --container-sm:       640px;
+  --container-md:       960px;
+  --container-lg:       1200px;
+  --container-xl:       1440px;
+  --container-max:      1600px;
+  --container-padding:  clamp(1.25rem, 4vw, 2.5rem);
+
+  /* FRAME (margin del hero respecto al viewport) */
+  --frame-inset:        clamp(0.75rem, 1.5vw, 1.5rem);
+  --frame-radius:       clamp(1.5rem, 3vw, 2.5rem);
+
+  /* ============================================================
+     RADIUS
+     ============================================================ */
+  --radius-none:    0;
+  --radius-sm:      0.375rem;
+  --radius-md:      0.75rem;
+  --radius-lg:      1rem;
+  --radius-xl:      1.5rem;
+  --radius-2xl:     2rem;
+  --radius-3xl:     2.5rem;
+  --radius-4xl:     3rem;
+  --radius-pill:    999px;
+  --radius-full:    9999px;
+
+  /* ============================================================
+     SHADOWS — tonales, nunca negras
+     ============================================================ */
+  --shadow-xs:      0 1px 2px rgba(26, 31, 46, 0.05);
+  --shadow-sm:      0 2px 6px rgba(26, 31, 46, 0.06), 0 1px 2px rgba(26, 31, 46, 0.04);
+  --shadow-md:      0 10px 24px rgba(26, 31, 46, 0.08), 0 2px 6px rgba(26, 31, 46, 0.04);
+  --shadow-lg:      0 20px 48px rgba(26, 31, 46, 0.10), 0 6px 12px rgba(26, 31, 46, 0.05);
+  --shadow-xl:      0 32px 72px rgba(26, 31, 46, 0.14), 0 10px 20px rgba(26, 31, 46, 0.06);
+  --shadow-2xl:     0 48px 96px rgba(26, 31, 46, 0.18), 0 16px 32px rgba(26, 31, 46, 0.08);
+
+  --shadow-warm:    0 20px 48px rgba(180, 106, 60, 0.14);
+  --shadow-glow-primary: 0 12px 40px rgba(233, 133, 111, 0.35);
+
+  /* ============================================================
+     MOTION
+     ============================================================ */
+  --ease-out:      cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:   cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-fast:    150ms;
+  --duration-base:    300ms;
+  --duration-slow:    500ms;
+  --duration-slower:  800ms;
+
+  /* ============================================================
+     Z-INDEX
+     ============================================================ */
+  --z-base:         0;
+  --z-dropdown:     10;
+  --z-sticky:       20;
+  --z-fixed:        30;
+  --z-overlay:      40;
+  --z-modal:        50;
+  --z-popover:      60;
+  --z-toast:        70;
+  --z-tooltip:      80;
+}

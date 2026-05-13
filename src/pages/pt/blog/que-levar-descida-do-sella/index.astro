@@ -1,0 +1,226 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'É preciso levar fato de banho para a descida do Sella?',
+    a: '<p>Sim — é a opção mais confortável. Fato de banho (ou calções técnicos de secagem rápida) é a camada base. Por cima vai o colete salva-vidas que nós fornecemos. <strong>Evita ganga ou algodão</strong>: encharcam, ficam pesados e demoram horas a secar.</p>',
+  },
+  {
+    q: 'Posso levar o telemóvel na canoa?',
+    a: '<p>Sim — dentro do <strong>bidão estanque</strong> que entregamos antes de saírem. Cabe um telemóvel, chaves, carteira e uma peça pequena de roupa. Ainda assim, recomendamos uma bolsa estanque para tirar fotografias durante o caminho sem abrir o bidão a cada vez.</p>',
+  },
+  {
+    q: 'É preciso levar proteção solar e óculos de sol?',
+    a: '<p>Absolutamente recomendado. O reflexo da água <strong>multiplica a exposição solar</strong> mesmo em dias nublados. SPF 50 resistente à água, boné ou viseira, e óculos de sol com cordão (para não caírem ao rio). Com crianças, reaplicar creme a cada 2 horas.</p>',
+  },
+  {
+    q: 'Há cacifos para deixar as coisas?',
+    a: '<p>Sim. Incluímos <strong>cacifos com chave</strong> nas nossas instalações em Arriondas, para que possas deixar a mochila grande, muda de roupa, toalhas e tudo o que não precisas no rio. Durante a descida só levas o essencial no bidão estanque.</p>',
+  },
+  {
+    q: 'É preciso levar comida?',
+    a: '<p>Não é preciso: o <strong>piquenique asturiano está incluído</strong> — empada de bonito, bolinho asturiano e garrafa de água de 500 ml. <strong>O piquenique é fixo e igual para todos os clientes</strong> — não há opção vegan ou vegetariana. Se tiveres uma alergia específica (glúten, frutos secos…), <a href="/pt/contacto/">avisa-nos ao reservar</a> e confirmamos os ingredientes. Ao longo do percurso há <a href="/pt/blog/quiosques-descida-do-sella/">6 quiosques ribeirinhos</a> onde podes parar para um refrigerante, sumo, gelado ou água se te apetecer algo extra.</p>',
+  },
+  {
+    q: 'E se levar demasiada roupa e se molhar?',
+    a: '<p>Não é desastre, mas é desconfortável. A água salpica constantemente na canoa e o bidão estanque só protege o que está dentro. Por isso recomendamos <strong>chegar de fato de banho, com sandálias ou sapatilhas de neoprene e uma toalha no cacifo</strong> para te mudares no regresso. Os duches quentes estão incluídos.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="que-levar-descida-do-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Resumo numa linha:</strong> fato de banho vestido, calçado que se possa molhar, uma toalha no cacifo e o telemóvel no bidão que entregamos. O resto — canoa, remo duplo, colete, bidão, fato de neoprene se for preciso, piquenique — é connosco. O resto que se lê por aí costuma ser enchimento.
+  </p>
+
+  <p>
+    Há 25 anos que preparamos a descida do Sella para milhares de pessoas em Arriondas. E a mesma pergunta continua a aparecer todas as manhãs no balcão: <em>"olha, é preciso levar isto?"</em>. Este guia é o resumo honesto do que realmente precisas, do que não, e dos detalhes que ninguém te conta até já teres o remo na mão.
+  </p>
+
+  <p>
+    Se já vieste com o plano feito e só queres a checklist, <a href="#checklist">salta para a lista final</a>. Se queres perceber porquê de cada item, continua a ler — vai poupar-te três mensagens WhatsApp antes do grande dia.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-quellevar"
+      alt="Equipamento da descida do Sella — preparação antes da saída"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Remo duplo, colete salva-vidas homologado e bidão estanque — o equipamento está incluído. Tu só levas fato de banho, sandálias e toalha.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="essentials">O <span class="serif-italic">essencial</span></h2>
+
+  <p>
+    Quatro coisas são <strong>pessoais</strong> e nós não as incluímos. Todo o resto (canoa, remo duplo, colete salva-vidas, bidão estanque, piquenique asturiano) é connosco.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Fato de banho ou tecido técnico</h3>
+      <p class="post__essential__desc">
+        Fato de banho ou calções de secagem rápida. <strong>Evita algodão</strong> — molhado, pesa, irrita e não seca antes do jantar.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a2 2 0 0 1 2-2h2v3l3 1V6h2a2 2 0 0 1 2 2v6"/><path d="M2 14h20v6H2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Calçado que se possa molhar</h3>
+      <p class="post__essential__desc">Sem sapatilhas de corrida, sem chinelos simples. Por ordem:</p>
+      <ol class="post__essential__options">
+        <li><strong>Sapatilhas de neoprene</strong> — ajuste, aderência e isolamento.</li>
+        <li><strong>Sandálias desportivas</strong> com tira no calcanhar (Teva, Chiruca).</li>
+        <li><strong>Chinelos com tira</strong> se não planeias andar pelo rio.</li>
+      </ol>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Toalha e roupa seca</h3>
+      <p class="post__essential__desc">
+        Para depois. Fica no <strong>cacifo com chave</strong> durante a descida. Incluímos duches quentes e balneários · sais para Arriondas, completamente tomado banho, dentro de uma hora.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+      </span>
+      <h3 class="post__essential__label">Proteção solar</h3>
+      <p class="post__essential__desc">
+        <strong>SPF 50 resistente à água</strong>, boné com cordão, óculos com cordão. O reflexo na água multiplica a exposição mesmo em dias nublados.
+      </p>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    Se tivéssemos de escolher um conselho dos últimos 25 anos, seria este: <strong>chega de fato de banho vestido e aparece com calma entre as 10h30 e as 12h30</strong> (horário aberto · vantagem Premium). 80% das pequenas dores de cabeça do dia começam com balneários à pressa e burocracia de última hora.
+  </p>
+
+  <h2 class="post__h2" id="not-needed">O que <span class="serif-italic">não precisas</span> de levar</h2>
+
+  <p>
+    Online encontras checklists intermináveis copiadas de descidas em águas brancas ou expedições de caiaque. O Sella não é isso. Este é o equipamento que <strong>nós fornecemos</strong> e que não tens de levar:
+  </p>
+
+  <ul>
+    <li><strong>Canoa inafundável</strong> — individual, dupla ou K3 (até 3 lugares), conforme a reserva.</li>
+    <li><strong>Remo duplo</strong>, ergonómico, ajustado à tua altura.</li>
+    <li><strong>Colete salva-vidas homologado</strong> (tamanhos adulto e criança).</li>
+    <li><strong>Bidão estanque</strong> para telemóvel, chaves e pequenos objetos pessoais.</li>
+    <li><strong>Fato de neoprene</strong> se a temperatura o exigir (primavera e início de outono).</li>
+    <li><strong>Piquenique asturiano</strong> — empada de bonito, bolinho asturiano e água.</li>
+    <li><strong>Transfer de regresso</strong> até ao ponto de partida.</li>
+    <li><strong>Seguro</strong> de atividade obrigatório.</li>
+    <li><strong>Balneários, duches quentes e cacifos com chave</strong>.</li>
+  </ul>
+
+  <p>
+    Por isso quando vires listas a pedir-te para levares "capacete", "apito", "corda de salvamento" ou o "teu próprio fato de neoprene", <strong>isso não é para o Sella</strong>: é para uma descida mais técnica. Este rio é calmo (classe I-II) e foi desenhado para todos os públicos.
+  </p>
+
+  <h2 class="post__h2" id="phone-money">Telemóvel, dinheiro, chaves<br/><span class="serif-italic">e o bidão estanque</span></h2>
+
+  <p>
+    A pergunta do milhão: <em>"onde ponho o telemóvel?"</em>. Dentro do <strong>bidão estanque</strong> que te damos antes de saíres. É um cilindro de plástico com fecho hermético atado à canoa. Cabe:
+  </p>
+
+  <ul>
+    <li>Telemóvel (mesmo em capas tipo livro maiores).</li>
+    <li>Chaves do carro — também as podes deixar no cacifo.</li>
+    <li>Carteira com identificação, cartão e algum dinheiro.</li>
+    <li>Uma peça pequena de roupa ou óculos de reserva.</li>
+  </ul>
+
+  <p>
+    Se queres tirar fotografias durante a descida sem abrir o bidão a cada momento, <strong>uma bolsa estanque com cordão</strong> é o melhor investimento do dia. Por 5-10 € em qualquer loja de praia, tens uma que funciona e transforma a descida num rolo fotográfico contínuo sem medo de molhar o telemóvel.
+  </p>
+
+  <div class="post__callout">
+    <strong>Dica da casa</strong>
+    <p>Leva <strong>um cartão e algum dinheiro</strong> no bidão. Nos <a href="/pt/blog/quiosques-descida-do-sella/">quiosques ribeirinhos</a> podes tomar um refrigerante, sumo ou gelado (não se serve álcool no percurso), mas nem todos têm leitor de cartão com boa cobertura. Com <strong>10-15 € por pessoa</strong> ficas com margem de sobra.</p>
+  </div>
+
+  <h2 class="post__h2" id="with-kids">Se vais <span class="serif-italic">com crianças</span></h2>
+
+  <p>
+    Com crianças a lista cresce um pouco, mas vale a pena rever. <a href="/pt/com-criancas/">A idade mínima é 5 anos e 1,15 m</a> por segurança; em caso de dúvida, pergunta-nos antes de reservar. Extras que recomendamos para um dia com crianças:
+  </p>
+
+  <ul>
+    <li><strong>Boné com cordão</strong> — não um que voe à primeira rajada.</li>
+    <li><strong>T-shirt técnica</strong> ou rashguard de manga comprida — para proteger ombros e costas de 3 horas de sol direto.</li>
+    <li><strong>Protetor solar infantil</strong> SPF 50+ — aplicado antes de sair do carro e reaplicado na paragem do piquenique.</li>
+    <li><strong>Lanche extra</strong> — bolachas, fruta fácil ou barras. O piquenique incluído é generoso, mas as crianças petiscam.</li>
+    <li><strong>Muda de roupa seca completa</strong> no cacifo — incluindo roupa interior. É o detalhe que transforma o regresso de "criança encharcada debaixo do ar condicionado" para algo confortável.</li>
+  </ul>
+
+  <p>
+    Há muito mais a dizer sobre remar no Sella com crianças pequenas — idade real, medos parentais típicos, como organizar o dia. Desenvolvemos isto num guia à parte: <a href="/pt/blog/descida-do-sella-com-criancas-pequenas/">descida do Sella com crianças pequenas</a>.
+  </p>
+
+  <h2 class="post__h2" id="with-dog">Se vais <span class="serif-italic">com um cão</span></h2>
+
+  <p>
+    <a href="/pt/com-cao/">Os animais viajam grátis</a> nas nossas canoas. Se é a primeira vez do teu cão numa atividade aquática, leva:
+  </p>
+
+  <ul>
+    <li><strong>Tigela dobrável</strong> e uma garrafa de água extra — desidratam mais do que pensas.</li>
+    <li><strong>Trela curta</strong> (uma comprida enrola-se no remo).</li>
+    <li><strong>Uma toalha dedicada</strong> no cacifo — não a tua, confia.</li>
+    <li><strong>Colete salva-vidas canino</strong> — fornecemos um <em>até esgotarmos existências</em>, mas se levares o teu garantes o tamanho exato e poupas tempo no balcão.</li>
+    <li><strong>O seu lanche habitual</strong>. Não lhe dês o bolinho asturiano, não interessa a cara que faça.</li>
+  </ul>
+
+  <h2 class="post__h2" id="checklist">Checklist final <span class="serif-italic">imprimível</span></h2>
+
+  <p>A lista curta. O que deve sair de casa já preparado:</p>
+
+  <div class="post__callout">
+    <strong>O que tu levas</strong>
+    <p>✓ Fato de banho ou calções técnicos (<em>vestidos de casa</em>)<br/>
+    ✓ T-shirt técnica / rashguard<br/>
+    ✓ Sapatilhas de neoprene ou sandálias com tira<br/>
+    ✓ Boné com cordão<br/>
+    ✓ Óculos de sol com cordão<br/>
+    ✓ Protetor solar SPF 50 resistente à água<br/>
+    ✓ Toalha + muda seca completa (para o cacifo)<br/>
+    ✓ Carregador e bolsa estanque para o telemóvel (opcional mas recomendado)<br/>
+    ✓ Cartão ou dinheiro para os quiosques<br/>
+    ✓ Lanche extra se viajares com crianças<br/>
+    ✓ Kit cão se viajares com cão (tigela, trela, toalha, colete)</p>
+  </div>
+
+  <div class="post__callout">
+    <strong>O que nós fornecemos</strong>
+    <p>✓ Canoa inafundável · remo duplo · colete salva-vidas<br/>
+    ✓ Bidão estanque · fato de neoprene (se aplicável)<br/>
+    ✓ Mini-aula prática antes da saída<br/>
+    ✓ Transfer de regresso desde o ponto de chegada<br/>
+    ✓ Piquenique asturiano (empada de bonito + bolinho asturiano + água)<br/>
+    ✓ Balneários, duches quentes, cacifos com chave<br/>
+    ✓ Estacionamento vigiado em Arriondas<br/>
+    ✓ Seguro de atividade<br/>
+    ✓ Monitores qualificados no rio</p>
+  </div>
+
+  <p>
+    Com isso tratado, só te falta <a href="/pt/reserva-premium/">escolher uma data</a> e chegar com margem de tempo. O resto resolvemos nós no balcão.
+  </p>
+
+  <p>
+    E se tiveres uma dúvida específica que não esteja na lista — alergias, mobilidade reduzida, número de sapato complicado, cão enorme, avós com medo da água — <a href="/pt/contacto/">escreve-nos</a> e olhamos para isso. Em 25 anos vimos quase tudo; o que importa é que chegues calmo.
+  </p>
+</BlogPostLayout>

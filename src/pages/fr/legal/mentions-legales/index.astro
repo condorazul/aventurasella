@@ -1,0 +1,326 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'fr';
+const title = 'Mentions légales · Aventura en el Sella';
+const description = 'Mentions légales d\'Aventura en el Sella : identification du titulaire, objet, propriété intellectuelle et conditions d\'utilisation du site web.';
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/fr/legal/mentions-legales/`;
+const lastUpdated = '2026-05-12';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#page`,
+  name: 'Mentions légales',
+  description,
+  inLanguage: 'fr-FR',
+  url: canonicalUrl,
+  isPartOf: { '@type': 'WebSite', name: 'Aventura en el Sella', url: baseUrl },
+  dateModified: lastUpdated,
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/fr/legal/mentions-legales/" translationKey="legal_aviso">
+  <Fragment slot="head">
+    <meta name="robots" content="index, follow" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="lgl">
+
+    <div class="lgl__inner">
+      <nav class="lgl__breadcrumb" aria-label="Fil d'Ariane">
+        <a href={getLocalePath('home', lang)}>Accueil</a>
+        <span aria-hidden="true">/</span>
+        <a href={getLocalePath('legal_aviso', lang)}>Légal</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Mentions légales</span>
+      </nav>
+
+      <span class="lgl__eyebrow">— Informations légales</span>
+      <h1 class="lgl__title">Mentions légales</h1>
+      <p class="lgl__updated">Dernière mise à jour : <time datetime={lastUpdated}>12 mai 2026</time></p>
+
+      <nav class="lgl__toc" aria-label="Table des matières">
+        <h2 class="lgl__tocTitle">Sommaire</h2>
+        <ol>
+          <li><a href="#titulaire">1. Identification du titulaire</a></li>
+          <li><a href="#objet">2. Objet</a></li>
+          <li><a href="#conditions">3. Conditions d'utilisation</a></li>
+          <li><a href="#propriete">4. Propriété intellectuelle et industrielle</a></li>
+          <li><a href="#responsabilite">5. Exclusion de responsabilité</a></li>
+          <li><a href="#liens">6. Liens vers des tiers</a></li>
+          <li><a href="#donnees">7. Protection des données</a></li>
+          <li><a href="#cookies">8. Politique des cookies</a></li>
+          <li><a href="#modifications">9. Modifications</a></li>
+          <li><a href="#legislation">10. Législation et juridiction applicables</a></li>
+        </ol>
+      </nav>
+
+      <article class="lgl__prose">
+
+        <section id="titulaire">
+          <h2>1. Identification du titulaire</h2>
+          <p>
+            Conformément à la <strong>loi espagnole 34/2002 du 11 juillet, sur les Services
+            de la Société de l'Information et le Commerce Électronique</strong> (LSSI-CE),
+            les utilisateurs sont informés des données d'identification suivantes du
+            titulaire du site web :
+          </p>
+          <ul class="lgl__data">
+            <li><strong>Titulaire :</strong> David Javier Pintado Laruelo (personne physique · auto-entrepreneur)</li>
+            <li><strong>NIF (numéro fiscal espagnol) :</strong> 09394016B</li>
+            <li><strong>Nom commercial :</strong> Aventuraenelsella.es</li>
+            <li><strong>Activité :</strong> Sports d'aventure</li>
+            <li><strong>Autorisation touristique :</strong> TA-188-AS · titulaire Aipol Aventura (activité exercée sous son autorisation dans les installations partagées d'Arriondas)</li>
+            <li><strong>Domicile fiscal :</strong> Bermudo I el Diácono 3 Bajo, 33012 Oviedo, Asturies</li>
+            <li><strong>Adresse de l'activité :</strong> Calle Juan Carlos I, 18, Bajo II (accès par Aipol), 33540 Arriondas, Asturies</li>
+            <li><strong>Téléphone :</strong> <a href="tel:+34681093673">+34 681 09 36 73</a></li>
+            <li><strong>Email :</strong> <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a></li>
+            <li><strong>Domaine :</strong> <a href="https://aventuraenelsella.es">aventuraenelsella.es</a></li>
+          </ul>
+        </section>
+
+        <section id="objet">
+          <h2>2. Objet</h2>
+          <p>
+            Les présentes mentions légales régissent l'utilisation du site web
+            <a href="https://aventuraenelsella.es">aventuraenelsella.es</a>
+            (ci-après, « le site web »), dont la propriété revient à la personne identifiée
+            au paragraphe précédent. L'accès au site web implique l'acceptation pleine et
+            sans réserve des présentes conditions générales.
+          </p>
+          <p>
+            Le site web a pour objet d'informer sur l'activité de descente du fleuve Sella en
+            canoë que nous proposons depuis Arriondas (Asturies, Espagne), ainsi que de
+            faciliter la réservation de l'activité, la communication avec les clients
+            potentiels et la gestion commerciale associée.
+          </p>
+        </section>
+
+        <section id="conditions">
+          <h2>3. Conditions d'utilisation</h2>
+          <p>
+            L'utilisateur s'engage à utiliser le site web, ses contenus et services
+            conformément à la loi, à la morale, à l'ordre public et aux présentes conditions
+            générales. En particulier, il s'engage à :
+          </p>
+          <ul>
+            <li>Ne pas utiliser le site web à des fins ou avec des effets contraires à la loi, à la morale ou à l'ordre public.</li>
+            <li>Ne pas saisir de données fausses, inexactes ou incorrectes lors des réservations ou de la prise de contact.</li>
+            <li>Ne pas effectuer d'action susceptible d'endommager, désactiver, surcharger ou détériorer le site web.</li>
+            <li>Ne pas tenter d'accéder à des zones restreintes des systèmes informatiques du titulaire.</li>
+            <li>Ne pas introduire ni diffuser de virus informatiques ou tout autre système susceptible de causer des dommages.</li>
+          </ul>
+        </section>
+
+        <section id="propriete">
+          <h2>4. Propriété intellectuelle et industrielle</h2>
+          <p>
+            L'ensemble des contenus du site web — y compris, à titre indicatif et non
+            limitatif, textes, photographies, graphiques, images, icônes, technologie,
+            logiciels, liens et autres contenus audiovisuels ou sonores, ainsi que sa
+            conception graphique et son code source — sont la
+            <strong>propriété intellectuelle du titulaire</strong> ou de tiers qui en ont
+            autorisé l'usage, sans que les droits d'exploitation reconnus par la
+            réglementation en vigueur en matière de propriété intellectuelle puissent être
+            considérés comme cédés à l'utilisateur.
+          </p>
+          <p>
+            Les marques, noms commerciaux ou signes distinctifs appartiennent au titulaire
+            du site web, sans que l'accès à celui-ci puisse conférer un quelconque droit
+            sur ceux-ci.
+          </p>
+          <p>
+            La reproduction totale ou partielle, la distribution, la communication
+            publique, la transformation ou toute autre forme d'exploitation des contenus
+            du site web sont interdites sans autorisation écrite expresse du titulaire.
+          </p>
+        </section>
+
+        <section id="responsabilite">
+          <h2>5. Exclusion de responsabilité</h2>
+          <p>Le titulaire du site web n'est pas responsable :</p>
+          <ul>
+            <li>Des dommages ou préjudices de toute nature résultant de l'accès, de l'utilisation, de la copie ou du téléchargement des contenus du site web.</li>
+            <li>Des éventuelles erreurs ou défaillances d'accès au site web, y compris les pannes techniques ou interruptions de service.</li>
+            <li>De la présence de virus ou de tout autre élément nuisible susceptible de provoquer des altérations dans les systèmes informatiques de l'utilisateur.</li>
+            <li>De la véracité, l'actualité ou l'exhaustivité des contenus des liens externes référencés sur le site web.</li>
+          </ul>
+          <p>
+            Le titulaire se réserve le droit de modifier, suspendre ou interrompre,
+            temporairement ou définitivement, les contenus et services proposés, sans
+            préavis.
+          </p>
+        </section>
+
+        <section id="liens">
+          <h2>6. Liens vers des tiers</h2>
+          <p>
+            Le site web peut contenir des liens vers des pages web de tiers. Le titulaire
+            n'est pas responsable du contenu, de la véracité, des pratiques commerciales
+            ni des politiques de confidentialité de ces sites externes. L'inclusion de ces
+            liens a une finalité purement informative et n'implique aucune recommandation
+            ni affiliation.
+          </p>
+        </section>
+
+        <section id="donnees">
+          <h2>7. Protection des données</h2>
+          <p>
+            Le traitement des données personnelles des utilisateurs du site web est régi
+            par le <strong>Règlement (UE) 2016/679 sur la protection des données (RGPD)</strong>
+            et la <strong>loi organique espagnole 3/2018 du 5 décembre relative à la
+            protection des données personnelles et à la garantie des droits numériques
+            (LOPDGDD)</strong>. Pour plus d'informations, consultez notre
+            <a href={getLocalePath('legal_privacidad', lang)}>Politique de confidentialité</a>.
+          </p>
+        </section>
+
+        <section id="cookies">
+          <h2>8. Politique des cookies</h2>
+          <p>
+            Le site web utilise des cookies propres et de tiers pour garantir son bon
+            fonctionnement et améliorer l'expérience de navigation. Pour plus
+            d'informations, consultez notre
+            <a href={getLocalePath('legal_cookies', lang)}>Politique des cookies</a>.
+          </p>
+        </section>
+
+        <section id="modifications">
+          <h2>9. Modifications</h2>
+          <p>
+            Le titulaire se réserve le droit d'effectuer, sans préavis, les modifications
+            qu'il estime opportunes sur le site web, pouvant changer, supprimer ou ajouter
+            tant les contenus et services proposés que la manière dont ceux-ci sont
+            présentés ou organisés. La date de la dernière mise à jour des présentes
+            mentions légales figure en tête de ce document.
+          </p>
+        </section>
+
+        <section id="legislation">
+          <h2>10. Législation et juridiction applicables</h2>
+          <p>
+            Les présentes conditions sont régies par la <strong>législation espagnole</strong>.
+            Pour la résolution de tout litige pouvant résulter de l'accès au site web ou de
+            l'utilisation de ses contenus et services, le titulaire et l'utilisateur se
+            soumettent à la juridiction des tribunaux du domicile du titulaire, sauf si
+            la législation en vigueur établit une juridiction différente à caractère
+            impératif.
+          </p>
+        </section>
+
+        <div class="lgl__contact" aria-label="Contact légal">
+          <p>
+            Pour toute question relative aux présentes mentions légales, vous pouvez nous
+            écrire à <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            ou nous appeler au <a href="tel:+34681093673">+34 681 09 36 73</a>.
+          </p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lgl {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 10% 0%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-base);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    min-height: 80vh;
+  }
+  .lgl__inner { max-width: 900px; margin: 0 auto; padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 3rem) 0; }
+  .lgl__breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .lgl__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .lgl__breadcrumb a:hover { color: var(--color-primary); }
+  .lgl__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1rem;
+  }
+  .lgl__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .lgl__updated {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .lgl__toc {
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.12);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .lgl__tocTitle {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0 1rem;
+  }
+  .lgl__toc ol { padding-left: 1.25rem; margin: 0; columns: 1; column-gap: 2rem; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-secondary); }
+  @media (min-width: 720px) { .lgl__toc ol { columns: 2; } }
+  .lgl__toc ol li { margin-bottom: 0.5rem; }
+  .lgl__toc a { color: var(--color-text-primary); transition: color 200ms; border-bottom: 1px solid transparent; }
+  .lgl__toc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .lgl__prose { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .lgl__prose section { padding-top: clamp(2rem, 4vw, 3rem); scroll-margin-top: 5rem; }
+  .lgl__prose section:first-child { padding-top: 0; }
+  .lgl__prose h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  .lgl__prose p { margin: 0 0 1rem; color: var(--color-text-secondary); }
+  .lgl__prose p strong { color: var(--color-text-primary); font-weight: 700; }
+  .lgl__prose ul { padding-left: 1.25rem; margin: 0 0 1rem; }
+  .lgl__prose ul li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+  .lgl__prose ul.lgl__data {
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem 1.25rem 2.75rem;
+    list-style: none;
+  }
+  .lgl__prose ul.lgl__data li { padding-left: 0; position: relative; margin-bottom: 0.625rem; }
+  .lgl__prose ul.lgl__data li::before { content: "·"; position: absolute; left: -1.25rem; color: var(--color-sage, #3D4F3A); font-weight: 900; }
+  .lgl__prose a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 200ms, border-color 200ms;
+  }
+  .lgl__prose a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .lgl__contact {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding: 1.5rem 1.75rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 3px solid var(--color-sage, #3D4F3A);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .lgl__contact p { margin: 0; }
+</style>

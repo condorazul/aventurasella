@@ -1,0 +1,158 @@
+---
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+interface Props {
+  /** Palabras a mostrar en el marquee. Default: set genérico de la marca. */
+  words?: string[];
+  /** Tema visual. `warm` (cream cálido, default) o `sage` (verde sage profundo) */
+  theme?: 'warm' | 'sage';
+}
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    words: [
+      'Canoa', 'Naturaleza', 'Premium', 'Familias', 'Aventura', 'Deluxe',
+      'Río Sella', 'Asturias', 'Sin prisa', 'Todo incluido', 'Con perro', 'Arriondas',
+    ],
+  },
+  en: {
+    words: [
+      'Canoe', 'Nature', 'Premium', 'Families', 'Adventure', 'Deluxe',
+      'Sella River', 'Asturias', 'Unhurried', 'All inclusive', 'With dog', 'Arriondas',
+    ],
+  },
+  fr: {
+    words: [
+      'Canoë', 'Nature', 'Premium', 'Familles', 'Aventure', 'Deluxe',
+      'Rivière Sella', 'Asturies', 'Sans hâte', 'Tout inclus', 'Avec chien', 'Arriondas',
+    ],
+  },
+  pt: {
+    words: [
+      'Canoa', 'Natureza', 'Premium', 'Famílias', 'Aventura', 'Deluxe',
+      'Rio Sella', 'Astúrias', 'Sem pressa', 'Tudo incluído', 'Com cão', 'Arriondas',
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+const {
+  words = [...t.words],
+  theme = 'warm',
+} = Astro.props;
+---
+
+<section class={`marquee marquee--${theme}`} aria-hidden="true">
+  <div class="marquee__track">
+    {[...words, ...words, ...words].map(word => (
+      <span class="marquee__item">
+        {word}
+        <svg class="marquee__star" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0 L14 10 L24 12 L14 14 L12 24 L10 14 L0 12 L10 10 Z"/>
+        </svg>
+      </span>
+    ))}
+  </div>
+</section>
+
+<style>
+  .marquee {
+    position: relative;
+    padding-block: clamp(2rem, 4vw, 3rem);
+    overflow: hidden;
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .marquee--warm {
+    background: var(--color-bg-warm, #F6F1E3);
+  }
+  .marquee--sage {
+    background: var(--color-sage, #3D4F3A);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .marquee__track {
+    display: flex;
+    gap: clamp(2rem, 5vw, 4rem);
+    white-space: nowrap;
+    animation: marquee 60s linear infinite;
+    will-change: transform;
+    width: max-content;
+  }
+
+  .marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: var(--fw-black);
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  /* WARM theme · navy / sage italic / coral */
+  .marquee--warm .marquee__item {
+    color: var(--color-text-primary);
+  }
+  .marquee--warm .marquee__item:nth-child(3n+2) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.02em;
+    color: var(--color-sage);
+  }
+  .marquee--warm .marquee__item:nth-child(4n+3) {
+    color: var(--color-primary);
+  }
+  .marquee--warm .marquee__star {
+    color: var(--color-primary);
+  }
+
+  /* SAGE theme · cream principal / italic cream / coral acento */
+  .marquee--sage .marquee__item {
+    color: var(--color-text-on-dark, #F4F0E8);
+  }
+  .marquee--sage .marquee__item:nth-child(3n+2) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.02em;
+    color: rgba(244, 240, 232, 0.7);
+  }
+  .marquee--sage .marquee__item:nth-child(4n+3) {
+    color: var(--color-primary);
+  }
+  .marquee--sage .marquee__star {
+    color: var(--color-primary);
+  }
+
+  .marquee__star {
+    flex-shrink: 0;
+    width: clamp(16px, 2vw, 28px);
+    height: clamp(16px, 2vw, 28px);
+    animation: spin 8s linear infinite;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(calc(-100% / 3)); }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track { animation: none; }
+    .marquee__star { animation: none; }
+  }
+</style>

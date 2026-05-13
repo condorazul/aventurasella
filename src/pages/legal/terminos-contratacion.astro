@@ -1,0 +1,503 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const title = 'Términos y condiciones de contratación · Aventura en el Sella';
+const description = 'Términos y condiciones de contratación del descenso del Sella en canoa: proceso de reserva, precios, pago, cancelaciones, responsabilidad, seguros y jurisdicción aplicable.';
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/legal/terminos-contratacion/`;
+const lastUpdated = '2026-04-23';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#page`,
+  name: 'Términos y condiciones de contratación',
+  description,
+  inLanguage: 'es-ES',
+  url: canonicalUrl,
+  isPartOf: { '@type': 'WebSite', name: 'Aventura en el Sella', url: baseUrl },
+  dateModified: lastUpdated,
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/legal/terminos-contratacion/" translationKey="legal_terminos">
+  <Fragment slot="head">
+    <meta name="robots" content="index, follow" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="lgl">
+    <div class="lgl__inner">
+      <nav class="lgl__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <a href="/legal/aviso-legal/">Legal</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Términos de contratación</span>
+      </nav>
+
+      <span class="lgl__eyebrow">— Información legal</span>
+      <h1 class="lgl__title">Términos y condiciones de contratación</h1>
+      <p class="lgl__updated">Última actualización: <time datetime={lastUpdated}>23 de abril de 2026</time></p>
+
+      <nav class="lgl__toc" aria-label="Índice de contenidos">
+        <h2 class="lgl__tocTitle">Índice</h2>
+        <ol>
+          <li><a href="#proveedor">1. Identificación del proveedor</a></li>
+          <li><a href="#objeto">2. Objeto del contrato</a></li>
+          <li><a href="#reserva">3. Proceso de reserva</a></li>
+          <li><a href="#precios">4. Precios y tarifas</a></li>
+          <li><a href="#pago">5. Formas de pago</a></li>
+          <li><a href="#cancelacion">6. Cancelaciones y modificaciones</a></li>
+          <li><a href="#obligaciones">7. Obligaciones del cliente</a></li>
+          <li><a href="#responsabilidad">8. Responsabilidad y seguros</a></li>
+          <li><a href="#menores">9. Menores de edad</a></li>
+          <li><a href="#fuerza-mayor">10. Fuerza mayor y meteorología</a></li>
+          <li><a href="#datos">11. Protección de datos</a></li>
+          <li><a href="#reclamaciones">12. Reclamaciones</a></li>
+          <li><a href="#legislacion">13. Ley aplicable y jurisdicción</a></li>
+          <li><a href="#modificaciones">14. Modificaciones</a></li>
+        </ol>
+      </nav>
+
+      <article class="lgl__prose">
+
+        <section id="proveedor">
+          <h2>1. Identificación del proveedor</h2>
+          <p>
+            Las presentes <strong>condiciones generales de contratación</strong> regulan la
+            relación contractual entre el cliente y el proveedor del servicio:
+          </p>
+          <ul class="lgl__data">
+            <li><strong>Titular:</strong> David Javier Pintado Laruelo (persona física · autónomo)</li>
+            <li><strong>NIF:</strong> 09394016B</li>
+            <li><strong>Nombre comercial:</strong> Aventuraenelsella.es</li>
+            <li><strong>Actividad:</strong> Deporte de aventura</li>
+            <li><strong>Autorización turística:</strong> TA-188-AS · titular Aipol Aventura (actividad desarrollada bajo su autorización en las instalaciones compartidas de Arriondas)</li>
+            <li><strong>Domicilio fiscal:</strong> Bermudo I el Diácono 3 Bajo, 33012 Oviedo, Asturias</li>
+            <li><strong>Domicilio de actividad:</strong> Calle Juan Carlos I, 18, Bajo II (acceso por Aipol), 33540 Arriondas, Asturias</li>
+            <li><strong>Teléfono:</strong> <a href="tel:+34681093673">+34 681 09 36 73</a></li>
+            <li><strong>Reservas:</strong> <a href="mailto:reservas@aventuraenelsella.es">reservas@aventuraenelsella.es</a></li>
+            <li><strong>Información general:</strong> <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a></li>
+          </ul>
+        </section>
+
+        <section id="objeto">
+          <h2>2. Objeto del contrato</h2>
+          <p>
+            Las presentes condiciones regulan la contratación del servicio de
+            <strong>alquiler de canoas para el descenso turístico del río Sella</strong> en
+            Asturias, que comprende:
+          </p>
+          <ul>
+            <li>Cesión temporal de una <strong>canoa insumergible</strong> (1 a 3 plazas) homologada.</li>
+            <li>Entrega de equipación: pala doble, chaleco salvavidas homologado, bidón estanco y, en fechas frías, traje de neopreno.</li>
+            <li><strong>Mini clase de remo</strong> y briefing de seguridad con monitor titulado antes de entrar al agua.</li>
+            <li>Disponibilidad de <strong>rampa de embarque propia</strong> (opcional y gratuita) o posibilidad de embarcar directamente a pie de río.</li>
+            <li><strong>Transfer de regreso</strong> desde el punto de fin de ruta (Toraño en Mini Sella · Fríes en Descenso Completo) hasta las instalaciones de Arriondas.</li>
+            <li><strong>Vestuarios con duchas calientes, taquillas con llave y parking privado vigilado</strong> en las instalaciones.</li>
+            <li><strong>Picnic asturiano</strong> como regalo incluido: empanada de bonito, bollín preñao y botella de agua de 500 ml.</li>
+            <li><strong>Seguros obligatorios</strong> (responsabilidad civil y accidentes) incluidos sin coste adicional.</li>
+          </ul>
+          <p>
+            El servicio se presta en el tramo turístico del Sella entre <strong>Arriondas y Fríes</strong>
+            (14,5 km) o <strong>Arriondas y Toraño</strong> (7 km · Mini Sella), bajo normativa de la
+            <strong>Confederación Hidrográfica del Cantábrico</strong>.
+          </p>
+        </section>
+
+        <section id="reserva">
+          <h2>3. Proceso de reserva</h2>
+          <p>
+            Las reservas pueden realizarse a través de los siguientes canales:
+          </p>
+          <ul>
+            <li><strong>Motor de reservas online</strong> (recomendado): calendario en tiempo real con disponibilidad.</li>
+            <li><strong>Teléfono</strong>: <a href="tel:+34681093673">+34 681 09 36 73</a> (9:00–19:00).</li>
+            <li><strong>WhatsApp</strong>: <a href="https://wa.me/34681093673" target="_blank" rel="noopener">+34 681 09 36 73</a> (respuesta en minutos).</li>
+            <li><strong>Email</strong>: <a href="mailto:reservas@aventuraenelsella.es">reservas@aventuraenelsella.es</a>.</li>
+            <li><strong>Presencialmente</strong> en nuestras oficinas de Arriondas (sujeto a disponibilidad del día).</li>
+          </ul>
+          <p>
+            La reserva <strong>queda confirmada</strong> cuando el cliente recibe confirmación
+            por parte del proveedor (email o mensaje). <strong>Recomendamos reservar con
+            antelación</strong>, especialmente en temporada alta (julio–agosto) y fines de semana,
+            ya que las plazas se gestionan por orden y pueden agotarse. Las reservas del
+            mismo día son posibles <strong>únicamente si el calendario muestra disponibilidad</strong>.
+          </p>
+        </section>
+
+        <section id="precios">
+          <h2>4. Precios y tarifas</h2>
+          <p>
+            Los precios aplicables son los publicados en la <a href="/precios/">página de
+            precios</a>, expresados en <strong>euros con IVA incluido</strong>. El precio vigente es
+            el de la confirmación de reserva.
+          </p>
+          <p><strong>Tarifa estándar (temporada 2026):</strong></p>
+          <ul>
+            <li><strong>Adulto</strong> (desde 13 años): 40 € / persona</li>
+            <li><strong>Niño</strong> (5 a 12 años): 30 € / persona</li>
+            <li><strong>Mascotas</strong>: gratis</li>
+          </ul>
+          <p>
+            La tarifa es <strong>la misma para Mini Sella (7 km) y Descenso Completo (14,5 km)</strong>
+            e incluye todo lo descrito en el apartado "Objeto del contrato", <strong>sin extras
+            el día de la actividad</strong>. La única excepción es el sábado del
+            <a href="/descenso-internacional-del-sella/">Descenso Internacional del Sella</a>, con
+            tarifa y condiciones específicas detalladas en su página.
+          </p>
+        </section>
+
+        <section id="pago">
+          <h2>5. Formas de pago</h2>
+          <p>
+            Todas las reservas se realizan <strong>con antelación</strong> a través de los
+            canales indicados. <strong>No se contrata el servicio in situ sin reserva previa.</strong>
+            Una vez confirmada la reserva, el cliente puede abonar el importe en los siguientes
+            momentos y formas:
+          </p>
+          <p><strong>Pago anticipado (online):</strong></p>
+          <ul>
+            <li><strong>Tarjeta de crédito o débito</strong> a través de pasarela de pago segura.</li>
+            <li><strong>Enlace de pago por tarjeta</strong> enviado por email o WhatsApp tras la reserva.</li>
+            <li><strong>Transferencia bancaria</strong>.</li>
+          </ul>
+          <p><strong>Pago el día de la actividad (al recoger la canoa en nuestras instalaciones de Arriondas):</strong></p>
+          <ul>
+            <li><strong>Tarjeta</strong> (TPV en tienda).</li>
+            <li><strong>Bizum</strong>.</li>
+            <li><strong>Efectivo</strong>.</li>
+            <li><strong>Transferencia</strong> inmediata.</li>
+          </ul>
+          <p>
+            En determinados casos (grupos grandes, fechas de alta demanda) se podrá solicitar una
+            <strong>señal</strong> para garantizar la plaza, informándose expresamente al cliente
+            al realizar la reserva.
+          </p>
+          <p>
+            <strong>Excepción · sábado del Descenso Internacional del Sella:</strong>
+            por la logística y limitaciones del evento, las reservas de ese día se admiten
+            únicamente <strong>hasta el día anterior</strong> (para la edición de 2026, hasta el
+            <strong>7 de agosto</strong>) y <strong>con pago anticipado obligatorio mediante
+            tarjeta o transferencia inmediata</strong>. No se acepta pago en efectivo ni pago
+            el día para esta modalidad específica.
+          </p>
+        </section>
+
+        <section id="cancelacion">
+          <h2>6. Cancelaciones y modificaciones</h2>
+          <p><strong>Cancelaciones por parte del cliente:</strong></p>
+          <ul>
+            <li><strong>Más de 48 horas de antelación</strong>: cancelación o cambio de fecha sin coste, con reembolso íntegro de cualquier importe abonado.</li>
+            <li><strong>Menos de 48 horas o no-show</strong>: la empresa podrá retener la señal abonada o cobrar la totalidad del servicio si se hubiera pagado por adelantado. Valoramos cada caso con sensibilidad según las circunstancias.</li>
+          </ul>
+          <p><strong>Cancelaciones o cambios por parte de la empresa:</strong></p>
+          <p>
+            Ante <strong>condiciones meteorológicas adversas</strong>, cierres o restricciones
+            impuestas por la <strong>Confederación Hidrográfica del Cantábrico</strong>, causa de
+            fuerza mayor o circunstancias excepcionales que impidan prestar el servicio con
+            seguridad, la empresa ofrecerá al cliente <strong>cambio de fecha sin coste o
+            reembolso íntegro</strong> del importe abonado.
+          </p>
+          <p>
+            La decisión final sobre si el río es apto para el descenso corresponde al proveedor,
+            guiado por criterios de seguridad.
+          </p>
+        </section>
+
+        <section id="obligaciones">
+          <h2>7. Obligaciones del cliente y requisitos de salud</h2>
+          <p>El cliente, al contratar el servicio, se compromete a:</p>
+          <ul>
+            <li>Proporcionar <strong>información veraz</strong> sobre participantes, edades, tallas y necesidades especiales (alergias, restricciones médicas).</li>
+            <li>Presentarse <strong>puntualmente</strong> en el horario acordado. Retrasos superiores a 30 minutos pueden suponer la anulación de la reserva sin reembolso.</li>
+            <li>Cumplir la <strong>edad y altura mínimas</strong> establecidas (ver apartado "Menores").</li>
+            <li>Atender y seguir las <strong>instrucciones del personal</strong> durante la mini clase y la actividad.</li>
+            <li><strong>Usar obligatoriamente el chaleco salvavidas</strong> durante todo el descenso.</li>
+            <li>Respetar las normas de navegación y seguridad del río.</li>
+            <li>Devolver la canoa, pala, chaleco y bidón en el mismo estado en que se entregaron.</li>
+            <li>No ceder el equipo a terceros no autorizados ni a personas bajo los efectos del alcohol o sustancias.</li>
+            <li>Respetar el entorno natural: no dejar residuos, no molestar a la fauna, respetar a otros usuarios del río.</li>
+            <li><strong>Cumplir con el horario máximo de permanencia</strong> en el agua hasta las 18:00 h, conforme a la normativa de la Confederación Hidrográfica del Cantábrico.</li>
+          </ul>
+
+          <p><strong>Restricciones de salud obligatorias:</strong></p>
+          <p>
+            Por seguridad del propio participante y por exigencias de nuestras compañías
+            aseguradoras, <strong>no se podrá realizar el descenso del Sella</strong> en los
+            siguientes casos:
+          </p>
+          <ul>
+            <li><strong>Saber nadar es obligatorio.</strong> Aunque el chaleco salvavidas es homologado y se usa durante toda la actividad, el cliente debe saber nadar para participar.</li>
+            <li><strong>Enfermedades graves</strong>: cardiovasculares, respiratorias, epilepsia u otras condiciones que puedan verse agravadas por el esfuerzo físico, la inmersión en agua fría o el entorno fluvial.</li>
+            <li><strong>Embarazo</strong>: no se admite la participación de mujeres embarazadas, en ningún trimestre.</li>
+            <li>Estado de embriaguez o bajo los efectos de sustancias que alteren las capacidades físicas o la percepción.</li>
+          </ul>
+          <p>
+            Si el cliente tiene dudas sobre una condición médica específica, debe
+            <strong>consultarnos antes de reservar</strong>. El cliente es responsable de
+            informarnos de cualquier condición relevante. El proveedor se reserva el derecho de
+            denegar la actividad si detecta un riesgo evidente, sin que ello genere derecho a
+            reembolso si la información no fue proporcionada con antelación.
+          </p>
+        </section>
+
+        <section id="responsabilidad">
+          <h2>8. Responsabilidad y seguros</h2>
+          <p><strong>Responsabilidad del proveedor:</strong></p>
+          <p>
+            El proveedor garantiza que la canoa y el material se entregan en correcto estado de
+            uso. El servicio incluye <strong>seguro de responsabilidad civil y seguro de
+            accidentes</strong> con cobertura en los términos y límites de la póliza contratada,
+            conforme a la normativa aplicable a las actividades de turismo activo en Asturias.
+          </p>
+          <p><strong>Exclusiones de cobertura:</strong></p>
+          <ul>
+            <li>Daños derivados del <strong>uso inadecuado del material</strong> o inobservancia de las instrucciones del personal.</li>
+            <li>Daños causados por <strong>conducta temeraria</strong> o actividades ajenas al descenso (saltos desde puentes, escalada en orillas, etc.).</li>
+            <li>Actividad bajo los efectos del <strong>alcohol o sustancias</strong>.</li>
+            <li>Daños a bienes personales del cliente (teléfonos, cámaras, joyas, etc.) — recomendamos usar el bidón estanco.</li>
+          </ul>
+          <p><strong>Responsabilidad del cliente:</strong></p>
+          <p>
+            El cliente será responsable de los daños causados a la canoa, material o instalaciones
+            por uso incorrecto, negligencia o dolo. En caso de pérdida o daño del equipo, se
+            aplicará el coste de reposición o reparación.
+          </p>
+        </section>
+
+        <section id="menores">
+          <h2>9. Menores de edad</h2>
+          <p>
+            La participación de menores en el descenso del Sella está sujeta a requisitos
+            estrictos de seguridad:
+          </p>
+          <ul>
+            <li><strong>Edad mínima: 5 años cumplidos</strong>.</li>
+            <li><strong>Altura mínima: 1,15 m</strong>.</li>
+            <li>Los menores deben ir siempre acompañados en la canoa por un <strong>adulto responsable</strong>.</li>
+            <li>El uso del <strong>chaleco salvavidas</strong> adaptado a su talla es obligatorio durante todo el descenso.</li>
+            <li>El adulto acompañante acepta la responsabilidad sobre la seguridad y conducta del menor.</li>
+          </ul>
+          <p>
+            <strong>No se admiten menores que no cumplan estos requisitos mínimos</strong>, ni
+            siquiera bajo supervisión adulta o alegando que saben nadar. Esta política responde
+            a exigencias de nuestras compañías aseguradoras y a criterios propios de seguridad.
+          </p>
+        </section>
+
+        <section id="fuerza-mayor">
+          <h2>10. Fuerza mayor y meteorología</h2>
+          <p>
+            <strong>La lluvia no supone la cancelación automática del descenso.</strong> Si llueve
+            pero el río permanece abierto y en condiciones seguras, la actividad se realiza con
+            normalidad. El descenso del Sella se desarrolla en un entorno natural y mojarse forma
+            parte de la experiencia.
+          </p>
+          <p>
+            Cancelamos o reprogramamos el descenso únicamente cuando la actividad supone un
+            <strong>riesgo real para la seguridad</strong> del cliente, entre otros supuestos:
+          </p>
+          <ul>
+            <li><strong>Tormentas eléctricas</strong> o alerta meteorológica naranja/roja activa.</li>
+            <li><strong>Crecidas del río Sella</strong> con caudal o corriente fuera de parámetros seguros.</li>
+            <li><strong>Recomendación expresa de la Confederación Hidrográfica del Cantábrico</strong>.</li>
+            <li><strong>Cierres o restricciones</strong> impuestos por cualquier autoridad competente.</li>
+            <li><strong>Emergencias sanitarias</strong> o de orden público.</li>
+            <li><strong>Otros supuestos de fuerza mayor</strong> (huelgas, actos de autoridad) ajenos al control razonable del proveedor.</li>
+          </ul>
+          <p>
+            La <strong>decisión final</strong> sobre si el río es apto para el descenso corresponde
+            al proveedor, guiado por criterios de seguridad y por la información de la
+            Confederación Hidrográfica del Cantábrico.
+          </p>
+          <p>
+            En caso de cancelación por estas causas, se ofrecerá al cliente <strong>cambio de
+            fecha sin coste o reembolso íntegro</strong> del importe abonado.
+          </p>
+        </section>
+
+        <section id="datos">
+          <h2>11. Protección de datos</h2>
+          <p>
+            Los datos personales facilitados por el cliente al realizar la reserva se tratan
+            conforme al <strong>Reglamento (UE) 2016/679 General de Protección de Datos (RGPD)</strong>
+            y la <strong>Ley Orgánica 3/2018 (LOPDGDD)</strong>. Para información detallada sobre
+            finalidades, base legal, plazos de conservación, destinatarios y ejercicio de
+            derechos, consulta nuestra <a href="/legal/privacidad/">Política de Privacidad</a>.
+          </p>
+        </section>
+
+        <section id="reclamaciones">
+          <h2>12. Reclamaciones</h2>
+          <p>
+            Para cualquier reclamación relacionada con el servicio, el cliente puede dirigirse
+            en primer lugar a:
+          </p>
+          <ul>
+            <li><strong>Email</strong>: <a href="mailto:reservas@aventuraenelsella.es">reservas@aventuraenelsella.es</a></li>
+            <li><strong>Teléfono</strong>: <a href="tel:+34681093673">+34 681 09 36 73</a></li>
+          </ul>
+          <p>
+            Disponemos de <strong>hojas de reclamaciones</strong> a disposición de los clientes
+            en nuestras instalaciones de Arriondas.
+          </p>
+          <p>
+            Si la reclamación no se resuelve de forma satisfactoria, el cliente podrá acudir a
+            la <strong>Junta Arbitral de Consumo del Principado de Asturias</strong> o, en caso
+            de compras online, a la plataforma europea de <strong>Resolución Alternativa de Litigios
+            (ODR)</strong>:
+            <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer">
+              https://ec.europa.eu/consumers/odr/
+            </a>.
+          </p>
+        </section>
+
+        <section id="legislacion">
+          <h2>13. Ley aplicable y jurisdicción</h2>
+          <p>
+            Las presentes condiciones se rigen por la <strong>legislación española</strong>. Para la
+            resolución de cualquier controversia derivada de su interpretación o cumplimiento,
+            las partes se someten a los <strong>Juzgados y Tribunales de Oviedo</strong> (Asturias,
+            España), salvo que la legislación vigente establezca un fuero diferente con carácter
+            imperativo para consumidores.
+          </p>
+        </section>
+
+        <section id="modificaciones">
+          <h2>14. Modificaciones</h2>
+          <p>
+            El proveedor se reserva el derecho a modificar las presentes condiciones en cualquier
+            momento para adaptarlas a cambios legislativos, operativos o comerciales. Las
+            modificaciones se publican en el sitio web y entran en vigor desde ese momento. A
+            cada reserva se aplicará la <strong>versión vigente</strong> en el momento de la
+            confirmación.
+          </p>
+          <p>
+            La fecha de la última actualización figura al inicio de este documento.
+          </p>
+        </section>
+
+        <div class="lgl__contact" aria-label="Contacto">
+          <p>
+            Para cualquier cuestión relacionada con estas condiciones, escríbenos a
+            <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            o llama al <a href="tel:+34681093673">+34 681 09 36 73</a>.
+          </p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lgl {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 10% 0%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-base);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    min-height: 80vh;
+  }
+  .lgl__inner { max-width: 900px; margin: 0 auto; padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 3rem) 0; }
+  .lgl__breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .lgl__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .lgl__breadcrumb a:hover { color: var(--color-primary); }
+  .lgl__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1rem;
+  }
+  .lgl__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .lgl__updated {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .lgl__toc {
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.12);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .lgl__tocTitle {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0 1rem;
+  }
+  .lgl__toc ol { padding-left: 1.25rem; margin: 0; columns: 1; column-gap: 2rem; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-secondary); }
+  @media (min-width: 720px) { .lgl__toc ol { columns: 2; } }
+  .lgl__toc ol li { margin-bottom: 0.5rem; }
+  .lgl__toc a { color: var(--color-text-primary); transition: color 200ms; border-bottom: 1px solid transparent; }
+  .lgl__toc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .lgl__prose { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .lgl__prose section { padding-top: clamp(2rem, 4vw, 3rem); scroll-margin-top: 5rem; }
+  .lgl__prose section:first-child { padding-top: 0; }
+  .lgl__prose h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  .lgl__prose p { margin: 0 0 1rem; color: var(--color-text-secondary); }
+  .lgl__prose p strong { color: var(--color-text-primary); font-weight: 700; }
+  .lgl__prose ul { padding-left: 1.25rem; margin: 0 0 1rem; }
+  .lgl__prose ul li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+  .lgl__prose ul.lgl__data {
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem 1.25rem 2.75rem;
+    list-style: none;
+  }
+  .lgl__prose ul.lgl__data li { padding-left: 0; position: relative; margin-bottom: 0.625rem; }
+  .lgl__prose ul.lgl__data li::before { content: "·"; position: absolute; left: -1.25rem; color: var(--color-sage, #3D4F3A); font-weight: 900; }
+  .lgl__placeholder {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(232, 179, 57, 0.18);
+    border: 1px dashed rgba(232, 179, 57, 0.5);
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.8125rem;
+    color: #8B6914;
+  }
+  .lgl__prose a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 200ms, border-color 200ms;
+  }
+  .lgl__prose a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .lgl__contact {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding: 1.5rem 1.75rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 3px solid var(--color-sage, #3D4F3A);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .lgl__contact p { margin: 0; }
+</style>

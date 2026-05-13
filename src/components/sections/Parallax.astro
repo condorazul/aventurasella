@@ -1,0 +1,220 @@
+---
+import Picture from '@components/ui/Picture.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    imageAlt: 'Atardecer sobre el río Sella en Asturias, valle con montañas al fondo',
+    eyebrow: '— Nuestra manera',
+    titleLine1: 'El descenso del Sella,',
+    titleLine2Italic: 'sin atajos.',
+    quoteBefore: 'Llevamos desde ',
+    quoteYear: '1998',
+    quoteMiddle: ' en el río. Y hemos aprendido una cosa: que lo importante no es remar, es que ',
+    quoteItalic: 'no tengas que pensar en nada más.',
+    signature: '— El equipo de Aventura en el Sella',
+  },
+  en: {
+    imageAlt: 'Sunset over the Sella River in Asturias, valley with mountains in the background',
+    eyebrow: '— Our way',
+    titleLine1: 'The Sella River descent,',
+    titleLine2Italic: 'no shortcuts.',
+    quoteBefore: "We've been on the river since ",
+    quoteYear: '1998',
+    quoteMiddle: ". And we've learned one thing: what matters isn't the paddling, it's that ",
+    quoteItalic: "you don't have to think about anything else.",
+    signature: '— The Aventura en el Sella team',
+  },
+  fr: {
+    imageAlt: 'Coucher de soleil sur la rivière Sella en Asturies, vallée avec montagnes en arrière-plan',
+    eyebrow: '— Notre façon',
+    titleLine1: 'La descente du Sella,',
+    titleLine2Italic: 'sans raccourcis.',
+    quoteBefore: 'Nous sommes sur la rivière depuis ',
+    quoteYear: '1998',
+    quoteMiddle: ". Et nous avons appris une chose : ce qui compte, ce n'est pas de pagayer, c'est que ",
+    quoteItalic: "tu n'aies à penser à rien d'autre.",
+    signature: "— L'équipe d'Aventura en el Sella",
+  },
+  pt: {
+    imageAlt: 'Pôr do sol sobre o rio Sella nas Astúrias, vale com montanhas ao fundo',
+    eyebrow: '— A nossa maneira',
+    titleLine1: 'A descida do Sella,',
+    titleLine2Italic: 'sem atalhos.',
+    quoteBefore: 'Estamos no rio desde ',
+    quoteYear: '1998',
+    quoteMiddle: '. E aprendemos uma coisa: o importante não é remar, é que ',
+    quoteItalic: 'não tenhas de pensar em mais nada.',
+    signature: '— A equipa de Aventura en el Sella',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<section class="parallax">
+  <div class="parallax__media" aria-hidden="true">
+    <Picture
+      src="sella-atardecer-2"
+      alt={t.imageAlt}
+      sizes="100vw"
+      width={1584}
+      height={672}
+      class="parallax__img"
+      bare={true}
+    />
+    <div class="parallax__overlay"></div>
+  </div>
+
+  <div class="parallax__content">
+    <span class="eyebrow parallax__eyebrow" data-reveal>{t.eyebrow}</span>
+    <h2 class="parallax__title" data-reveal data-reveal-delay="1">
+      {t.titleLine1}<br/>
+      <span class="serif-italic">{t.titleLine2Italic}</span>
+    </h2>
+    <blockquote class="parallax__quote" data-reveal data-reveal-delay="2">
+      {t.quoteBefore}<strong>{t.quoteYear}</strong>{t.quoteMiddle}<span class="serif-italic">{t.quoteItalic}</span>
+    </blockquote>
+    <p class="parallax__signature" data-reveal data-reveal-delay="3">
+      {t.signature}
+    </p>
+  </div>
+</section>
+
+<script>
+  // Parallax scroll effect
+  const parallaxImg = document.querySelector('.parallax__img');
+  if (parallaxImg && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const rect = (parallaxImg as HTMLElement).parentElement!.getBoundingClientRect();
+          const offset = rect.top;
+          const translate = Math.max(-100, Math.min(100, offset * -0.15));
+          (parallaxImg as HTMLElement).style.transform = `translate3d(0, ${translate}px, 0) scale(1.15)`;
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>
+
+<style>
+  .parallax {
+    position: relative;
+    min-height: clamp(500px, 70vh, 720px);
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .parallax__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .parallax__media :global(picture) {
+    display: block;
+    width: 100%;
+    height: 130%;
+  }
+
+  .parallax__media :global(img.parallax__img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.15);
+    will-change: transform;
+  }
+
+  .parallax__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(26,31,46,0.55) 0%, rgba(26,31,46,0.3) 50%, rgba(26,31,46,0.7) 100%);
+  }
+
+  .parallax__content {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: var(--container-md);
+    margin-inline: auto;
+    padding: clamp(4rem, 10vw, 8rem) clamp(1.5rem, 4vw, 4rem);
+    color: var(--color-text-on-dark);
+    text-align: center;
+  }
+
+  .parallax__eyebrow {
+    display: inline-block;
+    color: var(--color-primary-soft);
+    margin-inline: auto;
+    margin-bottom: var(--s-8);
+    opacity: 0.9;
+  }
+
+  .parallax__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 6vw, 5rem);
+    font-weight: var(--fw-black);
+    line-height: 0.95;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    margin: 0 auto var(--s-8);
+    max-width: 900px;
+    text-wrap: balance;
+  }
+
+  .parallax__title .serif-italic {
+    color: var(--color-primary-soft);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+
+  .parallax__quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    font-weight: var(--fw-regular);
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: rgba(251, 248, 241, 0.92);
+    margin: 0 auto var(--s-6);
+    max-width: 720px;
+    text-wrap: balance;
+  }
+
+  .parallax__quote strong {
+    font-style: normal;
+    font-family: var(--font-display);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-on-dark);
+  }
+
+  .parallax__quote .serif-italic {
+    color: var(--color-primary-soft);
+    font-weight: var(--fw-regular);
+  }
+
+  .parallax__signature {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.72);
+  }
+</style>

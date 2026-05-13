@@ -1,0 +1,820 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'fr';
+const title = 'Réservation Premium · descente du Sella tout inclus';
+const description = 'Descente du Sella Premium · 40 € adulte · 30 € enfant · animaux gratuits. Tout inclus + pique-nique asturien (empanada au thon, petit pain asturien) en cadeau.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/fr/reservation-premium/`;
+
+// Ce qui est inclus · grille éditoriale 4×4 (13 articles, pique-nique pleine largeur dernière ligne)
+const includesPremium = [
+  { icon: 'parking',   name: 'Parking privé',             nota: 'Surveillé et gratuit · 300 places · camping-cars bienvenus · à côté de la base', highlight: false },
+  { icon: 'canoa',     name: 'Canoë insubmersible',       nota: 'Système insubmersible · 1 à 3 places · homologué · entretien quotidien',         highlight: false },
+  { icon: 'chaleco',   name: 'Gilet homologué',           nota: 'CHC obligatoire · tailles adulte et enfant · ajustement vérifié',                 highlight: false },
+  { icon: 'pala',      name: 'Pagaie double',             nota: 'Double pale en aluminium · une par personne · légère et ergonomique',             highlight: false },
+  { icon: 'neopreno',  name: 'Combinaison néoprène',      nota: 'Aux dates froides établies · protection thermique contre l\u2019eau froide',       highlight: false },
+  { icon: 'bidon',     name: 'Bidon étanche',             nota: 'Tes affaires au sec toute la descente · téléphone · portefeuille · vêtements',    highlight: false },
+  { icon: 'rampa',     name: 'Rampe d\u2019embarquement', nota: 'Optionnelle et gratuite · embarque par la rampe ou directement depuis la berge',  highlight: false },
+  { icon: 'monitor',   name: 'Moniteur diplômé',          nota: 'Briefing sécurité · mini-cours de pagayage · équipe asturienne',                   highlight: false },
+  { icon: 'transfer',  name: 'Transfert retour',          nota: 'On te récupère à Toraño (Mini) ou Fríes (Complet) et retour à la base',           highlight: false },
+  { icon: 'duchas',    name: 'Vestiaires avec douches',   nota: 'Changement confortable avant et après · eau chaude à l\u2019arrivée',              highlight: false },
+  { icon: 'taquilla',  name: 'Casiers avec clé',          nota: 'Tes affaires en sécurité · ce que d\u2019autres font payer, inclus dans le prix',  highlight: false },
+  { icon: 'seguro',    name: 'Assurances obligatoires',   nota: 'Responsabilité civile et accidents · inclus sans coût supplémentaire',            highlight: false },
+  { icon: 'picnic',    name: 'Pique-nique asturien',      nota: 'Empanada au thon · petit pain asturien · bouteille d\u2019eau 500 ml · dans le bidon', highlight: true  },
+];
+
+// Tarif actuel (confirmé 2026-04-10 · project_premium_strategy.md)
+const tarifas = [
+  { label: 'Adulte',   from: 13, to: 99, price: '40', unit: '€' },
+  { label: 'Enfant',   from: 5,  to: 12, price: '30', unit: '€' },
+  { label: 'Animaux', from: 0,  to: 0,  price: 'Gratuit', unit: '' },
+];
+
+// Témoignages réels (reference_reviews.md)
+const testimonios = [
+  { initial: 'N', name: 'Nacho A.',    source: 'TripAdvisor', date: 'août 2025',    context: 'Couples', rating: 5,
+    text: 'Tout à l\u2019heure et très aimables. Une expérience à vivre une fois dans sa vie, recommandée pour les jeunes comme pour les plus âgés.' },
+  { initial: 'C', name: 'Carlos S.',   source: 'TripAdvisor', date: 'mai 2025',     context: 'Amis',    rating: 5,
+    text: 'Ça vaut le coup. Tu as des vestiaires et tu peux te doucher après l\u2019activité. On te donne des consignes drôles, un bidon où mettre plein de choses et le reste, c\u2019est la rivière qui te le donne.' },
+  { initial: 'A', name: 'Anaïs Suárez', source: 'Google',    date: 'octobre 2025', context: 'Expérience', rating: 5,
+    text: 'Bon service, équipe attentive et très sympathique. L\u2019expérience était géniale, j\u2019ai adoré.' },
+];
+
+const faqs = [
+  { q: 'Que comprend exactement la réservation Premium de la descente du Sella ?',
+    a: 'Tout ce qu\u2019il faut pour descendre le Sella sans souci : <strong>parking privé surveillé (300 places · camping-cars bienvenus), canoë insubmersible (1-3 places), gilet homologué, pagaie double, combinaison néoprène aux dates froides, bidon étanche, rampe d\u2019embarquement optionnelle (ou tu embarques depuis la berge), moniteur diplômé, transfert retour, vestiaires avec douches chaudes, casiers avec clé (que d\u2019autres facturent en supplément), assurances obligatoires et le <em>pique-nique asturien en cadeau</em></strong>. Ça fait 13 choses, toutes dans le prix. Pas d\u2019extras cachés.' },
+  { q: 'Combien coûte la descente Premium ?',
+    a: '<strong>40 € par adulte</strong> (à partir de 13 ans) et <strong>30 € par enfant</strong> (de 5 à 12 ans). Les <strong>animaux sont gratuits</strong>. Le prix est le même pour la Mini Sella (7 km) et la Descente Complète (14,5 km) — pas de surprise.' },
+  { q: 'En quoi la Premium est-elle différente de la descente basique d\u2019autres opérateurs ?',
+    a: 'Les concurrents de la vallée du Sella proposent généralement entre 15 et 35 € sans pique-nique, juste le canoë et le gilet. Notre <strong>réservation Premium coûte un peu plus cher mais inclut : parking privé surveillé, rampe d\u2019embarquement propre (optionnelle et gratuite, ou tu embarques depuis la berge), canoë à système insubmersible, combinaison néoprène aux dates froides, pique-nique asturien, transfert, vestiaires avec douches chaudes, <em>casiers avec clé</em> et assurances — toutes choses que d\u2019autres facturent à part ou ne proposent pas</strong>. C\u2019est la version sans surprises.' },
+  { q: 'Que contient le pique-nique asturien ?',
+    a: 'Cuisine asturienne traditionnelle : une <strong>empanada au thon</strong>, un <strong>petit pain asturien</strong> (chorizo enveloppé dans le pain) et une <strong>bouteille d\u2019eau 500 ml</strong>. Tout dans le bidon étanche pour arriver sec et frais. Tu peux en profiter où tu veux sur le parcours — sur une plage fluviale, sur une berge ou après le dernier rapide. <em>Le pique-nique est fixe et identique pour tous les clients — nous n\u2019avons pas d\u2019option végane ni végétarienne. Si tu as une allergie spécifique (gluten, fruits à coque...), préviens-nous à la réservation pour qu\u2019on te confirme les ingrédients.</em>' },
+  { q: 'Dois-je choisir une heure de départ ?',
+    a: 'Non. Ta réservation est <strong>Premium · horaire ouvert</strong> : arrive à nos installations d\u2019Arriondas <strong>quand cela t\u2019arrange entre 10h30 et 12h30</strong>, sans choisir une heure précise. C\u2019est un des <strong>avantages Premium</strong> · on t\u2019équipe à l\u2019arrivée et tu pars sur la rivière dès que tu es prêt. <strong>Exceptions</strong>: le samedi de la <a href="' + getLocalePath('descenso_internacional', lang) + '">Descente Internationale</a> a un départ unique à heure fixe · et si une tempête ou les conditions de la rivière exigent une heure précise ou un départ avec moniteur, on te prévient à l\u2019avance. La Confédération Hydrographique impose une fin de présence sur la rivière à 18h00.' },
+  { q: 'Dois-je payer maintenant à la réservation ?',
+    a: 'Non. Tu peux payer <strong>par carte à la réservation ou le jour où tu récupères le canoë</strong>. À toi de choisir.' },
+  { q: 'Puis-je réserver le jour même ?',
+    a: 'Oui — <strong>tant que le calendrier de réservation affiche des disponibilités</strong> pour ce jour. Notre recommandation honnête est de <strong>réserver à l\u2019avance</strong>, surtout en haute saison (juillet-août) et les week-ends, quand les places partent vite. Le <a href="' + getLocalePath('reservar', lang) + '">calendrier en ligne</a> t\u2019affiche les jours libres en temps réel. Réserver prend 2 minutes et <strong>tu n\u2019as rien à payer à ce moment-là</strong>.' },
+  { q: 'Peut-on annuler la réservation Premium ?',
+    a: 'Oui. Tu peux annuler ou changer de date jusqu\u2019à 48 heures avant sans frais. Si le temps ne permet pas ou si la Confédération Hydrographique ferme la rivière, nous reprogrammons ou remboursons l\u2019intégralité du montant.' },
+  { q: 'Y a-t-il une option supérieure à Premium ?',
+    a: 'Il n\u2019y a pas d\u2019autres catégories. <strong>Toutes nos réservations sont Premium</strong> — c\u2019est notre façon standard de faire : tout inclus, pique-nique en cadeau, sans plans trompeurs à plusieurs « niveaux ». Ce que tu vois, c\u2019est ce que tu obtiens.' },
+  { q: 'Puis-je offrir une descente Premium ?',
+    a: 'Oui, c\u2019est parfait comme <strong>cadeau d\u2019anniversaire, de mariage ou d\u2019expérience</strong>. Tu réserves la date et nous émettons une carte cadeau au nom du bénéficiaire. <a href="' + getLocalePath('contacto', lang) + '">Écris-nous</a> et on s\u2019en occupe.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Réservation Premium de la descente du Sella — Tout Inclus + Pique-nique Asturien',
+      description: 'Réservation Premium de la descente du Sella : 40 € adulte, 30 € enfant, animaux gratuits, pique-nique asturien inclus. Tout dans le prix.',
+      inLanguage: 'fr-FR',
+      mainEntityOfPage: canonicalUrl,
+      image: { '@type': 'ImageObject', url: `${baseUrl}/images/optimized/rio-sella-hermoso-lg.jpg`, width: 1920, height: 1280 },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-22',
+      dateModified:  '2026-05-12',
+      about: 'Descente du Sella Premium tout inclus avec pique-nique asturien depuis Arriondas',
+    },
+    {
+      '@type': 'Product',
+      '@id': `${baseUrl}/#product`,
+      name: 'Descente du Sella · Réservation Premium',
+      description: 'Descente du Sella en canoë tout inclus avec pique-nique asturien en cadeau (empanada au thon, petit pain asturien et eau). Depuis Arriondas, 14,5 km (Complet) ou 7 km (Mini Sella).',
+      image: `${baseUrl}/images/optimized/rio-sella-hermoso-lg.jpg`,
+      brand: { '@type': 'Brand', name: 'Aventura en el Sella' },
+      aggregateRating: { '@type': 'AggregateRating', ratingValue: 4.5, reviewCount: 147, bestRating: 5, worstRating: 1 },
+      offers: [
+        { '@type': 'Offer', name: 'Adulte', price: '40', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${baseUrl}/fr/reserver/` },
+        { '@type': 'Offer', name: 'Enfant', price: '30', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${baseUrl}/fr/reserver/` },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil',              item: `${baseUrl}/fr/` },
+        { '@type': 'ListItem', position: 2, name: 'Réservation Premium',  item: canonicalUrl },
+      ],
+    },
+  ],
+};
+
+const iconPaths = {
+  parking:  '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M10 8v8M10 8h3.5a2.5 2.5 0 0 1 0 5H10"/>',
+  canoa:    '<path d="M3 14c3 3 7 4 9 4s6-1 9-4"/><path d="M5 14l2-8h10l2 8"/><line x1="12" y1="6" x2="12" y2="14"/>',
+  chaleco:  '<path d="M7 4h10v4l-2 2v10H9V10L7 8z"/><line x1="9" y1="14" x2="15" y2="14"/>',
+  neopreno: '<path d="M8 4l-2 2v4l2 1v11h8V11l2-1V6l-2-2zM10 4v2h4V4"/>',
+  pala:     '<line x1="5.5" y1="12" x2="18.5" y2="12"/><ellipse cx="3" cy="12" rx="2.5" ry="4.5"/><ellipse cx="21" cy="12" rx="2.5" ry="4.5"/>',
+  rampa:    '<line x1="3" y1="20" x2="21" y2="20"/><path d="M5 20V13h14v7"/><path d="M3 10c3 2 6 2 9 0s6-2 9 0"/>',
+  bidon:    '<path d="M8 4h8v3H8zM7 7h10v14H7zM7 12h10M7 17h10"/>',
+  transfer: '<rect x="3" y="8" width="18" height="10" rx="2"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/><line x1="3" y1="12" x2="21" y2="12"/>',
+  duchas:   '<circle cx="7" cy="5" r="2"/><path d="M5 7v3h4V7M3 10h8M5 10v4M7 10v6M9 10v4"/>',
+  taquilla: '<rect x="5" y="11" width="14" height="10" rx="1.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/>',
+  monitor:  '<circle cx="12" cy="8" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/>',
+  seguro:   '<path d="M12 3L5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  picnic:   '<path d="M4 11h16l-2 10H6z"/><path d="M8 11V6a4 4 0 0 1 8 0v5"/><line x1="10" y1="15" x2="10" y2="18"/><line x1="14" y1="15" x2="14" y2="18"/>',
+};
+
+const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+---
+
+<BaseLayout title={title} description={description} currentPath="/fr/reservation-premium/" translationKey="reserva_premium">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="rpH" aria-labelledby="rpH-title">
+    <span class="rpH__watermark" aria-hidden="true">Premium</span>
+
+    <div class="rpH__inner">
+      <nav class="rpH__breadcrumb" aria-label="Fil d\u2019Ariane">
+        <a href="/fr/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Réservation Premium</span>
+      </nav>
+
+      <div class="rpH__grid">
+        <div class="rpH__main">
+          <span class="rpH__eyebrow">— Pour ta journée parfaite sur le Sella</span>
+
+          <h1 id="rpH-title" class="rpH__title">
+            Tout le Sella.<br/>
+            <span class="serif-italic">Sans rien à penser.</span>
+          </h1>
+
+          <div class="rpH__deluxe" aria-hidden="true">
+            <span class="rpH__deluxeMark"></span>
+            <span class="rpH__deluxeWord">Premium</span>
+            <span class="rpH__deluxeMark"></span>
+          </div>
+
+          <p class="rpH__lead">
+            La descente du Sella avec <strong>tout inclus</strong> — canoë, gilet, pagaie, bidon, transfert, douches chaudes et <strong>pique-nique asturien en cadeau</strong>. Un seul tarif honnête, sans extras, sans surprise.
+          </p>
+
+          <div class="rpH__stats">
+            <span class="rpH__statsKicker">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Tout inclus · sans extras
+            </span>
+            <div class="rpH__statsRow">
+              <div class="rpH__stat">
+                <strong>40<small>€</small></strong>
+                <span>Adulte</span>
+              </div>
+              <div class="rpH__statSep" aria-hidden="true"></div>
+              <div class="rpH__stat">
+                <strong>30<small>€</small></strong>
+                <span>Enfant · 5–12</span>
+              </div>
+              <div class="rpH__statSep" aria-hidden="true"></div>
+              <div class="rpH__stat">
+                <strong>Gratuit</strong>
+                <span>Animaux</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rpH__ctas">
+            <a href={getLocalePath('reservar', lang)} class="rpH__cta rpH__cta--primary">
+              Réserver maintenant
+              <span class="rpH__ctaIcon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </a>
+            <a href="#rpH-incluye" class="rpH__cta rpH__cta--ghost">
+              Voir ce qui est inclus
+            </a>
+          </div>
+        </div>
+
+        <aside class="rpH__contact" aria-labelledby="rpH-contact-kicker">
+          <span class="rpH__contactKicker" id="rpH-contact-kicker">— On parle ?</span>
+          <ul class="rpH__contactList" role="list">
+            <li>
+              <a href="tel:+34681093673" class="rpH__contactPill rpH__contactPill--primary" aria-label="Appeler le 681 09 36 73">
+                <strong>Appelle-nous</strong>
+                <small>+34 681 09 36 73</small>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/34681093673?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20la%20R%C3%A9servation%20Premium" target="_blank" rel="noopener noreferrer" class="rpH__contactPill" aria-label="WhatsApp">
+                <strong>WhatsApp</strong>
+                <small>Réponse en minutes</small>
+              </a>
+            </li>
+            <li>
+              <a href="mailto:reservas@aventuraenelsella.es" class="rpH__contactPill" aria-label="Email">
+                <strong>Email</strong>
+                <small>Réservations et questions</small>
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpQ" aria-labelledby="rpQ-title">
+    <div class="container container--xl">
+      <div class="rpQ__grid">
+        <header class="rpQ__head" data-reveal>
+          <span class="rpQ__eyebrow">— Premium chez nous, c\u2019est quoi</span>
+          <h2 id="rpQ-title" class="rpQ__title">
+            Pas plus cher.<br/>
+            <span class="serif-italic">Tout inclus.</span>
+          </h2>
+        </header>
+        <div class="rpQ__body" data-reveal data-reveal-delay="1">
+          <p class="rpQ__lead">
+            « Premium » ici n\u2019est pas pompeux ni chic. Ça veut dire <strong>un seul tarif honnête</strong> avec tout ce qu\u2019il faut absolument dans le canoë — et un <strong>pique-nique asturien qui t\u2019attend</strong> dans le bidon étanche.
+          </p>
+          <p class="rpQ__lead">
+            Les opérateurs de la vallée du Sella facturent entre 15 et 35 € pour le canoë de base. Notre tarif de <strong>40 € par adulte</strong> n\u2019est que quelques euros de plus, mais il inclut ce que d\u2019autres te vendent comme extras ou ne proposent pas : <strong>parking privé surveillé</strong>, canoë insubmersible, <strong>rampe d\u2019embarquement propre</strong> (optionnelle et gratuite), combinaison néoprène aux dates froides, bidon, transfert, vestiaires avec douches chaudes, <strong>casiers avec clé</strong>, assurances et le <strong>pique-nique asturien</strong>. <em>Sans surprise à la fin de la journée.</em>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpI" id="rpH-incluye" aria-labelledby="rpI-title">
+    <div class="container container--xl">
+      <header class="rpI__header" data-reveal>
+        <span class="rpI__eyebrow">— 13 choses incluses</span>
+        <h2 id="rpI-title" class="rpI__title">
+          Ce qui entre<br/>
+          <span class="serif-italic">dans la réservation Premium.</span>
+        </h2>
+        <p class="rpI__lead">
+          Tout ce qui est sur la liste est dans le prix. Rien n\u2019est facturé en plus. <strong>Rien.</strong>
+        </p>
+      </header>
+
+      <ol class="rpI__grid">
+        {includesPremium.map((item, i) => (
+          <li class={`rpI__cell${item.highlight ? ' is-highlight' : ''}`}>
+            <span class="rpI__cellNum" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="rpI__cellBody">
+              <span class="rpI__cellIcon" aria-hidden="true">
+                <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" set:html={iconPaths[item.icon]} />
+              </span>
+              <h3 class="rpI__cellName">{item.name}</h3>
+              <p class="rpI__cellNota">{item.nota}</p>
+              {item.highlight && <span class="rpI__cellBadge">CADEAU</span>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="rpB" aria-label="Appel à l\u2019action · réserver Premium">
+    <div class="container container--xl">
+      <div class="rpB__inner" data-reveal>
+        <div class="rpB__text">
+          <span class="rpB__eyebrow">— Aventura en el Sella</span>
+          <h2 class="rpB__title">Prêt pour la rivière <span class="serif-italic">et le pique-nique ?</span></h2>
+        </div>
+        <a href={getLocalePath('reservar', lang)} class="rpB__cta">
+          <span>Réserver maintenant</span>
+          <span class="rpB__ctaIcon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpP" aria-labelledby="rpP-title">
+    <div class="container container--xl">
+      <div class="rpP__split">
+        <div class="rpP__media" data-reveal data-reveal-type="slide-right">
+          <Picture src="fiesta-sella" alt="Ambiance et pique-nique asturien sur la descente du Sella · Réservation Premium tout inclus" sizes="(min-width: 960px) 45vw, 100vw" bare />
+          <span class="rpP__mediaTag">Inclus · Cadeau</span>
+        </div>
+        <div class="rpP__body" data-reveal data-reveal-delay="1">
+          <span class="rpP__eyebrow">— Ce qui fait la différence</span>
+          <h2 id="rpP-title" class="rpP__title">
+            Pique-nique asturien<br/>
+            <span class="serif-italic">dans le bidon.</span>
+          </h2>
+          <p class="rpP__lead">
+            Cuisine asturienne pure : une <strong>empanada au thon</strong>, un <strong>petit pain asturien</strong> (chorizo enveloppé dans le pain) et une <strong>bouteille d\u2019eau 500 ml</strong>. Simple, honnête, savoureux — dans le bidon étanche pour qu\u2019il arrive sec et frais.
+          </p>
+          <ul class="rpP__list">
+            <li><span class="rpP__listDot" aria-hidden="true"></span>Mange-le sur une <strong>plage fluviale</strong> — Pozo del Arco est le préféré de l\u2019équipe.</li>
+            <li><span class="rpP__listDot" aria-hidden="true"></span>Ou arrête-toi à une des <strong>6 guinguettes</strong> et ouvre-le là tranquillement.</li>
+            <li><span class="rpP__listDot" aria-hidden="true"></span>Le pique-nique est <strong>fixe — identique pour tous les clients</strong>. Pas d\u2019option végane ni végétarienne.</li>
+          </ul>
+          <a href={getLocalePath('recorrido_mapa', lang)} class="rpP__link">
+            Voir les guinguettes du parcours
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpT" aria-labelledby="rpT-title">
+    <div class="container container--xl">
+      <header class="rpT__header" data-reveal>
+        <span class="rpT__eyebrow">— Prix honnête</span>
+        <h2 id="rpT-title" class="rpT__title">
+          Un tarif.<br/>
+          <span class="serif-italic">Pas de petits caractères.</span>
+        </h2>
+        <p class="rpT__lead">
+          Même prix pour la Mini Sella (7 km) et la Descente Complète (14,5 km). Le pique-nique asturien est toujours inclus. Tu paies par carte à la réservation ou <strong>le jour où tu récupères le canoë</strong> — comme tu préfères.
+        </p>
+      </header>
+
+      <div class="rpT__split">
+        {tarifas.map(t => (
+          <div class="rpT__col">
+            <span class="rpT__colLabel">{t.label}</span>
+            <strong class="rpT__colPrice">
+              {t.price}
+              {t.unit && <small>{t.unit}</small>}
+            </strong>
+            <span class="rpT__colNota">
+              {t.label === 'Adulte'  && 'à partir de 13 ans'}
+              {t.label === 'Enfant'  && 'de 5 à 12 ans'}
+              {t.label === 'Animaux' && 'gilet canin inclus'}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <div class="rpT__notes" data-reveal>
+        <ul class="rpT__notesList">
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Sans payer maintenant</strong> — paie par carte à la réservation ou le jour de la descente.</li>
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Annulation flexible</strong> jusqu\u2019à 48 h avant · reprogrammable si la rivière ferme.</li>
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Tout inclus dans le prix</strong> · pas d\u2019extras à la fin de la journée.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpR" aria-labelledby="rpR-title">
+    <div class="container container--xl">
+      <header class="rpR__header" data-reveal>
+        <span class="rpR__eyebrow">— Ce que disent ceux qui l\u2019ont déjà faite</span>
+        <h2 id="rpR-title" class="rpR__title">
+          4,5★ · 147 avis<br/>
+          <span class="serif-italic">réels et vérifiables.</span>
+        </h2>
+      </header>
+
+      <div class="rpR__grid">
+        {testimonios.map((t, i) => (
+          <article class="rpR__card" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <div class="rpR__head">
+              <span class="rpR__avatar" aria-hidden="true">{t.initial}</span>
+              <div class="rpR__meta">
+                <strong class="rpR__name">{t.name}</strong>
+                <span class="rpR__src">{t.source} · {t.date}</span>
+              </div>
+              <span class="rpR__tag">{t.context}</span>
+            </div>
+            <div class="rpR__stars" aria-hidden="true" set:html={Array(t.rating).fill(starSvg).join('')}></div>
+            <blockquote class="rpR__quote">
+              <span class="rpR__mark" aria-hidden="true">“</span>
+              {t.text}
+            </blockquote>
+          </article>
+        ))}
+      </div>
+
+      <div class="rpR__cta" data-reveal>
+        <a href={getLocalePath('opiniones', lang)} class="rpR__seeMore">
+          Voir tous les avis
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpF">
+    <div class="container container--xl">
+      <div class="rpF__grid">
+        <aside class="rpF__aside" data-reveal>
+          <span class="rpF__eyebrow">— Questions fréquentes</span>
+          <h2 class="rpF__title">Sur la<br/><span class="serif-italic">Réservation Premium.</span></h2>
+          <p class="rpF__lead">
+            Ce qui est inclus, combien ça coûte, comment annuler, ce que contient le pique-nique.
+            S\u2019il manque quelque chose, <a href={getLocalePath('contacto', lang)}>on est à un message</a>.
+          </p>
+
+          <div class="rpF__contact">
+            <span class="rpF__contactKicker">Ta question n\u2019y est pas ?</span>
+            <p class="rpF__contactText">
+              Contacte-nous · on répond en minutes par n\u2019importe quel canal.
+            </p>
+            <ul class="rpF__contactList" role="list">
+              <li>
+                <a href="tel:+34681093673" class="rpF__contactBtn rpF__contactBtn--primary" aria-label="Appeler le 681 09 36 73">
+                  <span class="rpF__contactIcon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="rpF__contactBody">
+                    <strong>Appelle-nous</strong>
+                    <small>+34 681 09 36 73</small>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20la%20R%C3%A9servation%20Premium" target="_blank" rel="noopener noreferrer" class="rpF__contactBtn" aria-label="WhatsApp">
+                  <span class="rpF__contactIcon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="rpF__contactBody">
+                    <strong>WhatsApp</strong>
+                    <small>Réponse en minutes</small>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="mailto:reservas@aventuraenelsella.es" class="rpF__contactBtn" aria-label="Email">
+                  <span class="rpF__contactIcon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <span class="rpF__contactBody">
+                    <strong>Email</strong>
+                    <small>reservas@aventuraenelsella.es</small>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+        <div class="rpF__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="rpFI" name="rp-faq" open={i === 0}>
+              <summary class="rpFI__q">
+                {f.q}
+                <svg class="rpFI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="rpFI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rpX">
+    <div class="container container--xl">
+      <header class="rpX__header" data-reveal>
+        <span class="rpX__eyebrow">— Avant de réserver</span>
+        <h2 class="rpX__title">Prépare<br/><span class="serif-italic">ta descente.</span></h2>
+      </header>
+
+      <nav class="rpX__list" aria-label="Pages liées">
+        <a href={getLocalePath('precios', lang)} class="rpX__item">
+          <span class="rpX__num">01</span>
+          <h3 class="rpX__t">Tarifs complets</h3>
+          <p class="rpX__p">40 € adultes · 30 € enfants · animaux gratuits · tout inclus.</p>
+          <span class="rpX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href={getLocalePath('recorrido_mapa', lang)} class="rpX__item">
+          <span class="rpX__num">02</span>
+          <h3 class="rpX__t">Parcours et carte</h3>
+          <p class="rpX__p">14,5 km · 8 étapes · 6 guinguettes · carte interactive.</p>
+          <span class="rpX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href={getLocalePath('con_ninos', lang)} class="rpX__item">
+          <span class="rpX__num">03</span>
+          <h3 class="rpX__t">Avec enfants</h3>
+          <p class="rpX__p">Dès 5 ans · 1,15 m. Rythme familial et sécurité.</p>
+          <span class="rpX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href={getLocalePath('mejor_epoca', lang)} class="rpX__item">
+          <span class="rpX__num">04</span>
+          <h3 class="rpX__t">Meilleure période</h3>
+          <p class="rpX__p">Quand descendre le Sella · météo · débit · affluence.</p>
+          <span class="rpX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <section class="rpCta" aria-labelledby="rpCta-title">
+    <div class="rpCta__bg" aria-hidden="true">
+      <Picture src="sella-cta-premium" alt="" sizes="100vw" bare />
+    </div>
+    <div class="rpCta__inner">
+      <span class="rpCta__eyebrow">— Le Sella t\u2019attend</span>
+      <h2 id="rpCta-title" class="rpCta__title">
+        Ta descente<br/>
+        <span class="serif-italic">avec tout inclus.</span>
+      </h2>
+      <p class="rpCta__lead">
+        Réserve sans payer maintenant. <strong>Paie par carte à la réservation ou le jour où tu récupères le canoë</strong>. Annulation flexible jusqu\u2019à 48 heures avant.
+      </p>
+      <div class="rpCta__ctas">
+        <a href={getLocalePath('reservar', lang)} class="rpCta__primary">
+          Réserver Premium
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href={getLocalePath('contacto', lang)} class="rpCta__ghost">J\u2019ai une question</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rpH { position: relative; background: radial-gradient(ellipse 70% 55% at 90% 0%, rgba(233, 133, 111, 0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 45% at 10% 100%, rgba(61, 79, 58, 0.08) 0%, transparent 60%), linear-gradient(180deg, #F9F5EA 0%, #F0E9D3 100%); padding-bottom: clamp(3rem, 6vw, 5rem); overflow: hidden; isolation: isolate; }
+  .rpH__watermark { position: absolute; top: 10%; right: -2%; font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: clamp(10rem, 22vw, 22rem); line-height: 0.85; color: rgba(26, 31, 46, 0.04); pointer-events: none; user-select: none; z-index: 0; }
+  .rpH__inner { max-width: 1280px; margin: 0 auto; padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem) 0; position: relative; z-index: 1; }
+  .rpH__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2.5rem, 5vw, 4rem); align-items: start; }
+  @media (min-width: 1080px) { .rpH__grid { grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr); gap: clamp(3rem, 6vw, 6rem); align-items: end; } }
+  .rpH__main { min-width: 0; }
+  .rpH__contact { background: transparent; padding: 0; border: 0; box-shadow: none; align-self: end; }
+  .rpH__contactKicker { display: block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.875rem; }
+  .rpH__contactList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .rpH__contactPill { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.875rem 1.25rem; background: rgba(255, 255, 255, 0.55); border: 1px solid rgba(26, 31, 46, 0.08); border-radius: var(--radius-pill, 999px); text-decoration: none; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: background 220ms ease, border-color 220ms ease, transform 220ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+  .rpH__contactPill:hover { background: rgba(255, 255, 255, 0.9); border-color: rgba(61, 79, 58, 0.3); transform: translateY(-1px); }
+  .rpH__contactPill strong { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.2px; color: var(--color-text-primary); }
+  .rpH__contactPill small { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--color-text-muted); text-align: right; white-space: nowrap; }
+  .rpH__contactPill--primary { background: var(--color-text-primary, #1A1F2E); border-color: var(--color-text-primary, #1A1F2E); }
+  .rpH__contactPill--primary:hover { background: var(--color-primary, #E9856F); border-color: var(--color-primary, #E9856F); transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(233, 133, 111, 0.5); }
+  .rpH__contactPill--primary strong { color: #fff; }
+  .rpH__contactPill--primary small { color: rgba(251, 248, 241, 0.65); }
+  @media (prefers-reduced-motion: reduce) { .rpH__contactPill, .rpH__contactPill:hover { transition: none; transform: none; } }
+  .rpH__breadcrumb { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-text-muted); margin-bottom: clamp(1.5rem, 3vw, 2rem); }
+  .rpH__breadcrumb a { color: var(--color-text-primary); }
+  .rpH__breadcrumb a:hover { color: var(--color-primary); }
+  .rpH__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: clamp(1rem, 2vw, 1.5rem); }
+  .rpH__title { font-family: var(--font-display); font-size: clamp(2.5rem, 6.5vw, 4.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.035em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 clamp(1.25rem, 2.5vw, 1.75rem); }
+  .rpH__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpH__deluxe { display: inline-flex; align-items: center; gap: clamp(0.875rem, 1.75vw, 1.25rem); margin: 0 0 clamp(1.5rem, 2.75vw, 2rem); padding: clamp(0.625rem, 1.25vw, 0.875rem) 0; }
+  .rpH__deluxeMark { display: inline-block; width: clamp(2.5rem, 6vw, 4.5rem); height: 1px; background: linear-gradient(90deg, transparent 0%, var(--color-primary, #E9856F) 30%, var(--color-primary, #E9856F) 70%, transparent 100%); }
+  .rpH__deluxeWord { font-family: var(--font-serif); font-size: clamp(1.375rem, 2.4vw, 1.875rem); font-weight: 400; font-style: italic; letter-spacing: 0.04em; color: var(--color-primary, #E9856F); line-height: 1; position: relative; }
+  .rpH__deluxeWord::before, .rpH__deluxeWord::after { content: ''; position: absolute; top: 50%; width: 4px; height: 4px; border-radius: 50%; background: var(--color-primary, #E9856F); opacity: 0.55; transform: translateY(-50%); }
+  .rpH__deluxeWord::before { left: -0.875rem; }
+  .rpH__deluxeWord::after  { right: -0.875rem; }
+  .rpH__lead { font-family: var(--font-sans); font-size: clamp(1rem, 1.4vw, 1.125rem); line-height: 1.7; color: var(--color-text-secondary); max-width: 620px; margin: 0 0 clamp(1.75rem, 3vw, 2.25rem); }
+  .rpH__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpH__stats { display: flex; flex-direction: column; gap: clamp(0.625rem, 1.25vw, 0.875rem); margin-bottom: clamp(2.25rem, 3.75vw, 3rem); align-items: flex-start; background: transparent; padding: 0; border: 0; box-shadow: none; }
+  .rpH__statsKicker { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.375rem 0.75rem 0.375rem 0.625rem; background: rgba(233, 133, 111, 0.1); border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-primary); }
+  .rpH__statsKicker svg { color: var(--color-primary); flex-shrink: 0; }
+  .rpH__statsRow { display: inline-flex; flex-wrap: wrap; align-items: flex-end; gap: clamp(1.25rem, 2.75vw, 2.25rem); }
+  .rpH__stat { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+  .rpH__stat strong { font-family: var(--font-display); font-size: clamp(1.875rem, 3.2vw, 2.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; color: var(--color-text-primary); display: flex; align-items: baseline; gap: 2px; }
+  .rpH__stat strong small { font-family: var(--font-serif); font-size: 0.5em; font-weight: 400; font-style: italic; letter-spacing: 0; color: var(--color-primary); }
+  .rpH__stat span:last-child { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-text-muted); }
+  .rpH__statSep { align-self: stretch; width: 1px; background: rgba(26, 31, 46, 0.12); margin-block: 0.25rem; }
+  .rpH__ctas { display: inline-flex; flex-wrap: wrap; align-items: center; gap: clamp(0.875rem, 1.75vw, 1.25rem); row-gap: clamp(0.875rem, 1.5vw, 1.125rem); }
+  .rpH__cta--primary { margin-right: clamp(0.5rem, 1.5vw, 1rem); }
+  .rpH__cta { display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 0.5rem 0.5rem 1.5rem; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; transition: transform 260ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)), box-shadow 260ms ease, background 260ms ease; text-decoration: none; }
+  .rpH__cta--primary { background: var(--color-bg-dark, #1A1F2E); color: #fff; }
+  .rpH__cta--primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -12px rgba(26, 31, 46, 0.45); }
+  .rpH__cta--ghost { background: transparent; color: var(--color-text-primary); border: 1.5px solid var(--color-text-primary); padding: 0.6875rem 1.375rem; }
+  .rpH__cta--ghost:hover { background: var(--color-text-primary); color: #fff; transform: translateY(-2px); }
+  .rpH__ctaIcon { width: 34px; height: 34px; border-radius: 50%; background: #fff; color: var(--color-text-primary); display: inline-flex; align-items: center; justify-content: center; transition: transform 300ms var(--ease-out); }
+  .rpH__cta--primary:hover .rpH__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  .rpQ { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-base, #FBF8F1); }
+  .rpQ__grid { display: grid; grid-template-columns: 1fr; gap: clamp(1.75rem, 4vw, 3rem); max-width: 1200px; margin: 0 auto; align-items: start; }
+  @media (min-width: 900px) { .rpQ__grid { grid-template-columns: minmax(320px, 1fr) 1.4fr; gap: clamp(2.5rem, 5vw, 4rem); } }
+  .rpQ__head { max-width: 440px; }
+  .rpQ__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: clamp(1rem, 2vw, 1.25rem); }
+  .rpQ__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; }
+  .rpQ__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpQ__body { max-width: 560px; }
+  .rpQ__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.8; color: var(--color-text-secondary); margin: 0 0 1rem; }
+  .rpQ__lead:last-child { margin-bottom: 0; }
+  .rpQ__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpQ__lead em { font-style: italic; color: var(--color-sage, #3D4F3A); }
+
+  .rpI { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-warm, #F6F1E3); }
+  .rpI__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .rpI__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1rem; }
+  .rpI__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 1rem; }
+  .rpI__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpI__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); margin: 0; }
+  .rpI__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpI__grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; grid-auto-rows: 1fr; max-width: 1200px; margin: 0 auto; border-top: 1px solid rgba(26, 31, 46, 0.14); border-bottom: 1px solid rgba(26, 31, 46, 0.14); }
+  @media (min-width: 560px)  { .rpI__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px)  { .rpI__grid { grid-template-columns: repeat(4, 1fr); } }
+  .rpI__cell { position: relative; padding: clamp(1.5rem, 2.75vw, 2rem); display: flex; align-items: flex-start; gap: 0.875rem; border-right: 1px solid rgba(26, 31, 46, 0.14); border-bottom: 1px solid rgba(26, 31, 46, 0.14); min-height: 200px; transition: background 300ms ease; }
+  .rpI__cell:hover { background: rgba(255, 255, 255, 0.4); }
+  .rpI__cell.is-highlight { background: rgba(233, 133, 111, 0.08); }
+  .rpI__cell.is-highlight:hover { background: rgba(233, 133, 111, 0.14); }
+  @media (min-width: 960px) {
+    .rpI__cell:nth-child(4n) { border-right: none; }
+    .rpI__cell.is-highlight { grid-column: 1 / -1; border-right: none; border-bottom: none; min-height: auto; padding: clamp(1.125rem, 2vw, 1.5rem) clamp(1.5rem, 2.75vw, 2rem); align-items: center; }
+    .rpI__cell.is-highlight .rpI__cellBody { flex-direction: row; align-items: center; flex-wrap: wrap; gap: clamp(1rem, 2vw, 1.5rem); }
+    .rpI__cell.is-highlight .rpI__cellName { font-size: clamp(1.375rem, 2.2vw, 1.625rem); margin: 0; }
+    .rpI__cell.is-highlight .rpI__cellNota { flex: 1; min-width: 260px; }
+    .rpI__cell.is-highlight .rpI__cellBadge { margin-top: 0; margin-left: auto; }
+  }
+  @media (min-width: 560px) and (max-width: 959.98px) {
+    .rpI__cell:nth-child(2n) { border-right: none; }
+    .rpI__cell.is-highlight { grid-column: 1 / -1; border-right: none; border-bottom: none; }
+  }
+  @media (max-width: 559.98px) { .rpI__cell { border-right: none; } .rpI__cell:last-child { border-bottom: none; } }
+  .rpI__cellNum { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 0.875rem; color: rgba(26, 31, 46, 0.35); flex-shrink: 0; }
+  .rpI__cell.is-highlight .rpI__cellNum { color: var(--color-primary); }
+  .rpI__cellBody { display: flex; flex-direction: column; gap: 0.625rem; min-width: 0; }
+  .rpI__cellIcon { display: inline-flex; color: var(--color-sage, #3D4F3A); }
+  .rpI__cell.is-highlight .rpI__cellIcon { color: var(--color-primary); }
+  .rpI__cellIcon svg { display: block; }
+  .rpI__cellName { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.125rem, 1.8vw, 1.25rem); line-height: 1.15; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; text-transform: uppercase; }
+  .rpI__cellNota { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0; }
+  .rpI__cellBadge { display: inline-block; font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: #fff; background: var(--color-primary); padding: 0.3rem 0.625rem; border-radius: var(--radius-pill, 999px); align-self: flex-start; margin-top: 0.25rem; }
+
+  .rpP { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-base, #FBF8F1); }
+  .rpP__split { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3.5rem); max-width: 1200px; margin: 0 auto; align-items: center; }
+  @media (min-width: 900px) { .rpP__split { grid-template-columns: 1.1fr 1fr; } }
+  .rpP__media { position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius-2xl, 2rem); overflow: hidden; box-shadow: 0 24px 56px -20px rgba(26, 31, 46, 0.2); transform: translateX(-120px); opacity: 0; transition: transform 1100ms cubic-bezier(0.22, 1, 0.36, 1), opacity 1100ms ease-out, box-shadow 380ms ease; }
+  .rpP__media.is-visible { transform: translateX(0); opacity: 1; }
+  .rpP__media:hover { box-shadow: 0 32px 72px -22px rgba(26, 31, 46, 0.28); }
+  .rpP__media :global(picture), .rpP__media :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 1200ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .rpP__media:hover :global(img) { transform: scale(1.04); }
+  .rpP__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.0) 40%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0.0) 60%, transparent 70%); transform: translateX(-110%); pointer-events: none; z-index: 2; }
+  .rpP__media:hover::after { animation: rpPglass 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  @keyframes rpPglass { 0% { transform: translateX(-110%); } 100% { transform: translateX(110%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .rpP__media, .rpP__media :global(img), .rpP__media::after { transition: none !important; animation: none !important; }
+    .rpP__media:hover :global(img) { transform: none; }
+  }
+  .rpP__mediaTag { position: absolute; bottom: 1.25rem; left: 1.25rem; background: var(--color-primary, #E9856F); color: #fff; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; padding: 0.5rem 0.875rem; border-radius: var(--radius-pill, 999px); box-shadow: 0 12px 28px -10px rgba(233, 133, 111, 0.5); }
+  .rpP__body { display: flex; flex-direction: column; gap: 1.25rem; }
+  .rpP__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); }
+  .rpP__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; }
+  .rpP__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpP__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.8; color: var(--color-text-secondary); margin: 0; }
+  .rpP__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpP__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .rpP__list li { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); padding-left: 1.25rem; position: relative; }
+  .rpP__list li strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpP__listDot { position: absolute; left: 0; top: 0.625rem; width: 6px; height: 6px; border-radius: 50%; background: var(--color-sage, #3D4F3A); }
+  .rpP__link { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.5px; color: var(--color-text-primary); border-bottom: 1.5px solid var(--color-sage, #3D4F3A); padding-bottom: 2px; align-self: flex-start; margin-top: 0.5rem; transition: color 220ms, border-color 220ms; }
+  .rpP__link:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .rpP__link svg { transition: transform 220ms; }
+  .rpP__link:hover svg { transform: translateX(3px); }
+
+  .rpT { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-sand, #F1E9D4); }
+  .rpT__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .rpT__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1rem; }
+  .rpT__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 1rem; }
+  .rpT__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpT__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); margin: 0; }
+  .rpT__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpT__split { display: grid; grid-template-columns: 1fr; max-width: 1000px; margin: 0 auto clamp(2rem, 4vw, 2.75rem); }
+  @media (min-width: 720px) { .rpT__split { grid-template-columns: repeat(3, 1fr); } }
+  .rpT__col { display: flex; flex-direction: column; gap: 0.5rem; padding: clamp(1.75rem, 3vw, 2.25rem); align-items: center; text-align: center; border-bottom: 1px solid rgba(26, 31, 46, 0.14); }
+  @media (min-width: 720px) { .rpT__col { border-bottom: none; border-right: 1px solid rgba(26, 31, 46, 0.14); } .rpT__col:last-child { border-right: none; } }
+  @media (max-width: 719.98px) { .rpT__col:last-child { border-bottom: none; } }
+  .rpT__colLabel { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); }
+  .rpT__colPrice { font-family: var(--font-display); font-weight: 900; font-size: clamp(3rem, 6vw, 4.5rem); line-height: 1; letter-spacing: -0.035em; color: var(--color-text-primary); display: inline-flex; align-items: baseline; gap: 3px; }
+  .rpT__colPrice small { font-family: var(--font-sans); font-size: 1.125rem; font-weight: 800; letter-spacing: 0; color: var(--color-text-muted); }
+  .rpT__colNota { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-text-secondary); }
+  .rpT__notes { max-width: 720px; margin: 0 auto; }
+  .rpT__notesList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .rpT__notesList li { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); padding-left: 1.25rem; position: relative; }
+  .rpT__notesList li strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpT__noteDot { position: absolute; left: 0; top: 0.625rem; width: 6px; height: 6px; border-radius: 50%; background: var(--color-primary); }
+
+  .rpB { padding-block: clamp(2.25rem, 4vw, 3rem); background: var(--color-bg-dark, #1A1F2E); color: var(--color-text-on-dark, #F4F0E8); }
+  .rpB__inner { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: clamp(1.25rem, 3vw, 2.5rem); }
+  @media (max-width: 720px) { .rpB__inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .rpB__text { min-width: 0; }
+  .rpB__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.625rem; }
+  .rpB__title { font-family: var(--font-display); font-size: clamp(1.5rem, 3.5vw, 2.25rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; color: #fff; margin: 0; }
+  .rpB__title .serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.005em; color: var(--color-primary-soft, #F5C5B5); }
+  .rpB__cta { display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.5rem 0.5rem 0.5rem 1.5rem; background: #fff; color: var(--color-text-primary); border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out); white-space: nowrap; justify-self: end; }
+  @media (max-width: 720px) { .rpB__cta { justify-self: start; } }
+  .rpB__cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -12px rgba(0, 0, 0, 0.45); }
+  .rpB__ctaIcon { width: 36px; height: 36px; border-radius: 50%; background: var(--color-text-primary); color: #fff; display: inline-flex; align-items: center; justify-content: center; transition: transform 300ms var(--ease-out); }
+  .rpB__cta:hover .rpB__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  .rpR { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-base, #FBF8F1); }
+  .rpR__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .rpR__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1rem; }
+  .rpR__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; }
+  .rpR__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpR__grid { display: grid; grid-template-columns: 1fr; gap: clamp(1.25rem, 2.5vw, 1.75rem); max-width: 1200px; margin: 0 auto; }
+  @media (min-width: 720px)  { .rpR__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rpR__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rpR__card { display: flex; flex-direction: column; gap: 1rem; padding: clamp(1.75rem, 3vw, 2.25rem); background: #fff; border-radius: var(--radius-xl, 1.5rem); border: 1px solid rgba(26, 31, 46, 0.06); transition: transform 320ms var(--ease-out), box-shadow 320ms ease; }
+  .rpR__card:hover { transform: translateY(-4px); box-shadow: 0 22px 44px -20px rgba(26, 31, 46, 0.18); }
+  .rpR__head { display: flex; align-items: center; gap: 0.75rem; }
+  .rpR__avatar { flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%; background: var(--color-sage, #3D4F3A); color: var(--color-bg-base); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 900; font-size: 1.125rem; letter-spacing: -0.02em; }
+  .rpR__meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .rpR__name { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; color: var(--color-text-primary); }
+  .rpR__src { font-family: var(--font-sans); font-size: 0.75rem; color: var(--color-text-muted); }
+  .rpR__tag { flex-shrink: 0; font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: var(--color-primary); padding: 0.3rem 0.625rem; background: rgba(233, 133, 111, 0.08); border-radius: var(--radius-pill, 999px); }
+  .rpR__stars { display: inline-flex; gap: 3px; color: var(--color-primary); }
+  .rpR__stars svg { display: block; }
+  .rpR__quote { position: relative; font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); margin: 0; padding: 0; }
+  .rpR__mark { position: absolute; top: -0.5rem; left: -0.25rem; font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 3.5rem; line-height: 1; color: rgba(233, 133, 111, 0.18); pointer-events: none; }
+  .rpR__cta { text-align: center; margin-top: clamp(2rem, 4vw, 2.75rem); }
+  .rpR__seeMore { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800; letter-spacing: 0.5px; color: var(--color-text-primary); border-bottom: 1.5px solid var(--color-sage, #3D4F3A); padding-bottom: 2px; transition: color 220ms, border-color 220ms; }
+  .rpR__seeMore:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .rpR__seeMore svg { transition: transform 220ms; }
+  .rpR__seeMore:hover svg { transform: translateX(3px); }
+
+  .rpF { padding-block: clamp(4rem, 7vw, 5.5rem); background: var(--color-bg-warm, #F6F1E3); }
+  .rpF__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); max-width: 1200px; margin: 0 auto; }
+  @media (min-width: 900px) { .rpF__grid { grid-template-columns: minmax(280px, 1fr) minmax(480px, 1.6fr); gap: clamp(3rem, 5vw, 4rem); } }
+  .rpF__aside { position: sticky; top: 100px; align-self: start; }
+  .rpF__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 1rem; }
+  .rpF__title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.025em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 1rem; }
+  .rpF__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .rpF__lead { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
+  .rpF__lead a { color: var(--color-sage); border-bottom: 1px solid rgba(61, 79, 58, 0.4); }
+  .rpF__lead a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .rpF__contact { margin-top: clamp(1.75rem, 3vw, 2.5rem); padding-top: clamp(1.5rem, 2.5vw, 2rem); border-top: 1px solid rgba(61, 79, 58, 0.18); }
+  .rpF__contactKicker { display: block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.5rem; }
+  .rpF__contactText { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0 0 1rem; }
+  .rpF__contactList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rpF__contactBtn { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.55); border: 1px solid rgba(26, 31, 46, 0.08); border-radius: var(--radius-pill, 999px); text-decoration: none; transition: background 220ms ease, border-color 220ms ease, transform 220ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)); }
+  .rpF__contactBtn:hover { background: #fff; border-color: rgba(61, 79, 58, 0.3); transform: translateY(-1px); }
+  .rpF__contactIcon { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--color-bg-warm, #F6F1E3); color: var(--color-sage, #3D4F3A); border-radius: 50%; flex-shrink: 0; transition: background 220ms ease, color 220ms ease; }
+  .rpF__contactBody { display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; line-height: 1.2; }
+  .rpF__contactBody strong { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700; letter-spacing: 0.2px; color: var(--color-text-primary); }
+  .rpF__contactBody small { font-family: var(--font-sans); font-size: 0.75rem; color: var(--color-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .rpF__contactBtn--primary { background: var(--color-text-primary, #1A1F2E); border-color: var(--color-text-primary, #1A1F2E); }
+  .rpF__contactBtn--primary:hover { background: var(--color-primary, #E9856F); border-color: var(--color-primary, #E9856F); transform: translateY(-2px); box-shadow: 0 10px 24px -10px rgba(233, 133, 111, 0.5); }
+  .rpF__contactBtn--primary .rpF__contactIcon { background: rgba(255, 255, 255, 0.12); color: #fff; }
+  .rpF__contactBtn--primary .rpF__contactBody strong { color: #fff; }
+  .rpF__contactBtn--primary .rpF__contactBody small { color: rgba(251, 248, 241, 0.7); }
+  @media (prefers-reduced-motion: reduce) { .rpF__contactBtn, .rpF__contactBtn:hover { transition: none; transform: none; } }
+  .rpF__list { display: flex; flex-direction: column; }
+  .rpFI { border-bottom: 1px solid rgba(26, 31, 46, 0.1); }
+  .rpFI:first-child { border-top: 1px solid rgba(26, 31, 46, 0.1); }
+  .rpFI__q { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: clamp(1rem, 2vw, 1.25rem) 0; font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.125rem); font-weight: 700; color: var(--color-text-primary); cursor: pointer; list-style: none; transition: color 220ms ease; }
+  .rpFI__q::-webkit-details-marker { display: none; }
+  .rpFI__q:hover { color: var(--color-primary); }
+  .rpFI__chev { flex-shrink: 0; transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .rpFI[open] .rpFI__chev { transform: rotate(180deg); color: var(--color-primary); }
+  .rpFI__a { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.75; color: var(--color-text-secondary); margin: 0 0 clamp(1rem, 2vw, 1.25rem); padding-right: 2rem; }
+  .rpFI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .rpFI__a em { font-style: italic; color: var(--color-sage, #3D4F3A); }
+  .rpFI__a a { color: var(--color-sage); border-bottom: 1px solid rgba(61, 79, 58, 0.4); }
+  .rpFI__a a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .rpX { padding-block: clamp(4rem, 7vw, 5.5rem); background: linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%); color: #FBF8F1; position: relative; isolation: isolate; }
+  .rpX::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(rgba(251, 248, 241, 0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(251, 248, 241, 0.035) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%); }
+  .rpX__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .rpX__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary-soft, #F5C5B5); margin-bottom: 1rem; }
+  .rpX__title { font-family: var(--font-display); font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 900; line-height: 1; letter-spacing: -0.025em; text-transform: uppercase; color: #FBF8F1; margin: 0; }
+  .rpX__title .serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; color: var(--color-primary-soft, #F5C5B5); }
+  .rpX__list { display: grid; grid-template-columns: 1fr; gap: clamp(1.25rem, 2.5vw, 1.5rem); max-width: 1100px; margin: 0 auto; }
+  @media (min-width: 720px)  { .rpX__list { grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2vw, 1.5rem) 0; } }
+  @media (min-width: 1000px) { .rpX__list { grid-template-columns: repeat(4, 1fr); gap: 0; } }
+  .rpX__item { position: relative; display: flex; flex-direction: column; gap: 0.625rem; padding: clamp(1.75rem, 3vw, 2.25rem); color: #FBF8F1; transition: background 300ms ease; min-height: 180px; }
+  .rpX__item:hover { background: rgba(251, 248, 241, 0.04); }
+  @media (min-width: 1000px) { .rpX__item { border-right: 1px solid rgba(251, 248, 241, 0.15); } .rpX__item:nth-child(4n) { border-right: none; } }
+  @media (min-width: 720px) and (max-width: 999.98px) { .rpX__item { border-right: 1px solid rgba(251, 248, 241, 0.15); } .rpX__item:nth-child(2n) { border-right: none; } }
+  .rpX__num { font-family: var(--font-serif); font-style: italic; font-weight: 400; font-size: 1rem; color: var(--color-primary-soft, #F5C5B5); }
+  .rpX__t { font-family: var(--font-display); font-weight: 900; font-size: clamp(1.125rem, 1.8vw, 1.25rem); line-height: 1.15; letter-spacing: -0.015em; color: #FBF8F1; margin: 0; }
+  .rpX__p { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6; color: rgba(251, 248, 241, 0.78); margin: 0; }
+  .rpX__arrow { position: absolute; top: clamp(1.75rem, 3vw, 2.25rem); right: clamp(1.75rem, 3vw, 2.25rem); width: 32px; height: 32px; border-radius: 50%; background: rgba(251, 248, 241, 0.08); display: inline-flex; align-items: center; justify-content: center; transition: all 260ms ease; }
+  .rpX__item:hover .rpX__arrow { background: var(--color-primary); transform: rotate(-8deg) translateX(2px); }
+
+  .rpCta { position: relative; min-height: clamp(480px, 65vh, 640px); display: flex; align-items: center; color: #FBF8F1; overflow: hidden; isolation: isolate; }
+  .rpCta__bg { position: absolute; inset: 0; z-index: -2; }
+  .rpCta__bg :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .rpCta::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(15, 20, 30, 0.55) 0%, rgba(15, 20, 30, 0.85) 100%), radial-gradient(ellipse 60% 45% at 80% 20%, rgba(233, 133, 111, 0.18) 0%, transparent 70%); }
+  .rpCta__inner { max-width: 880px; margin: 0 auto; padding: clamp(3rem, 6vw, 4.5rem) clamp(1rem, 3vw, 2rem); position: relative; z-index: 1; text-align: center; }
+  .rpCta__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary-soft, #F5C5B5); margin-bottom: 1rem; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35); }
+  .rpCta__title { font-family: var(--font-display); font-size: clamp(2.25rem, 5vw, 3.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.03em; text-transform: uppercase; color: #FBF8F1; margin: 0 0 1.25rem; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45); }
+  .rpCta__title .serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; color: var(--color-primary-soft, #F5C5B5); }
+  .rpCta__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: #FBF8F1; max-width: 560px; margin: 0 auto clamp(1.75rem, 3vw, 2.25rem); text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4); }
+  .rpCta__lead strong { color: #fff; font-weight: 700; }
+  .rpCta__ctas { display: inline-flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+  .rpCta__primary { display: inline-flex; align-items: center; gap: 0.625rem; padding: 0.875rem 1.5rem; background: var(--color-primary, #E9856F); color: #fff; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; transition: transform 260ms, box-shadow 260ms; }
+  .rpCta__primary:hover { transform: translateY(-2px); box-shadow: 0 14px 32px -12px rgba(233, 133, 111, 0.55); }
+  .rpCta__primary svg { transition: transform 220ms; }
+  .rpCta__primary:hover svg { transform: translateX(3px); }
+  .rpCta__ghost { display: inline-flex; align-items: center; padding: 0.875rem 1.5rem; background: transparent; color: #FBF8F1; border: 1.5px solid rgba(251, 248, 241, 0.4); border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; transition: background 260ms, border-color 260ms; }
+  .rpCta__ghost:hover { background: rgba(251, 248, 241, 0.1); border-color: #FBF8F1; }
+  @media (prefers-reduced-motion: reduce) {
+    .rpH__cta, .rpB__cta, .rpR__card, .rpX__arrow, .rpCta__primary { transition: none; }
+    .rpH__cta:hover, .rpB__cta:hover, .rpR__card:hover, .rpCta__primary:hover { transform: none; }
+  }
+</style>
+</content>
+</invoke>

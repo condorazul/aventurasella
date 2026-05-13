@@ -1,0 +1,387 @@
+---
+import Picture from '@components/ui/Picture.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    image_alt: 'Madre e hijo disfrutando juntos del descenso del Sella en canoa',
+    badge_label: 'Descenso del Sella',
+    badge_value: '1998 — hoy',
+    quote: '"Buen servicio, trabajadores atentos y muy simpáticos. La experiencia genial, me ha encantado."',
+    review_role: 'Reseña verificada · Google',
+    eyebrow: '— 01 / Quiénes somos',
+    title_line1: 'Un descenso',
+    title_italic: 'sin prisa,',
+    title_line3: 'pensado al detalle.',
+    lead: 'Llevamos más de 25 años ayudando a familias, parejas y grupos a disfrutar del río Sella sin complicaciones. Cada detalle del día está pensado para que solo tengas que relajarte y remar.',
+    text: 'Desde que llegas a nuestras instalaciones hasta que te recogemos al final del trayecto, cuidamos cada paso de la experiencia. Material nuevo, transporte incluido, atención cercana y la libertad de ir a tu ritmo por uno de los ríos más bonitos de España.',
+    stat1_value_prefix: '+25',
+    stat1_label: 'Años de experiencia',
+    stat2_value_prefix: '56K',
+    stat2_label: 'Aventureros felices',
+    stat3_value_prefix: '4.5',
+    stat3_value_suffix: '/5',
+    stat3_label: '147 reseñas · Google + TripAdvisor',
+  },
+  en: {
+    image_alt: 'Mother and child enjoying the Sella River descent together by canoe',
+    badge_label: 'Sella River descent',
+    badge_value: '1998 — today',
+    quote: '"Great service, attentive and friendly staff. The experience was wonderful, I loved it."',
+    review_role: 'Verified review · Google',
+    eyebrow: '— 01 / Who we are',
+    title_line1: 'A descent',
+    title_italic: 'without rush,',
+    title_line3: 'thought out in detail.',
+    lead: 'For more than 25 years we have been helping families, couples and groups enjoy the Sella River with zero hassle. Every detail of the day is thought out so you only have to relax and paddle.',
+    text: 'From the moment you arrive at our base until we pick you up at the end of the route, we look after every step of the experience. New equipment, transport included, warm and close attention, and the freedom to go at your own pace down one of the most beautiful rivers in Spain.',
+    stat1_value_prefix: '+25',
+    stat1_label: 'Years of experience',
+    stat2_value_prefix: '56K',
+    stat2_label: 'Happy adventurers',
+    stat3_value_prefix: '4.5',
+    stat3_value_suffix: '/5',
+    stat3_label: '147 reviews · Google + TripAdvisor',
+  },
+  fr: {
+    image_alt: 'Mère et enfant profitant ensemble de la descente du Sella en canoë',
+    badge_label: 'Descente du Sella',
+    badge_value: '1998 — aujourd\u2019hui',
+    quote: '"Très bon service, équipe attentive et chaleureuse. Une expérience géniale, j\u2019ai adoré."',
+    review_role: 'Avis vérifié · Google',
+    eyebrow: '— 01 / Qui nous sommes',
+    title_line1: 'Une descente',
+    title_italic: 'sans hâte,',
+    title_line3: 'pensée dans le détail.',
+    lead: 'Depuis plus de 25 ans, nous accompagnons familles, couples et groupes pour profiter du Sella sans complications. Chaque détail de la journée est pensé pour que vous n\u2019ayez qu\u2019à vous détendre et pagayer.',
+    text: 'Dès votre arrivée à nos installations jusqu\u2019à votre retour en fin de parcours, nous prenons soin de chaque étape. Matériel neuf, transport inclus, accueil chaleureux et la liberté d\u2019avancer à votre rythme sur l\u2019une des plus belles rivières d\u2019Espagne.',
+    stat1_value_prefix: '+25',
+    stat1_label: 'Ans d\u2019expérience',
+    stat2_value_prefix: '56K',
+    stat2_label: 'Aventuriers ravis',
+    stat3_value_prefix: '4,5',
+    stat3_value_suffix: '/5',
+    stat3_label: '147 avis · Google + TripAdvisor',
+  },
+  pt: {
+    image_alt: 'Mãe e filho desfrutando juntos da descida do Sella em canoa',
+    badge_label: 'Descida do Sella',
+    badge_value: '1998 — hoje',
+    quote: '"Ótimo serviço, equipa atenta e simpática. A experiência foi genial, adorei."',
+    review_role: 'Avaliação verificada · Google',
+    eyebrow: '— 01 / Quem somos',
+    title_line1: 'Uma descida',
+    title_italic: 'sem pressa,',
+    title_line3: 'pensada ao detalhe.',
+    lead: 'Há mais de 25 anos ajudamos famílias, casais e grupos a desfrutar do rio Sella sem complicações. Cada detalhe do dia está pensado para que só tenhas de relaxar e remar.',
+    text: 'Desde que chegas às nossas instalações até te recolhermos no final do percurso, cuidamos de cada passo da experiência. Material novo, transporte incluído, atenção próxima e a liberdade de ir ao teu ritmo por um dos rios mais bonitos de Espanha.',
+    stat1_value_prefix: '+25',
+    stat1_label: 'Anos de experiência',
+    stat2_value_prefix: '56K',
+    stat2_label: 'Aventureiros felizes',
+    stat3_value_prefix: '4,5',
+    stat3_value_suffix: '/5',
+    stat3_label: '147 avaliações · Google + TripAdvisor',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<section class="split">
+  <div class="container container--xl">
+    <div class="split__grid">
+      <!-- Media column -->
+      <div class="split__media" data-reveal data-reveal-type="slide-right">
+        <div class="split__media-inner">
+          <Picture
+            src="madre-y-nino"
+            alt={t.image_alt}
+            sizes="(min-width: 960px) 50vw, 100vw"
+            width={1200}
+            height={896}
+            bare={true}
+          />
+          <div class="split__media-badge">
+            <span class="label">{t.badge_label}</span>
+            <span class="split__media-badge-value">{t.badge_value}</span>
+          </div>
+        </div>
+
+        <!-- Floating credentials card -->
+        <div class="split__floating-card" data-reveal data-reveal-delay="2">
+          <div class="split__floating-stars">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <p class="split__floating-quote">
+            {t.quote}
+          </p>
+          <div class="split__floating-author">
+            <div class="split__floating-avatar" aria-hidden="true">A</div>
+            <div>
+              <div class="split__floating-name">Anaïs Suárez</div>
+              <div class="split__floating-role">{t.review_role}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text column -->
+      <div class="split__content">
+        <span class="eyebrow split__eyebrow" data-reveal>{t.eyebrow}</span>
+
+        <h2 class="split__title" data-reveal data-reveal-delay="1">
+          {t.title_line1}<br/>
+          <span class="serif-italic">{t.title_italic}</span><br/>
+          {t.title_line3}
+        </h2>
+
+        <p class="split__lead body-lg" data-reveal data-reveal-delay="2">
+          {t.lead}
+        </p>
+
+        <p class="split__text body" data-reveal data-reveal-delay="3">
+          {t.text}
+        </p>
+
+        <div class="split__stats">
+          <div class="split__stat" data-reveal data-reveal-type="scale" data-reveal-delay="4">
+            <div class="split__stat-value">{t.stat1_value_prefix}</div>
+            <div class="split__stat-label">{t.stat1_label}</div>
+          </div>
+          <div class="split__stat" data-reveal data-reveal-type="scale" data-reveal-delay="5">
+            <div class="split__stat-value">{t.stat2_value_prefix}</div>
+            <div class="split__stat-label">{t.stat2_label}</div>
+          </div>
+          <div class="split__stat" data-reveal data-reveal-type="scale" data-reveal-delay="6">
+            <div class="split__stat-value">{t.stat3_value_prefix}<span>{t.stat3_value_suffix}</span></div>
+            <div class="split__stat-label">{t.stat3_label}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .split {
+    padding-block: var(--section-padding-lg);
+    background: var(--color-bg-base);
+  }
+
+  .split__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-12);
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .split__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-16);
+    }
+  }
+
+  /* ========== MEDIA ========== */
+  .split__media {
+    position: relative;
+  }
+
+  .split__media-inner {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius-3xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+  }
+
+  .split__media-inner :global(picture),
+  .split__media-inner :global(img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .split__media-inner :global(img) {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .split__media:hover .split__media-inner :global(img) {
+    transform: scale(1.04);
+  }
+
+  .split__media-badge {
+    position: absolute;
+    top: var(--s-6);
+    left: var(--s-6);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0.625rem 1rem;
+    background: rgba(251, 248, 241, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-pill);
+    color: var(--color-text-primary);
+  }
+
+  .split__media-badge .label {
+    font-size: 0.625rem;
+    color: var(--color-primary);
+  }
+
+  .split__media-badge-value {
+    font-family: var(--font-display);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+  }
+
+  /* Floating card */
+  .split__floating-card {
+    position: absolute;
+    bottom: -32px;
+    right: -24px;
+    max-width: 300px;
+    padding: var(--s-6);
+    background: var(--color-bg-elevated);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-2xl);
+  }
+
+  @media (min-width: 1200px) {
+    .split__floating-card {
+      right: -48px;
+      bottom: -48px;
+    }
+  }
+
+  .split__floating-stars {
+    display: flex;
+    gap: 2px;
+    color: var(--color-ochre);
+    margin-bottom: var(--s-3);
+  }
+
+  .split__floating-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-4);
+  }
+
+  .split__floating-author {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .split__floating-avatar {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: var(--fw-bold);
+  }
+
+  .split__floating-name {
+    font-size: 0.8125rem;
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+  }
+
+  .split__floating-role {
+    font-size: 0.6875rem;
+    color: var(--color-text-muted);
+  }
+
+  /* ========== CONTENT ========== */
+  .split__content {
+    max-width: 560px;
+  }
+
+  .split__eyebrow {
+    display: inline-block;
+    color: var(--color-primary);
+    margin-bottom: var(--s-8);
+  }
+
+  .split__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    font-weight: var(--fw-black);
+    line-height: 0.95;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-8);
+  }
+
+  .split__title .serif-italic {
+    color: var(--color-sage);
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .split__lead {
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-6);
+    font-weight: var(--fw-regular);
+  }
+
+  .split__text {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--s-10);
+  }
+
+  .split__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  .split__stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: var(--fw-black);
+    line-height: 1;
+    letter-spacing: var(--ls-tighter);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-2);
+    font-feature-settings: 'tnum' 1;
+  }
+
+  .split__stat-value span {
+    font-size: 0.6em;
+    color: var(--color-primary);
+  }
+
+  .split__stat-label {
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+</style>

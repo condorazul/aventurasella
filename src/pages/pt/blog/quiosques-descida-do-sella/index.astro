@@ -1,0 +1,268 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Quantos quiosques há na descida do Sella?',
+    a: '<p>Há <strong>6 quiosques principais</strong> espalhados pelo percurso: Riverland (km 1), El Oasis (km 3), El Prau (km 3), El Bosque (km 4), La Mediana (km 4) e Toraño (fim do Mini Sella). Todos acessíveis desde o rio em canoa, com rampa ou praia fluvial para aterrar.</p>',
+  },
+  {
+    q: 'Vende-se álcool nos quiosques da descida?',
+    a: '<p><strong>Não.</strong> No Sella, o consumo de álcool é proibido durante a atividade, e os quiosques ao longo do percurso não servem bebidas alcoólicas. O menu foca-se em <strong>refrigerantes, sumos, gelados, água</strong> e petiscos ligeiros. Se queres uma sidra ou cerveja, fica para depois, em Arriondas, Toraño ou Ribadesella.</p>',
+  },
+  {
+    q: 'É preciso reservar nos quiosques do Sella?',
+    a: '<p>Normalmente não para um consumo rápido (bebida, sumo, gelado). Se queres algo mais elaborado em agosto, sobretudo aos sábados, <strong>alguns aceitam reservas</strong> — chega com margem ou liga pelo caminho. Em época média ou baixa é raro esperar.</p>',
+  },
+  {
+    q: 'O que se pode tomar nos quiosques da descida?',
+    a: '<p>A oferta é típica de um quiosque ribeirinho <strong>sem álcool</strong>: refrigerantes, sumos, água, gelados e <strong>petiscos simples</strong> (sandes, tortilha, snacks). Alguns trabalham com algo mais elaborado à hora de comer, mas a estrela costuma ser uma paragem curta para refrescar, comer algo ligeiro e voltar à canoa.</p>',
+  },
+  {
+    q: 'Posso saltar os quiosques se quiser?',
+    a: '<p>Claro. Os quiosques são <strong>opcionais</strong>, o piquenique asturiano (empada de bonito + bolinho asturiano + água) está incluído na reserva. Muitos clientes fazem a descida seguida, param só para um banho e comem o piquenique numa praia fluvial.</p>',
+  },
+  {
+    q: 'Os quiosques do Sella aceitam cartão?',
+    a: '<p>A maioria sim, mas <strong>nem todos</strong>, e a cobertura móvel é irregular em alguns troços do rio — os terminais podem falhar. Recomendamos levar <strong>algum dinheiro no bidão estanque</strong>: com 10-15 € por pessoa ficas à vontade para uma paragem completa.</p>',
+  },
+  {
+    q: 'Os quiosques estão abertos fora da época alta?',
+    a: '<p>Em <strong>julho e agosto</strong> estão todos abertos todos os dias. Em <strong>junho e setembro</strong> a maioria abre aos fins de semana e vários durante a semana. Em <strong>abril, maio e outubro</strong> habitualmente só 1 ou 2 estão a funcionar, normalmente aos fins de semana.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="quiosques-descida-do-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Seis quiosques, seis pretextos</strong> para parar na descida do Sella. Riverland, El Oasis, El Prau, El Bosque, La Mediana, Toraño. Importante: <strong>não se consome álcool no rio</strong> e os quiosques ao longo do percurso não servem bebidas alcoólicas — refrigerantes, sumos, gelados, água e petiscos. O que vais encontrar em cada paragem, sem fanfarra.
+  </p>
+
+  <p>
+    A descida do Sella não é um rio no meio do nada: ao longo do percurso tens <strong>seis quiosques</strong> onde podes pousar a canoa e refrescar-te. São parte da experiência há décadas e a razão pela qual muitos planeiam o dia como "descida com paragem" em vez de atividade desportiva.
+  </p>
+
+  <h2 class="post__h2" id="map">Mapa mental <span class="serif-italic">do percurso</span></h2>
+
+  <p>Seis paragens ao longo dos 14,5 km · quando e a que cada uma se presta.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">1</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Riverland <span class="serif-italic">· partida</span></h3>
+        <p class="post__zone__desc">Paragem rápida "já que passamos" · antes sequer de pegar o ritmo no rio.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Oasis <span class="serif-italic">· primeiro terço</span></h3>
+        <p class="post__zone__desc">Primeira paragem real · ambiente animado · grupos de amigos.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Prau <span class="serif-italic">· primeiro terço</span></h3>
+        <p class="post__zone__desc">Alternativa tranquila ao El Oasis · mesma zona, vibe diferente.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Bosque <span class="serif-italic">· meio</span></h3>
+        <p class="post__zone__desc">Sombra natural · o mais equilibrado para uma paragem longa sem sol.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">La Mediana <span class="serif-italic">· meio</span></h3>
+        <p class="post__zone__desc">Esplanada espaçosa · pausa longa a meio do percurso completo.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">7</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Toraño <span class="serif-italic">· fim do Mini Sella</span></h3>
+        <p class="post__zone__desc">Bebida final enquanto o transfer de regresso a Arriondas chega.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Se fazes o percurso completo (14,5 km · Arriondas → Fríes) passas pelos seis. Se fazes o Mini Sella (7 km · Arriondas → Toraño) passas pelos primeiros cinco e acabas em Toraño.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="chiringuito-prao"
+      alt="Quiosque El Prau junto ao rio Sella — paragem típica da descida"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>El Prau · um dos seis quiosques ribeirinhos do Sella. Uma bebida, sombra e a canoa atracada na margem enquanto os braços descansam.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="riverland">1 · Riverland <span class="serif-italic">(km 1 · partida)</span></h2>
+
+  <p>
+    O quiosque de abertura. Praticamente no início do percurso, chegas antes mesmo de sentires o ritmo do rio. Para muitos é <em>"um pouco cedo para parar"</em>, mas tem uma vantagem óbvia: <strong>se queres só experimentar o Sella sem compromisso</strong> ou estás com crianças já com fome, o Riverland permite uma paragem rápida antes de te comprometeres com o dia inteiro.
+  </p>
+
+  <p><strong>O que esperar:</strong> menu típico de quiosque ribeirinho <strong>sem álcool</strong> (refrigerantes, sumos, água, gelados, sandes), ambiente calmo, esplanada com vista para o rio.</p>
+
+  <h2 class="post__h2" id="oasis-prau">2-3 · El Oasis <span class="serif-italic">e El Prau · km 3</span></h2>
+
+  <p>
+    Os dois chegam juntos no primeiro terço do percurso. <strong>El Oasis</strong> é o mais movimentado: ambiente animado, música, sensação de "festa do rio" em agosto. <strong>El Prau</strong> está a um salto de pedra e funciona como alternativa mais calma — mesma zona do rio, vibe diferente.
+  </p>
+
+  <p>
+    Se vais com grupo de amigos e queres "o ambiente", Oasis. Se vais em casal ou família e preferes não competir com colunas, Prau. Ambos têm menus de <strong>refrigerantes, sumos, gelados e água</strong> (sem álcool, como todo o percurso) + algumas tapas leves.
+  </p>
+
+  <div class="post__callout">
+    <strong>O truque do Oasis em agosto</strong>
+    <p>Se passas lá entre as 13:00 e as 14:30 num sábado, verás o sítio no pico do ambiente. Se queres isso, perfeito. Se queres uma paragem tranquila, segue em frente e pára no El Bosque ou La Mediana.</p>
+  </div>
+
+  <h2 class="post__h2" id="bosque">4 · El Bosque <span class="serif-italic">(km 4 · meio)</span></h2>
+
+  <p>
+    Para nós, o quiosque mais equilibrado do percurso. Fica numa <strong>zona com sombra de árvores grandes</strong> que dão sombra natural à esplanada. Bom sítio para uma paragem longa se não tens pressa.
+  </p>
+
+  <p>
+    <strong>O que esperar:</strong> refrigerantes, sumos, gelados, água, sandes e petiscos ligeiros — a oferta típica de quiosque ribeirinho, <strong>sem álcool</strong>. Preços normais para zona turística.
+  </p>
+
+  <p>Se vais com crianças pequenas, a sombra faz dele a melhor paragem para refrescar sem ninguém derreter nas horas de sol de pico.</p>
+
+  <h2 class="post__h2" id="mediana">5 · La Mediana <span class="serif-italic">(km 4 · meio)</span></h2>
+
+  <p>
+    Muito perto do El Bosque, La Mediana é uma paragem espaçosa com esplanada e bom ambiente no centro do percurso. Se fazes o percurso completo e queres uma pausa longa, encaixa bem.
+  </p>
+
+  <p>
+    <strong>O que esperar:</strong> a mesma linha do resto dos quiosques do Sella — refrigerantes, sumos, água, gelados e petiscos, sem álcool.
+  </p>
+
+  <p class="post__pull">
+    A diferença entre um dia "razoável" e um "memorável" no Sella está muitas vezes na paragem que escolhes. Piquenique no Pozo del Arco, uma bebida à sombra do El Bosque, uma pausa longa no La Mediana. Cada opção muda o ritmo do dia.
+  </p>
+
+  <h2 class="post__h2" id="torano">6 · Toraño <span class="serif-italic">(km 7 · fim do Mini Sella)</span></h2>
+
+  <p>
+    Se fazes o Mini Sella, Toraño é o ponto final do percurso. Há um quiosque grande junto à rampa de saída, perfeito para <strong>uma bebida ou gelado enquanto esperas pelo transfer</strong> de regresso a Arriondas. Se fazes o percurso completo, é uma paragem intermédia.
+  </p>
+
+  <p>
+    Ambiente descontraído, esplanada larga, menu de quiosque ribeirinho sem álcool. Bebidas frescas, gelados, petiscos. Nada gourmet, mas honesto.
+  </p>
+
+  <h2 class="post__h2" id="choose">Como escolher <span class="serif-italic">pelo teu plano</span></h2>
+
+  <p>Seis perfis de dia, seis paragens diferentes. Encontra o teu.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Grupo a procurar ambiente</h3>
+      <p class="post__essential__desc">
+        El Oasis · primeira paragem animada · mais uma paragem curta final em Toraño.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Família com crianças</h3>
+      <p class="post__essential__desc">
+        El Bosque · sombra natural e zona abrigada para refrescar nas horas de sol de pico.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Casal a procurar calma</h3>
+      <p class="post__essential__desc">
+        Piquenique no <a href="/pt/blog/pozo-del-arco-sella/">Pozo del Arco</a> · bebida no El Prau · sem colunas.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Pausa longa a meio do percurso</h3>
+      <p class="post__essential__desc">
+        La Mediana · esplanada larga e zona central do percurso · ideal no percurso completo.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plano expresso · Mini rápido</h3>
+      <p class="post__essential__desc">
+        Ignora todos os quiosques e para só no fim, em Toraño, enquanto o transfer chega.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Refeição completa a sério</h3>
+      <p class="post__essential__desc">
+        Melhor depois da descida · cidrarias em Arriondas, Toraño ou Ribadesella · sem pressa.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="practical">Regras práticas <span class="serif-italic">dos quiosques</span></h2>
+
+  <ul>
+    <li><strong>Atracagem correta.</strong> Todos têm zona de praia ou rampa. Não deixes a canoa a bloquear o caminho.</li>
+    <li><strong>Colete salva-vidas enquanto estás na água.</strong> Se nadares perto do quiosque, continua a ser o rio.</li>
+    <li><strong>Sem álcool no rio.</strong> É proibido e os quiosques ao longo do percurso não servem. Se te apetece sidra ou cerveja, fica para Arriondas ou Ribadesella depois.</li>
+    <li><strong>Pagamento.</strong> Muitos aceitam cartão, mas a cobertura é irregular. Leva <strong>10-15 € em dinheiro por pessoa</strong> no bidão.</li>
+    <li><strong>Sem vidro no rio.</strong> Consome no quiosque, não leves garrafas para a canoa.</li>
+    <li><strong>Respeita o ambiente.</strong> Lixo no caixote, nada atirado para a gravilha.</li>
+    <li><strong>Gestão do tempo.</strong> Se fazes o percurso completo, atenção ao relógio: o transfer tem horários definidos. Melhor parar 30 min em dois quiosques que 90 min num.</li>
+  </ul>
+
+  <h2 class="post__h2" id="picnic">Piquenique ou quiosque · <span class="serif-italic">ou os dois</span></h2>
+
+  <p>
+    Lembramos porque importa: o <strong>piquenique asturiano está incluído</strong> no preço da descida (empada de bonito, bolinho asturiano, água 500 ml). O piquenique é <strong>fixo e igual para todos os clientes</strong> — não há opção vegan ou vegetariana. Podes perfeitamente fazer o percurso sem parar em nenhum quiosque e comer o piquenique numa praia fluvial. Ou alternar.
+  </p>
+
+  <p>
+    Não há gasto obrigatório no percurso. Os quiosques são um <em>extra</em>, não um requisito. Se estás a fazer orçamento, <a href="/pt/precos/">os preços da descida do Sella</a> já incluem tudo o essencial para o dia.
+  </p>
+
+  <p>
+    Se ainda não reservaste, <a href="/pt/reserva-premium/">escolhe uma data no calendário</a> e planeia o ritmo.
+  </p>
+
+  <p>
+    E se a tua pergunta era mais o clássico — <em>"em que quiosque vamos comer quando o meu primo vier em agosto com três crianças?"</em> — <a href="/pt/contacto/">escreve-nos</a>. Com dados reais fazemos um plano mais fino que este guia genérico.
+  </p>
+</BlogPostLayout>

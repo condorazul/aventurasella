@@ -1,0 +1,260 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Do I have to pick a launch time?',
+    a: '<p>No. Your booking is <strong>Premium · open hours</strong>: you arrive at our facilities in Arriondas <strong>whenever suits you between 10:30 and 12:30</strong>, without choosing a specific time. It is one of the <strong>Premium perks</strong> · we kit you up on arrival and you set off on the river when you are ready. The Hydrographic Confederation sets river permanence until 18:00 (that is why we close arrivals at 12:30 · safe margin). <strong>Exceptions</strong>: the Saturday of the <a href="/en/international-sella-descent/">International Sella Descent</a> (single departure) and days with river conditions that require entry with an instructor (we let you know in advance).</p>',
+  },
+  {
+    q: 'Which time within the 10:30–12:30 range suits me best?',
+    a: '<p>It depends on what you are after. Arriving <strong>early (10:30)</strong>: nice light for photos, calmer river, fewer people · you finish with a free afternoon. Arriving <strong>mid-range (11:30–12:00)</strong>: lively atmosphere, more life in the snack bars and river beaches. Arriving <strong>at closing (12:30)</strong>: the final stretch catches afternoon light, perfect if you like ending with golden light and fewer people on the river.</p>',
+  },
+  {
+    q: 'What is the best time for the descent with kids?',
+    a: '<p>Arrive early, no question. <strong>10:30</strong> is ideal because the little ones perform better with fresh energy, they eat on the river at a good hour and you get back to Arriondas with margin to shower and rest without rushing. We explain it in detail in <a href="/en/blog/sella-descent-with-small-kids/">Sella River descent with small kids</a>.</p>',
+  },
+  {
+    q: 'Are there traffic jams or queues on the river at certain times?',
+    a: '<p>In July and August, <strong>Saturdays between 12:00 and 14:00</strong> concentrate the most traffic around the Pozo del Arco and the first snack bars. It is not a real jam, but you do notice more canoes. If you are after calm, choose a weekday or arrive at the first slot of open hours (10:30).</p>',
+  },
+  {
+    q: 'Can the Sella descent be done at sunset?',
+    a: '<p>Not as a night activity. The Hydrographic Confederation <strong>only allows river permanence until 18:00</strong>, which is why we close arrivals at <strong>12:30</strong> (12:30 + up to 5 h for the Full route = 17:30 · safe margin). If you arrive at closing time, you finish with afternoon light on the second half of the route — particularly beautiful in June, July and September. Many of the best photos of the Sella are taken this way.</p>',
+  },
+  {
+    q: 'Are there any exceptions to the Premium open hours?',
+    a: '<p>Yes, two. The <strong>Saturday of the <a href="/en/international-sella-descent/">International Sella Descent</a></strong> (the Saturday in August set each year by the Federation · in 2026 it falls on <strong>8 August</strong>) has a single departure at a specific time — communicated when booking. And if a <strong>storm or river conditions</strong> (flood, heavy rain) require you to launch at a specific time or with an instructor, <strong>we let you know in advance</strong>. The rest of the year, hours are fully open between 10:30 and 12:30.</p>',
+  },
+  {
+    q: 'Does the time of day affect the river flow?',
+    a: '<p>The Sella flow is stable throughout the day — it is not a river with significant hourly variations, unlike Alpine rivers fed by snowmelt. What does change is the <strong>water temperature</strong> (a little warmer in mid-afternoon) and the <strong>light</strong>, which affects photos and the perceived temperature.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="best-time-of-day-sella-descent" faqs={faqs}>
+  <p class="post__intro">
+    <strong>First, important:</strong> your booking is <strong>Premium · open hours</strong>. You do not pick a specific launch time — you arrive at our facilities <strong>whenever suits you between 10:30 and 12:30</strong>. The question, then, is not "which time should I pick", but <strong>"which time within the range suits me best?"</strong>. That does change the experience a lot · here is the breakdown.
+  </p>
+
+  <p>
+    The question comes up every week at the desk, and it has more to it than it seems. Arriving at 10:30 in June is not the same as 12:30 in August. We share what we observe each season — light, crowds, temperature, pace — so you can decide what time within the open range works for you.
+  </p>
+
+  <h2 class="post__h2" id="open-hours">How <br/><span class="serif-italic">Premium open hours work</span></h2>
+
+  <p>
+    At <strong>Aventura en el Sella every booking is Premium</strong>, and that includes a perk few operators offer: the <strong>schedule is open</strong>. You do not have to meet a fixed launch time · you arrive at our facilities in Arriondas <strong>whenever suits you between 10:30 and 12:30</strong>. We kit you up on arrival (brief paperwork, changing rooms, mini-class with a certified instructor) and you set off on the river when you are ready.
+  </p>
+
+  <p>
+    By <strong>regulation of the Cantabrian Hydrographic Confederation</strong>, river permanence is allowed <strong>until 18:00</strong>. That is why we close arrivals at 12:30 (12:30 + up to 5 h for the Full route = 17:30, safe margin). Exceptions: the <strong>Saturday of the International Sella Descent</strong> has a single departure at a specific time · and if storms or river conditions require entry with an instructor, we let you know in advance.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-mejorhora-inline"
+      alt="Sella River in July · atmosphere of the tourist descent at peak season"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>First arrival slot of open hours · calm river, clean light, and the feeling of having the Sella almost to yourself.</figcaption>
+  </figure>
+
+  <p>The three most popular arrival slots within open hours.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">10:30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Early <span class="serif-italic">· until 11:00</span></h3>
+        <p class="post__zone__desc">Families with kids · photo couples · early risers. <strong>Clean light · calm river · fewer crowds.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11:30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mid-morning <span class="serif-italic">· until 12:00</span></h3>
+        <p class="post__zone__desc">Groups of friends · visitors from Oviedo or Gijón. <strong>More atmosphere · lively stops · pleasant temperature.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">12:00</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Closing slot <span class="serif-italic">· until 12:30</span></h3>
+        <p class="post__zone__desc">Couples · afternoon-light lovers · those without a rush. <strong>You finish with golden light · emptier river on the second half.</strong></p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="early">Arriving early<br/><span class="serif-italic">(10:30 – 11:00)</span></h2>
+
+  <p>
+    This is our favourite slot, and we do not say it lightly: it is the one we pick when we invite friends. The river wakes up with that flat calm it only has before the first canoes arrive, and the light falls sidelong on the valley, perfect for photos.
+  </p>
+
+  <p><strong>Why it works:</strong></p>
+
+  <ul>
+    <li><strong>Optimal light</strong> — especially May to September, low sun, long shadows, golden tones on the water.</li>
+    <li><strong>Fewer crowds</strong> — canoes spread out, not crammed on the river beaches.</li>
+    <li><strong>Cooler temperature</strong> — ideal in peak August when midday heat hits hard.</li>
+    <li><strong>You eat on the river at a good hour</strong> — you reach the picnic genuinely hungry.</li>
+    <li><strong>You finish with margin</strong> — if it takes 4 hours, you finish around 14:30: time to shower, eat more if you fancy and carry on with your day.</li>
+  </ul>
+
+  <p class="post__pull">
+    If you are with small kids, arriving early is not an option: it is <em>the</em> option. At 10:30 they are fresh, at 13:00 they are genuinely hungry, at 15:00 they fall asleep in the car like little angels.
+  </p>
+
+  <h2 class="post__h2" id="mid-morning">Arriving mid-morning<br/><span class="serif-italic">(11:30 – 12:00)</span></h2>
+
+  <p>
+    The most popular slot in July and August. If you want summer atmosphere — snack bars with music, canoes sharing a stop, the typical "look at those guys over there!" — this is the time. In exchange, it is also the busiest.
+  </p>
+
+  <p><strong>Advantages:</strong></p>
+
+  <ul>
+    <li>Warm water, comfortable for swimming in the Sella pools.</li>
+    <li><a href="/en/blog/sella-descent-riverside-bars/">The snack bars</a> are at their liveliest.</li>
+    <li>Stable temperature — not cold at dawn, not scorching mid-afternoon.</li>
+  </ul>
+
+  <p><strong>Things to keep in mind:</strong></p>
+
+  <ul>
+    <li>On August weekends there can be a small queue at <strong>the launch ramp</strong>.</li>
+    <li>The river beaches (especially Pozo del Arco) are very busy between 12:30 and 13:30.</li>
+    <li>If you are the "I want the river to myself" type, this is not your slot.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>Trick for the midday slot</strong>
+    <p>If you arrive at 12:00 and plan a calm pace, you will reach the <a href="/en/blog/pozo-del-arco-sella/">Pozo del Arco</a> around 13:30 — when most of the early-bird canoes have already passed. You eat the picnic a bit later (around 14:15) and finish between 16:00 and 17:00 with mid-afternoon light. A very comfortable plan if you do not mind dining early.</p>
+  </div>
+
+  <h2 class="post__h2" id="closing">Arriving at closing<br/><span class="serif-italic">(12:00 – 12:30)</span></h2>
+
+  <p>
+    The quietest slot. Lots of people are already on the river or close to finishing, the crowds on the second half drop and, if you do the Full route, you finish with <strong>afternoon light</strong>. Many of the most beautiful photos of the Sella are taken this way, especially between <strong>June and September</strong>.
+  </p>
+
+  <p><strong>Why it works so well:</strong></p>
+
+  <ul>
+    <li><strong>Afternoon light</strong> in the final hours of the route — Sella's cliffs shift from dark green to copper.</li>
+    <li><strong>Fewer canoes</strong> — especially on the river beaches, which recover their natural look.</li>
+    <li><strong>Perfect temperature</strong> in July/August — no longer the midday sun beating down.</li>
+    <li><strong>Quieter stops</strong> — less bustle at the snack bars along the route.</li>
+  </ul>
+
+  <p><strong>Two cautions:</strong> (1) if you do the Full route arriving at 12:30, you get back to Arriondas at end of afternoon — plan time for showers and transfer (you reach the river around 17:30). (2) In spring and early autumn, arriving late can mean some chill at the end — the sun goes down sooner. If you are travelling then, also check <a href="/en/best-time/">the best time of year for the Sella descent</a>.</p>
+
+  <h2 class="post__h2" id="by-month">The best time <span class="serif-italic">by month</span></h2>
+
+  <p>Since the sun and the crowds change each month, here is our recommendation based on years of watching the river.</p>
+
+  <div class="post__zones post__zones--wide">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">May</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:30 <span class="serif-italic">– 12:00</span></h3>
+        <p class="post__zone__desc">Avoids early-morning chill · catches midday sun.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">June</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">or 12:30</span></h3>
+        <p class="post__zone__desc">Any slot works · long daylight hours.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">July</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">or 12:30</span></h3>
+        <p class="post__zone__desc">Avoid peak heat and midday crowds.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">August</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10:30 <span class="serif-italic">· book early</span></h3>
+        <p class="post__zone__desc">Busiest month · early arrival = more calm.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">September</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:30 <span class="serif-italic">or 12:30</span></h3>
+        <p class="post__zone__desc">Any slot is good · low crowds.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">October</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11:00 <span class="serif-italic">– 12:00</span></h3>
+        <p class="post__zone__desc">Use the central slot for sun and temperature.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="duration">And how long <span class="serif-italic">will it really take?</span></h2>
+
+  <p>
+    The arrival time shapes the experience, but the <strong>duration</strong> matters too. We run two routes:
+  </p>
+
+  <ul>
+    <li><strong>Mini Sella (7 km · Arriondas → Toraño)</strong> — between 1h 30 and 2h 30.</li>
+    <li><strong>Full route (14.5 km · Arriondas → Fríes)</strong> — between 3 and 5 hours with stops.</li>
+  </ul>
+
+  <p>
+    We have a dedicated guide on real times: <a href="/en/how-long-does-it-take/">how long the Sella descent takes</a>. Use it to fit the arrival time to whatever you have planned for after.
+  </p>
+
+  <h2 class="post__h2" id="decision">How to decide <span class="serif-italic">in 30 seconds</span></h2>
+
+  <p>The house method, refined over years of questions:</p>
+
+  <ol>
+    <li>If you are coming with <strong>small kids</strong> → arrive early (10:30).</li>
+    <li>If you want <strong>atmosphere</strong> at the stops → mid-morning (11:30–12:00).</li>
+    <li>If you like <strong>photos and calm</strong> → arrive at closing (12:00–12:30).</li>
+    <li>If you are coming on an <strong>August Saturday</strong> → early or midweek, no debate.</li>
+    <li>If you are travelling from <strong>Oviedo or Gijón</strong> and do not fancy an early start → 11:30 gives margin for a good breakfast first.</li>
+  </ol>
+
+  <p>
+    Still not sure? Check the <a href="/en/premium-booking/">booking calendar</a> — you will see which slots are available each day, and the decision takes itself. And if you prefer <a href="/en/contact/">to ask us directly</a>, tell us how many of you, ages and what you expect from the day. We recommend the specific slot without beating around the bush.
+  </p>
+</BlogPostLayout>

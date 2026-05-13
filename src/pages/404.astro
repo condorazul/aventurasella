@@ -1,0 +1,295 @@
+---
+/**
+ * 404 · Página no encontrada
+ * ------------------------------------------------------------
+ * Astro renderiza este archivo cuando una ruta no existe (servida en prod).
+ * Locale-aware via Astro.url.pathname (Astro.currentLocale no está disponible
+ * en 404, así que usamos detección por URL).
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = getLocaleFromPath(Astro.url.pathname) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    title: 'Página no encontrada · Aventura en el Sella',
+    description: 'La página que buscas no existe o ha cambiado de dirección. Vuelve a la home o explora nuestras guías del descenso del Sella.',
+    code: '404',
+    h1_top: 'Esta página',
+    h1_big: 'se nos escapó',
+    h1_italic: 'río abajo',
+    lead: 'La URL que has buscado no existe o ha cambiado de dirección. No pasa nada — el resto del río sigue por aquí.',
+    cta_primary: 'Volver al inicio',
+    cta_secondary: 'Ver los precios',
+    suggestions_kicker: '— Lo que sí está aquí',
+    s_descenso: 'Descenso del Sella',
+    s_descenso_sub: 'recorridos, precios y todo incluido',
+    s_blog: 'Blog y guías',
+    s_blog_sub: 'qué llevar, cuándo bajar, con niños…',
+    s_contacto: 'Contacto',
+    s_contacto_sub: 'WhatsApp · email · teléfono',
+  },
+  en: {
+    title: 'Page not found · Aventura en el Sella',
+    description: 'The page you are looking for does not exist or has been moved. Go back to home or explore our Sella River descent guides.',
+    code: '404',
+    h1_top: 'This page',
+    h1_big: 'drifted away',
+    h1_italic: 'downstream',
+    lead: 'The URL you searched for does not exist or has been moved. No worries — the rest of the river is still here.',
+    cta_primary: 'Back to home',
+    cta_secondary: 'See prices',
+    suggestions_kicker: '— What you will find here',
+    s_descenso: 'Sella River descent',
+    s_descenso_sub: 'routes, prices and all inclusive',
+    s_blog: 'Blog and guides',
+    s_blog_sub: 'what to bring, when to paddle, with kids…',
+    s_contacto: 'Contact',
+    s_contacto_sub: 'WhatsApp · email · phone',
+  },
+  fr: {
+    title: 'Page introuvable · Aventura en el Sella',
+    description: 'La page que tu cherches n\'existe pas ou a été déplacée. Reviens à l\'accueil ou explore nos guides de la descente du Sella.',
+    code: '404',
+    h1_top: 'Cette page',
+    h1_big: 'a dérivé',
+    h1_italic: 'en aval',
+    lead: 'L\'URL que tu cherchais n\'existe pas ou a été déplacée. Pas d\'inquiétude — le reste de la rivière est toujours là.',
+    cta_primary: 'Retour à l\'accueil',
+    cta_secondary: 'Voir les tarifs',
+    suggestions_kicker: '— Ce qui est ici',
+    s_descenso: 'Descente du Sella',
+    s_descenso_sub: 'parcours, tarifs et tout inclus',
+    s_blog: 'Blog et guides',
+    s_blog_sub: 'quoi apporter, quand descendre, avec enfants…',
+    s_contacto: 'Contact',
+    s_contacto_sub: 'WhatsApp · email · téléphone',
+  },
+  pt: {
+    title: 'Página não encontrada · Aventura en el Sella',
+    description: 'A página que procuras não existe ou foi movida. Volta ao início ou explora os nossos guias da descida do Sella.',
+    code: '404',
+    h1_top: 'Esta página',
+    h1_big: 'foi-se',
+    h1_italic: 'rio abaixo',
+    lead: 'O URL que procuravas não existe ou foi movido. Sem stress — o resto do rio continua aqui.',
+    cta_primary: 'Voltar ao início',
+    cta_secondary: 'Ver os preços',
+    suggestions_kicker: '— O que sim está aqui',
+    s_descenso: 'Descida do Sella',
+    s_descenso_sub: 'percursos, preços e tudo incluído',
+    s_blog: 'Blog e guias',
+    s_blog_sub: 'o que levar, quando descer, com crianças…',
+    s_contacto: 'Contacto',
+    s_contacto_sub: 'WhatsApp · email · telefone',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<BaseLayout title={t.title} description={t.description} currentPath="/404/">
+  <Fragment slot="head">
+    <meta name="robots" content="noindex, follow" />
+  </Fragment>
+
+  <section class="page404">
+    <div class="page404__inner">
+      <span class="page404__code" aria-hidden="true">{t.code}</span>
+
+      <h1 class="page404__title">
+        {t.h1_top}<br/>
+        <span class="page404__big">{t.h1_big}</span><br/>
+        <span class="page404__italic serif-italic">{t.h1_italic}</span>
+      </h1>
+
+      <p class="page404__lead">{t.lead}</p>
+
+      <div class="page404__ctas">
+        <a href={getLocalePath('home', lang)} class="page404__cta page404__cta--primary">
+          {t.cta_primary}
+        </a>
+        <a href={getLocalePath('precios', lang)} class="page404__cta page404__cta--ghost">
+          {t.cta_secondary}
+        </a>
+      </div>
+
+      <span class="page404__suggestionsKicker">{t.suggestions_kicker}</span>
+
+      <ul class="page404__suggestions" role="list">
+        <li>
+          <a href={getLocalePath('recorrido_mapa', lang)}>
+            <strong>{t.s_descenso}</strong>
+            <span>{t.s_descenso_sub}</span>
+          </a>
+        </li>
+        <li>
+          <a href={getLocalePath('blog', lang)}>
+            <strong>{t.s_blog}</strong>
+            <span>{t.s_blog_sub}</span>
+          </a>
+        </li>
+        <li>
+          <a href={getLocalePath('contacto', lang)}>
+            <strong>{t.s_contacto}</strong>
+            <span>{t.s_contacto_sub}</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page404 {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(233, 133, 111, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(61, 79, 58, 0.08) 0%, transparent 60%),
+      var(--color-bg-base, #FBF8F1);
+    padding-block: clamp(5rem, 10vw, 8rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .page404__inner {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .page404__code {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 14vw, 9rem);
+    font-weight: 900;
+    line-height: 1;
+    color: rgba(233, 133, 111, 0.15);
+    letter-spacing: -0.05em;
+    margin-bottom: clamp(0.5rem, 1.5vw, 1rem);
+    user-select: none;
+  }
+  .page404__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+  }
+  .page404__big { color: var(--color-text-primary); }
+  .page404__italic {
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .page404__lead {
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 1.6vw, 1.125rem);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 56ch;
+    margin: 0 auto clamp(2rem, 4vw, 2.75rem);
+  }
+  .page404__ctas {
+    display: flex;
+    gap: var(--s-3);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .page404__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0.875rem 1.75rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1.5px solid var(--color-text-primary);
+    transition: all 220ms var(--ease-out);
+  }
+  .page404__cta--primary {
+    background: var(--color-text-primary);
+    color: var(--color-text-on-dark);
+  }
+  .page404__cta--primary:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+  .page404__cta--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+  }
+  .page404__cta--ghost:hover {
+    background: var(--color-text-primary);
+    color: var(--color-text-on-dark);
+    transform: translateY(-2px);
+  }
+  .page404__suggestionsKicker {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-5);
+  }
+  .page404__suggestions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-3);
+    max-width: 600px;
+    margin-inline: auto;
+  }
+  @media (min-width: 720px) {
+    .page404__suggestions { grid-template-columns: repeat(3, 1fr); }
+  }
+  .page404__suggestions a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--s-4);
+    background: var(--color-bg-elevated, #fff);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    text-decoration: none;
+    transition: all 200ms var(--ease-out);
+  }
+  .page404__suggestions a:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px -16px rgba(26, 31, 46, 0.18);
+  }
+  .page404__suggestions strong {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: 800;
+    color: var(--color-text-primary);
+  }
+  .page404__suggestions span {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+</style>

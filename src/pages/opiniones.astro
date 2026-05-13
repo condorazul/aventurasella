@@ -1,0 +1,1181 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const title = 'Opiniones del descenso del Sella · 4,5★ en Google y TripAdvisor';
+const description = '147 opiniones reales del descenso del Sella — 4,5★ en Google, 4,8★ en TripAdvisor. Lee qué dicen familias, parejas y amigos tras bajar el río con Aventura en el Sella.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/opiniones/`;
+
+// Números agregados oficiales (snapshot 2026-04-13 · reference_reviews.md)
+const aggregate = {
+  global: { rating: '4,5', total: 147, rating_num: 4.5 },
+  google: { rating: '4,5', total: 127, url: 'https://share.google/huLLaIz31FiYohuTV', label: 'Google' },
+  trip:   { rating: '4,8', total:  20, url: 'https://www.tripadvisor.es/Attraction_Review-g608995-d12635919-Reviews-Aventura_en_el_Sella-Arriondas_Parres_Municipality_Asturias.html', label: 'TripAdvisor' },
+};
+
+// Testimonios reales aprobados (reference_reviews.md 2026-04-13)
+const testimonios = [
+  {
+    initial: 'A',
+    name: 'Anaïs Suárez Blanco',
+    source: 'Google',
+    date: 'octubre 2025',
+    context: 'Experiencia',
+    rating: 5,
+    text: 'Buen servicio, trabajadores atentos y muy simpáticos. La experiencia genial, me ha encantado.',
+    sourceUrl: aggregate.google.url,
+  },
+  {
+    initial: 'N',
+    name: 'Nacho A.',
+    source: 'TripAdvisor',
+    date: 'agosto 2025',
+    context: 'Parejas',
+    rating: 5,
+    text: 'Todo puntual y muy amables. Una experiencia para probar una vez en la vida, recomendada para jóvenes y mayores.',
+    sourceUrl: aggregate.trip.url,
+  },
+  {
+    initial: 'C',
+    name: 'Carlos S.',
+    source: 'TripAdvisor',
+    date: 'mayo 2025',
+    context: 'Amigos',
+    rating: 5,
+    text: 'Merece la pena. Tienes vestuarios y puedes ducharte tras la actividad. Te dan instrucciones divertidas, un bidón donde meter muchas cosas y el resto te lo da el río.',
+    sourceUrl: aggregate.trip.url,
+  },
+];
+
+// Perfiles de visitante recurrentes en las reseñas · palabras que aparecen repetidamente
+const perfiles = [
+  { tag: 'Familias',  nota: 'Con niños desde 5 años',            words: ['niños atentos', 'seguridad', 'instrucciones claras', 'mascotas bienvenidas'] },
+  { tag: 'Parejas',   nota: 'Una vez en la vida',                 words: ['romántico', 'atardecer', 'tranquilidad', 'fotos'] },
+  { tag: 'Amigos',    nota: 'Grupo · día completo',               words: ['ambiente', 'chiringuitos', 'divertido', 'duchas'] },
+  { tag: 'Jubilados', nota: 'Ritmo tranquilo',                    words: ['para mayores', 'seguro', 'paisaje', 'trato cercano'] },
+];
+
+const faqs = [
+  { q: '¿Dónde puedo leer todas las opiniones del descenso del Sella?',
+    a: 'Tenemos <strong>147 reseñas reales</strong> repartidas entre <strong><a href="' + aggregate.google.url + '" target="_blank" rel="noopener">Google</a></strong> (127 reseñas · 4,5 estrellas) y <strong><a href="' + aggregate.trip.url + '" target="_blank" rel="noopener">TripAdvisor</a></strong> (20 reseñas · 4,8 estrellas). En esta página destacamos las más representativas, pero todas están públicas en sus plataformas.' },
+  { q: '¿Son todas las opiniones reales y verificadas?',
+    a: 'Sí. <strong>No compramos ni fabricamos reseñas</strong>. Cada una viene de un cliente que hizo el descenso del Sella con nosotros y dejó su opinión voluntariamente en Google o TripAdvisor. Eso significa que verás de todo: 5 estrellas mayoritarias, alguna 4 y, muy de vez en cuando, alguna crítica que respondemos públicamente.' },
+  { q: '¿Cómo dejo mi opinión tras hacer el descenso?',
+    a: 'Lo más fácil: tras la actividad te mandamos un mensaje con el enlace directo de Google. También puedes dejarla en <a href="' + aggregate.trip.url + '" target="_blank" rel="noopener">TripAdvisor</a> buscando "Aventura en el Sella · Arriondas". <strong>Nos ayuda enormemente</strong> — es lo que hace que otros confíen en nosotros.' },
+  { q: '¿Cómo respondéis a las opiniones negativas?',
+    a: 'Con honestidad y en público. Contestamos <strong>todas</strong> las reseñas críticas desde el panel de Google Business, reconociendo lo que no hicimos bien y explicando qué hemos cambiado. Es la única forma de mejorar y de que futuros clientes vean cómo gestionamos los problemas reales.' },
+  { q: '¿Por qué la media de Google es 4,5 y la de TripAdvisor 4,8?',
+    a: 'Porque son plataformas con perfiles de usuarios distintos. Google recibe más volumen y más diversidad de expectativas; TripAdvisor suele usarlo el viajero que planifica con cuidado y valora más detalles del servicio. <strong>La media combinada es 4,5★ sobre 147 reseñas</strong> — el número que usamos en toda la web.' },
+  { q: '¿Cuántos años lleváis recibiendo opiniones?',
+    a: 'Aventura en el Sella acumula <strong>reseñas desde hace varios años</strong> de clientes de temporadas distintas. Ese volumen y consistencia es lo que nos diferencia de nuevos operadores sin historial — <a href="/experiencia/">descubre más sobre nuestra historia</a>.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Opiniones reales del descenso del Sella · 4,5★ · 147 reseñas verificadas',
+      description: '147 opiniones reales sobre el descenso del Sella con Aventura en el Sella. 4,5 estrellas en Google y 4,8 en TripAdvisor.',
+      inLanguage: 'es-ES',
+      mainEntityOfPage: canonicalUrl,
+      image: { '@type': 'ImageObject', url: `${baseUrl}/images/optimized/rio-sella-hermoso-lg.jpg`, width: 1920, height: 1280 },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-22',
+      dateModified:  '2026-05-11',
+      articleSection: 'Opiniones · Reseñas verificadas',
+      keywords: ['opiniones descenso del Sella', 'reseñas descenso del Sella', 'Aventura en el Sella opiniones', 'descenso del Sella reviews', 'canoas Sella Arriondas opiniones'],
+      about: 'Opiniones, reseñas y testimonios reales del descenso del Sella en canoa desde Arriondas',
+      mentions: [
+        { '@type': 'Thing', name: 'Google reviews', url: aggregate.google.url },
+        { '@type': 'Thing', name: 'TripAdvisor', url: aggregate.trip.url },
+      ],
+    },
+    {
+      '@type': 'LocalBusiness',
+      additionalType: ['https://schema.org/TouristAttraction', 'https://schema.org/SportsActivityLocation'],
+      '@id': `${baseUrl}/#business`,
+      name: 'Aventura en el Sella',
+      alternateName: 'El Descenso del Sella Asturias · Aventura en el Sella · Alquiler de Canoas',
+      url: baseUrl,
+      telephone: '+34681093673',
+      email: 'info@aventuraenelsella.es',
+      image: `${baseUrl}/images/logo/logo-schema.png`,
+      priceRange: '€€',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Calle Juan Carlos I, 18, BAJO II (acceso por Aipol)',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        postalCode: '33540',
+        addressCountry: 'ES',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: 43.3874223, longitude: -5.1866022 },
+      hasMap: 'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+      openingHoursSpecification: [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens: '09:00',
+        closes: '20:00',
+      }],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: aggregate.global.rating_num,
+        reviewCount: aggregate.global.total,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      review: testimonios.map(t => ({
+        '@type': 'Review',
+        reviewRating: { '@type': 'Rating', ratingValue: t.rating, bestRating: 5, worstRating: 1 },
+        author: { '@type': 'Person', name: t.name },
+        datePublished: t.date,
+        reviewBody: t.text,
+        publisher: { '@type': 'Organization', name: t.source },
+      })),
+      sameAs: [
+        'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+        aggregate.google.url,
+        aggregate.trip.url,
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',    item: baseUrl },
+        { '@type': 'ListItem', position: 2, name: 'Opiniones', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+
+// Helper estrellas
+const starSvg = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>';
+---
+
+<BaseLayout title={title} description={description} currentPath="/opiniones/">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== 1 · HERO · big stars + media aggregate ============== -->
+  <section class="opH" aria-labelledby="opH-title">
+    <span class="opH__watermark" aria-hidden="true">4,5</span>
+
+    <div class="opH__inner">
+      <nav class="opH__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Opiniones</span>
+      </nav>
+
+      <span class="opH__eyebrow">— Opiniones reales y verificadas</span>
+
+      <h1 id="opH-title" class="opH__title">
+        El Sella<br/>
+        <span class="serif-italic">en sus propias palabras.</span>
+      </h1>
+
+      <div class="opH__badge" aria-hidden="true">
+        <span class="opH__badgeStars" set:html={Array(5).fill(starSvg).join('')}></span>
+        <span class="opH__badgeRating">4,5</span>
+        <span class="opH__badgeSep"></span>
+        <span class="opH__badgeCount">147 reseñas verificadas</span>
+      </div>
+
+      <p class="opH__lead">
+        Durante años nos bastó el <strong>boca a boca de Asturias</strong>. Desde hace poco pedimos activamente que dejes tu opinión — y por eso el volumen es modesto. Pero cada una de las <strong>147 reseñas</strong> es <strong>real, pública y verificable</strong> en Google y TripAdvisor.
+      </p>
+
+      <div class="opH__ctas">
+        <a href={aggregate.google.url} class="opH__cta opH__cta--primary" target="_blank" rel="noopener noreferrer">Ver en Google<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+        <a href={aggregate.trip.url} class="opH__cta opH__cta--ghost" target="_blank" rel="noopener noreferrer">Ver en TripAdvisor<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2 · BREAKDOWN · Google + TripAdvisor + Combinado ============== -->
+  <section class="opB" aria-labelledby="opB-title">
+    <div class="container container--xl">
+      <header class="opB__header" data-reveal>
+        <span class="opB__eyebrow">— El dato en bruto</span>
+        <h2 id="opB-title" class="opB__title">
+          Dos plataformas<br/><span class="serif-italic">y una sola media.</span>
+        </h2>
+        <p class="opB__lead">
+          Transparencia total: estos son los números tal cual están hoy en las fichas públicas.
+        </p>
+      </header>
+
+      <div class="opB__grid">
+        <article class="opB__card" data-reveal>
+          <span class="opB__cardLabel">Google</span>
+          <div class="opB__stars" aria-hidden="true" set:html={Array(5).fill(starSvg).join('')}></div>
+          <strong class="opB__cardRating">{aggregate.google.rating}</strong>
+          <span class="opB__cardCount">{aggregate.google.total} reseñas</span>
+          <a href={aggregate.google.url} class="opB__cardLink" target="_blank" rel="noopener noreferrer">
+            Ver en Google
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </article>
+
+        <article class="opB__card opB__card--trip" data-reveal data-reveal-delay="1">
+          <span class="opB__cardLabel">TripAdvisor</span>
+          <div class="opB__stars" aria-hidden="true" set:html={Array(5).fill(starSvg).join('')}></div>
+          <strong class="opB__cardRating">{aggregate.trip.rating}</strong>
+          <span class="opB__cardCount">{aggregate.trip.total} reseñas</span>
+          <a href={aggregate.trip.url} class="opB__cardLink" target="_blank" rel="noopener noreferrer">
+            Ver en TripAdvisor
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </a>
+        </article>
+
+        <article class="opB__card opB__card--total" data-reveal data-reveal-delay="2">
+          <span class="opB__cardLabel">Media combinada</span>
+          <div class="opB__stars" aria-hidden="true" set:html={Array(5).fill(starSvg).join('')}></div>
+          <strong class="opB__cardRating">{aggregate.global.rating}</strong>
+          <span class="opB__cardCount">{aggregate.global.total} reseñas totales</span>
+          <span class="opB__cardNota">Ponderada entre ambas plataformas</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3 · TESTIMONIOS DESTACADOS · feature cards ============== -->
+  <section class="opT" aria-labelledby="opT-title">
+    <div class="container container--xl">
+      <header class="opT__header" data-reveal>
+        <span class="opT__eyebrow">— Qué dicen tras bajar el Sella</span>
+        <h2 id="opT-title" class="opT__title">
+          Tres reseñas<br/><span class="serif-italic">que resumen lo que hacemos.</span>
+        </h2>
+      </header>
+
+      <div class="opT__grid">
+        {testimonios.map((t, i) => (
+          <article class="opT__card" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <div class="opT__head">
+              <span class="opT__avatar" aria-hidden="true">{t.initial}</span>
+              <div class="opT__meta">
+                <strong class="opT__name">{t.name}</strong>
+                <span class="opT__src">{t.source} · {t.date}</span>
+              </div>
+              <span class="opT__tag">{t.context}</span>
+            </div>
+            <div class="opT__stars" aria-hidden="true" set:html={Array(t.rating).fill(starSvg).join('')}></div>
+            <blockquote class="opT__quote">
+              <span class="opT__mark" aria-hidden="true">“</span>
+              {t.text}
+            </blockquote>
+            <a href={t.sourceUrl} class="opT__link" target="_blank" rel="noopener noreferrer">
+              Ver en {t.source}
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M7 7h10v10"/></svg>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 4 · PERFILES · quién nos recomienda ============== -->
+  <section class="opP" aria-labelledby="opP-title">
+    <div class="container container--xl">
+      <header class="opP__intro" data-reveal>
+        <span class="opP__eyebrow">— Por perfil de visitante</span>
+        <h2 id="opP-title" class="opP__title">
+          Cuatro formas<br/><span class="serif-italic">de bajar el Sella.</span>
+        </h2>
+        <p class="opP__lead">
+          Leyendo las 147 reseñas aparecen patrones claros: el perfil de quien viene y las palabras que más se repiten.
+        </p>
+      </header>
+
+      <div class="opP__panel">
+        <ol class="opP__grid">
+          {perfiles.map(p => (
+            <li class="opP__cell">
+              <div class="opP__cellBody">
+                <h3 class="opP__cellName">{p.tag}</h3>
+                <span class="opP__cellNota">{p.nota}</span>
+                <ul class="opP__words">
+                  {p.words.map(w => <li class="opP__word">“{w}”</li>)}
+                </ul>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5 · BANNER oscuro · ¿Listo para hacer el descenso? ============== -->
+  <section class="opR" aria-label="Llamada a la acción · reservar descenso">
+    <div class="container container--xl">
+      <div class="opR__inner" data-reveal>
+        <div class="opR__text">
+          <span class="opR__eyebrow">— Aventura en el Sella</span>
+          <h2 class="opR__title">Ya sabes lo que piensan <span class="serif-italic">los que lo probaron.</span></h2>
+        </div>
+        <a href="/reservar/" class="opR__cta">
+          <span>Reservar mi descenso</span>
+          <span class="opR__ctaIcon" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 6 · INTERLINKING sage dark ============== -->
+  <section class="opX">
+    <div class="container container--xl">
+      <header class="opX__header" data-reveal>
+        <span class="opX__eyebrow">— Antes de venir</span>
+        <h2 class="opX__title">Prepara<br/><span class="serif-italic">tu descenso del Sella.</span></h2>
+      </header>
+
+      <nav class="opX__list" aria-label="Páginas relacionadas">
+        <a href="/precios/" class="opX__item">
+          <span class="opX__num">01</span>
+          <h3 class="opX__t">Precios del descenso</h3>
+          <p class="opX__p">30€ niños · 40€ adultos · mascotas gratis. Todo incluido.</p>
+          <span class="opX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href="/con-ninos/" class="opX__item">
+          <span class="opX__num">02</span>
+          <h3 class="opX__t">Con niños</h3>
+          <p class="opX__p">Desde 5 años · 1,15 m. Seguridad y ritmo familiar.</p>
+          <span class="opX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href="/con-perro/" class="opX__item">
+          <span class="opX__num">03</span>
+          <h3 class="opX__t">Con perro</h3>
+          <p class="opX__p">Mascotas gratis. Chaleco canino incluido.</p>
+          <span class="opX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a href="/recorrido-y-mapa/" class="opX__item">
+          <span class="opX__num">04</span>
+          <h3 class="opX__t">Recorrido y mapa</h3>
+          <p class="opX__p">14,5 km · mapa interactivo · 8 hitos del camino.</p>
+          <span class="opX__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============== 7 · FAQ sage sidebar (reuse canónico) ============== -->
+  <section class="opF">
+    <div class="container container--xl">
+      <div class="opF__grid">
+        <aside class="opF__aside" data-reveal>
+          <span class="opF__eyebrow">— Preguntas frecuentes</span>
+          <h2 class="opF__title">Sobre las<br/><span class="serif-italic">opiniones.</span></h2>
+          <p class="opF__lead">
+            Cómo gestionamos las reseñas, cómo dejar la tuya y qué hay detrás del 4,5★.
+            Si falta algo, <a href="/contacto/">escríbenos</a>.
+          </p>
+        </aside>
+        <div class="opF__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="opFI" name="op-faq" open={i === 0}>
+              <summary class="opFI__q">
+                {f.q}
+                <svg class="opFI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="opFI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 8 · CTA FINAL dark photo ============== -->
+  <section class="opCta" aria-labelledby="opCta-title">
+    <div class="opCta__bg" aria-hidden="true">
+      <Picture src="opiniones-cta" alt="" sizes="100vw" bare />
+    </div>
+    <div class="opCta__inner">
+      <span class="opCta__eyebrow">— Sé parte de la siguiente reseña</span>
+      <h2 id="opCta-title" class="opCta__title">
+        Del río<br/>
+        <span class="serif-italic">a tu propia historia.</span>
+      </h2>
+      <p class="opCta__lead">
+        Baja el Sella con nosotros y decide tú qué contar. Reserva sin pagar ahora — <strong>paga con tarjeta o el día que recojas la canoa</strong>.
+      </p>
+      <div class="opCta__ctas">
+        <a href="/reservar/" class="opCta__primary">
+          Reservar mi descenso
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/precios/" class="opCta__ghost">Consultar precios</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ==================== 1 · HERO ==================== */
+  .opH {
+    position: relative;
+    background:
+      radial-gradient(ellipse 70% 55% at 90% 0%, rgba(184, 210, 230, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 10% 100%, rgba(61, 79, 58, 0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #F9F5EA 0%, #F0E9D3 100%);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: hidden; isolation: isolate;
+  }
+  .opH__watermark {
+    position: absolute;
+    top: 3%; right: -2%;
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(14rem, 28vw, 26rem);
+    line-height: 0.85;
+    color: rgba(26, 31, 46, 0.04);
+    pointer-events: none;
+    user-select: none;
+    z-index: 0;
+  }
+  .opH__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 3vw, 2rem) 0;
+    position: relative; z-index: 1;
+  }
+  .opH__breadcrumb {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+  }
+  .opH__breadcrumb a { color: var(--color-text-primary); }
+  .opH__breadcrumb a:hover { color: var(--color-primary); }
+  .opH__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .opH__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.035em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .opH__badge {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: var(--radius-pill, 999px);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    box-shadow: 0 8px 24px -10px rgba(26, 31, 46, 0.12);
+  }
+  .opH__badgeStars {
+    display: inline-flex; gap: 2px;
+    color: var(--color-primary, #E9856F);
+  }
+  .opH__badgeStars svg { display: block; }
+  .opH__badgeRating {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 1rem; letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+  }
+  .opH__badgeSep {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: rgba(26, 31, 46, 0.25);
+  }
+  .opH__badgeCount {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .opH__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .opH__lead {
+    font-family: var(--font-sans); font-size: clamp(1rem, 1.4vw, 1.125rem);
+    line-height: 1.7; color: var(--color-text-secondary);
+    max-width: 640px;
+    margin: 0 0 clamp(1.75rem, 3vw, 2.25rem);
+  }
+  .opH__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .opH__ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .opH__cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.875rem 1.375rem;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700;
+    transition: transform 260ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 260ms ease,
+                background 260ms ease;
+    text-decoration: none;
+  }
+  .opH__cta--primary {
+    background: var(--color-bg-dark, #1A1F2E); color: #fff;
+  }
+  .opH__cta--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -12px rgba(26, 31, 46, 0.45);
+  }
+  .opH__cta--ghost {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1.5px solid var(--color-text-primary);
+  }
+  .opH__cta--ghost:hover {
+    background: var(--color-text-primary); color: #fff;
+    transform: translateY(-2px);
+  }
+
+  /* ==================== 2 · BREAKDOWN ==================== */
+  .opB {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-base, #FBF8F1);
+  }
+  .opB__header {
+    max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .opB__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .opB__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+  }
+  .opB__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .opB__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+  }
+
+  .opB__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: 0; max-width: 1100px; margin: 0 auto;
+    border-top: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  @media (min-width: 720px) { .opB__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .opB__card {
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  @media (min-width: 720px) {
+    .opB__card { border-bottom: none; border-right: 1px solid rgba(26, 31, 46, 0.14); }
+    .opB__card:last-child { border-right: none; }
+  }
+  @media (max-width: 719.98px) {
+    .opB__card:last-child { border-bottom: none; }
+  }
+  .opB__cardLabel {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .opB__stars {
+    display: inline-flex; gap: 3px;
+    color: var(--color-primary, #E9856F);
+  }
+  .opB__stars svg { display: block; }
+  .opB__cardRating {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 3.75rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+    margin: 0.25rem 0 0;
+  }
+  .opB__cardCount {
+    font-family: var(--font-sans); font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+  .opB__cardLink {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1.5px solid var(--color-sage, #3D4F3A);
+    padding-bottom: 2px;
+    margin-top: 0.5rem;
+    transition: color 200ms, border-color 200ms;
+  }
+  .opB__cardLink:hover {
+    color: var(--color-primary); border-bottom-color: var(--color-primary);
+  }
+  .opB__cardNota {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+  }
+
+  /* ==================== 3 · TESTIMONIOS ==================== */
+  .opT {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-sand, #F1E9D4);
+  }
+  .opT__header {
+    max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .opT__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .opT__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .opT__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+
+  .opT__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 1.75rem);
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 720px)  { .opT__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .opT__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .opT__card {
+    display: flex; flex-direction: column;
+    gap: 1rem;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    background: #fff;
+    border-radius: var(--radius-xl, 1.5rem);
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    transition: transform 320ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 320ms ease;
+  }
+  .opT__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px -20px rgba(26, 31, 46, 0.18);
+  }
+
+  .opT__head { display: flex; align-items: center; gap: 0.75rem; }
+  .opT__avatar {
+    flex-shrink: 0;
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--color-sage, #3D4F3A);
+    color: var(--color-bg-base, #FBF8F1);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 1.125rem;
+    letter-spacing: -0.02em;
+  }
+  .opT__meta { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .opT__name {
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .opT__src {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .opT__tag {
+    flex-shrink: 0;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-primary);
+    padding: 0.3rem 0.625rem;
+    background: rgba(233, 133, 111, 0.08);
+    border-radius: var(--radius-pill, 999px);
+  }
+  .opT__stars {
+    display: inline-flex; gap: 3px;
+    color: var(--color-primary, #E9856F);
+  }
+  .opT__stars svg { display: block; }
+  .opT__quote {
+    position: relative;
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0; padding: 0;
+  }
+  .opT__mark {
+    position: absolute;
+    top: -0.5rem; left: -0.25rem;
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: 3.5rem; line-height: 1;
+    color: rgba(233, 133, 111, 0.18);
+    pointer-events: none;
+  }
+  .opT__link {
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    margin-top: auto;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1.5px solid var(--color-sage, #3D4F3A);
+    padding-bottom: 2px;
+    align-self: flex-start;
+    transition: color 200ms, border-color 200ms;
+  }
+  .opT__link:hover {
+    color: var(--color-primary); border-bottom-color: var(--color-primary);
+  }
+
+  /* ==================== 4 · PERFILES ==================== */
+  .opP {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-base, #FBF8F1);
+  }
+  .opP__intro {
+    max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .opP__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .opP__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+  }
+  .opP__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .opP__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+  }
+
+  .opP__panel { max-width: 1200px; margin: 0 auto; }
+  .opP__grid {
+    list-style: none; padding: 0; margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    border-top: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  @media (min-width: 720px) { .opP__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .opP__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .opP__cell {
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex; align-items: flex-start;
+    border-right: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+    transition: background 300ms ease;
+  }
+  .opP__cell:hover { background: rgba(255, 255, 255, 0.35); }
+  @media (min-width: 1000px) {
+    .opP__cell:nth-child(4n) { border-right: none; }
+    .opP__cell:nth-last-child(-n+4) { border-bottom: none; }
+  }
+  @media (min-width: 720px) and (max-width: 999.98px) {
+    .opP__cell:nth-child(2n) { border-right: none; }
+    .opP__cell:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  @media (max-width: 719.98px) {
+    .opP__cell { border-right: none; }
+    .opP__cell:last-child { border-bottom: none; }
+  }
+
+  .opP__cellBody { display: flex; flex-direction: column; gap: 0.875rem; min-width: 0; }
+  .opP__cellName {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+    line-height: 1.05; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .opP__cellNota {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .opP__words { list-style: none; padding: 0; margin: 0.25rem 0 0; display: flex; flex-wrap: wrap; gap: 0.375rem; }
+  .opP__word {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-sage, #3D4F3A);
+    padding: 0.25rem 0.625rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-radius: var(--radius-pill, 999px);
+  }
+
+  /* ==================== 5 · BANNER NAVY (reuse rrb) ==================== */
+  .opR {
+    padding-block: clamp(2.25rem, 4vw, 3rem);
+    background: var(--color-bg-dark, #1A1F2E);
+    color: var(--color-text-on-dark, #F4F0E8);
+  }
+  .opR__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+  @media (max-width: 720px) { .opR__inner { grid-template-columns: 1fr; gap: 1.5rem; } }
+  .opR__text { min-width: 0; }
+  .opR__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary, #E9856F);
+    margin-bottom: 0.625rem;
+  }
+  .opR__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    margin: 0;
+  }
+  .opR__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.005em;
+    color: var(--color-primary-soft, #F5C5B5);
+  }
+  .opR__cta {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    background: #FFFFFF;
+    color: var(--color-text-primary, #1A1F2E);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+    white-space: nowrap;
+    justify-self: end;
+  }
+  @media (max-width: 720px) { .opR__cta { justify-self: start; } }
+  .opR__cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -12px rgba(0, 0, 0, 0.45);
+  }
+  .opR__ctaIcon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .opR__cta:hover .opR__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  /* ==================== 6 · INTERLINKING sage dark ==================== */
+  .opX {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1; position: relative; isolation: isolate;
+  }
+  .opX::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
+  }
+  .opX__header {
+    max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .opX__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F5C5B5);
+    margin-bottom: 1rem;
+  }
+  .opX__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0;
+  }
+  .opX__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+    color: var(--color-primary-soft, #F5C5B5);
+  }
+
+  .opX__list {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 1.5rem);
+    max-width: 1100px; margin: 0 auto;
+  }
+  @media (min-width: 720px) {
+    .opX__list { grid-template-columns: 1fr 1fr; gap: clamp(1rem, 2vw, 1.5rem) 0; }
+  }
+  @media (min-width: 1000px) {
+    .opX__list { grid-template-columns: repeat(4, 1fr); gap: 0; }
+  }
+
+  .opX__item {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.625rem;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    color: #FBF8F1;
+    transition: background 300ms ease;
+    min-height: 180px;
+  }
+  .opX__item:hover { background: rgba(251, 248, 241, 0.04); }
+
+  /* Solo hairlines laterales (verticales) entre columnas · sin top/bottom */
+  @media (min-width: 1000px) {
+    .opX__item { border-right: 1px solid rgba(251, 248, 241, 0.15); }
+    .opX__item:nth-child(4n) { border-right: none; }
+  }
+  @media (min-width: 720px) and (max-width: 999.98px) {
+    .opX__item { border-right: 1px solid rgba(251, 248, 241, 0.15); }
+    .opX__item:nth-child(2n) { border-right: none; }
+  }
+
+  .opX__num {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1rem; font-weight: 400;
+    color: var(--color-primary-soft, #F5C5B5);
+  }
+  .opX__t {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(1.125rem, 1.8vw, 1.25rem);
+    line-height: 1.15; letter-spacing: -0.015em;
+    color: #FBF8F1;
+    margin: 0;
+  }
+  .opX__p {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6;
+    color: rgba(251, 248, 241, 0.78); margin: 0;
+  }
+  .opX__arrow {
+    position: absolute; top: clamp(1.75rem, 3vw, 2.25rem); right: clamp(1.75rem, 3vw, 2.25rem);
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(251, 248, 241, 0.08);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: all 260ms ease;
+  }
+  .opX__item:hover .opX__arrow {
+    background: var(--color-primary, #E9856F);
+    transform: rotate(-8deg) translateX(2px);
+  }
+
+  /* ==================== 7 · FAQ sage sidebar ==================== */
+  .opF {
+    padding-block: clamp(4rem, 7vw, 5.5rem);
+    background: var(--color-bg-base, #FBF8F1);
+  }
+  .opF__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 900px) {
+    .opF__grid { grid-template-columns: minmax(280px, 1fr) minmax(480px, 1.6fr); gap: clamp(3rem, 5vw, 4rem); }
+  }
+  .opF__aside { position: sticky; top: 100px; align-self: start; }
+  .opF__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+  .opF__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+  }
+  .opF__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .opF__lead {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .opF__lead a {
+    color: var(--color-sage); border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+  }
+  .opF__lead a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .opF__list { display: flex; flex-direction: column; }
+  .opFI {
+    border-bottom: 1px solid rgba(26, 31, 46, 0.1);
+  }
+  .opFI:first-child { border-top: 1px solid rgba(26, 31, 46, 0.1); }
+  .opFI__q {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    padding: clamp(1rem, 2vw, 1.25rem) 0;
+    font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.125rem);
+    font-weight: 700; color: var(--color-text-primary);
+    cursor: pointer; list-style: none;
+    transition: color 220ms ease;
+  }
+  .opFI__q::-webkit-details-marker { display: none; }
+  .opFI__q:hover { color: var(--color-primary); }
+  .opFI__chev {
+    flex-shrink: 0;
+    transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .opFI[open] .opFI__chev { transform: rotate(180deg); color: var(--color-primary); }
+  .opFI__a {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0 0 clamp(1rem, 2vw, 1.25rem);
+    padding-right: 2rem;
+  }
+  .opFI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .opFI__a a {
+    color: var(--color-sage); border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+  }
+  .opFI__a a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  /* ==================== 8 · CTA FINAL ==================== */
+  .opCta {
+    position: relative;
+    min-height: clamp(480px, 65vh, 640px);
+    display: flex; align-items: center;
+    color: #FBF8F1;
+    overflow: hidden; isolation: isolate;
+  }
+  .opCta__bg {
+    position: absolute; inset: 0; z-index: -2;
+  }
+  .opCta__bg :global(img) {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  .opCta::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(26, 31, 46, 0.2) 0%, rgba(26, 31, 46, 0.85) 100%);
+  }
+  .opCta__inner {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 4.5rem) clamp(1rem, 3vw, 2rem);
+    position: relative; z-index: 1;
+    text-align: center;
+  }
+  .opCta__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F5C5B5);
+    margin-bottom: 1rem;
+  }
+  .opCta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.25rem;
+  }
+  .opCta__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+    color: var(--color-primary-soft, #F5C5B5);
+  }
+  .opCta__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: rgba(251, 248, 241, 0.85);
+    max-width: 560px; margin: 0 auto clamp(1.75rem, 3vw, 2.25rem);
+  }
+  .opCta__lead strong { color: #fff; font-weight: 700; }
+  .opCta__ctas {
+    display: inline-flex; flex-wrap: wrap; justify-content: center;
+    gap: 0.75rem;
+  }
+  .opCta__primary {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    background: var(--color-primary, #E9856F); color: #fff;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    transition: transform 260ms, box-shadow 260ms;
+  }
+  .opCta__primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -12px rgba(233, 133, 111, 0.55);
+  }
+  .opCta__primary svg { transition: transform 220ms; }
+  .opCta__primary:hover svg { transform: translateX(3px); }
+  .opCta__ghost {
+    display: inline-flex; align-items: center;
+    padding: 0.875rem 1.5rem;
+    background: transparent; color: #FBF8F1;
+    border: 1.5px solid rgba(251, 248, 241, 0.4);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    transition: background 260ms, border-color 260ms;
+  }
+  .opCta__ghost:hover {
+    background: rgba(251, 248, 241, 0.1);
+    border-color: #FBF8F1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .opT__card, .opH__cta, .opX__arrow, .opCta__primary, .opR__cta { transition: none; }
+    .opT__card:hover, .opH__cta:hover, .opCta__primary:hover, .opR__cta:hover { transform: none; }
+  }
+</style>

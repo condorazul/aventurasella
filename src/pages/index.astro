@@ -1,0 +1,179 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/sections/Hero.astro';
+import Marquee from '@components/sections/Marquee.astro';
+import SplitEditorial from '@components/sections/SplitEditorial.astro';
+import BentoGallery from '@components/sections/BentoGallery.astro';
+import Experiences from '@components/sections/Experiences.astro';
+import Parallax from '@components/sections/Parallax.astro';
+import HowItWorks from '@components/sections/HowItWorks.astro';
+import IncludesB from '@components/sections/IncludesB.astro';
+import Reviews from '@components/sections/Reviews.astro';
+import MapaInteractivoSella from '@components/sections/MapaInteractivoSella.astro';
+import LocationTeaser from '@components/sections/LocationTeaser.astro';
+import ReservaCTA from '@components/sections/ReservaCTA.astro';
+import FinalCTA from '@components/sections/FinalCTA.astro';
+import SeasonsGuide from '@components/sections/SeasonsGuide.astro';
+import TrustChecklist from '@components/sections/TrustChecklist.astro';
+import BlogTeaser from '@components/sections/BlogTeaser.astro';
+import FAQ from '@components/sections/FAQ.astro';
+import { localBusinessSchema } from '@data/business-schema';
+
+const title = 'Descenso del Sella en canoa · Desde 30 € · Arriondas';
+const description = 'Descenso del Sella en canoa por Arriondas, Asturias. Todo incluido: canoa, picnic asturiano, transfer y monitores titulados. Desde 30 €. Reserva en 2 minutos.';
+
+// ============== Schema.org JSON-LD ==============
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl),
+    {
+      '@type': 'TouristAttraction',
+      '@id': `${baseUrl}/#descenso`,
+      name: 'Descenso del Sella en canoa',
+      description: 'Descenso turístico en canoa por el río Sella desde Arriondas hasta Toraño (7 km) o Fríes (14,5 km). Todo incluido: canoa insumergible, chaleco, pala doble, neopreno en fechas frías, mini clase con monitores titulados, transfer de regreso, picnic asturiano (empanada de bonito, bollín preñao), vestuarios con duchas, taquillas con llave, parking vigilado y seguros.',
+      url: baseUrl,
+      image: `${baseUrl}/images/optimized/hero-canoa-lago.jpg`,
+      touristType: ['Familias', 'Parejas', 'Grupos', 'Turismo activo'],
+      isAccessibleForFree: false,
+      publicAccess: true,
+      provider: { '@id': `${baseUrl}/#business` },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        addressCountry: 'ES',
+      },
+    },
+    {
+      '@type': 'Product',
+      '@id': `${baseUrl}/#product`,
+      name: 'Descenso del Sella en canoa · Todo incluido',
+      description: 'Reserva del descenso del Sella en canoa con todo incluido. Dos recorridos (7 km Mini o 14,5 km Completo), picnic asturiano (empanada de bonito, bollín preñao), transfer, parking vigilado, taquillas con llave, seguros y vestuarios con duchas. Mascotas gratis.',
+      brand: { '@type': 'Brand', name: 'Aventura en el Sella' },
+      image: `${baseUrl}/images/optimized/includes-b.jpg`,
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Niños (hasta 12 años)',
+          price: '30.00',
+          priceCurrency: 'EUR',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/reservar/`,
+        },
+        {
+          '@type': 'Offer',
+          name: 'Adulto',
+          price: '40.00',
+          priceCurrency: 'EUR',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/reservar/`,
+        },
+      ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '147',
+        bestRating: '5',
+        worstRating: '1',
+      },
+      review: [
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Anaïs Suárez' },
+          datePublished: '2025-10-01',
+          reviewBody: 'Buen servicio, trabajadores atentos y muy simpáticos. La experiencia genial, me ha encantado.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Nacho A.' },
+          datePublished: '2025-08-01',
+          reviewBody: 'Todo puntual y muy amables. Una experiencia para probar una vez en la vida, recomendada para jóvenes y mayores.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Carlos S.' },
+          datePublished: '2025-05-01',
+          reviewBody: 'Merece la pena. Tienes vestuarios y puedes ducharte tras la actividad. Te dan instrucciones divertidas, un bidón donde meter muchas cosas y el resto te lo da el río.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${baseUrl}/#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio', item: baseUrl },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${baseUrl}/#website`,
+      url: baseUrl,
+      name: 'Aventura en el Sella',
+      inLanguage: 'es-ES',
+      publisher: { '@id': `${baseUrl}/#business` },
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/" translationKey="home">
+  <Fragment slot="head">
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Preload LCP hero — desktop (≥1024px): corte lg AVIF -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/optimized/hero-canoa-lago-lg.avif"
+      type="image/avif"
+      media="(min-width: 1024px)"
+      fetchpriority="high"
+    />
+    <!-- Preload LCP hero — tablet (640-1023px): corte md AVIF -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/optimized/hero-canoa-lago.avif"
+      type="image/avif"
+      media="(min-width: 640px) and (max-width: 1023px)"
+      fetchpriority="high"
+    />
+    <!-- Preload LCP hero — móvil (<640px): corte sm AVIF -->
+    <link
+      rel="preload"
+      as="image"
+      href="/images/optimized/hero-canoa-lago-sm.avif"
+      type="image/avif"
+      media="(max-width: 639px)"
+      fetchpriority="high"
+    />
+  </Fragment>
+
+  <Hero />
+  <Marquee />
+  <SplitEditorial />
+  <BentoGallery />
+  <Experiences />
+
+  <IncludesB />
+
+  <HowItWorks />
+  <MapaInteractivoSella />
+  <LocationTeaser />
+  <ReservaCTA />
+  <SeasonsGuide />
+  <Parallax />
+  <Reviews />
+  <TrustChecklist />
+  <BlogTeaser />
+  <FAQ />
+
+  <FinalCTA />
+</BaseLayout>

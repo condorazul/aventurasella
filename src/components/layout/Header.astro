@@ -1,0 +1,1086 @@
+---
+import { BLOG_POSTS } from '@data/blog-posts';
+import { BLOG_POSTS_EN } from '@data/blog-posts-en';
+import { BLOG_POSTS_FR } from '@data/blog-posts-fr';
+import { BLOG_POSTS_PT } from '@data/blog-posts-pt';
+import { LOCALES, DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { t, getAlternates, isLocaleReady, localizeUrl, getLocalePath } from '@utils/i18n';
+import type { TranslationKey } from '@i18n/slugs';
+
+interface Props {
+  currentPath?: string;
+  theme?: 'light' | 'dark';
+  translationKey?: TranslationKey;
+}
+
+const { currentPath = '/', theme = 'dark', translationKey } = Astro.props;
+
+// ==================== i18n · locale actual ====================
+// El BaseLayout pasa el locale actual + translationKey vía Astro.locals,
+// o caemos en detección por URL como fallback.
+const currentLocale: Locale = ((Astro as any).currentLocale ?? Astro.url.pathname.match(/^\/(en|fr|pt)(\/|$)/)?.[1] ?? DEFAULT_LOCALE) as Locale;
+
+// ==================== i18n local · sub-textos de los dropdown items ====================
+// Strings cortos específicos del header que no merecen vivir en ui.ts (sólo se usan aquí).
+const headerI18n = {
+  es: {
+    sellaItems: {
+      recorrido:    { label: 'Recorrido y mapa',       sub: '14,5 km · 8 hitos' },
+      premium:      { label: 'Reserva Premium',        sub: 'Todo incluido · picnic' },
+      conNinos:     { label: 'Con niños',              sub: 'Desde 5 años · 1,15 m' },
+      conPerro:     { label: 'Con perro',              sub: 'Mascotas gratis' },
+      internacional:{ label: 'Descenso Internacional', sub: 'El gran evento del Sella' },
+      opiniones:    { label: 'Opiniones',              sub: '4,5★ · 147 reseñas' },
+    },
+    guiasItems: {
+      cuantoDura:   { label: 'Cuánto dura',  sub: '2-5 h · tiempos reales' },
+      mejorEpoca:   { label: 'Mejor época',  sub: 'Clima · caudal · afluencia' },
+      comoLlegar:   { label: 'Cómo llegar',  sub: 'Coche · ALSA · Renfe' },
+    },
+    blogMinPrefix: 'min',
+  },
+  en: {
+    sellaItems: {
+      recorrido:    { label: 'Route and map',          sub: '14.5 km · 8 highlights' },
+      premium:      { label: 'Premium Booking',        sub: 'All inclusive · picnic' },
+      conNinos:     { label: 'With kids',              sub: 'From age 5 · 1.15 m' },
+      conPerro:     { label: 'With dog',               sub: 'Pets free' },
+      internacional:{ label: 'International Descent',  sub: "The Sella's big event" },
+      opiniones:    { label: 'Reviews',                sub: '4.5★ · 147 reviews' },
+    },
+    guiasItems: {
+      cuantoDura:   { label: 'How long does it take', sub: '2-5 h · real times' },
+      mejorEpoca:   { label: 'Best time',             sub: 'Climate · flow · crowds' },
+      comoLlegar:   { label: 'How to get there',      sub: 'Car · ALSA · Renfe' },
+    },
+    blogMinPrefix: 'min',
+  },
+  fr: {
+    sellaItems: {
+      recorrido:    { label: 'Parcours et carte',          sub: '14,5 km · 8 points clés' },
+      premium:      { label: 'Réservation Premium',        sub: 'Tout inclus · pique-nique' },
+      conNinos:     { label: 'Avec enfants',               sub: 'Dès 5 ans · 1,15 m' },
+      conPerro:     { label: 'Avec chien',                 sub: 'Animaux gratuits' },
+      internacional:{ label: 'Descente Internationale',    sub: 'Le grand événement du Sella' },
+      opiniones:    { label: 'Avis',                       sub: '4,5★ · 147 avis' },
+    },
+    guiasItems: {
+      cuantoDura:   { label: 'Durée',             sub: '2-5 h · temps réels' },
+      mejorEpoca:   { label: 'Meilleure période', sub: 'Climat · débit · affluence' },
+      comoLlegar:   { label: 'Comment arriver',   sub: 'Voiture · ALSA · Renfe' },
+    },
+    blogMinPrefix: 'min',
+  },
+  pt: {
+    sellaItems: {
+      recorrido:    { label: 'Percurso e mapa',         sub: '14,5 km · 8 pontos' },
+      premium:      { label: 'Reserva Premium',         sub: 'Tudo incluído · piquenique' },
+      conNinos:     { label: 'Com crianças',            sub: 'A partir dos 5 anos · 1,15 m' },
+      conPerro:     { label: 'Com cão',                 sub: 'Animais grátis' },
+      internacional:{ label: 'Descida Internacional',   sub: 'O grande evento do Sella' },
+      opiniones:    { label: 'Opiniões',                sub: '4,5★ · 147 avaliações' },
+    },
+    guiasItems: {
+      cuantoDura:   { label: 'Quanto tempo dura', sub: '2-5 h · tempos reais' },
+      mejorEpoca:   { label: 'Melhor época',      sub: 'Clima · caudal · afluência' },
+      comoLlegar:   { label: 'Como chegar',       sub: 'Carro · ALSA · Renfe' },
+    },
+    blogMinPrefix: 'min',
+  },
+} as const;
+
+const hi = headerI18n[currentLocale];
+
+// Dropdown principal · Descenso del Sella (primary pill dark) · rutas y modalidades
+const ddSella = {
+  label: t('nav_descenso', currentLocale),
+  eyebrow: t('nav_dd_sella_eyebrow', currentLocale),
+  items: [
+    { label: hi.sellaItems.recorrido.label,     href: getLocalePath('recorrido_mapa', currentLocale),         sub: hi.sellaItems.recorrido.sub },
+    { label: hi.sellaItems.premium.label,       href: getLocalePath('reserva_premium', currentLocale),        sub: hi.sellaItems.premium.sub },
+    { label: hi.sellaItems.conNinos.label,      href: getLocalePath('con_ninos', currentLocale),              sub: hi.sellaItems.conNinos.sub },
+    { label: hi.sellaItems.conPerro.label,      href: getLocalePath('con_perro', currentLocale),              sub: hi.sellaItems.conPerro.sub },
+    { label: hi.sellaItems.internacional.label, href: getLocalePath('descenso_internacional', currentLocale), sub: hi.sellaItems.internacional.sub },
+    { label: hi.sellaItems.opiniones.label,     href: getLocalePath('opiniones', currentLocale),              sub: hi.sellaItems.opiniones.sub },
+  ],
+};
+
+// Dropdown secundario · Guías (sin Blog · Blog ahora tiene su propio dropdown)
+const ddGuias = {
+  label: t('nav_guias', currentLocale),
+  eyebrow: t('nav_dd_guias_eyebrow', currentLocale),
+  items: [
+    { label: hi.guiasItems.cuantoDura.label, href: getLocalePath('cuanto_dura', currentLocale), sub: hi.guiasItems.cuantoDura.sub },
+    { label: hi.guiasItems.mejorEpoca.label, href: getLocalePath('mejor_epoca', currentLocale), sub: hi.guiasItems.mejorEpoca.sub },
+    { label: hi.guiasItems.comoLlegar.label, href: getLocalePath('como_llegar', currentLocale), sub: hi.guiasItems.comoLlegar.sub },
+  ],
+};
+
+// Dropdown Blog · últimas 4 entradas + "Ver todas"
+// Selecciona la fuente de datos según locale para mostrar slugs/labels SEO
+// localizados en cada idioma.
+const blogPostsByLang: Record<Locale, readonly any[]> = {
+  es: BLOG_POSTS,
+  en: BLOG_POSTS_EN,
+  fr: BLOG_POSTS_FR,
+  pt: BLOG_POSTS_PT,
+};
+const blogPostsForLang = blogPostsByLang[currentLocale] ?? BLOG_POSTS;
+const blogBasePath = getLocalePath('blog', currentLocale); // "/blog/" o "/en/blog/" etc.
+
+const ddBlog = {
+  label: t('nav_blog', currentLocale),
+  eyebrow: t('nav_dd_blog_eyebrow', currentLocale),
+  items: [...blogPostsForLang]
+    .sort((a, b) => b.datePublished.localeCompare(a.datePublished))
+    .slice(0, 4)
+    .map(p => ({
+      label: p.h1,
+      href: `${blogBasePath}${p.slug}/`,
+      sub: `${p.readingTime} ${hi.blogMinPrefix} · ${p.category}`,
+    })),
+};
+
+const tel = '+34681093673';
+const telDisplay = '681 093 673';
+
+// URLs localizadas reutilizadas en varias partes del header
+const urlPrecios    = getLocalePath('precios', currentLocale);
+const urlQuienes    = getLocalePath('quienes_somos', currentLocale);
+const urlContacto   = getLocalePath('contacto', currentLocale);
+const urlBlog       = getLocalePath('blog', currentLocale);
+const urlHome       = getLocalePath('home', currentLocale);
+
+// Helpers · marcar activo si currentPath está en el dropdown
+const isSellaActive = ddSella.items.some(i => i.href === currentPath);
+const isGuiasActive = ddGuias.items.some(i => i.href === currentPath);
+const isBlogActive = currentPath.startsWith('/blog') || currentPath.startsWith(urlBlog);
+
+// ==================== i18n · selector de idioma ====================
+
+// Si la página declaró translationKey (vía BaseLayout), usamos getAlternates
+// para resolver URLs correctas por idioma. Si no, fallback a localizeUrl genérico.
+const alternates = translationKey ? getAlternates(translationKey) : null;
+
+const buildLangUrl = (locale: Locale): string => {
+  if (alternates) return alternates[locale];
+  return localizeUrl(Astro.url.pathname || '/', locale);
+};
+
+const langs = [
+  { code: 'es' as Locale, label: 'ES', name: 'Español'   },
+  { code: 'en' as Locale, label: 'EN', name: 'English'   },
+  { code: 'fr' as Locale, label: 'FR', name: 'Français'  },
+  { code: 'pt' as Locale, label: 'PT', name: 'Português' },
+];
+
+const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
+---
+
+<header class={`hdr hdr--${theme}`} id="hdr" data-theme={theme} data-label-open-menu={t('nav_open_menu', currentLocale)} data-label-close-menu={t('nav_close_menu', currentLocale)}>
+  <div class="hdr__pill" role="navigation" aria-label={t('nav_main_aria', currentLocale)}>
+
+    <!-- LOGO (izquierda) -->
+    <a href={urlHome} class="hdr__logo" aria-label={t('nav_logo_aria', currentLocale)}>
+      <span class="hdr__logoBadge">
+        <img src="/images/logo/logo_sella_black.svg" alt="" width="40" height="40" loading="eager" aria-hidden="true" />
+      </span>
+      <span class="hdr__wordmark">
+        <span class="hdr__wordmark-l1">Aventura</span>
+        <span class="hdr__wordmark-l2">en el Sella</span>
+      </span>
+    </a>
+
+    <!-- NAV principal (desktop) -->
+    <nav class="hdr__nav" aria-label={t('nav_sections_aria', currentLocale)}>
+      <ul class="hdr__list">
+
+        <!-- Primary dropdown · Descenso del Sella (dark pill) -->
+        <li class="hdr__item hdr__item--hasDropdown hdr__item--primary" data-dropdown>
+          <button
+            type="button"
+            class:list={['hdr__primary', isSellaActive && 'is-active']}
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-dropdown-trigger
+          >
+            <svg class="hdr__primaryIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14c3 3 7 4 9 4s6-1 9-4"/><path d="M5 14l2-8h10l2 8"/><line x1="12" y1="6" x2="12" y2="14"/></svg>
+            <span>{ddSella.label}</span>
+            <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="hdr__panel" role="menu" data-dropdown-panel>
+            <div class="hdr__panelInner">
+              <span class="hdr__panelEyebrow">— {ddSella.eyebrow}</span>
+              <ul class="hdr__panelList">
+                {ddSella.items.map(item => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
+                      role="menuitem"
+                    >
+                      <div class="hdr__panelLinkBody">
+                        <strong>{item.label}</strong>
+                        <span>{item.sub}</span>
+                      </div>
+                      <svg class="hdr__panelArrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+            </div>
+          </div>
+        </li>
+
+        <!-- Precios -->
+        <li class="hdr__item">
+          <a
+            href={urlPrecios}
+            class:list={['hdr__link', currentPath === urlPrecios && 'is-active']}
+          >
+            <svg class="hdr__linkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6a7 7 0 1 0 0 12"/><line x1="4" y1="10" x2="13" y2="10"/><line x1="4" y1="14" x2="13" y2="14"/></svg>
+            <span>{t('nav_precios', currentLocale)}</span>
+          </a>
+        </li>
+
+        <!-- Secondary dropdown · Guías -->
+        <li class="hdr__item hdr__item--hasDropdown" data-dropdown>
+          <button
+            type="button"
+            class:list={['hdr__link hdr__link--dropdown', isGuiasActive && 'is-active']}
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-dropdown-trigger
+          >
+            <svg class="hdr__linkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span>{ddGuias.label}</span>
+            <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+
+          <div class="hdr__panel hdr__panel--compact" role="menu" data-dropdown-panel>
+            <div class="hdr__panelInner hdr__panelInner--compact">
+              <span class="hdr__panelEyebrow">— {ddGuias.eyebrow}</span>
+              <ul class="hdr__panelList">
+                {ddGuias.items.map(item => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
+                      role="menuitem"
+                    >
+                      <div class="hdr__panelLinkBody">
+                        <strong>{item.label}</strong>
+                        <span>{item.sub}</span>
+                      </div>
+                      <svg class="hdr__panelArrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </li>
+
+        <!-- Blog dropdown · click navega a /blog/ · hover abre lista de últimas entradas -->
+        <li class="hdr__item hdr__item--hasDropdown" data-dropdown>
+          <a
+            href={urlBlog}
+            class:list={['hdr__link hdr__link--dropdown', isBlogActive && 'is-active']}
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-dropdown-trigger
+          >
+            <svg class="hdr__linkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h13a3 3 0 0 1 3 3v13H7a3 3 0 0 1-3-3z"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/></svg>
+            <span>{ddBlog.label}</span>
+            <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </a>
+
+          <div class="hdr__panel hdr__panel--blog" role="menu" data-dropdown-panel>
+            <div class="hdr__panelInner">
+              <span class="hdr__panelEyebrow">— {ddBlog.eyebrow}</span>
+              <ul class="hdr__panelList">
+                {ddBlog.items.map(item => (
+                  <li>
+                    <a
+                      href={item.href}
+                      class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
+                      role="menuitem"
+                    >
+                      <div class="hdr__panelLinkBody">
+                        <strong>{item.label}</strong>
+                        <span>{item.sub}</span>
+                      </div>
+                      <svg class="hdr__panelArrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+
+              <a href={urlBlog} class="hdr__panelFooter" role="menuitem">
+                <span>{t('nav_view_all_guides', currentLocale)}</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
+        </li>
+
+        <!-- Quiénes somos -->
+        <li class="hdr__item hdr__item--spaced">
+          <a
+            href={urlQuienes}
+            class:list={['hdr__link', currentPath === urlQuienes && 'is-active']}
+          >
+            <svg class="hdr__linkIcon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/></svg>
+            <span>{t('nav_quienes', currentLocale)}</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Separador vertical sutil -->
+    <span class="hdr__sep" aria-hidden="true"></span>
+
+    <!-- ACTIONS (derecha) · lang + phone + contacto + reservar -->
+    <div class="hdr__actions">
+
+      <!-- Language switcher · selector i18n dinámico (Astro.currentLocale + translationKey) -->
+      <div class="hdr__item hdr__item--hasDropdown hdr__lang" data-dropdown>
+        <button
+          type="button"
+          class="hdr__langBtn"
+          aria-haspopup="true"
+          aria-expanded="false"
+          aria-label={t('nav_lang_change', currentLocale)}
+          data-dropdown-trigger
+        >
+          <svg class="hdr__langGlobe" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a15 15 0 0 1 4 9 15 15 0 0 1-4 9 15 15 0 0 1-4-9 15 15 0 0 1 4-9z"/></svg>
+          <span class="hdr__langCode">{currentLang.label}</span>
+          <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="hdr__panel hdr__panel--lang" role="menu" data-dropdown-panel>
+          <div class="hdr__panelInner">
+            <span class="hdr__panelEyebrow">{t('nav_lang_eyebrow', currentLocale)}</span>
+            <ul class="hdr__panelList hdr__langList">
+              {langs.map(l => {
+                const isCurrent = l.code === currentLocale;
+                // Idioma listo si: (a) tiene translationKey y está disponible · (b) no tiene key pero está en la lista global de listos
+                const isReady = translationKey ? isLocaleReady(translationKey, l.code) : l.code === DEFAULT_LOCALE;
+                const subtitleCurrent = t('lang_current', l.code);
+                const subtitlePending = t('lang_coming_soon', l.code);
+                if (isCurrent) {
+                  return <li><a href={buildLangUrl(l.code)} class="hdr__panelLink is-active" role="menuitem" hreflang={l.code}><div class="hdr__panelLinkBody"><strong>{l.name}</strong><span>{l.label} · {subtitleCurrent}</span></div></a></li>;
+                }
+                if (isReady) {
+                  return <li><a href={buildLangUrl(l.code)} class="hdr__panelLink" role="menuitem" hreflang={l.code}><div class="hdr__panelLinkBody"><strong>{l.name}</strong><span>{l.label}</span></div></a></li>;
+                }
+                return <li><a href="#" class="hdr__panelLink is-pending" role="menuitem" aria-disabled="true" tabindex="-1"><div class="hdr__panelLinkBody"><strong>{l.name}</strong><span>{l.label} · {subtitlePending}</span></div></a></li>;
+              })}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <a href={`tel:${tel}`} class="hdr__phone" aria-label={`${t('nav_call_phone', currentLocale)} ${telDisplay}`} title={`${t('nav_call_title', currentLocale)} ${telDisplay}`}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+
+      <a
+        href={urlContacto}
+        class:list={['hdr__contact', currentPath === urlContacto && 'is-active']}
+      >
+        {t('nav_contact', currentLocale)}
+      </a>
+
+      <a href={getLocalePath('reservar', currentLocale)} class="hdr__cta">
+        <svg class="hdr__ctaIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>{t('nav_book_now', currentLocale)}</span>
+      </a>
+    </div>
+
+    <!-- Hamburger mobile -->
+    <button class="hdr__toggle" aria-label={t('nav_open_menu', currentLocale)} id="hdr-toggle" aria-expanded="false" aria-controls="hdr-drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- MOBILE DRAWER -->
+  <div class="hdr__drawer" id="hdr-drawer" aria-hidden="true">
+    <div class="hdr__drawerInner">
+
+      <!-- Bloque Descenso del Sella -->
+      <div class="hdr__drawerGroup">
+        <span class="hdr__drawerEyebrow">{ddSella.eyebrow}</span>
+        <h3 class="hdr__drawerTitle">{ddSella.label}</h3>
+        <ul>
+          {ddSella.items.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['hdr__drawerLink', currentPath === item.href && 'is-active']}
+              >
+                <strong>{item.label}</strong>
+                <small>{item.sub}</small>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Bloque Guías -->
+      <div class="hdr__drawerGroup">
+        <span class="hdr__drawerEyebrow">{ddGuias.eyebrow}</span>
+        <h3 class="hdr__drawerTitle">{ddGuias.label}</h3>
+        <ul>
+          {ddGuias.items.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['hdr__drawerLink', currentPath === item.href && 'is-active']}
+              >
+                <strong>{item.label}</strong>
+                <small>{item.sub}</small>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Bloque Blog -->
+      <div class="hdr__drawerGroup">
+        <span class="hdr__drawerEyebrow">{ddBlog.eyebrow}</span>
+        <h3 class="hdr__drawerTitle">{ddBlog.label}</h3>
+        <ul>
+          {ddBlog.items.map(item => (
+            <li>
+              <a
+                href={item.href}
+                class:list={['hdr__drawerLink', currentPath === item.href && 'is-active']}
+              >
+                <strong>{item.label}</strong>
+                <small>{item.sub}</small>
+              </a>
+            </li>
+          ))}
+          <li>
+            <a
+              href={urlBlog}
+              class:list={['hdr__drawerLink hdr__drawerLink--allBlog', currentPath === urlBlog && 'is-active']}
+            >
+              <strong>{t('nav_view_all_guides_arrow', currentLocale)}</strong>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Principal nav resto -->
+      <div class="hdr__drawerGroup">
+        <ul class="hdr__drawerPrimary">
+          <li><a href={urlPrecios} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlPrecios && 'is-active']}>{t('nav_precios', currentLocale)}</a></li>
+          <li><a href={urlQuienes} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlQuienes && 'is-active']}>{t('nav_quienes', currentLocale)}</a></li>
+          <li><a href={urlContacto} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlContacto && 'is-active']}>{t('nav_contact', currentLocale)}</a></li>
+        </ul>
+      </div>
+
+      <!-- CTAs bottom -->
+      <div class="hdr__drawerCtas">
+        <a href={`tel:${tel}`} class="hdr__drawerPhone">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>{t('nav_call', currentLocale)} · {telDisplay}</span>
+        </a>
+        <a href={getLocalePath('reservar', currentLocale)} class="hdr__drawerCta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>{t('nav_book_now', currentLocale)}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  /* Dropdown desktop · hover + focus + click + Esc */
+  (function () {
+    const dropdowns = document.querySelectorAll<HTMLElement>('[data-dropdown]');
+    dropdowns.forEach((dd) => {
+      const trigger = dd.querySelector<HTMLElement>('[data-dropdown-trigger]');
+      const panel = dd.querySelector<HTMLElement>('[data-dropdown-panel]');
+      if (!trigger || !panel) return;
+      const isLink = trigger.tagName === 'A';
+
+      let closeTimer: number | undefined;
+      const open = () => {
+        window.clearTimeout(closeTimer);
+        /* Cierra otros dropdowns al abrir este */
+        dropdowns.forEach(o => {
+          if (o !== dd) {
+            o.classList.remove('is-open');
+            const t = o.querySelector<HTMLElement>('[data-dropdown-trigger]');
+            if (t) t.setAttribute('aria-expanded', 'false');
+          }
+        });
+        dd.classList.add('is-open');
+        trigger.setAttribute('aria-expanded', 'true');
+      };
+      const close = () => {
+        dd.classList.remove('is-open');
+        trigger.setAttribute('aria-expanded', 'false');
+      };
+      const scheduleClose = () => { closeTimer = window.setTimeout(close, 200); };
+
+      dd.addEventListener('mouseenter', open);
+      dd.addEventListener('mouseleave', scheduleClose);
+
+      trigger.addEventListener('click', (e) => {
+        // Si el trigger es un <a> (Blog), dejar navegar al click; el dropdown sigue abriendo en hover/focus.
+        if (isLink) return;
+        e.preventDefault();
+        if (dd.classList.contains('is-open')) close();
+        else open();
+      });
+
+      trigger.addEventListener('focus', open);
+      panel.querySelectorAll('a').forEach((a) => {
+        a.addEventListener('blur', () => {
+          window.setTimeout(() => {
+            if (!dd.contains(document.activeElement)) close();
+          }, 60);
+        });
+      });
+
+      dd.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Escape') { close(); trigger.focus(); }
+      });
+    });
+
+    /* Click fuera cierra todos */
+    document.addEventListener('click', (e) => {
+      dropdowns.forEach((dd) => {
+        if (!dd.contains(e.target as Node)) {
+          dd.classList.remove('is-open');
+          const t = dd.querySelector<HTMLElement>('[data-dropdown-trigger]');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  })();
+
+  /* Mobile drawer */
+  (function () {
+    const btn = document.getElementById('hdr-toggle');
+    const drawer = document.getElementById('hdr-drawer');
+    const header = document.getElementById('hdr');
+    if (!btn || !drawer || !header) return;
+    // Labels i18n inyectados desde Astro vía data-attrs (resuelve "Abrir / Cerrar menú" en el idioma actual).
+    const labelOpen = header.getAttribute('data-label-open-menu') || 'Abrir menú';
+    const labelClose = header.getAttribute('data-label-close-menu') || 'Cerrar menú';
+    let open = false;
+    const toggle = () => {
+      open = !open;
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      header.classList.toggle('hdr--drawerOpen', open);
+      btn.setAttribute('aria-label', open ? labelClose : labelOpen);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+    btn.addEventListener('click', toggle);
+    drawer.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a')) { toggle(); }
+    });
+  })();
+
+  /* Scroll · pill se compacta y el bg se vuelve sólido al hacer scroll · umbral muy bajo para transición inmediata */
+  (function () {
+    const header = document.getElementById('hdr');
+    if (!header) return;
+    let ticking = false;
+    const upd = () => {
+      ticking = false;
+      if (window.scrollY > 4) header.classList.add('is-scrolled');
+      else header.classList.remove('is-scrolled');
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(upd); ticking = true; }
+    }, { passive: true });
+    upd();
+  })();
+</script>
+
+<style>
+  /* ============== HEADER · pill flotante · ref image 41 ============== */
+  .hdr {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    background: transparent;               /* totalmente limpio · sin cream ni strip */
+    padding: clamp(10px, 1.25vw, 16px) clamp(12px, 2vw, 20px);
+    transition: padding 260ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+    isolation: isolate;
+    pointer-events: none;                  /* solo el pill captura clicks */
+  }
+  .hdr.is-scrolled { padding: clamp(6px, 0.8vw, 10px) clamp(10px, 1.5vw, 16px); }
+
+  /* Pill flotante · opaco blanco · rounded full · con breathing */
+  .hdr__pill {
+    pointer-events: auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: clamp(0.75rem, 1.5vw, 1.25rem);
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 clamp(0.75rem, 1.5vw, 1.25rem);
+    height: 68px;                          /* breathing comprobado · agradable */
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: 9999px;                 /* pill completa */
+    box-shadow:
+      0 2px 6px -1px rgba(26, 31, 46, 0.06),
+      0 12px 32px -10px rgba(26, 31, 46, 0.14);
+    transition: height 220ms ease, box-shadow 220ms ease;
+  }
+  .hdr.is-scrolled .hdr__pill {
+    height: 60px;
+    box-shadow:
+      0 3px 8px -1px rgba(26, 31, 46, 0.1),
+      0 16px 40px -10px rgba(26, 31, 46, 0.2);
+  }
+
+  /* ============== LOGO ============== */
+  .hdr__logo {
+    display: inline-flex; align-items: center; gap: clamp(0.5rem, 1vw, 0.75rem);
+    text-decoration: none;
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    border-radius: var(--radius-pill);
+    transition: background 220ms ease;
+  }
+  .hdr__logo:hover { background: rgba(26, 31, 46, 0.04); }
+  .hdr__logoBadge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px;
+    background: var(--color-bg-warm, #F6F1E3);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .hdr__logoBadge img { width: 28px; height: auto; display: block; }
+  .hdr__wordmark { display: none; flex-direction: column; line-height: 0.95; }
+  .hdr__wordmark-l1 {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: 1rem;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
+  .hdr__wordmark-l2 {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  @media (min-width: 500px) { .hdr__wordmark { display: flex; } }
+
+  /* ============== NAV ============== */
+  .hdr__nav { display: none; }
+  .hdr__list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; align-items: center;
+    gap: clamp(0.125rem, 0.5vw, 0.25rem);
+  }
+  .hdr__item { position: relative; }
+
+  /* --- Primary pill · Descenso del Sella (dark) · con más aire --- */
+  .hdr__primary {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    padding: 0.75rem 1.25rem;               /* más aire horizontal y vertical */
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    border: 0;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: -0.005em;
+    line-height: 1;                          /* centrado vertical perfecto · sin line-height ruidoso */
+    cursor: pointer;
+    transition: background 220ms ease, transform 220ms ease;
+    white-space: nowrap;
+  }
+  .hdr__primary:hover { background: var(--color-sage, #3D4F3A); }
+  .hdr__primary.is-active { background: var(--color-sage, #3D4F3A); }
+  .hdr__primaryIcon { color: currentColor; opacity: 0.9; }
+
+  /* --- Links secundarios · Precios, Guías, Quiénes somos --- */
+  .hdr__link {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem;
+    padding: 0.75rem 1rem;                  /* más aire · alineado con primary */
+    background: transparent;
+    color: var(--color-text-primary, #1A1F2E);
+    border: 0;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: -0.005em;
+    line-height: 1;                         /* centrado perfecto */
+    cursor: pointer;
+    transition: background 200ms ease, color 200ms ease;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .hdr__link:hover { background: rgba(26, 31, 46, 0.06); }
+  .hdr__link.is-active { background: rgba(233, 133, 111, 0.12); color: var(--color-primary); }
+  .hdr__link--pending { opacity: 0.5; cursor: default; pointer-events: none; }
+  .hdr__linkIcon { color: var(--color-text-muted); flex-shrink: 0; }
+  .hdr__link:hover .hdr__linkIcon { color: var(--color-sage, #3D4F3A); }
+  .hdr__chev { margin-left: 2px; transition: transform 220ms ease; color: currentColor; opacity: 0.7; }
+  .hdr__item.is-open .hdr__chev { transform: rotate(180deg); }
+
+  /* ============== DROPDOWN PANEL ============== */
+  .hdr__panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    min-width: 340px;
+    max-width: 420px;
+    background: #FFFFFF;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: var(--radius-2xl, 2rem);
+    box-shadow: 0 32px 64px -16px rgba(26, 31, 46, 0.22);
+    padding: clamp(1rem, 2vw, 1.5rem);
+    opacity: 0; visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 240ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                transform 240ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                visibility 240ms;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .hdr__panel::before {
+    /* invisible bridge evita cierre al mover el ratón */
+    content: ""; position: absolute; top: -14px; left: 0; right: 0; height: 18px;
+  }
+  .hdr__item.is-open .hdr__panel {
+    opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto;
+  }
+  .hdr__panel--compact { min-width: 360px; }
+  .hdr__panel--blog { min-width: 380px; max-width: 440px; }
+
+  /* Footer del dropdown · "Ver todas las guías" */
+  .hdr__panelFooter {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: -0.005em;
+    color: var(--color-primary);
+    transition: color 200ms ease, padding 200ms ease;
+  }
+  .hdr__panelFooter svg { transition: transform 200ms ease; }
+  .hdr__panelFooter:hover { color: var(--color-primary-hover, #dd7359); padding-left: 1rem; }
+  .hdr__panelFooter:hover svg { transform: translateX(4px); }
+
+  /* Espaciado extra para "Quiénes somos" · un pelín más a la derecha */
+  .hdr__item--spaced { margin-left: clamp(0.25rem, 0.75vw, 0.75rem); }
+
+  .hdr__panelInner {
+    display: flex; flex-direction: column;
+    gap: clamp(0.5rem, 1vw, 0.75rem);
+  }
+  .hdr__panelInner--compact { /* reservado */ }
+
+  .hdr__panelEyebrow {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+  .hdr__panelList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
+  .hdr__panelLink {
+    display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: var(--radius-lg, 1rem);
+    text-decoration: none;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .hdr__panelLink:hover { background: rgba(61, 79, 58, 0.06); transform: translateX(2px); }
+  .hdr__panelLink.is-active { background: rgba(233, 133, 111, 0.1); }
+  .hdr__panelLinkBody { display: flex; flex-direction: column; gap: 0.125rem; min-width: 0; }
+  .hdr__panelLinkBody strong {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: 0.9375rem; line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+  }
+  .hdr__panelLinkBody span {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .hdr__panelLink.is-active .hdr__panelLinkBody strong { color: var(--color-primary); }
+  .hdr__panelArrow {
+    color: var(--color-sage, #3D4F3A);
+    opacity: 0; transform: translateX(-3px);
+    transition: opacity 200ms, transform 200ms;
+    flex-shrink: 0;
+  }
+  .hdr__panelLink:hover .hdr__panelArrow { opacity: 1; transform: translateX(0); }
+
+  /* ============== SEPARADOR ============== */
+  .hdr__sep {
+    display: none;
+    width: 1px; height: 24px;
+    background: rgba(26, 31, 46, 0.1);
+  }
+
+  /* ============== LANGUAGE SWITCHER ============== */
+  .hdr__lang { position: relative; }
+  .hdr__langBtn {
+    display: none; align-items: center; justify-content: center; gap: 0.375rem;
+    padding: 0.625rem 0.875rem;
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid rgba(26, 31, 46, 0.1);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease;
+    white-space: nowrap;
+  }
+  .hdr__langBtn:hover { background: rgba(26, 31, 46, 0.05); border-color: rgba(26, 31, 46, 0.2); }
+  .hdr__langGlobe { color: var(--color-text-muted); }
+  .hdr__langBtn:hover .hdr__langGlobe { color: var(--color-sage, #3D4F3A); }
+  .hdr__langCode { letter-spacing: 0.8px; }
+  .hdr__panel--lang {
+    min-width: 240px;
+    left: auto; right: 0;
+  }
+  .hdr__langList .hdr__panelLink.is-pending {
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .hdr__langList .hdr__panelLink.is-active {
+    background: rgba(61, 79, 58, 0.08);
+  }
+  .hdr__langList .hdr__panelLink.is-active strong {
+    color: var(--color-sage, #3D4F3A);
+  }
+
+  /* ============== ACTIONS · phone + contacto + reservar ============== */
+  .hdr__actions {
+    display: inline-flex; align-items: center;
+    gap: 0.375rem;
+  }
+
+  .hdr__phone {
+    display: none; align-items: center; justify-content: center;
+    width: 44px; height: 44px;              /* un poco más grande · respira mejor */
+    background: rgba(26, 31, 46, 0.05);
+    color: var(--color-text-primary);
+    border-radius: 50%;
+    text-decoration: none;
+    transition: background 220ms ease, color 220ms ease, transform 220ms ease;
+    flex-shrink: 0;
+  }
+  .hdr__phone:hover {
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    transform: rotate(-8deg);
+  }
+
+  .hdr__contact {
+    display: none; align-items: center; justify-content: center;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    color: var(--color-text-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    line-height: 1;
+    transition: background 200ms ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hdr__contact:hover { background: rgba(26, 31, 46, 0.06); }
+  .hdr__contact.is-active { background: rgba(233, 133, 111, 0.12); color: var(--color-primary); }
+
+  .hdr__cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    padding: 0.75rem 1.25rem 0.75rem 1.125rem;    /* más aire · mismo ritmo que primary */
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: -0.005em;
+    line-height: 1;                                /* centrado perfecto */
+    transition: background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .hdr__cta:hover {
+    background: var(--color-primary, #E9856F);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px -8px rgba(233, 133, 111, 0.5);
+  }
+  .hdr__ctaIcon { color: currentColor; flex-shrink: 0; }
+
+  /* ============== HAMBURGER (mobile) ============== */
+  .hdr__toggle {
+    display: inline-flex; flex-direction: column; justify-content: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    margin-left: auto;
+    background: transparent; border: 0;
+    cursor: pointer;
+    padding: 0; align-items: center;
+    border-radius: 50%;
+    transition: background 200ms ease;
+  }
+  .hdr__toggle:hover { background: rgba(26, 31, 46, 0.05); }
+  .hdr__toggle span {
+    display: block; width: 20px; height: 1.5px;
+    background: var(--color-text-primary);
+    border-radius: 2px;
+    transition: transform 260ms var(--ease-out), opacity 180ms;
+  }
+  .hdr--drawerOpen .hdr__toggle span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hdr--drawerOpen .hdr__toggle span:nth-child(2) { opacity: 0; }
+  .hdr--drawerOpen .hdr__toggle span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* ============== BREAKPOINTS ============== */
+  @media (min-width: 1080px) {
+    .hdr__nav { display: flex; align-items: center; }
+    .hdr__sep { display: inline-block; }
+    .hdr__langBtn { display: inline-flex; }
+    .hdr__phone { display: inline-flex; }
+    .hdr__contact { display: inline-flex; }
+    .hdr__toggle { display: none; }
+    .hdr__pill { grid-template-columns: auto 1fr auto auto; }
+  }
+  @media (min-width: 1280px) {
+    .hdr__primary { padding: 0.75rem 1.25rem; font-size: 0.875rem; }
+    .hdr__link { padding: 0.75rem 1rem; font-size: 0.875rem; }
+    .hdr__cta { padding: 0.75rem 1.25rem 0.75rem 1.125rem; font-size: 0.875rem; }
+  }
+  /* Mobile + tablet · ocultar nav desktop · barra aún más compacta */
+  @media (max-width: 1079.98px) {
+    .hdr__pill {
+      grid-template-columns: auto 1fr auto;
+      padding: 0.5rem clamp(0.875rem, 2vw, 1.5rem);
+      height: 60px;
+    }
+    .hdr__nav, .hdr__sep { display: none; }
+    .hdr__actions { display: none; }
+  }
+
+  /* ============== MOBILE DRAWER ============== */
+  .hdr__drawer {
+    position: fixed; inset: 0;
+    background: var(--color-bg-base, #FBF8F1);
+    padding: 6rem clamp(1.25rem, 4vw, 2.5rem) 2rem;
+    overflow-y: auto;
+    opacity: 0; visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out), visibility 300ms;
+    z-index: 90;
+  }
+  .hdr--drawerOpen .hdr__drawer {
+    opacity: 1; visibility: visible; transform: translateY(0);
+  }
+  .hdr__drawerInner {
+    max-width: 680px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2rem);
+  }
+  .hdr__drawerGroup { display: flex; flex-direction: column; }
+  .hdr__drawerEyebrow {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.375rem;
+  }
+  .hdr__drawerTitle {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(1.125rem, 2vw, 1.375rem);
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.875rem;
+    text-transform: uppercase;
+  }
+  .hdr__drawerGroup ul {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.25rem;
+  }
+  .hdr__drawerLink {
+    display: flex; flex-direction: column; gap: 0.125rem;
+    padding: 0.75rem 0.875rem;
+    border-radius: var(--radius-md, 0.75rem);
+    text-decoration: none;
+    transition: background 200ms ease;
+  }
+  .hdr__drawerLink:hover { background: rgba(61, 79, 58, 0.06); }
+  .hdr__drawerLink.is-active { background: rgba(233, 133, 111, 0.1); }
+  .hdr__drawerLink strong {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 900;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+  }
+  .hdr__drawerLink small {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+  .hdr__drawerLink.is-active strong { color: var(--color-primary); }
+  .hdr__drawerLink--primary {
+    padding: 0.875rem 1rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .hdr__drawerLink--primary:first-child { border-top: 0; }
+  .hdr__drawerLink--pending { opacity: 0.55; pointer-events: none; }
+  .hdr__drawerLink--allBlog {
+    margin-top: 0.25rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    padding-top: 0.875rem;
+  }
+  .hdr__drawerLink--allBlog strong { color: var(--color-primary); }
+  .hdr__drawerLink--pending small {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    background: rgba(26, 31, 46, 0.1);
+    border-radius: var(--radius-pill);
+    font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+  }
+
+  .hdr__drawerCtas { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 1rem; }
+  .hdr__drawerPhone {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem;
+    padding: 0.875rem 1.25rem;
+    background: rgba(26, 31, 46, 0.06);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700;
+    text-decoration: none;
+  }
+  .hdr__drawerCta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.625rem;
+    padding: 1rem 1.5rem;
+    background: var(--color-text-primary);
+    color: #FFFFFF;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 800;
+    letter-spacing: -0.005em;
+    box-shadow: 0 14px 32px -12px rgba(26, 31, 46, 0.5);
+    text-decoration: none;
+  }
+  .hdr__drawerCta:hover { background: var(--color-primary); }
+
+  /* ============== DARK THEME (pages con fondo oscuro del hero) ============== */
+  /* El pill es siempre blanco — el dark theme solo afecta al wordmark decorativo cuando el pill no exista */
+
+  @media (prefers-reduced-motion: reduce) {
+    .hdr, .hdr__pill, .hdr__panel, .hdr__drawer,
+    .hdr__primary, .hdr__link, .hdr__cta, .hdr__phone,
+    .hdr__chev, .hdr__panelLink, .hdr__panelArrow,
+    .hdr__toggle span { transition: opacity 160ms, visibility 160ms !important; }
+    .hdr__panelLink:hover, .hdr__cta:hover, .hdr__phone:hover { transform: none; }
+  }
+</style>

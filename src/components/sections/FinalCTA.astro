@@ -1,0 +1,479 @@
+---
+/**
+ * FinalCTAb — Call-to-action compacto con foto lateral + botones prominentes
+ * El foco es la acción, no la imagen. Fondo foto a la derecha recortada,
+ * copy + CTAs a la izquierda, trust signals pequeños arriba.
+ */
+import Picture from '@components/ui/Picture.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    bannerStrong: 'Plazas limitadas',
+    bannerRest: '— Temporada 2026',
+    trustRating: '4,5 / 5',
+    trustReviews: '+147 reseñas verificadas',
+    titleLine1: 'Reserva hoy',
+    titleLine2: 'tu descenso del Sella',
+    perk1Strong: 'Confirma en 2 minutos',
+    perk1Rest: 'sin pagar ahora',
+    perk2: 'Paga el día de la actividad',
+    perk3Pre: 'Confirmaciones por ',
+    perk3Strong: 'WhatsApp y email',
+    perk4: 'Pago seguro con tarjeta si lo prefieres',
+    perk5Strong: '24/7',
+    perk5Rest: 'conectados para ayudarte',
+    primary: 'Reservar mi plaza',
+    altDivider: 'o contáctanos directamente',
+    btnWhatsapp: 'WhatsApp',
+    btnEmail: 'Email',
+    btnCall: 'Llámanos',
+    noteStrong1: 'Importante:',
+    notePre: 'trabajamos',
+    noteStrong2: 'solo bajo reserva previa',
+    notePost: '. No hay atención sin cita — así aseguramos tu plaza y un servicio personalizado.',
+    waUrl: 'https://wa.me/34681093673?text=Hola,%20me%20gustar%C3%ADa%20reservar%20el%20descenso%20del%20Sella.',
+    mediaAlt: 'Río Sella al atardecer desde Arriondas, punto de inicio del descenso en canoa',
+    mediaQuote1: 'Será',
+    mediaQuote2: 'el mejor día',
+    mediaQuote3: 'de tus vacaciones',
+  },
+  en: {
+    bannerStrong: 'Limited spots',
+    bannerRest: '— 2026 season',
+    trustRating: '4.5 / 5',
+    trustReviews: '+147 verified reviews',
+    titleLine1: 'Book today',
+    titleLine2: 'your Sella River descent',
+    perk1Strong: 'Confirm in 2 minutes',
+    perk1Rest: 'without paying now',
+    perk2: 'Pay on the day of the activity',
+    perk3Pre: 'Confirmations by ',
+    perk3Strong: 'WhatsApp and email',
+    perk4: 'Secure card payment if you prefer',
+    perk5Strong: '24/7',
+    perk5Rest: 'connected to help you',
+    primary: 'Book my spot',
+    altDivider: 'or contact us directly',
+    btnWhatsapp: 'WhatsApp',
+    btnEmail: 'Email',
+    btnCall: 'Call us',
+    noteStrong1: 'Important:',
+    notePre: 'we work',
+    noteStrong2: 'by prior booking only',
+    notePost: '. No walk-in service — this is how we secure your spot and a personalised service.',
+    waUrl: 'https://wa.me/34681093673?text=Hi,%20I%27d%20like%20to%20book%20the%20Sella%20River%20descent.',
+    mediaAlt: 'Sella River at sunset from Arriondas, starting point of the canoe descent',
+    mediaQuote1: 'It will be',
+    mediaQuote2: 'the best day',
+    mediaQuote3: 'of your holiday',
+  },
+  fr: {
+    bannerStrong: 'Places limitées',
+    bannerRest: '— Saison 2026',
+    trustRating: '4,5 / 5',
+    trustReviews: '+147 avis vérifiés',
+    titleLine1: 'Réserve aujourd\'hui',
+    titleLine2: 'ta descente du Sella',
+    perk1Strong: 'Confirme en 2 minutes',
+    perk1Rest: 'sans payer maintenant',
+    perk2: 'Paie le jour de l\'activité',
+    perk3Pre: 'Confirmations par ',
+    perk3Strong: 'WhatsApp et email',
+    perk4: 'Paiement sécurisé par carte si tu préfères',
+    perk5Strong: '24/7',
+    perk5Rest: 'connectées pour t\'aider',
+    primary: 'Réserver ma place',
+    altDivider: 'ou contacte-nous directement',
+    btnWhatsapp: 'WhatsApp',
+    btnEmail: 'Email',
+    btnCall: 'Appelle-nous',
+    noteStrong1: 'Important :',
+    notePre: 'nous travaillons',
+    noteStrong2: 'uniquement sur réservation préalable',
+    notePost: '. Pas d\'accueil sans rendez-vous — c\'est ainsi que nous garantissons ta place et un service personnalisé.',
+    waUrl: 'https://wa.me/34681093673?text=Bonjour,%20je%20souhaiterais%20r%C3%A9server%20la%20descente%20du%20Sella.',
+    mediaAlt: 'Le Sella au coucher du soleil depuis Arriondas, point de départ de la descente en canoë',
+    mediaQuote1: 'Ce sera',
+    mediaQuote2: 'le meilleur jour',
+    mediaQuote3: 'de tes vacances',
+  },
+  pt: {
+    bannerStrong: 'Vagas limitadas',
+    bannerRest: '— Temporada 2026',
+    trustRating: '4,5 / 5',
+    trustReviews: '+147 avaliações verificadas',
+    titleLine1: 'Reserva hoje',
+    titleLine2: 'a tua descida do Sella',
+    perk1Strong: 'Confirma em 2 minutos',
+    perk1Rest: 'sem pagar agora',
+    perk2: 'Paga no dia da atividade',
+    perk3Pre: 'Confirmações por ',
+    perk3Strong: 'WhatsApp e email',
+    perk4: 'Pagamento seguro com cartão se preferires',
+    perk5Strong: '24/7',
+    perk5Rest: 'ligadas para te ajudar',
+    primary: 'Reservar o meu lugar',
+    altDivider: 'ou contacta-nos diretamente',
+    btnWhatsapp: 'WhatsApp',
+    btnEmail: 'Email',
+    btnCall: 'Liga-nos',
+    noteStrong1: 'Importante:',
+    notePre: 'trabalhamos',
+    noteStrong2: 'apenas com reserva prévia',
+    notePost: '. Não há atendimento sem marcação — é assim que garantimos o teu lugar e um serviço personalizado.',
+    waUrl: 'https://wa.me/34681093673?text=Ol%C3%A1,%20gostaria%20de%20reservar%20a%20descida%20do%20Sella.',
+    mediaAlt: 'Rio Sella ao pôr do sol desde Arriondas, ponto de início da descida em canoa',
+    mediaQuote1: 'Será',
+    mediaQuote2: 'o melhor dia',
+    mediaQuote3: 'das tuas férias',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<section class="finalB">
+  <div class="container container--xl">
+    <div class="finalB__banner">
+      <span class="finalB__banner-dot" aria-hidden="true"></span>
+      <span><strong>{t.bannerStrong}</strong> {t.bannerRest}</span>
+    </div>
+
+    <div class="finalB__card">
+      <!-- Columna acción -->
+      <div class="finalB__action">
+        <div class="finalB__trust">
+          <div class="finalB__trust-stars" aria-hidden="true">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <span class="finalB__trust-txt"><strong>{t.trustRating}</strong> · {t.trustReviews}</span>
+        </div>
+
+        <h2 class="finalB__title">
+          {t.titleLine1}<br/>
+          <span class="serif-italic">{t.titleLine2}</span>
+        </h2>
+
+        <ul class="finalB__perks">
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>{t.perk1Strong}</strong> {t.perk1Rest}</span>
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>{t.perk2}</span>
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>{t.perk3Pre}<strong>{t.perk3Strong}</strong></span>
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span>{t.perk4}</span>
+          </li>
+          <li>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span><strong>{t.perk5Strong}</strong> {t.perk5Rest}</span>
+          </li>
+        </ul>
+
+        <div class="finalB__primary-wrap">
+          <a href={getLocalePath('reservar', lang)} class="finalB__primary">
+            <span>{t.primary}</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+
+        <div class="finalB__alt">
+          <span class="finalB__alt-divider"><span>{t.altDivider}</span></span>
+
+          <div class="finalB__alt-actions">
+            <a href={t.waUrl} class="finalB__btn finalB__btn--wa" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.87 11.87 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.56 4.18 1.62 6L0 24l6.18-1.6A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52zM12 22c-1.86 0-3.68-.5-5.27-1.45l-.38-.22-3.67.95.98-3.58-.25-.4A9.94 9.94 0 0 1 2 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/></svg>
+              {t.btnWhatsapp}
+            </a>
+            <a href="mailto:reservas@aventuraenelsella.es" class="finalB__btn finalB__btn--email">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              {t.btnEmail}
+            </a>
+            <a href="tel:+34681093673" class="finalB__btn finalB__btn--tel">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+              {t.btnCall}
+            </a>
+          </div>
+        </div>
+
+        <p class="finalB__note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span><strong>{t.noteStrong1}</strong> {t.notePre} <strong>{t.noteStrong2}</strong>{t.notePost}</span>
+        </p>
+      </div>
+
+      <!-- Columna foto -->
+      <div class="finalB__media">
+        <Picture src="rio-sella" alt={t.mediaAlt} sizes="(min-width: 960px) 45vw, 100vw" bare={true} />
+        <div class="finalB__media-overlay" aria-hidden="true"></div>
+        <p class="finalB__media-quote">
+          {t.mediaQuote1}<br/>
+          <span class="serif-italic">{t.mediaQuote2}</span><br/>
+          {t.mediaQuote3}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .finalB {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--color-sage, #3D4F3A);
+    color: var(--color-text-on-dark, #FBF8F1);
+  }
+
+  /* Banner superior (fuera del card) */
+  .finalB__banner {
+    display: inline-flex; align-items: center; gap: var(--s-3);
+    margin-bottom: var(--s-6);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+    color: rgba(251, 248, 241, 0.9);
+    letter-spacing: 0.4px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .finalB__banner strong {
+    color: #FBF8F1;
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+  }
+  .finalB__banner-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary, #E8855F);
+    box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.7);
+    animation: finalBPulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes finalBPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.6); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+
+  .finalB__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    background: var(--color-bg-elevated, #fff);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-3xl);
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(26, 31, 46, 0.08);
+  }
+  @media (min-width: 960px) {
+    .finalB__card { grid-template-columns: 1.1fr 1fr; }
+  }
+
+  /* ==== Acción ==== */
+  .finalB__action {
+    padding: clamp(2rem, 4vw, 3.5rem);
+    display: flex; flex-direction: column;
+  }
+
+  .finalB__trust {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    margin-bottom: var(--s-5);
+  }
+  .finalB__trust-stars { display: inline-flex; gap: 1px; color: var(--color-ochre, #E8B24F); }
+  .finalB__trust-txt {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-secondary);
+  }
+  .finalB__trust-txt strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .finalB__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-4);
+  }
+  .finalB__title .serif-italic {
+    color: var(--color-primary); font-weight: 400; text-transform: none; font-style: italic;
+  }
+
+  /* Perks (checklist arriba) */
+  .finalB__perks {
+    list-style: none; padding: 0;
+    margin: 0 0 var(--s-6);
+    display: flex; flex-direction: column; gap: var(--s-2);
+  }
+  .finalB__perks li {
+    display: flex; align-items: center; gap: var(--s-3);
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.4;
+    color: var(--color-text-secondary);
+  }
+  .finalB__perks strong { color: var(--color-text-primary); font-weight: 700; }
+  .finalB__perks svg {
+    color: var(--color-primary); flex-shrink: 0;
+    background: rgba(233, 133, 111, 0.14);
+    border-radius: 50%;
+    padding: 5px;
+    box-sizing: content-box;
+  }
+
+  /* Botón primario destacado */
+  .finalB__primary-wrap { margin-bottom: var(--s-7); }
+  .finalB__primary {
+    display: inline-flex; align-items: center; gap: var(--s-3);
+    padding: 1.125rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-text-on-primary, #fff);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    box-shadow: 0 10px 24px rgba(233, 133, 111, 0.38);
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    white-space: nowrap;
+  }
+  .finalB__primary:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 16px 32px rgba(233, 133, 111, 0.5);
+  }
+  .finalB__primary:hover svg { transform: translateX(4px); }
+  .finalB__primary svg { transition: transform 220ms var(--ease-out); }
+
+  /* Bloque alternativo (WhatsApp + Email) */
+  .finalB__alt { margin-bottom: var(--s-6); }
+  .finalB__alt-divider {
+    display: flex; align-items: center; gap: var(--s-3);
+    margin-bottom: var(--s-4);
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .finalB__alt-divider::before,
+  .finalB__alt-divider::after {
+    content: ""; flex: 1; height: 1px; background: var(--color-border-subtle);
+  }
+  /* Botones WhatsApp + Email side-by-side (sin tarjeta) */
+  .finalB__alt-actions {
+    display: flex; flex-direction: row; gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+
+  .finalB__btn {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.875rem 1.5rem;
+    background: transparent;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    text-decoration: none;
+    transition: all 220ms var(--ease-out);
+  }
+  .finalB__btn--wa {
+    color: #128C7E;
+    border: 1.5px solid #128C7E;
+  }
+  .finalB__btn--wa:hover {
+    background: #25D366; border-color: #25D366; color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+  }
+  .finalB__btn--email {
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+  }
+  .finalB__btn--email:hover {
+    background: var(--color-primary); color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(233, 133, 111, 0.3);
+  }
+  .finalB__btn--tel {
+    color: var(--color-sage, #3D4F3A);
+    border: 1.5px solid var(--color-sage, #3D4F3A);
+  }
+  .finalB__btn--tel:hover {
+    background: var(--color-sage, #3D4F3A); color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(61, 79, 58, 0.3);
+  }
+
+  /* Nota importante */
+  .finalB__note {
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    background: rgba(233, 133, 111, 0.08);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .finalB__note svg { color: var(--color-primary); flex-shrink: 0; margin-top: 2px; }
+  .finalB__note strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ==== Foto ==== */
+  .finalB__media {
+    position: relative;
+    min-height: 280px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .finalB__media :global(picture),
+  .finalB__media :global(img) {
+    width: 100%; height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+    display: block;
+    z-index: 0;
+  }
+  @media (max-width: 959px) {
+    .finalB__media { min-height: 320px; aspect-ratio: 16 / 10; }
+  }
+
+  .finalB__media-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(135deg,
+      rgba(15, 20, 30, 0.6) 0%,
+      rgba(15, 20, 30, 0.5) 50%,
+      rgba(15, 20, 30, 0.78) 100%);
+  }
+
+  .finalB__media-quote {
+    position: absolute; z-index: 2;
+    left: clamp(1.5rem, 3vw, 2.5rem);
+    bottom: clamp(1.5rem, 3vw, 2.5rem);
+    right: clamp(1.5rem, 3vw, 2.5rem);
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.2vw, 2.75rem);
+    font-weight: 900;
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+    text-transform: uppercase;
+    color: #FBF8F1;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.5);
+  }
+  .finalB__media-quote .serif-italic {
+    color: var(--color-primary, #E8855F);
+    font-weight: 400;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+</style>

@@ -1,0 +1,560 @@
+---
+/**
+ * /pt/blog/ · Blog hub PT
+ * ------------------------------------------------------------
+ * Hub do blog em português. Usa BLOG_POSTS_PT como fonte de dados (cada
+ * artigo aponta para /pt/blog/<pt-slug>/). Chrome strings em português.
+ */
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import FinalCTA from '@components/sections/FinalCTA.astro';
+import { BLOG_POSTS_PT, formatDatePt } from '@data/blog-posts-pt';
+import { localBusinessSchema } from '@data/business-schema';
+
+const BLOG_POSTS = BLOG_POSTS_PT;
+
+const title = 'Blog da descida do Sella · guias e conselhos reais';
+const description = 'Guias, história e conselhos sobre a descida do Sella escritos por quem está há 25 anos no rio. O que levar, melhor hora, com crianças, quiosques e mais.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/blog/`;
+
+const posts = [...BLOG_POSTS].sort((a, b) => b.datePublished.localeCompare(a.datePublished));
+const featured = posts[0];
+const rest = posts.slice(1);
+
+const formatDatePT = formatDatePt;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, 'pt'),
+    {
+      '@type': 'Blog',
+      '@id': `${canonicalUrl}#blog`,
+      name: 'Blog · Aventura en el Sella',
+      description,
+      url: canonicalUrl,
+      inLanguage: 'pt-PT',
+      publisher: { '@id': `${baseUrl}/#business` },
+      blogPost: posts.map(p => ({
+        '@type': 'BlogPosting',
+        headline: p.h1,
+        description: p.description,
+        url: `${baseUrl}/pt/blog/${p.slug}/`,
+        datePublished: p.datePublished,
+        dateModified: p.dateModified,
+        image: `${baseUrl}/images/optimized/${p.image}-lg.jpg`,
+        author:    { '@id': `${baseUrl}/#business` },
+        publisher: { '@id': `${baseUrl}/#business` },
+      })),
+    },
+    {
+      '@type': 'ItemList',
+      '@id': `${canonicalUrl}#list`,
+      itemListElement: posts.map((p, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        url: `${baseUrl}/pt/blog/${p.slug}/`,
+        name: p.h1,
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início', item: `${baseUrl}/pt/` },
+        { '@type': 'ListItem', position: 2, name: 'Blog',   item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/blog/" translationKey="blog">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============ 1 · HERO ============ -->
+  <section class="blogH" aria-labelledby="blogH-title">
+    <div class="blogH__inner">
+      <nav class="blogH__breadcrumb" aria-label="Trilho de navegação">
+        <a href="/pt/">Início</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Blog</span>
+      </nav>
+
+      <span class="blogH__eyebrow">— O Sella por escrito</span>
+
+      <h1 id="blogH-title" class="blogH__title">
+        Guias, história<br/>
+        <span class="serif-italic">e conselhos do Sella</span>
+      </h1>
+
+      <p class="blogH__lead">
+        Escrevemos o que aprendemos a cada temporada no rio: o que levar, quando descer, onde parar, como organizar o dia com os pequenos. <strong>Sem rodeios, com os dados que pedíamos quando éramos clientes</strong>.
+      </p>
+
+      <div class="blogH__meta">
+        <span class="blogH__metaItem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21V5a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v16l7-5 7 5z"/></svg>
+          {posts.length} guias publicados
+        </span>
+        <span class="blogH__metaSep" aria-hidden="true"></span>
+        <span class="blogH__metaItem">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Atualizado {formatDatePT(featured.dateModified)}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · FEATURED POST ============ -->
+  <section class="blogF" aria-labelledby="blogF-title">
+    <div class="blogF__inner">
+      <span class="blogF__kicker">O último</span>
+      <h2 id="blogF-title" class="blogF__h2 sr-only">Artigo em destaque</h2>
+
+      <a href={`/pt/blog/${featured.slug}/`} class="blogF__card" aria-label={`Ler · ${featured.h1}`}>
+        <div class="blogF__media" data-reveal data-reveal-type="slide-right">
+          <Picture
+            src={featured.image}
+            alt={featured.imageAlt}
+            sizes="(min-width: 960px) 55vw, 100vw"
+            aspectRatio="16 / 10"
+            priority="high"
+          />
+        </div>
+
+        <div class="blogF__body">
+          <div class="blogF__tags">
+            <span class="blogF__cat">{featured.category}</span>
+            <span class="blogF__dot" aria-hidden="true">·</span>
+            <span class="blogF__read">{featured.readingTime} min de leitura</span>
+          </div>
+
+          <h3 class="blogF__title">{featured.h1}</h3>
+
+          <p class="blogF__excerpt">{featured.excerpt}</p>
+
+          <time class="blogF__date" datetime={featured.datePublished}>{formatDatePT(featured.datePublished)}</time>
+
+          <span class="blogF__cta">
+            Ler o guia
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ 3 · POSTS GRID ============ -->
+  <section class="blogG" aria-labelledby="blogG-title">
+    <div class="blogG__inner">
+      <div class="blogG__header">
+        <span class="blogG__kicker">Todos os guias</span>
+        <h2 id="blogG-title" class="blogG__h2">
+          Mais histórias<br/>
+          <span class="serif-italic">do rio</span>
+        </h2>
+      </div>
+
+      <ul class="blogG__grid" role="list">
+        {rest.map(p => (
+          <li class="blogG__item">
+            <a href={`/pt/blog/${p.slug}/`} class="blogG__card" aria-label={`Ler · ${p.h1}`}>
+              <div class="blogG__media">
+                <Picture
+                  src={p.image}
+                  alt={p.imageAlt}
+                  sizes="(min-width: 1100px) 30vw, (min-width: 640px) 45vw, 90vw"
+                  aspectRatio="4 / 3"
+                />
+              </div>
+
+              <div class="blogG__body">
+                <div class="blogG__tags">
+                  <span class="blogG__cat">{p.category}</span>
+                  <span class="blogG__dot" aria-hidden="true">·</span>
+                  <span class="blogG__read">{p.readingTime} min</span>
+                </div>
+
+                <h3 class="blogG__title">{p.h1}</h3>
+                <p class="blogG__excerpt">{p.excerpt}</p>
+
+                <time class="blogG__date" datetime={p.datePublished}>{formatDatePT(p.datePublished)}</time>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 4 · FINAL CTA ============ -->
+  <FinalCTA />
+</BaseLayout>
+
+<style>
+  /* ============ HERO ============ */
+  .blogH {
+    padding-block: clamp(5rem, 9vw, 8rem) clamp(3rem, 6vw, 5rem);
+    background: var(--color-bg-base);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .blogH::before {
+    content: '';
+    position: absolute;
+    inset: auto -15% -40% auto;
+    width: 60%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(233, 133, 111, 0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+
+  .blogH__inner {
+    max-width: 960px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+    position: relative;
+  }
+
+  .blogH__breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--s-8);
+  }
+  .blogH__breadcrumb a {
+    color: var(--color-text-secondary);
+    transition: color var(--duration-base) var(--ease-out);
+  }
+  .blogH__breadcrumb a:hover { color: var(--color-primary); }
+  .blogH__breadcrumb span[aria-current] {
+    color: var(--color-text-primary);
+    font-weight: var(--fw-medium);
+  }
+
+  .blogH__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-5);
+  }
+
+  .blogH__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-6);
+    text-wrap: balance;
+  }
+  .blogH__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    letter-spacing: 0;
+    color: var(--color-primary);
+  }
+
+  .blogH__lead {
+    font-size: clamp(1.075rem, 1.5vw, 1.25rem);
+    line-height: var(--lh-body);
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin-bottom: var(--s-8);
+  }
+  .blogH__lead strong {
+    color: var(--color-text-primary);
+    font-weight: var(--fw-semibold);
+  }
+
+  .blogH__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+  }
+  .blogH__metaItem {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .blogH__metaItem svg { color: var(--color-primary); }
+  .blogH__metaSep {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--color-border-subtle);
+  }
+
+  /* ============ FEATURED ============ */
+  .blogF {
+    padding-block: clamp(3rem, 5vw, 4.5rem);
+    background: var(--color-bg-warm, #F6F1E3);
+  }
+  .blogF__inner {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+  .blogF__kicker {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--s-6);
+  }
+
+  .blogF__card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    background: var(--color-bg-elevated, #FFFFFF);
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+    overflow: hidden;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    box-shadow: 0 24px 56px -32px rgba(26, 31, 46, 0.18);
+    transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out);
+  }
+  @media (min-width: 860px) {
+    .blogF__card {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0;
+      align-items: stretch;
+    }
+  }
+  .blogF__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 32px 72px -36px rgba(26, 31, 46, 0.25);
+  }
+
+  .blogF__media {
+    position: relative;
+    overflow: hidden;
+  }
+  .blogF__media :global(img) {
+    transition: transform 800ms var(--ease-out);
+  }
+  .blogF__card:hover .blogF__media :global(img) {
+    transform: scale(1.04);
+  }
+  @media (min-width: 860px) {
+    .blogF__media :global(.picture) {
+      height: 100% !important;
+      aspect-ratio: auto !important;
+    }
+  }
+
+  .blogF__body {
+    padding: clamp(1.75rem, 3.5vw, 2.75rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s-4);
+  }
+
+  .blogF__tags {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+  }
+  .blogF__cat {
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    font-size: var(--fs-label-sm);
+  }
+  .blogF__dot { opacity: 0.5; }
+
+  .blogF__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.65rem, 3.5vw, 2.5rem);
+    font-weight: var(--fw-bold);
+    line-height: var(--lh-tight);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .blogF__excerpt {
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--color-text-secondary);
+    max-width: 55ch;
+  }
+
+  .blogF__date {
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    opacity: 0.8;
+  }
+
+  .blogF__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    font-size: var(--fs-body-sm);
+    margin-top: var(--s-2);
+  }
+  .blogF__cta svg {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .blogF__card:hover .blogF__cta svg {
+    transform: translateX(4px);
+  }
+
+  /* ============ GRID ============ */
+  .blogG {
+    padding-block: clamp(4rem, 7vw, 6rem);
+    background: var(--color-bg-base);
+  }
+  .blogG__inner {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+  .blogG__header {
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    max-width: 640px;
+  }
+  .blogG__kicker {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+  .blogG__h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .blogG__h2 .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    letter-spacing: 0;
+    color: var(--color-primary);
+  }
+
+  .blogG__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 720px) {
+    .blogG__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (min-width: 1080px) {
+    .blogG__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .blogG__card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-elevated, #FFFFFF);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    overflow: hidden;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out), border-color 420ms var(--ease-out);
+    height: 100%;
+  }
+  .blogG__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 56px -32px rgba(26, 31, 46, 0.18);
+    border-color: rgba(233, 133, 111, 0.25);
+  }
+
+  .blogG__media {
+    position: relative;
+    overflow: hidden;
+  }
+  .blogG__media :global(img) {
+    transition: transform 800ms var(--ease-out);
+  }
+  .blogG__card:hover .blogG__media :global(img) { transform: scale(1.05); }
+
+  .blogG__body {
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    flex: 1;
+  }
+
+  .blogG__tags {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+  }
+  .blogG__cat {
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+  .blogG__dot { opacity: 0.5; }
+
+  .blogG__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .blogG__excerpt {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: var(--color-text-secondary);
+    flex: 1;
+  }
+
+  .blogG__date {
+    font-size: 0.75rem;
+    color: var(--color-text-secondary);
+    opacity: 0.7;
+    margin-top: var(--s-1);
+  }
+
+  /* a11y */
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>

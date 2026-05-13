@@ -1,0 +1,294 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'How many riverside snack bars are there on the Sella descent?',
+    a: '<p>There are <strong>6 main riverside snack bars</strong> spread along the route: Riverland (km 1), El Oasis (km 3), El Prau (km 3), El Bosque (km 4), La Mediana (km 4) and Toraño (end of the Mini Sella). All accessible from the river by canoe, with a ramp or river beach to land on.</p>',
+  },
+  {
+    q: 'Is alcohol sold at the snack bars on the descent?',
+    a: '<p><strong>No.</strong> On the Sella, alcohol consumption is prohibited during the activity, and the snack bars along the route do not serve alcoholic drinks. The menu focuses on <strong>soft drinks, juices, ice cream, water</strong> and light snacks. If you want a cider or a beer, that is for after, in Arriondas, Toraño or Ribadesella.</p>',
+  },
+  {
+    q: 'Do you need to book at the Sella snack bars?',
+    a: '<p>Usually not for a quick consumption (drink, juice, ice cream). If you want something more elaborate in August, especially on Saturdays, <strong>some do accept reservations</strong> — arrive with margin or call on the way. In mid- or low season it is rare to wait.</p>',
+  },
+  {
+    q: 'What can you have at the snack bars on the descent?',
+    a: '<p>The offer is typical of a riverside snack bar <strong>without alcohol</strong>: soft drinks, juices, water, ice cream and <strong>simple snacks</strong> (sandwiches, omelette, snacks). Some bars work with something more elaborate at meal time, but the star is usually a short stop to refresh, eat something light and return to the canoe.</p>',
+  },
+  {
+    q: 'Can I skip the snack bars if I want?',
+    a: '<p>Of course. The snack bars are <strong>optional</strong>, the Asturian picnic (tuna pie + traditional Asturian bun + water) is included in the booking. Many customers do the descent straight, stop only for a swim and eat the picnic on a river beach. Others alternate: picnic at one stop + a drink at a snack bar. As you prefer.</p>',
+  },
+  {
+    q: 'Do the Sella snack bars take card?',
+    a: '<p>Most do, but <strong>not all</strong>, and mobile coverage is irregular on some stretches of the river — card readers may fail. We recommend bringing <strong>some loose cash in the waterproof barrel</strong>: with 10–15 € per person you will have plenty for a full stop.</p>',
+  },
+  {
+    q: 'Are the snack bars open outside high season?',
+    a: '<p>In <strong>July and August</strong> they are all open every day. In <strong>June and September</strong> most open on weekends and several on weekdays. In <strong>April, May and October</strong> usually only 1 or 2 are operating, normally weekends. Call ahead if the specific snack bar matters for your plan.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="sella-descent-riverside-bars" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Six snack bars, six excuses</strong> to stop on the Sella descent. Riverland, El Oasis, El Prau, El Bosque, La Mediana, Toraño. Important: <strong>no alcohol is consumed on the river</strong> and the snack bars along the route do not serve alcoholic drinks — soft drinks, juices, ice cream, water and snacks. What you will find at each stop, no hype.
+  </p>
+
+  <p>
+    The Sella descent is not a river in the middle of nowhere: along the route you have <strong>six snack bars</strong> where you can land the canoe and refresh. They have been part of the experience for decades and the reason many people plan the day as "descent with a stop" rather than as a sporting activity.
+  </p>
+
+  <p>
+    Here we go through them one by one, with the kind of stop each one invites and the house tips. If you just want the quick mental map, <a href="#summary">jump to the summary</a>.
+  </p>
+
+  <h2 class="post__h2" id="map">Mental map <span class="serif-italic">of the route</span></h2>
+
+  <p>Six stops along the 14.5 km · when and what each one fits.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">1</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Riverland <span class="serif-italic">· start</span></h3>
+        <p class="post__zone__desc">Quick "while we're passing" stop · before even hitting your rhythm on the river.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Oasis <span class="serif-italic">· first third</span></h3>
+        <p class="post__zone__desc">First real stop · lively atmosphere · groups of friends.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">3</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Prau <span class="serif-italic">· first third</span></h3>
+        <p class="post__zone__desc">Quiet alternative to El Oasis · same zone, different vibe.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">El Bosque <span class="serif-italic">· middle</span></h3>
+        <p class="post__zone__desc">Natural shade · the most balanced for a long stop without sun.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">4</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">La Mediana <span class="serif-italic">· middle</span></h3>
+        <p class="post__zone__desc">Spacious terrace · long break mid-route on the Full route.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">7</span>
+        <span class="post__zone__unit">km</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Toraño <span class="serif-italic">· end of Mini Sella</span></h3>
+        <p class="post__zone__desc">Final drink while the return transfer to Arriondas arrives.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    If you do the Full route (14.5 km · Arriondas → Fríes) you pass all six. If you do the Mini Sella (7 km · Arriondas → Toraño) you pass the first five and end at Toraño.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="chiringuito-prao"
+      alt="El Prau riverside snack bar on the Sella — a typical descent stop"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>El Prau · one of the six riverside snack bars on the Sella. A drink, shade and the canoe moored on the bank while arms rest.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="riverland">1 · Riverland <span class="serif-italic">(km 1 · start)</span></h2>
+
+  <p>
+    The opening snack bar. Practically at the start of the route, you reach it before you even feel the river's rhythm. For many it is <em>"a bit early to stop"</em>, but it has an obvious advantage: <strong>if you just want to try the Sella with no commitment</strong> or you are with kids who are already hungry, Riverland allows a quick stop before committing to the full day.
+  </p>
+
+  <p><strong>What to expect:</strong> typical riverside snack bar menu <strong>without alcohol</strong> (soft drinks, juices, water, ice cream, sandwiches), calm atmosphere, terrace with river views. Ideal for an early photo and on.</p>
+
+  <h2 class="post__h2" id="oasis-prau">2–3 · El Oasis <span class="serif-italic">and El Prau · km 3</span></h2>
+
+  <p>
+    The two arrive together in the first third of the route. <strong>El Oasis</strong> is the busier: lively atmosphere, music, "river party" feel in August. <strong>El Prau</strong> is a stone's throw away and works as a calmer alternative — same river zone, different vibe.
+  </p>
+
+  <p>
+    If you are with a group of friends and want "the atmosphere", Oasis. If you are with a partner or family and prefer not to compete with speakers, Prau. Both have <strong>soft drinks, juices, ice cream and water</strong> menus (no alcohol, like the entire route) + some light tapas.
+  </p>
+
+  <div class="post__callout">
+    <strong>The Oasis trick in August</strong>
+    <p>If you pass through there between 13:00 and 14:30 on a Saturday, you will see the place at its peak atmosphere. If you want that, perfect. If you want a quiet stop, push on and stop at El Bosque or La Mediana.</p>
+  </div>
+
+  <h2 class="post__h2" id="bosque">4 · El Bosque <span class="serif-italic">(km 4 · middle)</span></h2>
+
+  <p>
+    For us, the most balanced snack bar on the route. It sits in a <strong>shady area with large trees</strong> that provide natural shade for the terrace. A good spot for a long stop if you have no rush.
+  </p>
+
+  <p>
+    <strong>What to expect:</strong> soft drinks, juices, ice cream, water, sandwiches and light snacks — the typical riverside snack bar offering, <strong>without alcohol</strong>. Normal prices for a tourist area.
+  </p>
+
+  <p>If you are with small kids, the shade makes it the best stop to refresh without anyone melting in peak sun hours.</p>
+
+  <h2 class="post__h2" id="mediana">5 · La Mediana <span class="serif-italic">(km 4 · middle)</span></h2>
+
+  <p>
+    Very close to El Bosque, La Mediana is a spacious stop with terrace and good atmosphere right in the central zone of the route. If you do the Full route and want a long break, it fits well.
+  </p>
+
+  <p>
+    <strong>What to expect:</strong> the same line as the rest of the Sella snack bars — soft drinks, juices, water, ice cream and snacks, no alcohol. Slightly higher prices than quick stops, in keeping with a longer break.
+  </p>
+
+  <p>
+    If you do the Full route and plan to stop for a calm rest, La Mediana + El Bosque are the two main options.
+  </p>
+
+  <p class="post__pull">
+    The difference between a "fine" day and a "memorable" one on the Sella is often the stop you choose. Picnic at Pozo del Arco, a drink in El Bosque's shade, a long break at La Mediana. Each option changes the rhythm of the day.
+  </p>
+
+  <h2 class="post__h2" id="torano">6 · Toraño <span class="serif-italic">(km 7 · end of Mini Sella)</span></h2>
+
+  <p>
+    If you do the Mini Sella, Toraño is the final point of the route. There is a large snack bar next to the exit ramp, perfect for <strong>a drink or ice cream while you wait for the transfer</strong> back to Arriondas. If you do the Full route, it is an intermediate stop — the last before the second half of the route, now with fewer snack bars.
+  </p>
+
+  <p>
+    Relaxed atmosphere, wide terrace, riverside-bar menu without alcohol (which in Asturias is consistent with any river snack bar). Cold drinks, ice cream, snacks. Nothing gourmet, but honest.
+  </p>
+
+  <h2 class="post__h2" id="choose">How to choose <span class="serif-italic">by your plan</span></h2>
+
+  <p>Six day profiles, six different stops. Find yours.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <h3 class="post__essential__label">Group looking for atmosphere</h3>
+      <p class="post__essential__desc">
+        El Oasis · first lively stop · plus a short final stop in Toraño.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><circle cx="17" cy="9" r="2"/><path d="M21 17v-1a3 3 0 0 0-3-3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Family with kids</h3>
+      <p class="post__essential__desc">
+        El Bosque · natural shade and sheltered area to cool down in peak sun hours.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Couple seeking calm</h3>
+      <p class="post__essential__desc">
+        Picnic at the <a href="/en/blog/pozo-del-arco-sella/">Pozo del Arco</a> · drink at El Prau · no speakers.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+      </span>
+      <h3 class="post__essential__label">Long mid-route break</h3>
+      <p class="post__essential__desc">
+        La Mediana · wide terrace and central route zone · ideal on the Full route.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      </span>
+      <h3 class="post__essential__label">Express plan · quick Mini</h3>
+      <p class="post__essential__desc">
+        Ignore all snack bars and stop only at the end, in Toraño, while the transfer arrives.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Full meal proper</h3>
+      <p class="post__essential__desc">
+        Better after the descent · cider houses in Arriondas, Toraño or Ribadesella · no rush.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="practical">Practical <span class="serif-italic">snack-bar rules</span></h2>
+
+  <ul>
+    <li><strong>Correct landing.</strong> All have a beach or ramp area. Do not leave the canoe blocking the way — the snack bar staff or the instructors watching the river in kayaks can show you the right zone if in doubt.</li>
+    <li><strong>Life jacket on while you are in the water.</strong> If you swim near the snack bar, it is still the river.</li>
+    <li><strong>No alcohol on the river.</strong> It is prohibited and the snack bars on the route do not serve it. If you fancy a cider or beer, leave it for Arriondas or Ribadesella afterwards.</li>
+    <li><strong>Payment.</strong> Many accept card, but coverage is irregular. Bring <strong>10–15 € loose per person</strong> in the barrel.</li>
+    <li><strong>No glass in the river.</strong> Consume at the snack bar, do not take bottles back to the canoe.</li>
+    <li><strong>Respect the environment.</strong> Rubbish in the bin, nothing thrown on the gravel. We keep it this way together.</li>
+    <li><strong>Time management.</strong> If you do the Full route, watch the clock: the transfer has set times. Better to stop 30 min at two snack bars than 90 min at one.</li>
+  </ul>
+
+  <h2 class="post__h2" id="picnic">Picnic or snack bar · <span class="serif-italic">or both</span></h2>
+
+  <p>
+    We remind you because it matters: the <strong>Asturian picnic is included</strong> in the descent price (tuna pie, traditional Asturian bun, 500 ml water). The picnic is <strong>fixed and the same for all customers</strong> — there is no vegan or vegetarian option. You can perfectly do the route without stopping at any snack bar and eat the picnic on a river beach. Or alternate: picnic at one stop + drink at a snack bar. Or skip the picnic and spend it all at snack bars.
+  </p>
+
+  <p>
+    There is no compulsory spend on the route. Snack bars are a <em>plus</em>, not a requirement. If you are budgeting, <a href="/en/prices/">the Sella descent prices</a> already include everything essential for the day.
+  </p>
+
+  <p>
+    If you have not booked yet, <a href="/en/premium-booking/">pick a date in the calendar</a> and plan the pace: the Sella changes a lot depending on whether you do the Full route with two long stops or the Mini with a drink at the end.
+  </p>
+
+  <p>
+    And if your question was more like the classic — <em>"and which snack bar will we eat at when my cousin visits in August with three kids?"</em> — <a href="/en/contact/">write to us</a>. With real data we make a finer plan than this generic guide.
+  </p>
+</BlogPostLayout>

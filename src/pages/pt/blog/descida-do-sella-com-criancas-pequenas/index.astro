@@ -1,0 +1,248 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'A partir de que idade as crianças podem fazer a descida do Sella?',
+    a: '<p>A idade mínima é <strong>5 anos e 1,15 m de altura</strong>, por segurança com o colete salva-vidas. Não é arbitrário: o colete mais pequeno disponível é desenhado para esse tamanho, e em crianças menores não fica bem ajustado. É uma regra do setor no Sella, não só nossa.</p>',
+  },
+  {
+    q: 'A descida do Sella é segura com crianças pequenas?',
+    a: '<p>Sim. O Sella é um <strong>rio calmo (classe I-II)</strong> sem rápidos nem quedas técnicas. Antes de sair damos uma <strong>mini-aula com monitor qualificado</strong>, e durante a descida há <strong>monitores em caiaques de segurança a vigiar o percurso</strong> caso alguém precise. As canoas são inafundáveis (mesmo que virassem, voltam a flutuar) e os coletes salva-vidas são homologados. <strong>Dito isto — as crianças têm de saber nadar</strong>, e os adultos acompanhantes não podem ter condições médicas graves nem estar grávidas. Se as condições do rio ou meteorológicas o exigirem, um monitor pode acompanhar o grupo · avisamos com antecedência.</p>',
+  },
+  {
+    q: 'Qual percurso é melhor se vamos com crianças pequenas?',
+    a: '<p>Para uma primeira experiência com crianças de 5 a 8 anos, recomendamos o <strong>Mini Sella (7 km · 1h30 – 2h30)</strong>. É o troço mais suave, menos tempo na canoa e tempo real para nadar e comer sem pressa. A partir dos 9-10 anos podem fazer o percurso completo (14,5 km · 3-5 h) se forem crianças ativas e habituadas à água.</p>',
+  },
+  {
+    q: 'As crianças pagam preço inteiro?',
+    a: '<p>Não. <strong>As crianças com menos de 12 anos pagam 30 €</strong> (contra 40 € adulto), incluindo o mesmo equipamento, piquenique e serviços. Ver tarifa completa em <a href="/pt/precos/">preços</a>.</p>',
+  },
+  {
+    q: 'E se uma criança ficar cansada ou stressada a meio da descida?',
+    a: '<p>Acontece, e está previsto. O monitor no rio vê e reorganiza a canoa — habitualmente o adulto rema mais, a criança descansa ou muda de posição. Se for preciso, faz-se uma paragem mais longa numa praia fluvial. Em casos raros pode-se abandonar o percurso no próximo quiosque e o transfer recolhe-os. <strong>Ninguém fica abandonado no rio</strong>.</p>',
+  },
+  {
+    q: 'Podem ir bebés ou crianças com menos de 5 anos?',
+    a: '<p>Não, lamentamos. A idade mínima é <strong>5 anos e 1,15 m</strong> sem exceção. Não é uma decisão comercial: é uma restrição técnica do menor colete salva-vidas homologado disponível. Se viajas com um bebé, podes planear a descida com adultos e um fica com ele em Arriondas, onde há praças, cafés e um passeio à beira-rio.</p>',
+  },
+  {
+    q: 'O que fazemos se chover no dia em que vamos com crianças?',
+    a: '<p>Se for <strong>chuva ligeira</strong>, a atividade segue: vais molhar-te de qualquer forma, e as crianças costumam achar "mais divertido". Só cancelamos quando há <strong>risco real</strong> (tempestade elétrica, rio em cheia, correntes fortes) ou por recomendação da Confederação. Nesse caso reagendamos sem custos ou devolvemos o valor. Detalhes em <a href="/pt/legal/termos/">termos do serviço</a>.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descida-do-sella-com-criancas-pequenas" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Resposta rápida:</strong> sim, dá — a partir de 5 anos e 1,15 m. Mini percurso (7 km), chegada cedo no horário aberto Premium (10:30), protetor solar a cada duas horas, muda seca no cacifo. O Sella é calmo, os coletes são homologados e há monitores qualificados a vigiar o percurso. As preocupações típicas que surgem quando viajas com crianças, resolvidas uma a uma.
+  </p>
+
+  <p>
+    Não há pergunta mais honesta no balcão do que aquela que qualquer família faz: <em>"mas a minha filha de 6 anos vai mesmo conseguir?"</em> — venha ela de qualquer mãe, pai, avó, avô ou tia. A resposta curta é sim; a longa partilhamos aqui, porque sabemos que um "sim" sem detalhe não tranquiliza ninguém quando estás a apostar o dia nas crianças.
+  </p>
+
+  <p>
+    Este guia complementa a nossa página <a href="/pt/com-criancas/">descida do Sella com crianças</a>, focada em informação prática de reserva. Aqui falamos do outro lado: os medos típicos, como organizar o dia, o que esperar em cada idade.
+  </p>
+
+  <h2 class="post__h2" id="age">A idade mínima, <span class="serif-italic">sem rodeios</span></h2>
+
+  <p>
+    <strong>5 anos e 1,15 m de altura.</strong> Não negociável e não é capricho nosso: o menor colete salva-vidas homologado é desenhado para esse tamanho mínimo. Em crianças menores, o colete pode subir por cima da cabeça se caírem na água, e deixa de fazer o seu trabalho.
+  </p>
+
+  <p>
+    Se a tua criança faz 5 anos no mês em que vens, verifica a altura com fita métrica: se estiver abaixo de 1,15, é melhor esperar mais um ano ou reservar só para os adultos.
+  </p>
+
+  <div class="post__callout">
+    <strong>E mais uma coisa: saber nadar é obrigatório</strong>
+    <p>O colete salva-vidas mantém-te à tona, mas é essencial que a criança saiba nadar e não tenha pavor da água. Se for o primeiro contacto com água profunda, considera algumas sessões de piscina antes. Não é um teste técnico — é para que <em>ela</em> se sinta calma, não nós.</p>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="madre-y-nino"
+      alt="Adulto e criança a remar juntos no rio Sella numa canoa com colete salva-vidas"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>A partir de 5 anos e 1,15 m. Com colete bem ajustado e um adulto ao remo, as crianças desfrutam da descida sem medo.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="route">Que percurso escolher <span class="serif-italic">por idade</span></h2>
+
+  <p>Temos dois percursos · aqui está como os recomendamos para famílias.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–7</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini Sella <span class="serif-italic">· 7 km</span></h3>
+        <p class="post__zone__desc"><strong>1h30 – 2h30.</strong> A primeira experiência ideal · sem pressas.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">8–10</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Mini <span class="serif-italic">ou percurso completo</span></h3>
+        <p class="post__zone__desc"><strong>Mini ou 3h30.</strong> Se forem ativos e adorarem água, o percurso completo funciona bem.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11–12</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Percurso completo <span class="serif-italic">· 14,5 km</span></h3>
+        <p class="post__zone__desc"><strong>3-4h.</strong> Costumam aproveitar mais que os adultos.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    O Mini Sella (Arriondas → Toraño) é o troço mais suave: chega ao <a href="/pt/blog/pozo-del-arco-sella/">Pozo del Arco</a>, uma praia fluvial espetacular, e termina em Toraño com transfer de regresso. Sella suficiente para apaixonar, sem chegar à fase do "quanto falta?".
+  </p>
+
+  <h2 class="post__h2" id="fears">Os <span class="serif-italic">quatro medos</span> típicos</h2>
+
+  <p>
+    Os que aparecem vez após vez no balcão — mães, pais, casais, avós e qualquer figura familiar com crianças repete-os. Resolvidos um a um com a franqueza de quem passou 25 anos a ver famílias descer.
+  </p>
+
+  <div class="post__concerns">
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"E se a canoa virar?"</h3>
+        <p>
+          O Sella é <strong>classe I-II</strong> · um canal calmo com correntes suaves, sem rápidos. As canoas são inafundáveis — mesmo que entrasse água, voltam a flutuar — e foram desenhadas para serem difíceis de virar. Quando acontece (raramente), costuma ser de brincadeira numa fossa rasa e resolves de pé. Os monitores no rio estão atentos precisamente a isso.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"E se ficarem cansados a meio e eu não conseguir?"</h3>
+        <p>
+          As crianças não remam continuamente · remam um pouco, olham para a paisagem, mergulham a mão, petiscam, depois remam outra vez. Não é uma travessia exigente, é um passeio onde participam quando querem. O adulto compensa, e o <strong>Mini Sella</strong> está dimensionado para que um único adulto consiga se a criança ficar cansada.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"E se tiverem frio, calor ou fome no rio?"</h3>
+        <p>
+          O <strong>bidão estanque</strong> permite levar um lanche extra, uma camada seca e creme. No piquenique paramos para comer (empada de bonito, bolinho asturiano, água) e nadar se quisermos. E os <a href="/pt/blog/quiosques-descida-do-sella/">quiosques ao longo do percurso</a> têm cozinha para resolver qualquer desejo. Não é um ambiente hostil · é um rio com paragens a cada poucos quilómetros.
+        </p>
+      </div>
+    </article>
+
+    <article class="post__concern">
+      <div class="post__concern__body">
+        <h3 class="post__concern__q">"E se ficarem com medo e quiserem sair?"</h3>
+        <p>
+          Acontece, embora raramente. Nos <strong>seis quiosques</strong> espalhados pelo percurso, podes parar o tempo que for preciso para reorganizar. Em casos extremos, o monitor avalia abandonar e o transfer recolhe-os no próximo ponto de acesso. <em>Ninguém fica preso no meio do rio</em> · resolver o stress de uma criança faz parte do nosso trabalho normal.
+        </p>
+      </div>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    O Sella com crianças não é um teste de resistência. É um passeio de canoa com paragens, banhos, piquenique, fotografias e — com alguma sorte — a cara de uma criança de 6 anos que não acredita que <em>ela</em> conseguiu.
+  </p>
+
+  <h2 class="post__h2" id="day">O dia, <span class="serif-italic">hora a hora</span></h2>
+
+  <p>Um dia típico com uma família, com chegada cedo ao horário aberto Premium (recomendado com crianças):</p>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10:30</time>
+      <div class="post__timeline__body"><strong>Chegada a Arriondas.</strong> Estacionamento vigiado de 300 lugares, inscrição, balneários. As crianças à casa de banho antes de sair (regra de ouro).</div>
+    </li>
+    <li>
+      <time>10:50</time>
+      <div class="post__timeline__body"><strong>Mini-aula.</strong> Explicamos como segurar o remo, como virar, o que fazer se a canoa virar. Dez minutos que resolvem 90% das dúvidas.</div>
+    </li>
+    <li>
+      <time>11:00</time>
+      <div class="post__timeline__body"><strong>Saída.</strong> Foto obrigatória desde a rampa. Cinco minutos depois já estão no rio com ritmo.</div>
+    </li>
+    <li>
+      <time>12:00</time>
+      <div class="post__timeline__body"><strong>Primeira paragem.</strong> Praia fluvial, banho curto, fruta do bidão, risos.</div>
+    </li>
+    <li>
+      <time>13:00</time>
+      <div class="post__timeline__body"><strong>Pozo del Arco.</strong> A grande paragem · águas cristalinas, gravilha fina, hora do piquenique asturiano ou de continuar um pouco mais.</div>
+    </li>
+    <li>
+      <time>13:45</time>
+      <div class="post__timeline__body"><strong>Troço final calmo.</strong> As crianças já pilotam a canoa à sua maneira.</div>
+    </li>
+    <li>
+      <time>14:30</time>
+      <div class="post__timeline__body"><strong>Chegada a Toraño.</strong> Saída da canoa, transfer de regresso a Arriondas.</div>
+    </li>
+    <li>
+      <time>15:00</time>
+      <div class="post__timeline__body"><strong>Duches quentes e roupa seca.</strong> As crianças adormecem a caminho do carro · tu com um sorriso.</div>
+    </li>
+  </ol>
+
+  <h2 class="post__h2" id="packing">O que levar <span class="post__h2__sub">(e o que <em>NÃO</em>)</span></h2>
+
+  <p>Temos um guia completo sobre <a href="/pt/blog/que-levar-descida-do-sella/">o que levar para a descida do Sella</a>. Para crianças, são estes os acrescentos específicos · oito detalhes que fazem a diferença.</p>
+
+  <ul>
+    <li><strong>Fato de banho vestido de casa</strong> — poupa 15 minutos de caos no balneário.</li>
+    <li><strong>T-shirt técnica ou rashguard UV manga comprida</strong> — protege os ombros de três horas de sol refletido na água.</li>
+    <li><strong>Boné com cordão de queixo</strong> — sem cordão, a primeira brisa manda-o para a água.</li>
+    <li><strong>Protetor solar infantil SPF 50+</strong> — aplicado antes de sair de casa e reaplicado no piquenique.</li>
+    <li><strong>Sapatilhas de neoprene ou sandálias com tira</strong> — chinelos simples saem com o primeiro empurrão da corrente.</li>
+    <li><strong>Muda seca completa no cacifo</strong> — incluindo roupa interior · acabas tomado banho numa hora.</li>
+    <li><strong>Lanche extra no bidão</strong> — bolachas, barras, fruta fácil · para os apetites a meio do rio.</li>
+    <li><strong>Óculos de sol com cordão</strong> — opcional mas muito recomendado · qualquer viragem brusca e desaparecem.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>O que NÃO precisas</strong>
+    <p>Não precisas de comprar colete salva-vidas infantil, remo pequeno, capacete ou bidão. Fornecemos tudo isso, com tamanhos infantis homologados, incluído no preço.</p>
+  </div>
+
+  <h2 class="post__h2" id="price">Quanto custa <span class="serif-italic">com crianças</span></h2>
+
+  <p>
+    <strong>30 € por criança (até 12 anos) e 40 € por adulto.</strong> Tudo incluído: canoa, remo duplo, colete infantil, bidão estanque, piquenique, transfer, cacifo, duches, seguro. Uma família de 4 (2 adultos + 2 crianças) fica a <strong>140 € no total</strong>, com todas as refeições e serviços cobertos.
+  </p>
+
+  <p>
+    Tarifa completa e condições em <a href="/pt/precos/">preços</a>. Se tens perguntas específicas sobre a tua família <a href="/pt/contacto/">escreve-nos</a>: idades das crianças, condições médicas, se algum adulto nunca remou… não é interrogatório, é para podermos aconselhar bem.
+  </p>
+
+  <h2 class="post__h2" id="summary">Resumo <span class="serif-italic">em 5 linhas</span></h2>
+
+  <ul>
+    <li>Sim, é possível com crianças <strong>a partir de 5 anos e 1,15 m</strong>.</li>
+    <li><strong>Mini Sella</strong> (7 km) se for primeira vez ou criança com menos de 8 anos.</li>
+    <li>Chega cedo (10:30 · horário aberto Premium), <strong>fato de banho vestido</strong>, muda seca no cacifo.</li>
+    <li><strong>30 €/criança, 40 €/adulto</strong>, tudo incluído.</li>
+    <li>Chuva ligeira não cancela; tempestades sim — reagendamento garantido ou devolução.</li>
+  </ul>
+
+  <p>
+    E se depois de tudo isto ainda tens aquela pergunta de pai/mãe que nenhum site responde por completo, <a href="/pt/contacto/">liga-nos</a>. Prometemos não ler-te uma brochura: dizemos-te o que faríamos com os nossos próprios filhos.
+  </p>
+</BlogPostLayout>

@@ -1,0 +1,1033 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'en';
+const title = 'Sella River descent prices · From €30 all inclusive';
+const description = 'Sella River descent prices: €30 children · €40 adults. All inclusive (canoe, picnic, transfer, parking). Pets travel free. Book without paying now.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/en/prices/`;
+
+// All inclusive · ordered by relevance for those checking prices
+const incluido = [
+  { icon: 'canoe',    title: 'K1, K2 and K3 canoes',           sub: 'Unsinkable, with paddle and dry barrel' },
+  { icon: 'shield',   title: 'Life jacket',                    sub: 'Certified, fitted by size' },
+  { icon: 'wetsuit',  title: 'Wetsuit',                        sub: 'Except from 15/06 to 28/09' },
+  { icon: 'teacher',  title: 'Mini class + instructors',       sub: 'Certified and Sella champions' },
+  { icon: 'picnic',   title: 'Asturian picnic',                sub: 'Tuna pie, traditional bun and water' },
+  { icon: 'bus',      title: 'Return transfer',                sub: 'From Toraño or Fríes' },
+  { icon: 'shower',   title: 'Changing rooms with showers',    sub: 'Locked lockers included' },
+  { icon: 'parking',  title: 'Private parking',                sub: '300 spaces · guarded · motorhomes' },
+  { icon: 'paw',      title: 'Pets travel free',               sub: 'The whole family in the canoe' },
+  { icon: 'ticket',   title: 'Mandatory insurance',            sub: 'Full coverage included' },
+  { icon: 'ramp',     title: 'Boarding ramp',                  sub: 'Optional and free · or board at the riverbank' },
+  { icon: 'heart',    title: 'A warm, personal welcome',       sub: 'No queues, no robots, no extras' },
+];
+
+const rutas = [
+  {
+    name: 'Mini Sella',   km: '7 km',   dur: '2 – 3 h',   desc: 'Short route from Arriondas to Toraño. Ideal if you are with little ones, want to make plenty of stops or prefer a relaxed paddle.', tone: 'sage',
+  },
+  {
+    name: 'Full route',     km: '14.5 km', dur: '4 – 5 h',  desc: 'Classic route from Arriondas to Fríes. More kilometres, more landscape, more stops for a swim. The most complete experience.', tone: 'coral',
+  },
+];
+
+const faqs = [
+  { q: 'How much does it cost to descend the Sella?',
+    a: `Descending the Sella by canoe with us costs <strong>€40 per adult</strong> (from 13 years) and <strong>€30 per child</strong> (5 to 12 years). The price is <strong>all inclusive</strong>: unsinkable canoe, life jacket, double paddle, wetsuit on cold dates, dry barrel, mini class with certified instructor, Asturian picnic (tuna pie, traditional Asturian bun and water), return transfer, <strong>guarded private parking (300 spaces · also for motorhomes)</strong>, changing rooms with showers, locked lockers and insurance. <strong>Pets travel free</strong>. The only day with a different rate is the Saturday of the <a href="${getLocalePath('descenso_internacional', 'en')}">International Sella River Descent</a> — €35 with special conditions.` },
+  { q: 'Is the price per person or per canoe?',
+    a: 'The price is <strong>per person</strong>, not per canoe. If two adults share a K2, you each pay <strong>€40</strong>. If three of you share a K3, the same — sharing a canoe does not change the individual rate.' },
+  { q: 'Does the Mini route cost the same as the Full route?',
+    a: 'Yes — <strong>one booking, one single price</strong>. You choose your route on the water, not when you book. You can set off thinking of the Full route and stop in Toraño (km 7) if you feel like it, or start with the Mini in mind and continue all the way to Fríes. Neither the price nor what is included changes.' },
+  { q: 'Are there group discounts?',
+    a: 'For groups of <strong>10 or more people</strong> we offer special conditions. Drop us a line on <a href="https://wa.me/34681093673?text=Hello,%20we%20are%20a%20group%20of...">WhatsApp</a> or <a href="mailto:info@aventuraenelsella.es">email</a> with the number of people and approximate date, and we will prepare a tailored proposal.' },
+  { q: 'How do I pay? Do I have to pay in advance?',
+    a: `Book <strong>without paying now</strong>. Choose whatever is most convenient for you: <strong>card payment in advance</strong> or <strong>pay on the day when you pick up the canoe</strong>. The only exception is <a href="${getLocalePath('descenso_internacional', 'en')}">the Saturday of the International Descent</a>, which can only be booked with advance payment.` },
+  { q: 'Can I change the date or cancel?',
+    a: 'You can <strong>change or cancel at any time before the day of the activity</strong>, free of charge. If you paid by <strong>card in advance</strong>, to process the refund we need you to let us know at least <strong>24 hours</strong> beforehand. Get in touch via WhatsApp or email and we will move the date or refund the amount.' },
+  { q: 'Do I have to choose a departure time?',
+    a: `No. Your booking is <strong>Premium · open schedule</strong>: arrive at our Arriondas premises <strong>whenever suits you between 10:30 and 12:30</strong>, without picking a specific time. It is one of the <strong>Premium advantages</strong>. The only exception is the Saturday of the <a href="${getLocalePath('descenso_internacional', 'en')}">International Descent</a> (single departure at 12:00) and days with river conditions requiring a guided entry with an instructor (we let you know in advance). The river authority (Confederación Hidrográfica) limits permanence on the river until 18:00.` },
+  { q: 'From what age can children take part?',
+    a: 'Children can take part from <strong>5 years old and a minimum height of 1.15 m</strong>. It is a <strong>strict safety requirement</strong>, not only because of the life jacket — also because of the nature of the river (current, variable depth, sections with rapids) and as required by our insurance providers. <strong>Children below the minimum are not admitted</strong>, even when accompanied by an adult or if they can swim.' },
+  { q: 'What happens on the day of the International Descent?',
+    a: `On the Saturday of the <a href="${getLocalePath('descenso_internacional', 'en')}">International Sella River Descent</a> a single price of <strong>€35 per person</strong> applies, with its own conditions: single departure at 12:00, mandatory advance payment, no picnic included and very limited places. Everything is explained on its dedicated page.` },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'Product',
+      '@id': `${baseUrl}/#product`,
+      name: 'Sella River canoe descent · All inclusive',
+      description: 'Touristic canoe descent along the Sella River from Arriondas. All inclusive: canoe, equipment, mini class with certified instructors, return transfer, Asturian picnic, changing rooms and parking. Pets travel free.',
+      brand: { '@type': 'Brand', name: 'Aventura en el Sella' },
+      image: `${baseUrl}/images/optimized/includes-b.jpg`,
+      offers: [
+        { '@type': 'Offer', name: 'Children (up to 12 years)', price: '30.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${baseUrl}/en/book/` },
+        { '@type': 'Offer', name: 'Adult',                    price: '40.00', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: `${baseUrl}/en/book/` },
+        { '@type': 'Offer', name: 'International Descent day', price: '35.00', priceCurrency: 'EUR', availability: 'https://schema.org/LimitedAvailability', url: `${baseUrl}/en/international-sella-descent/` },
+      ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5', reviewCount: '147', bestRating: '5', worstRating: '1',
+      },
+      inLanguage: 'en-GB',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      inLanguage: 'en-GB',
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home',   item: `${baseUrl}/en/` },
+        { '@type': 'ListItem', position: 2, name: 'Prices', item: canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: 'en-GB',
+      keywords: 'sella river descent prices, canoe rental sella, arriondas canoeing prices, sella river canoe tour cost',
+      dateModified: '2026-05-12',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/en/prices/" translationKey="precios">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO ============== -->
+  <section class="prh" aria-labelledby="prh-title">
+
+    <div class="prh__inner">
+      <nav class="prh__breadcrumb" aria-label="Breadcrumb">
+        <a href={getLocalePath('home', 'en')}>Home</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Prices</span>
+      </nav>
+
+      <div class="prh__grid">
+        <div class="prh__main">
+          <span class="prh__eyebrow">
+            <span class="prh__eyebrow-dot" aria-hidden="true"></span>
+            From €30 · 2026 Season
+          </span>
+
+          <h1 id="prh-title" class="prh__title">
+            Prices for the<br/>
+            <span class="serif-italic">Sella River descent</span>
+          </h1>
+
+          <p class="prh__lead">
+            <strong>One single price, all inclusive</strong>. You pick your route on the
+            water, not on the website. The cost depends only on age — not on the
+            kilometres or on whether you stop at Toraño or paddle on to Fríes.
+          </p>
+
+          <div class="prh__stats">
+            <span class="prh__statsKicker">
+              <span class="prh__statsKickerMark" aria-hidden="true"></span>
+              Single rate · all inclusive
+            </span>
+            <div class="prh__statsRow">
+              <div class="prh__stat">
+                <strong>30<small>€</small></strong>
+                <span>Children · 5–12</span>
+              </div>
+              <div class="prh__stat-divider" aria-hidden="true"></div>
+              <div class="prh__stat">
+                <strong>40<small>€</small></strong>
+                <span>Adults</span>
+              </div>
+              <div class="prh__stat-divider" aria-hidden="true"></div>
+              <div class="prh__stat">
+                <strong>Free</strong>
+                <span>Pets</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="prh__contact" aria-label="Book or get in touch">
+          <span class="prh__contactKicker">— Book your spot</span>
+          <ul class="prh__contactList" role="list">
+            <li>
+              <a href={getLocalePath('reservar', 'en')} class="prh__contactPill prh__contactPill--primary">
+                <strong>Book now</strong>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </li>
+            <li>
+              <a href="tel:+34681093673" class="prh__contactPill" aria-label="Call 681 09 36 73">
+                <strong>Call us</strong>
+                <small>+34 681 09 36 73</small>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/34681093673?text=Hello%2C%20I%27d%20like%20more%20info%20about%20prices" target="_blank" rel="noopener noreferrer" class="prh__contactPill" aria-label="WhatsApp">
+                <strong>WhatsApp</strong>
+                <small>Reply in minutes</small>
+              </a>
+            </li>
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PRICE CARDS ============== -->
+  <section class="prp">
+    <div class="container container--xl">
+      <header class="prp__header" data-reveal>
+        <span class="prp__eyebrow">— Rates</span>
+        <h2 class="prp__title">
+          Price per person,<br/>
+          <span class="serif-italic">all inclusive</span>
+        </h2>
+        <p class="prp__lead">
+          No extras. No fee for going all the way to Fríes. No add-on for the wetsuit, transfer or picnic.<br/>
+          <strong>The price you see is the final price.</strong>
+        </p>
+      </header>
+
+      <div class="prp__grid">
+        <!-- CARD 1: CHILDREN -->
+        <article class="prpCard prpCard--sage" data-reveal data-reveal-delay="1">
+          <div class="prpCard__media">
+            <Picture src="precios-ninos" alt="Children enjoying the Sella River canoe descent" sizes="(min-width: 960px) 33vw, (min-width: 720px) 50vw, 100vw" aspectRatio="4 / 3" bare />
+            <span class="prpCard__mediaTag">Child rate</span>
+            <div class="prpCard__mediaContent">
+              <p class="prpCard__mediaTitle">€30&nbsp; <span>/ child</span></p>
+              <p class="prpCard__mediaSub">5–12 years · Shared canoe</p>
+            </div>
+          </div>
+          <div class="prpCard__body">
+            <div class="prpCard__head">
+              <h3 class="prpCard__name">Child seat</h3>
+              <span class="prpCard__rating" aria-label="Average rating 4.9 out of 5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.9
+              </span>
+            </div>
+            <ul class="prpCard__stats">
+              <li><span class="prpCard__stat-val">5–12</span><span class="prpCard__stat-lbl">Years</span></li>
+              <li><span class="prpCard__stat-val">K2/K3</span><span class="prpCard__stat-lbl">Canoe</span></li>
+              <li><span class="prpCard__stat-val">Yes</span><span class="prpCard__stat-lbl">Gear</span></li>
+              <li><span class="prpCard__stat-val">Yes</span><span class="prpCard__stat-lbl">Picnic</span></li>
+            </ul>
+            <p class="prpCard__desc">
+              The most affordable option for families · the little ones paddle sharing a canoe with an adult, with the <strong>same full coverage as the adult rate</strong>.
+            </p>
+            <ul class="prpCard__list">
+              <li>Minimum age <strong>5 years and 1.15 m</strong> · no exceptions</li>
+              <li>Canoe shared with a responsible adult</li>
+              <li>Children's gear, picnic and services included · <a href="#pri-title">see detail below</a></li>
+            </ul>
+            <a href={getLocalePath('reservar', 'en')} class="prpCard__cta prpCard__cta--primary">
+              Book child place
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- CARD 2: ADULTS -->
+        <article class="prpCard prpCard--coral" data-reveal data-reveal-delay="2">
+          <div class="prpCard__media">
+            <Picture src="precios-adultos" alt="Group of friends on the Sella River canoe descent" sizes="(min-width: 960px) 33vw, (min-width: 720px) 50vw, 100vw" aspectRatio="4 / 3" bare />
+            <span class="prpCard__mediaTag">Adult rate</span>
+            <div class="prpCard__mediaContent">
+              <p class="prpCard__mediaTitle">€40&nbsp; <span>/ adult</span></p>
+              <p class="prpCard__mediaSub">From 13 years · All inclusive</p>
+            </div>
+          </div>
+          <div class="prpCard__body">
+            <div class="prpCard__head">
+              <h3 class="prpCard__name">Adult seat</h3>
+              <span class="prpCard__rating" aria-label="Average rating 4.9 out of 5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.9
+              </span>
+            </div>
+            <ul class="prpCard__stats">
+              <li><span class="prpCard__stat-val">13+</span><span class="prpCard__stat-lbl">Years</span></li>
+              <li><span class="prpCard__stat-val">K1/K2/K3</span><span class="prpCard__stat-lbl">Canoe</span></li>
+              <li><span class="prpCard__stat-val">Yes</span><span class="prpCard__stat-lbl">Gear</span></li>
+              <li><span class="prpCard__stat-val">Yes</span><span class="prpCard__stat-lbl">Picnic</span></li>
+            </ul>
+            <p class="prpCard__desc">
+              The standard rate · choose <strong>K1 solo, K2 as a pair or K3 with friends</strong> — the per-person price stays the same.
+            </p>
+            <ul class="prpCard__list">
+              <li>From <strong>13 years old</strong></li>
+              <li>Single, double or triple canoe <strong>(K1/K2/K3)</strong></li>
+              <li>You pick your route on the water (Mini or Full) at no extra cost · <a href="#pri-title">see detail below</a></li>
+            </ul>
+            <a href={getLocalePath('reservar', 'en')} class="prpCard__cta prpCard__cta--primary">
+              Book adult place
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <!-- CARD 3: CTA IMAGE -->
+        <article class="prpCardCTA" data-reveal data-reveal-delay="3">
+          <div class="prpCardCTA__media">
+            <video
+              class="prpCardCTA__video"
+              muted loop playsinline
+              preload="none"
+              poster="/videos/rio-sella-loop-poster.jpg"
+              aria-hidden="true"
+              data-src="/videos/rio-sella-loop.mp4"
+            ></video>
+          </div>
+          <div class="prpCardCTA__inner">
+            <div class="prpCardCTA__bottom">
+              <span class="prpCardCTA__kicker">Aventura en el Sella &nbsp;·&nbsp; Canoe rental</span>
+              <h3 class="prpCardCTA__title">
+                Book your spot<br/>with us
+              </h3>
+              <a href={getLocalePath('reservar', 'en')} class="prpCardCTA__btn">
+                <span>Book now</span>
+                <span class="prpCardCTA__btnIcon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <p class="prp__note" data-reveal>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Pets travel free any day — <strong>except on the Saturday of the <a href={getLocalePath('descenso_internacional', 'en')}>International Descent</a></strong>, due to the crowds and noise of the event.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== ALL INCLUDED ============== -->
+  <section class="pri" id="pri-title">
+    <div class="container container--xl">
+      <header class="pri__header" data-reveal>
+        <span class="pri__eyebrow">— All inclusive means all of it</span>
+        <h2 class="pri__title">
+          The day of your descent,<br/>
+          <span class="serif-italic">you already have it all</span>
+        </h2>
+        <p class="pri__lead">
+          See everything your <strong>Premium booking</strong> includes — your day
+          sorted down to the last detail. You arrive, we welcome you, we kit you
+          out, you paddle the river and we bring you back. <strong>All you have to
+          do is forget your worries and enjoy</strong>.
+        </p>
+      </header>
+
+      <ul class="priD">
+        {incluido.map((it, i) => (
+          <li class="priDItem" data-reveal data-reveal-delay={(i % 4) + 1}>
+            <span class="priDItem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="priDItem__body">
+              <h3 class="priDItem__title">
+                <span class="priDItem__icon" aria-hidden="true">
+                  {it.icon === 'canoe'   && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 14c3-4 7-6 10-6s7 2 10 6"/><path d="M2 14c3 4 7 6 10 6s7-2 10-6"/></svg>}
+                  {it.icon === 'shield'  && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>}
+                  {it.icon === 'wetsuit' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l1 4-2 3v10a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1V10L7 7z"/></svg>}
+                  {it.icon === 'teacher' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>}
+                  {it.icon === 'picnic'  && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h18l-1 5H4z"/><path d="M5 13l1 8M19 13l-1 8"/></svg>}
+                  {it.icon === 'bus'     && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="8" cy="18" r="1.5"/><circle cx="16" cy="18" r="1.5"/></svg>}
+                  {it.icon === 'shower'  && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6M8 9h8"/><path d="M6 12c0 5 2 9 6 9s6-4 6-9z"/></svg>}
+                  {it.icon === 'parking' && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>}
+                  {it.icon === 'paw'     && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4.5" r="1.5"/><circle cx="6.5" cy="7.5" r="1.5"/><circle cx="15.5" cy="7.5" r="1.5"/><path d="M11 11c-4 0-6 4-6 6 0 1.66 1.34 3 3 3h6c1.66 0 3-1.34 3-3 0-2-2-6-6-6z"/></svg>}
+                  {it.icon === 'ticket'  && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v3a2 2 0 0 1 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 0 1 0-4V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"/></svg>}
+                  {it.icon === 'ramp'    && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21L21 3"/><path d="M3 21h18"/></svg>}
+                  {it.icon === 'heart'   && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>}
+                </span>
+                {it.title}
+              </h3>
+              <p class="priDItem__sub">{it.sub}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+    </div>
+  </section>
+
+  <!-- ============== TWO ROUTES, SAME PRICE ============== -->
+  <section class="prr">
+    <div class="container container--xl">
+      <header class="prr__header" data-reveal>
+        <span class="prr__eyebrow">— Two routes, one price</span>
+        <h2 class="prr__title">
+          You choose on the water,<br/>
+          <span class="serif-italic">not when you book</span>
+        </h2>
+        <p class="prr__lead">
+          Your <strong>Premium all-inclusive booking</strong>, whichever route you pick.
+          You can set off thinking of one and change your mind halfway — whether
+          you stop at Toraño or carry on to Fríes, <strong>the price and what is
+          included stay the same</strong>.
+        </p>
+      </header>
+
+      <div class="prrC">
+        <div class="prrC__col" data-reveal data-reveal-delay="1">
+          <span class="prrC__km prrC__km--sage">{rutas[0].km}</span>
+          <span class="prrC__dur">{rutas[0].dur}</span>
+          <h3 class="prrC__name">{rutas[0].name}</h3>
+          <div class="prrC__sep" aria-hidden="true"></div>
+          <p class="prrC__desc">{rutas[0].desc}</p>
+        </div>
+        <div class="prrC__divider" aria-hidden="true">
+          <span class="prrC__vs">VS</span>
+        </div>
+        <div class="prrC__col" data-reveal data-reveal-delay="2">
+          <span class="prrC__km prrC__km--coral">{rutas[1].km}</span>
+          <span class="prrC__dur">{rutas[1].dur}</span>
+          <h3 class="prrC__name">{rutas[1].name}</h3>
+          <div class="prrC__sep" aria-hidden="true"></div>
+          <p class="prrC__desc">{rutas[1].desc}</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ============== SPECIAL DAY · Sage banner ============== -->
+  <section class="prdC">
+    <div class="container container--xl">
+      <header class="prdC__head" data-reveal>
+        <span class="prdC__eyebrow">— Yearly exception</span>
+        <h2 class="prdC__title">
+          The Sella's big day,<br/>
+          <span class="serif-italic">special price</span>
+        </h2>
+        <p class="prdC__text">
+          On the Saturday of the International Sella River Descent, the river opens
+          up to touristic descents once the elite have passed. A single departure
+          a day, with its own conditions.
+        </p>
+      </header>
+
+      <div class="prdC__stats" data-reveal>
+        <div class="prdC__stat">
+          <span class="prdC__stat-value">€35</span>
+          <span class="prdC__stat-label">Single price</span>
+        </div>
+        <div class="prdC__stat">
+          <span class="prdC__stat-value">12:00</span>
+          <span class="prdC__stat-label">Single departure</span>
+        </div>
+        <div class="prdC__stat">
+          <span class="prdC__stat-value">8 Aug</span>
+          <span class="prdC__stat-label">2026 · Saturday</span>
+        </div>
+        <div class="prdC__stat">
+          <span class="prdC__stat-value">Places</span>
+          <span class="prdC__stat-label">Very limited</span>
+        </div>
+      </div>
+
+      <a href={getLocalePath('descenso_internacional', 'en')} class="prdC__cta" data-reveal>
+        Read the full guide to the International Descent
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ============== HOW TO PAY ============== -->
+  <section class="prpay">
+    <div class="container container--xl">
+      <header class="prpay__header" data-reveal>
+        <span class="prpay__eyebrow">— How to book and pay</span>
+        <h2 class="prpay__title">
+          Book today,<br/>
+          <span class="serif-italic">pay whenever you like</span>
+        </h2>
+      </header>
+
+      <div class="prpay__grid">
+        <article class="prpayStep" data-reveal data-reveal-delay="1">
+          <span class="prpayStep__num">01</span>
+          <h3 class="prpayStep__title">Quick booking</h3>
+          <p class="prpayStep__text">Pick the day, the number of people and fill in your details. We confirm your spot instantly by <strong>WhatsApp and email</strong>.</p>
+        </article>
+        <article class="prpayStep" data-reveal data-reveal-delay="2">
+          <span class="prpayStep__num">02</span>
+          <h3 class="prpayStep__title">Pay however suits you</h3>
+          <p class="prpayStep__text">By <strong>card in advance</strong> or <strong>on the day of the activity when you pick up your canoe</strong>. Whichever is more convenient.</p>
+        </article>
+        <article class="prpayStep" data-reveal data-reveal-delay="3">
+          <span class="prpayStep__num">03</span>
+          <h3 class="prpayStep__title">Flexible changes and cancellations</h3>
+          <p class="prpayStep__text">Change the date or cancel before the day of the activity, free of charge. If you paid by card in advance, refunds require <strong>24 hours' notice</strong>.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FAQ PRICES (Home style · 2 cols sidebar) ============== -->
+  <section class="prf">
+    <div class="container container--xl">
+      <div class="prf__grid">
+        <aside class="prf__aside" data-reveal>
+          <span class="prf__eyebrow">— Price questions</span>
+          <h2 class="prf__title">
+            The rate,<br/>
+            <span class="serif-italic">in detail</span>
+          </h2>
+          <p class="prf__lead">
+            Here are the answers to the <strong>most common questions</strong> about
+            price, payment and cancellation. If yours isn't here, <a href={getLocalePath('contacto', 'en')}>we are just one message away</a>.
+          </p>
+
+          <div class="prf__badges">
+            <span class="prf__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>From €30</strong> · VAT included</span>
+            </span>
+            <span class="prf__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Without paying now</strong> · pay on the day</span>
+            </span>
+            <span class="prf__badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span><strong>Change or cancel</strong> · flexible depending on payment</span>
+            </span>
+          </div>
+        </aside>
+
+        <div class="prf__list">
+          {faqs.map((f, i) => (
+            <details class="prfRow" name="faq-precios" open={i === 0}>
+              <summary>
+                <span>{f.q}</span>
+                <span class="prfRow__sign" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </span>
+              </summary>
+              <div class="prfRow__a" set:html={f.a}></div>
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FINAL CTA · deep sage with hinted photo ============== -->
+  <section class="prcta">
+    <div class="prcta__bg" aria-hidden="true">
+      <Picture src="precios-rutas-bg" alt="" sizes="100vw" bare />
+      <div class="prcta__scrim"></div>
+    </div>
+    <div class="container container--lg">
+      <div class="prcta__card" data-reveal>
+        <h2 class="prcta__title">
+          Shall we book?<br/>
+          <span class="serif-italic">from €30, without paying now</span>
+        </h2>
+        <p class="prcta__text">
+          Your spot guaranteed, instant confirmation, no surprises.
+        </p>
+        <div class="prcta__actions">
+          <a href={getLocalePath('reservar', 'en')} class="prcta__primary">
+            Book my place
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== HERO ============== */
+  .prh {
+    position: relative;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: linear-gradient(180deg, #1A1F2E 0%, #243040 100%);
+    color: var(--color-text-on-dark, #FBF8F1);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .prh::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 10%, transparent 70%);
+  }
+  .prh__inner {
+    position: relative; z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+  .prh__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: start;
+  }
+  @media (min-width: 1080px) {
+    .prh__grid {
+      grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.75fr);
+      gap: clamp(3rem, 6vw, 6rem);
+      align-items: end;
+    }
+  }
+  .prh__main { min-width: 0; }
+
+  .prh__contact { background: transparent; padding: 0; border: 0; align-self: end; }
+  .prh__contactKicker {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.875rem;
+  }
+  .prh__contactList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; }
+  .prh__contactPill {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; padding: 0.875rem 1.25rem;
+    background: rgba(251, 248, 241, 0.08);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: var(--radius-pill, 999px);
+    text-decoration: none;
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    transition: background 220ms ease, border-color 220ms ease, transform 220ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+  }
+  .prh__contactPill:hover { background: rgba(251, 248, 241, 0.15); border-color: rgba(251, 248, 241, 0.45); transform: translateY(-1px); }
+  .prh__contactPill strong { font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700; letter-spacing: 0.2px; color: #FBF8F1; }
+  .prh__contactPill small { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(251, 248, 241, 0.55); text-align: right; white-space: nowrap; }
+  .prh__contactPill svg { color: rgba(251, 248, 241, 0.65); transition: transform 220ms ease, color 220ms ease; }
+  .prh__contactPill:hover svg { color: #FBF8F1; transform: translateX(3px); }
+  .prh__contactPill--primary { background: var(--color-primary, #E9856F); border-color: var(--color-primary, #E9856F); }
+  .prh__contactPill--primary:hover { background: var(--color-primary-hover, #D66F59); border-color: var(--color-primary-hover, #D66F59); transform: translateY(-2px); box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.55); }
+  .prh__contactPill--primary strong { color: #fff; }
+  .prh__contactPill--primary svg { color: #fff; }
+  @media (prefers-reduced-motion: reduce) { .prh__contactPill, .prh__contactPill:hover { transition: none; transform: none; } }
+
+  .prh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.45);
+    margin-bottom: var(--s-8);
+  }
+  .prh__breadcrumb a { color: rgba(251, 248, 241, 0.7); transition: color 200ms; }
+  .prh__breadcrumb a:hover { color: var(--color-primary); }
+
+  .prh__eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: var(--s-6);
+  }
+  .prh__eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); animation: prhPulse 2.2s ease-in-out infinite; }
+  @keyframes prhPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+
+  .prh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7.5vw, 6rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 var(--s-6);
+  }
+  .prh__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; letter-spacing: -0.01em; }
+  .prh__lead {
+    font-family: var(--font-sans); font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+    line-height: 1.65;
+    color: rgba(251, 248, 241, 0.8);
+    max-width: 62ch;
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .prh__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .prh__stats {
+    display: flex; flex-direction: column;
+    gap: clamp(0.875rem, 1.75vw, 1.25rem);
+    margin-bottom: clamp(2rem, 3.5vw, 2.75rem);
+    align-items: flex-start;
+    background: transparent; padding: 0; border: 0;
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .prh__statsKicker {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .prh__statsKickerMark { width: 26px; height: 1px; background: var(--color-primary); opacity: 0.7; }
+  .prh__statsRow { display: inline-flex; flex-wrap: wrap; align-items: flex-end; gap: clamp(1.5rem, 3.25vw, 2.75rem); }
+  .prh__stat { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+  .prh__stat strong { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.035em; color: #FBF8F1; display: flex; align-items: baseline; gap: 2px; }
+  .prh__stat strong small { font-family: var(--font-serif); font-size: 0.45em; font-weight: 400; font-style: italic; letter-spacing: 0; color: var(--color-primary); }
+  .prh__stat span:last-child { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(251, 248, 241, 0.6); }
+  .prh__stat-divider { align-self: stretch; width: 1px; background: rgba(251, 248, 241, 0.18); margin-block: 0.5rem; display: none; }
+  @media (min-width: 600px) { .prh__stat-divider { display: block; } }
+
+  /* ============== SHARED TITLES ============== */
+  .prp__eyebrow, .pri__eyebrow, .prr__eyebrow, .prd__eyebrow, .prpay__eyebrow, .prf__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .prp__title, .pri__title, .prr__title, .prd__title, .prpay__title, .prf__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .prp__title .serif-italic, .pri__title .serif-italic, .prr__title .serif-italic, .prd__title .serif-italic, .prpay__title .serif-italic, .prf__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .prp__lead, .pri__lead, .prr__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
+  .prp__lead strong, .pri__lead strong, .prr__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ============== PRICE CARDS ============== */
+  .prp { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .prp__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 4rem); text-align: center; }
+  .prp__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-5); max-width: 1280px; margin: 0 auto; }
+  @media (min-width: 720px)  { .prp__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .prp__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .prpCard {
+    background: var(--color-bg-elevated, #FFFFFF);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: clamp(1.25rem, 2vw, 1.75rem);
+    display: flex; flex-direction: column;
+    transition: transform 320ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 320ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                border-color 320ms ease;
+    position: relative; overflow: hidden;
+  }
+  .prpCard:hover { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(26, 31, 46, 0.1), 0 8px 18px rgba(26, 31, 46, 0.06); }
+  .prpCard--sage:hover  { border-color: rgba(61, 79, 58, 0.4); }
+  .prpCard--coral:hover { border-color: rgba(233, 133, 111, 0.5); }
+
+  .prpCard__media {
+    position: relative; overflow: hidden;
+    border-radius: clamp(1rem, 1.8vw, 1.5rem);
+    margin: 1rem 1rem 0;
+    aspect-ratio: 4 / 3;
+    isolation: isolate;
+  }
+  .prpCard__media :global(picture), .prpCard__media :global(img) {
+    display: block; width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .prpCard:hover .prpCard__media :global(img) { transform: scale(1.04); }
+  .prpCard__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.68) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 70%); pointer-events: none; }
+  .prpCard__mediaTag {
+    position: absolute; top: 0.875rem; left: 0.875rem; z-index: 2;
+    display: inline-flex; align-items: center;
+    padding: 5px 11px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  .prpCard--sage  .prpCard__mediaTag { color: var(--color-sage, #3D4F3A); }
+  .prpCard--coral .prpCard__mediaTag { color: var(--color-primary); }
+
+  .prpCard__mediaContent { position: absolute; left: 1.125rem; right: 1.125rem; bottom: 1rem; z-index: 2; color: #fff; }
+  .prpCard__mediaTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+    font-weight: 900; line-height: 1; letter-spacing: -0.02em;
+    margin: 0 0 0.375rem;
+    color: #fff;
+    display: inline-flex; align-items: baseline; gap: 0.375rem;
+  }
+  .prpCard__mediaTitle span { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600; letter-spacing: 0.2px; opacity: 0.92; text-transform: none; }
+  .prpCard__mediaSub { margin: 0; font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.4; color: rgba(255, 255, 255, 0.92); letter-spacing: 0.2px; }
+
+  .prpCard__body { padding: clamp(1.75rem, 3vw, 2.25rem); display: flex; flex-direction: column; flex: 1; }
+  .prpCard__head { display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); margin-bottom: var(--s-5); }
+  .prpCard__name { font-family: var(--font-display); font-size: clamp(1.125rem, 1.9vw, 1.3125rem); font-weight: 800; line-height: 1.15; letter-spacing: -0.01em; color: var(--color-text-primary); margin: 0; }
+  .prpCard__rating { display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; color: var(--color-text-primary); flex-shrink: 0; }
+  .prpCard__rating svg { color: #E8B339; }
+
+  .prpCard__stats { display: grid; grid-template-columns: repeat(4, 1fr); list-style: none; padding: 0; margin: 0 0 var(--s-5); background: var(--color-bg-warm, #F5F1E8); border-radius: 0.875rem; overflow: hidden; }
+  .prpCard__stats li { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0.9375rem 0.5rem; text-align: center; border-right: 1px solid rgba(26, 31, 46, 0.08); min-width: 0; }
+  .prpCard__stats li:last-child { border-right: none; }
+  .prpCard__stat-val { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; color: var(--color-text-primary); letter-spacing: -0.01em; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .prpCard__stat-lbl { font-family: var(--font-sans); font-size: 0.5625rem; font-weight: 700; color: var(--color-text-muted); letter-spacing: 1.3px; text-transform: uppercase; }
+
+  .prpCard__desc { margin: 0 0 var(--s-5); font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .prpCard__list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8125rem; margin: 0 0 var(--s-6); flex: 1; }
+  .prpCard__list li { position: relative; padding-left: 1.125rem; font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); }
+  .prpCard__list li::before { content: ""; position: absolute; left: 0; top: 0.625rem; width: 6px; height: 6px; border-radius: 50%; }
+  .prpCard--sage  .prpCard__list li::before { background: var(--color-sage, #3D4F3A); }
+  .prpCard--coral .prpCard__list li::before { background: var(--color-primary); }
+  .prpCard__list strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .prpCard__cta {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: var(--s-2); width: 100%;
+    padding: 1.0625rem 1.25rem;
+    background: var(--color-text-primary, #1A1F2E); color: #fff;
+    border: 1.5px solid var(--color-text-primary, #1A1F2E);
+    border-radius: 0.875rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.8px;
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    margin-top: auto;
+  }
+  .prpCard__cta:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(26, 31, 46, 0.22); }
+  .prpCard__cta--primary { background: var(--color-primary); color: #fff; border-color: var(--color-primary); box-shadow: 0 8px 20px rgba(233, 133, 111, 0.3); }
+  .prpCard__cta--primary:hover { background: var(--color-primary-hover, #D66F59); border-color: var(--color-primary-hover, #D66F59); box-shadow: 0 12px 28px rgba(233, 133, 111, 0.5); }
+  .prpCard__cta svg { transition: transform 200ms; }
+  .prpCard__cta:hover svg { transform: translateX(3px); }
+
+  .prpCardCTA {
+    position: relative; overflow: hidden;
+    border-radius: clamp(1.25rem, 2vw, 1.75rem);
+    min-height: 380px;
+    display: flex; isolation: isolate;
+    transition: transform 320ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .prpCardCTA:hover { transform: translateY(-6px); box-shadow: 0 28px 60px rgba(26, 31, 46, 0.18), 0 8px 18px rgba(26, 31, 46, 0.08); }
+  .prpCardCTA__media { position: absolute; inset: 0; z-index: 0; }
+  .prpCardCTA__media :global(picture), .prpCardCTA__media :global(img), .prpCardCTA__video {
+    display: block; width: 100%; height: 100%; object-fit: cover; object-position: center;
+    transition: transform 700ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .prpCardCTA:hover .prpCardCTA__media :global(img), .prpCardCTA:hover .prpCardCTA__video { transform: scale(1.04); }
+  .prpCardCTA__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 45%, rgba(0,0,0,0.75) 100%); pointer-events: none; z-index: 1; }
+  .prpCardCTA__inner { position: relative; z-index: 2; flex: 1; padding: clamp(1.75rem, 3vw, 2.5rem); display: flex; flex-direction: column; justify-content: flex-end; color: #fff; }
+  .prpCardCTA__bottom { display: flex; flex-direction: column; gap: 1.5rem; }
+  .prpCardCTA__kicker { font-family: var(--font-serif); font-size: clamp(0.75rem, 1.1vw, 0.9375rem); font-weight: 300; font-style: italic; letter-spacing: 0.1px; color: rgba(255, 255, 255, 0.88); margin-bottom: -0.5rem; white-space: nowrap; }
+  .prpCardCTA__title { font-family: var(--font-display); font-size: clamp(1.625rem, 2.8vw, 2.125rem); font-weight: 900; line-height: 1.08; letter-spacing: -0.02em; color: #fff; margin: 0; }
+  .prpCardCTA__btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 0.75rem; align-self: flex-start; padding: 0.375rem 0.375rem 0.375rem 1.25rem; background: #fff; color: var(--color-text-primary, #1A1F2E); border-radius: 999px; font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700; letter-spacing: 0.2px; transition: transform 220ms ease, box-shadow 220ms ease; }
+  .prpCardCTA__btn:hover { transform: translateX(4px); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28); }
+  .prpCardCTA__btnIcon { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: var(--color-text-primary, #1A1F2E); color: #fff; transition: transform 220ms ease; }
+  .prpCardCTA__btn:hover .prpCardCTA__btnIcon { transform: rotate(-15deg); }
+  @media (min-width: 720px) and (max-width: 1023.98px) { .prpCardCTA { grid-column: 1 / -1; min-height: 280px; } }
+  @media (max-width: 719.98px) { .prpCardCTA { min-height: 320px; } }
+
+  .prp__note {
+    max-width: 760px; margin: clamp(2rem, 4vw, 3rem) auto 0;
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 2px solid var(--color-sage, #3D4F3A);
+    border-radius: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .prp__note svg { color: var(--color-sage, #3D4F3A); flex-shrink: 0; margin-top: 3px; }
+  .prp__note a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+  .prp__note strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ============== ALL INCLUDED ============== */
+  .pri { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .pri__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  /* ============== ROUTES ============== */
+  .prr { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .prr__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .priD { list-style: none; padding: 0; margin: 0 auto; max-width: 1100px; display: grid; grid-template-columns: 1fr; gap: 0; }
+  @media (min-width: 640px)  { .priD { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px)  { .priD { grid-template-columns: repeat(3, 1fr); } }
+
+  .priDItem {
+    display: grid; grid-template-columns: auto 1fr; gap: var(--s-4);
+    padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1rem, 2vw, 1.75rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+    border-left: 3px solid transparent;
+    align-items: start;
+    transition: all 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .priDItem:hover { border-left-color: var(--color-primary); background: rgba(233, 133, 111, 0.03); transform: translateX(4px); }
+  @media (min-width: 640px) { .priDItem { border-right: 1px solid var(--color-border-subtle); } .priDItem:nth-child(2n) { border-right: 0; } }
+  @media (min-width: 960px) {
+    .priDItem:nth-child(2n) { border-right: 1px solid var(--color-border-subtle); }
+    .priDItem:nth-child(3n) { border-right: 0; }
+    .priDItem:nth-last-child(-n+3) { border-bottom: 0; }
+  }
+  .priDItem__num { font-family: var(--font-display); font-size: clamp(1.875rem, 3vw, 2.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.03em; color: rgba(233, 133, 111, 0.18); min-width: 40px; transition: all 320ms cubic-bezier(0.34, 1.2, 0.64, 1); }
+  .priDItem:hover .priDItem__num { color: rgba(233, 133, 111, 0.45); transform: scale(1.12); }
+  .priDItem__body { min-width: 0; }
+  .priDItem__title { display: flex; align-items: center; gap: var(--s-2); font-family: var(--font-display); font-size: 1rem; font-weight: 800; line-height: 1.3; letter-spacing: -0.005em; color: var(--color-text-primary); margin: 0 0 var(--s-2); }
+  .priDItem__icon { display: inline-flex; align-items: center; justify-content: center; color: var(--color-primary); opacity: 0.7; flex-shrink: 0; transition: all 260ms var(--ease-out); }
+  .priDItem:hover .priDItem__icon { opacity: 1; transform: scale(1.15) rotate(-6deg); }
+  .priDItem__sub { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.7; color: var(--color-text-muted); margin: 0; }
+
+  .pri__eyebrow { color: var(--color-sage, #3D4F3A); }
+  .pri__title .serif-italic { color: var(--color-sage, #3D4F3A); }
+  .priDItem__num { color: rgba(61, 79, 58, 0.18); }
+  .priDItem:hover .priDItem__num { color: rgba(61, 79, 58, 0.45); }
+  .priDItem__icon { color: var(--color-sage, #3D4F3A); }
+
+  .prrC { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem); padding-block: var(--s-6); }
+  @media (min-width: 720px) { .prrC { grid-template-columns: 1fr auto 1fr; gap: clamp(2rem, 3.5vw, 3rem); } }
+  .prrC__col { display: flex; flex-direction: column; text-align: center; padding: clamp(1.5rem, 3vw, 2.5rem) 0; }
+  .prrC__km { font-family: var(--font-display); font-size: clamp(3.5rem, 7vw, 5.5rem); font-weight: 900; line-height: 0.85; letter-spacing: -0.04em; margin-bottom: var(--s-2); }
+  .prrC__km--sage  { color: var(--color-sage, #3D4F3A); }
+  .prrC__km--coral { color: var(--color-primary); }
+  .prrC__dur { font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: var(--color-text-muted); margin-bottom: var(--s-4); }
+  .prrC__name { font-family: var(--font-display); font-size: clamp(1.25rem, 2vw, 1.625rem); font-weight: 800; line-height: 1; letter-spacing: -0.01em; color: var(--color-text-primary); margin: 0 0 var(--s-4); }
+  .prrC__sep { width: 40px; height: 2px; background: var(--color-border-subtle); margin: 0 auto var(--s-4); }
+  .prrC__desc { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; max-width: 38ch; margin-inline: auto; }
+  .prrC__divider { display: none; width: 1px; background: var(--color-border-subtle); position: relative; align-self: stretch; }
+  @media (min-width: 720px) { .prrC__divider { display: block; } }
+  .prrC__vs { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--color-bg-base); padding: var(--s-2) var(--s-3); font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: var(--color-text-muted); white-space: nowrap; }
+
+  .prdC { padding-block: clamp(4.5rem, 9vw, 7rem); background: var(--color-sage, #3D4F3A); color: var(--color-text-on-dark, #FBF8F1); text-align: center; }
+  .prdC__head { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .prdC__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary-soft, #F4B5A3); margin-bottom: var(--s-4); }
+  .prdC__title { font-family: var(--font-display); font-size: clamp(1.75rem, 4vw, 2.75rem); font-weight: 900; line-height: 0.98; letter-spacing: -0.015em; text-transform: uppercase; color: var(--color-text-on-dark); margin: 0 0 var(--s-4); }
+  .prdC__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .prdC__text { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: rgba(251, 248, 241, 0.82); margin: 0; max-width: 52ch; margin-inline: auto; }
+  .prdC__stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s-4); max-width: 960px; margin: 0 auto clamp(2rem, 4vw, 3rem); padding: var(--s-5) 0; border-top: 1px solid rgba(251, 248, 241, 0.14); border-bottom: 1px solid rgba(251, 248, 241, 0.14); }
+  @media (min-width: 640px) { .prdC__stats { grid-template-columns: repeat(4, 1fr); } }
+  .prdC__stat { display: flex; flex-direction: column; gap: 4px; }
+  .prdC__stat-value { font-family: var(--font-display); font-size: clamp(1.5rem, 2.5vw, 1.875rem); font-weight: 900; line-height: 1; color: var(--color-primary); letter-spacing: -0.015em; }
+  .prdC__stat-label { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: rgba(251, 248, 241, 0.6); }
+  .prdC__cta { display: inline-flex; align-items: center; gap: var(--s-2); padding: 1rem 1.75rem; background: var(--color-primary); color: #fff; border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; box-shadow: 0 10px 24px rgba(233, 133, 111, 0.4); transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1); }
+  .prdC__cta:hover { background: var(--color-primary-hover, #D66F59); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(233, 133, 111, 0.55); }
+  .prdC__cta svg { transition: transform 200ms; }
+  .prdC__cta:hover svg { transform: translateX(3px); }
+
+  .prpay { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .prpay__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .prpay__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-6); max-width: 1000px; margin: 0 auto; }
+  @media (min-width: 720px) { .prpay__grid { grid-template-columns: repeat(3, 1fr); gap: var(--s-8); } }
+  .prpayStep { position: relative; padding-top: clamp(2.5rem, 4vw, 3.5rem); }
+  .prpayStep__num { position: absolute; top: -0.5rem; left: -0.5rem; font-family: var(--font-display); font-size: clamp(4rem, 8vw, 6rem); font-weight: 900; line-height: 0.8; letter-spacing: -0.04em; color: rgba(233, 133, 111, 0.14); pointer-events: none; user-select: none; }
+  .prpayStep__title { position: relative; z-index: 1; font-family: var(--font-display); font-size: 1.25rem; font-weight: 800; line-height: 1.15; color: var(--color-text-primary); margin: 0 0 var(--s-2); }
+  .prpayStep__text { position: relative; z-index: 1; font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0; max-width: 36ch; }
+
+  .prf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-elevated, #FFFFFF); }
+  .prf__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: start; }
+  @media (min-width: 900px) { .prf__grid { grid-template-columns: 1fr 1.3fr; gap: clamp(3rem, 5vw, 5rem); } }
+  .prf__aside { min-width: 0; }
+  .prf__lead { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0 0 var(--s-6); max-width: 42ch; }
+  .prf__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .prf__lead a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+  .prf__badges { display: flex; flex-direction: column; gap: var(--s-3); padding-top: var(--s-5); border-top: 1px solid var(--color-border-subtle); }
+  .prf__badge { display: flex; align-items: flex-start; gap: var(--s-2); font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.45; color: var(--color-text-secondary); }
+  .prf__badge strong { color: var(--color-text-primary); font-weight: 700; }
+  .prf__badge svg { color: var(--color-primary); flex-shrink: 0; background: rgba(233, 133, 111, 0.14); border-radius: 50%; padding: 4px; box-sizing: content-box; margin-top: 2px; }
+  .prf__list { display: flex; flex-direction: column; min-width: 0; }
+  .prfRow { border-bottom: 1px solid var(--color-border-subtle); transition: border-color 200ms; }
+  .prfRow[open] { border-color: rgba(233, 133, 111, 0.35); }
+  .prfRow > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-5) 0; font-family: var(--font-display); font-size: clamp(0.9375rem, 1.3vw, 1.0625rem); font-weight: 700; line-height: 1.35; color: var(--color-text-primary); transition: color 200ms; }
+  .prfRow > summary::-webkit-details-marker { display: none; }
+  .prfRow > summary:hover { color: var(--color-primary); }
+  .prfRow__sign { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; color: var(--color-text-primary); flex-shrink: 0; transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms; }
+  .prfRow[open] .prfRow__sign { transform: rotate(45deg); color: var(--color-primary); }
+  .prfRow__a { padding: 0 0 var(--s-5); font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 65ch; }
+  .prfRow__a :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .prfRow__a :global(a) { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  .prcta { position: relative; padding-block: clamp(5rem, 10vw, 8rem); background: #2D3C2B; overflow: hidden; isolation: isolate; }
+  .prcta__bg { position: absolute; inset: 0; z-index: -2; }
+  .prcta__bg :global(picture), .prcta__bg :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.48) saturate(1.05); }
+  .prcta__scrim { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(61, 79, 58, 0.62) 0%, rgba(45, 65, 45, 0.74) 100%); }
+  .prcta__scrim::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 55% 55% at 50% 50%, rgba(30, 45, 30, 0.32) 0%, transparent 75%), radial-gradient(ellipse 80% 80% at 50% 50%, transparent 0%, transparent 55%, rgba(30, 45, 30, 0.42) 100%); pointer-events: none; }
+  .prcta__card { max-width: 760px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .prcta__title { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.015em; text-transform: uppercase; color: #FFFFFF; margin: 0 0 var(--s-5); text-shadow: 0 2px 24px rgba(0, 0, 0, 0.7), 0 0 32px rgba(0, 0, 0, 0.4); }
+  .prcta__title .serif-italic { color: var(--color-primary-soft, #F5C5B5); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .prcta__text { font-family: var(--font-sans); font-size: 1rem; line-height: 1.6; color: #FBF8F1; max-width: 50ch; margin: 0 auto clamp(2rem, 4vw, 2.5rem); text-shadow: 0 1px 16px rgba(0, 0, 0, 0.6), 0 0 24px rgba(0, 0, 0, 0.35); }
+  .prcta__actions { display: flex; flex-wrap: wrap; gap: var(--s-3); justify-content: center; }
+  .prcta__primary { display: inline-flex; align-items: center; gap: var(--s-2); padding: 1.125rem 2rem; background: var(--color-primary); color: #fff; border-radius: var(--radius-pill); font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; box-shadow: 0 10px 28px rgba(233, 133, 111, 0.38); transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1); }
+  .prcta__primary:hover { background: var(--color-primary-hover, #D66F59); transform: translateY(-3px); box-shadow: 0 16px 32px rgba(233, 133, 111, 0.5); }
+  .prcta__primary svg { transition: transform 200ms; }
+  .prcta__primary:hover svg { transform: translateX(3px); }
+</style>
+
+<script>
+  // Lazy load + play/pause based on visibility of the CTA card video.
+  // Respects prefers-reduced-motion: if active, the video is not loaded
+  // (only the poster JPG is shown).
+  (function () {
+    const videos = document.querySelectorAll<HTMLVideoElement>('.prpCardCTA__video');
+    if (!videos.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+
+    function load(video: HTMLVideoElement) {
+      if (video.dataset.loaded === '1') return;
+      const src = video.dataset.src;
+      if (!src) return;
+      const source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      video.appendChild(source);
+      video.load();
+      video.dataset.loaded = '1';
+    }
+
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            const v = entry.target as HTMLVideoElement;
+            if (entry.isIntersecting) {
+              load(v);
+              v.play().catch(() => {});
+            } else {
+              v.pause();
+            }
+          });
+        },
+        { rootMargin: '200px 0px', threshold: 0 }
+      );
+      videos.forEach((v) => io.observe(v));
+    } else {
+      videos.forEach((v) => {
+        load(v);
+        v.play().catch(() => {});
+      });
+    }
+  })();
+</script>
+</content>
+</invoke>

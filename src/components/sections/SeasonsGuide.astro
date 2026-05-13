@@ -1,0 +1,934 @@
+---
+/**
+ * SeasonsGuideC — Layout compacto (4 cards en fila como A) + info completa (como B)
+ * Bubble cards pastel + iconos animados Lottie-style + stats + highlights + recomendado
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— Guía rápida por temporadas',
+    title1: '¿Cuándo hacer el',
+    title2: 'descenso del Sella',
+    titleEnd: '?',
+    kicker: 'Cada estación tiene su magia.',
+    leadPart1: 'El ',
+    leadPart2: 'Sella se navega de marzo a noviembre',
+    leadPart3: '. Toda la info a un vistazo — temperatura, horas de luz, caudal y lo que vivirás en cada época.',
+    statLabels: {
+      thermo: 'Temp. ambiente',
+      sunmoon: 'Luz solar',
+      river: 'Caudal m³/s',
+    },
+    seasons: [
+      {
+        key: 'primavera',
+        range: 'mar — jun',
+        label: 'Primavera',
+        badge: 'PRACTICABLE',
+        top: false,
+        intro: 'Río vivo y muy poca afluencia.',
+        statValues: ['13–18°', '12–14h', '80–120'],
+        highlights: [
+          'Bosques verdes explosivos',
+          'Temperatura suave',
+          'Afluencia muy baja',
+        ],
+        recommended: 'Parejas · fotógrafos · silencio',
+      },
+      {
+        key: 'verano',
+        range: 'jul — ago',
+        label: 'Verano',
+        badge: 'LA MEJOR',
+        top: true,
+        intro: 'Agua cálida, sol y caudal ideal.',
+        statValues: ['18–24°', '14–15h', '25–45'],
+        highlights: [
+          'Agua más templada',
+          'Días largos de sol',
+          'Caudal perfecto para canoa',
+          'Ambiente del Descenso Internacional',
+        ],
+        linkLabel: 'Guía del Descenso Internacional',
+        recommended: 'Familias · grupos · niños',
+      },
+      {
+        key: 'otono',
+        range: 'sep — nov',
+        label: 'Otoño',
+        badge: 'LA 2ª MEJOR',
+        top: true,
+        intro: 'Luz dorada y bosques ocres.',
+        statValues: ['12–20°', '11–13h', '35–80'],
+        highlights: [
+          'Colores ocres espectaculares',
+          'Afluencia baja',
+          'Gastronomía de temporada',
+        ],
+        recommended: 'Fotografía · gastronomía · calma',
+      },
+      {
+        key: 'invierno',
+        range: 'dic — feb',
+        label: 'Invierno',
+        badge: 'CERRADO',
+        top: false,
+        intro: 'Fuera de temporada recreativa.',
+        statValues: ['4–12°', '9–10h', '100+'],
+        highlights: [
+          'Actividad no disponible',
+          'Caudal alto · agua fría',
+          'Reserva tu plaza de temporada',
+        ],
+        recommended: 'Planificar para mar–nov',
+      },
+    ],
+  },
+  en: {
+    eyebrow: '— Quick season guide',
+    title1: 'When to do the',
+    title2: 'Sella descent',
+    titleEnd: '?',
+    kicker: 'Each season has its magic.',
+    leadPart1: 'The ',
+    leadPart2: 'Sella is paddled from March to November',
+    leadPart3: '. All the info at a glance — temperature, daylight, river flow and what you\'ll live in each season.',
+    statLabels: {
+      thermo: 'Air temp.',
+      sunmoon: 'Daylight',
+      river: 'Flow m³/s',
+    },
+    seasons: [
+      {
+        key: 'primavera',
+        range: 'mar — jun',
+        label: 'Spring',
+        badge: 'OPEN',
+        top: false,
+        intro: 'Lively river and very little footfall.',
+        statValues: ['13–18°', '12–14h', '80–120'],
+        highlights: [
+          'Explosive green forests',
+          'Mild temperature',
+          'Very low crowds',
+        ],
+        recommended: 'Couples · photographers · quiet',
+      },
+      {
+        key: 'verano',
+        range: 'jul — aug',
+        label: 'Summer',
+        badge: 'THE BEST',
+        top: true,
+        intro: 'Warm water, sunshine and ideal flow.',
+        statValues: ['18–24°', '14–15h', '25–45'],
+        highlights: [
+          'Warmer water',
+          'Long sunny days',
+          'Perfect flow for canoeing',
+          'Atmosphere of the International Descent',
+        ],
+        linkLabel: 'International Descent guide',
+        recommended: 'Families · groups · kids',
+      },
+      {
+        key: 'otono',
+        range: 'sep — nov',
+        label: 'Autumn',
+        badge: '2ND BEST',
+        top: true,
+        intro: 'Golden light and ochre forests.',
+        statValues: ['12–20°', '11–13h', '35–80'],
+        highlights: [
+          'Spectacular ochre colours',
+          'Low crowds',
+          'Seasonal gastronomy',
+        ],
+        recommended: 'Photography · food · calm',
+      },
+      {
+        key: 'invierno',
+        range: 'dec — feb',
+        label: 'Winter',
+        badge: 'CLOSED',
+        top: false,
+        intro: 'Outside the recreational season.',
+        statValues: ['4–12°', '9–10h', '100+'],
+        highlights: [
+          'Activity not available',
+          'High flow · cold water',
+          'Book your spot for the next season',
+        ],
+        recommended: 'Plan for mar–nov',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: '— Guide rapide par saisons',
+    title1: 'Quand faire la',
+    title2: 'descente du Sella',
+    titleEnd: ' ?',
+    kicker: 'Chaque saison a sa magie.',
+    leadPart1: 'Le ',
+    leadPart2: 'Sella se navigue de mars à novembre',
+    leadPart3: '. Toute l\'info en un coup d\'œil — température, heures de lumière, débit et ce que tu vivras à chaque époque.',
+    statLabels: {
+      thermo: 'Temp. ambiante',
+      sunmoon: 'Lumière',
+      river: 'Débit m³/s',
+    },
+    seasons: [
+      {
+        key: 'primavera',
+        range: 'mar — juin',
+        label: 'Printemps',
+        badge: 'OUVERT',
+        top: false,
+        intro: 'Rivière vive et très peu d\'affluence.',
+        statValues: ['13–18°', '12–14h', '80–120'],
+        highlights: [
+          'Forêts d\'un vert explosif',
+          'Température douce',
+          'Affluence très basse',
+        ],
+        recommended: 'Couples · photographes · silence',
+      },
+      {
+        key: 'verano',
+        range: 'juil — août',
+        label: 'Été',
+        badge: 'LA MEILLEURE',
+        top: true,
+        intro: 'Eau chaude, soleil et débit idéal.',
+        statValues: ['18–24°', '14–15h', '25–45'],
+        highlights: [
+          'Eau plus tempérée',
+          'Longues journées ensoleillées',
+          'Débit parfait pour le canoë',
+          'Ambiance de la Descente Internationale',
+        ],
+        linkLabel: 'Guide de la Descente Internationale',
+        recommended: 'Familles · groupes · enfants',
+      },
+      {
+        key: 'otono',
+        range: 'sept — nov',
+        label: 'Automne',
+        badge: 'LA 2E MEILLEURE',
+        top: true,
+        intro: 'Lumière dorée et forêts ocres.',
+        statValues: ['12–20°', '11–13h', '35–80'],
+        highlights: [
+          'Couleurs ocres spectaculaires',
+          'Affluence basse',
+          'Gastronomie de saison',
+        ],
+        recommended: 'Photographie · gastronomie · calme',
+      },
+      {
+        key: 'invierno',
+        range: 'déc — fév',
+        label: 'Hiver',
+        badge: 'FERMÉ',
+        top: false,
+        intro: 'Hors saison récréative.',
+        statValues: ['4–12°', '9–10h', '100+'],
+        highlights: [
+          'Activité non disponible',
+          'Débit haut · eau froide',
+          'Réserve ta place pour la saison',
+        ],
+        recommended: 'Planifier pour mars–nov',
+      },
+    ],
+  },
+  pt: {
+    eyebrow: '— Guia rápido por épocas',
+    title1: 'Quando fazer a',
+    title2: 'descida do Sella',
+    titleEnd: '?',
+    kicker: 'Cada época tem a sua magia.',
+    leadPart1: 'O ',
+    leadPart2: 'Sella navega-se de março a novembro',
+    leadPart3: '. Toda a info de um relance — temperatura, horas de luz, caudal e o que vais viver em cada época.',
+    statLabels: {
+      thermo: 'Temp. ambiente',
+      sunmoon: 'Luz solar',
+      river: 'Caudal m³/s',
+    },
+    seasons: [
+      {
+        key: 'primavera',
+        range: 'mar — jun',
+        label: 'Primavera',
+        badge: 'ABERTO',
+        top: false,
+        intro: 'Rio vivo e muito pouca afluência.',
+        statValues: ['13–18°', '12–14h', '80–120'],
+        highlights: [
+          'Bosques verdes explosivos',
+          'Temperatura suave',
+          'Afluência muito baixa',
+        ],
+        recommended: 'Casais · fotógrafos · silêncio',
+      },
+      {
+        key: 'verano',
+        range: 'jul — ago',
+        label: 'Verão',
+        badge: 'A MELHOR',
+        top: true,
+        intro: 'Água quente, sol e caudal ideal.',
+        statValues: ['18–24°', '14–15h', '25–45'],
+        highlights: [
+          'Água mais temperada',
+          'Dias longos de sol',
+          'Caudal perfeito para canoa',
+          'Ambiente da Descida Internacional',
+        ],
+        linkLabel: 'Guia da Descida Internacional',
+        recommended: 'Famílias · grupos · crianças',
+      },
+      {
+        key: 'otono',
+        range: 'set — nov',
+        label: 'Outono',
+        badge: 'A 2.ª MELHOR',
+        top: true,
+        intro: 'Luz dourada e bosques ocres.',
+        statValues: ['12–20°', '11–13h', '35–80'],
+        highlights: [
+          'Cores ocres espetaculares',
+          'Afluência baixa',
+          'Gastronomia de época',
+        ],
+        recommended: 'Fotografia · gastronomia · calma',
+      },
+      {
+        key: 'invierno',
+        range: 'dez — fev',
+        label: 'Inverno',
+        badge: 'FECHADO',
+        top: false,
+        intro: 'Fora de época recreativa.',
+        statValues: ['4–12°', '9–10h', '100+'],
+        highlights: [
+          'Atividade não disponível',
+          'Caudal alto · água fria',
+          'Reserva o teu lugar da época',
+        ],
+        recommended: 'Planear para mar–nov',
+      },
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+// Estructura visual (iconos, gradientes, links) · independiente de idioma
+// linkHref localizado para que el CTA del verano apunte al Descenso Internacional en el idioma actual
+const seasonsMeta = [
+  { icon: 'flower', gradient: 'sage'  },
+  { icon: 'sun',    gradient: 'ochre', linkHref: getLocalePath('descenso_internacional', lang) },
+  { icon: 'leaves', gradient: 'coral' },
+  { icon: 'snow',   gradient: 'cool'  },
+];
+
+// Mezclamos copy + meta para renderizado
+const seasons = t.seasons.map((s, idx) => {
+  const meta = seasonsMeta[idx];
+  return {
+    ...s,
+    icon: meta.icon,
+    gradient: meta.gradient,
+    stats: [
+      { value: s.statValues[0], label: t.statLabels.thermo,  icon: 'thermo'  },
+      { value: s.statValues[1], label: t.statLabels.sunmoon, icon: 'sunmoon' },
+      { value: s.statValues[2], label: t.statLabels.river,   icon: 'river'   },
+    ],
+    link: meta.linkHref && 'linkLabel' in s
+      ? { href: meta.linkHref, label: (s as any).linkLabel as string }
+      : undefined,
+  };
+});
+---
+
+<section class="seasonsC">
+  <div class="container container--xl">
+    <header class="seasonsC__header">
+      <span class="seasonsC__eyebrow">{t.eyebrow}</span>
+      <h2 class="seasonsC__title">
+        {t.title1}<br/><span class="serif-italic">{t.title2}</span>{t.titleEnd}
+      </h2>
+      <p class="seasonsC__kicker">{t.kicker}</p>
+      <p class="seasonsC__lead">
+        {t.leadPart1}<strong>{t.leadPart2}</strong>{t.leadPart3}
+      </p>
+    </header>
+
+    <div class="seasonsC__grid">
+      {seasons.map((s, i) => (
+        <article class={`seasonC seasonC--${s.gradient}`} style={`--i: ${i}`}>
+          <div class="seasonC__particles" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="seasonC__shimmer" aria-hidden="true"></div>
+
+          <header class="seasonC__head">
+            <div class="seasonC__top-slot">
+              {s.top && (
+                <span class="seasonC__top">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  TOP
+                </span>
+              )}
+            </div>
+            <span class="seasonC__label">{s.badge}</span>
+          </header>
+
+          <div class="seasonC__icon" aria-hidden="true">
+            {s.icon === 'flower' && (
+              <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+                <defs>
+                  <radialGradient id="sCBall" cx="30%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFE7A3"/><stop offset="55%" stop-color="#F5B54B"/><stop offset="100%" stop-color="#D68A1E"/></radialGradient>
+                  <radialGradient id="sCPetal" cx="30%" cy="25%" r="75%"><stop offset="0%" stop-color="#FFE0E7"/><stop offset="45%" stop-color="#F8A9B8"/><stop offset="100%" stop-color="#C96A7B"/></radialGradient>
+                  <radialGradient id="sCCore" cx="35%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFE7A3"/><stop offset="60%" stop-color="#F5B54B"/><stop offset="100%" stop-color="#A66318"/></radialGradient>
+                </defs>
+                <ellipse cx="28" cy="42" rx="14" ry="3" fill="#000" opacity="0.08"/>
+                <ellipse cx="88" cy="118" rx="30" ry="4" fill="#000" opacity="0.1"/>
+                <circle cx="28" cy="30" r="16" fill="url(#sCBall)"/>
+                <ellipse cx="22" cy="24" rx="6" ry="4" fill="#FFFFFF" opacity="0.45"/>
+                <g transform="translate(88,80)">
+                  <g class="flower-rotate">
+                    <ellipse cx="-25" cy="0" rx="18" ry="14" fill="url(#sCPetal)"/>
+                    <ellipse cx="25" cy="0" rx="18" ry="14" fill="url(#sCPetal)"/>
+                    <ellipse cx="0" cy="-25" rx="14" ry="18" fill="url(#sCPetal)"/>
+                    <ellipse cx="0" cy="25" rx="14" ry="18" fill="url(#sCPetal)"/>
+                    <circle cx="0" cy="0" r="12" fill="url(#sCCore)"/>
+                    <ellipse cx="-3" cy="-3" rx="4" ry="3" fill="#FFFFFF" opacity="0.6"/>
+                  </g>
+                </g>
+              </svg>
+            )}
+            {s.icon === 'sun' && (
+              <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+                <defs>
+                  <radialGradient id="sCSun" cx="32%" cy="30%" r="70%"><stop offset="0%" stop-color="#FFF0C4"/><stop offset="45%" stop-color="#F8C860"/><stop offset="100%" stop-color="#C97816"/></radialGradient>
+                  <radialGradient id="sCCloud" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="70%" stop-color="#F5F5F5"/><stop offset="100%" stop-color="#C8D0D6"/></radialGradient>
+                </defs>
+                <ellipse cx="46" cy="122" rx="30" ry="4" fill="#000" opacity="0.1"/>
+                <ellipse cx="95" cy="118" rx="30" ry="3" fill="#000" opacity="0.08"/>
+                <g class="sun-rays" transform-origin="46 50" stroke="#F5B54B" stroke-width="5" stroke-linecap="round">
+                  <line x1="46" y1="10" x2="46" y2="22"/><line x1="46" y1="78" x2="46" y2="90"/>
+                  <line x1="6" y1="50" x2="18" y2="50"/><line x1="74" y1="50" x2="86" y2="50"/>
+                  <line x1="18" y1="22" x2="26" y2="30"/><line x1="66" y1="70" x2="74" y2="78"/>
+                  <line x1="18" y1="78" x2="26" y2="70"/><line x1="66" y1="30" x2="74" y2="22"/>
+                </g>
+                <g class="sun-core" transform-origin="46 50">
+                  <circle cx="46" cy="50" r="25" fill="url(#sCSun)"/>
+                  <ellipse cx="38" cy="42" rx="9" ry="6" fill="#FFFFFF" opacity="0.55"/>
+                </g>
+                <g class="cloud-float">
+                  <ellipse cx="96" cy="86" rx="30" ry="16" fill="url(#sCCloud)"/>
+                  <ellipse cx="76" cy="90" rx="18" ry="12" fill="url(#sCCloud)"/>
+                  <ellipse cx="112" cy="80" rx="16" ry="10" fill="url(#sCCloud)"/>
+                </g>
+              </svg>
+            )}
+            {s.icon === 'leaves' && (
+              <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+                <defs>
+                  <radialGradient id="sCCAut" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="70%" stop-color="#F5F5F5"/><stop offset="100%" stop-color="#C8D0D6"/></radialGradient>
+                  <linearGradient id="sCLeafR" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5A27A"/><stop offset="50%" stop-color="#E8855F"/><stop offset="100%" stop-color="#9C3D28"/></linearGradient>
+                  <linearGradient id="sCLeafA" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#F5D27A"/><stop offset="50%" stop-color="#E8B24F"/><stop offset="100%" stop-color="#8E5F20"/></linearGradient>
+                </defs>
+                <ellipse cx="44" cy="118" rx="18" ry="3" fill="#000" opacity="0.1"/>
+                <ellipse cx="90" cy="125" rx="18" ry="3" fill="#000" opacity="0.1"/>
+                <g class="cloud-float">
+                  <ellipse cx="98" cy="38" rx="32" ry="18" fill="url(#sCCAut)"/>
+                  <ellipse cx="70" cy="44" rx="22" ry="14" fill="url(#sCCAut)"/>
+                  <ellipse cx="116" cy="32" rx="16" ry="10" fill="url(#sCCAut)"/>
+                </g>
+                <g class="leaf leaf--1" transform="translate(40,80) rotate(-20)">
+                  <g class="leaf__inner">
+                    <path d="M 0 0 Q 6 -16 18 -14 Q 20 0 10 8 Q -2 10 0 0 Z" fill="url(#sCLeafR)"/>
+                    <path d="M 2 -2 Q 8 -14 18 -12" stroke="#5E2214" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                  </g>
+                </g>
+                <g class="leaf leaf--2" transform="translate(92,108) rotate(30)">
+                  <g class="leaf__inner">
+                    <path d="M 0 0 Q 6 -16 18 -14 Q 20 0 10 8 Q -2 10 0 0 Z" fill="url(#sCLeafA)"/>
+                    <path d="M 2 -2 Q 8 -14 18 -12" stroke="#4B3410" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+                  </g>
+                </g>
+              </svg>
+            )}
+            {s.icon === 'snow' && (
+              <svg width="120" height="120" viewBox="0 0 140 140" fill="none">
+                <defs>
+                  <radialGradient id="sCCWin" cx="35%" cy="30%" r="75%"><stop offset="0%" stop-color="#FFFFFF"/><stop offset="70%" stop-color="#EEF1F4"/><stop offset="100%" stop-color="#B8C6D6"/></radialGradient>
+                </defs>
+                <ellipse cx="78" cy="122" rx="40" ry="4" fill="#000" opacity="0.08"/>
+                <g class="cloud-float">
+                  <ellipse cx="80" cy="42" rx="38" ry="20" fill="url(#sCCWin)"/>
+                  <ellipse cx="50" cy="48" rx="22" ry="14" fill="url(#sCCWin)"/>
+                  <ellipse cx="108" cy="38" rx="20" ry="12" fill="url(#sCCWin)"/>
+                </g>
+                <g class="snow snow--1">
+                  <g stroke="#6FA3CC" stroke-width="2.6" stroke-linecap="round">
+                    <line x1="46" y1="88" x2="66" y2="88"/>
+                    <line x1="56" y1="78" x2="56" y2="98"/>
+                    <line x1="49" y1="81" x2="63" y2="95"/>
+                    <line x1="63" y1="81" x2="49" y2="95"/>
+                  </g>
+                </g>
+                <g class="snow snow--2" fill="#8FB4D8">
+                  <circle cx="82" cy="88" r="2.5"/>
+                  <circle cx="96" cy="78" r="2"/>
+                </g>
+                <g class="snow snow--3" fill="#8FB4D8">
+                  <circle cx="100" cy="100" r="2.2"/>
+                  <circle cx="90" cy="110" r="1.8"/>
+                </g>
+              </svg>
+            )}
+          </div>
+
+          <div class="seasonC__body">
+            <h3 class="seasonC__range">{s.range}</h3>
+            <span class="seasonC__season">{s.label}</span>
+            <p class="seasonC__intro">{s.intro}</p>
+
+            <div class="seasonC__stats">
+              {s.stats.map(st => (
+                <div class="seasonC__stat">
+                  <span class="seasonC__stat-icon" aria-hidden="true">
+                    {st.icon === 'thermo' && (
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+                        <circle cx="11.5" cy="18" r="1.6" fill="currentColor"/>
+                      </svg>
+                    )}
+                    {st.icon === 'sunmoon' && (
+                      <svg width="18" height="16" viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8" cy="12" r="3.5"/>
+                        <line x1="8" y1="4" x2="8" y2="6.5"/><line x1="8" y1="17.5" x2="8" y2="20"/>
+                        <line x1="2" y1="12" x2="4" y2="12"/><line x1="12.5" y1="12" x2="14.5" y2="12"/>
+                        <line x1="3.5" y1="7.5" x2="5" y2="9"/><line x1="11" y1="15" x2="12.5" y2="16.5"/>
+                        <line x1="3.5" y1="16.5" x2="5" y2="15"/><line x1="11" y1="9" x2="12.5" y2="7.5"/>
+                        <path d="M24 14.5a5.5 5.5 0 1 1-6-7.8 4.5 4.5 0 0 0 6 7.8z"/>
+                      </svg>
+                    )}
+                    {st.icon === 'river' && (
+                      <svg width="18" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 7 Q 6 3 10 7 T 18 7 T 22 7"/>
+                        <path d="M2 13 Q 6 9 10 13 T 18 13 T 22 13"/>
+                        <path d="M2 19 Q 6 15 10 19 T 18 19 T 22 19"/>
+                      </svg>
+                    )}
+                  </span>
+                  <span class="seasonC__stat-value">{st.value}</span>
+                  <span class="seasonC__stat-label">{st.label}</span>
+                </div>
+              ))}
+            </div>
+
+            <ul class="seasonC__highlights">
+              {s.highlights.map(h => (
+                <li>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>{h}</span>
+                </li>
+              ))}
+            </ul>
+
+            {s.link && (
+              <a href={s.link.href} class="seasonC__link">
+                {s.link.label}
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            )}
+
+            <div class="seasonC__rec">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              <span>{s.recommended}</span>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .seasonsC { padding-block: clamp(4rem, 8vw, 6rem); background: transparent; }
+
+  .seasonsC__header {
+    max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 4rem); text-align: center;
+  }
+  .seasonsC__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: var(--s-4);
+  }
+  .seasonsC__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 4rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0 0 var(--s-3);
+  }
+  .seasonsC__title .serif-italic {
+    color: var(--color-primary); font-weight: 400; text-transform: none; font-style: italic;
+  }
+  .seasonsC__kicker {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    color: var(--color-primary);
+    margin: 0 0 var(--s-4); line-height: 1.3;
+  }
+  .seasonsC__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.6;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .seasonsC__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .seasonsC__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 2.5vw, 2rem);
+    max-width: 1400px; margin: 0 auto;
+  }
+  @media (min-width: 640px)  { .seasonsC__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .seasonsC__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  /* Card */
+  .seasonC {
+    position: relative;
+    padding: clamp(4.5rem, 5vw, 5rem) clamp(1.5rem, 2.2vw, 1.9rem) clamp(1.5rem, 2.2vw, 1.9rem);
+    border-radius: var(--radius-3xl);
+    overflow: hidden; isolation: isolate;
+    display: flex; flex-direction: column;
+    box-shadow:
+      0 20px 40px rgba(26, 31, 46, 0.06),
+      0 4px 10px rgba(26, 31, 46, 0.04),
+      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    transition: transform 400ms cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 400ms;
+    animation: seasonCFloat 6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.7s);
+  }
+  .seasonC:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 36px 60px rgba(26, 31, 46, 0.12), 0 8px 18px rgba(26, 31, 46, 0.06);
+  }
+  @keyframes seasonCFloat {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+  }
+
+  /* Gradientes */
+  .seasonC--sage  { background: linear-gradient(160deg, #DCE9D8 0%, #E8F0DF 40%, #F5F1E2 100%); }
+  .seasonC--ochre { background: linear-gradient(160deg, #FCE9C2 0%, #FDE4CC 45%, #FBE9DA 100%); }
+  .seasonC--coral { background: linear-gradient(160deg, #FBDBD2 0%, #FADBCB 45%, #F7E3D3 100%); }
+  .seasonC--cool  { background: linear-gradient(160deg, #E4EBF0 0%, #EEF1F3 45%, #F0EFEC 100%); }
+
+  /* Shimmer */
+  .seasonC__shimmer {
+    position: absolute; inset: 0; z-index: 1;
+    background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.35) 50%, transparent 60%);
+    background-size: 250% 100%; background-position: 200% 0;
+    animation: seasonCShimmer 6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 1.5s);
+    pointer-events: none; mix-blend-mode: overlay; opacity: 0.7;
+  }
+  @keyframes seasonCShimmer {
+    0%   { background-position: 200% 0; }
+    50%  { background-position: -100% 0; }
+    100% { background-position: -100% 0; }
+  }
+
+  /* Particles */
+  .seasonC__particles {
+    position: absolute; inset: 0; z-index: 0;
+    pointer-events: none; overflow: hidden;
+  }
+  .seasonC__particles span {
+    position: absolute; display: block; opacity: 0; will-change: transform, opacity;
+  }
+  .seasonC__particles span:nth-child(1) { left: 8%;  animation-delay: 0s;   }
+  .seasonC__particles span:nth-child(2) { left: 22%; animation-delay: 1.8s; }
+  .seasonC__particles span:nth-child(3) { left: 38%; animation-delay: 3.2s; }
+  .seasonC__particles span:nth-child(4) { left: 54%; animation-delay: 0.6s; }
+  .seasonC__particles span:nth-child(5) { left: 68%; animation-delay: 2.4s; }
+  .seasonC__particles span:nth-child(6) { left: 82%; animation-delay: 4s;   }
+  .seasonC__particles span:nth-child(7) { left: 14%; animation-delay: 5s;   }
+  .seasonC__particles span:nth-child(8) { left: 92%; animation-delay: 1.2s; }
+
+  .seasonC--sage .seasonC__particles span {
+    width: 7px; height: 5px; background: #F4A8B5;
+    border-radius: 50% 10% 50% 10%;
+    animation-name: seasonCPetal;
+    animation-duration: 9s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+  @keyframes seasonCPetal {
+    0%   { top: -10%;  opacity: 0; transform: rotate(0deg); }
+    10%  { opacity: 0.9; }
+    50%  { transform: translateX(14px) rotate(180deg); }
+    90%  { opacity: 0.9; }
+    100% { top: 110%; opacity: 0; transform: translateX(-10px) rotate(360deg); }
+  }
+  .seasonC--ochre .seasonC__particles span {
+    width: 5px; height: 5px;
+    background: radial-gradient(circle, #FFE8A3 0%, #F4B25A 60%, transparent 100%);
+    border-radius: 50%;
+    animation-name: seasonCMote;
+    animation-duration: 7s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+  @keyframes seasonCMote {
+    0%   { top: 100%; opacity: 0; transform: scale(0.6); }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; transform: scale(1); }
+    100% { top: -10%; opacity: 0; transform: translateX(8px) scale(0.6); }
+  }
+  .seasonC--coral .seasonC__particles span {
+    width: 8px; height: 5px;
+    background: linear-gradient(135deg, #E8855F, #D66F59, #B34F3C);
+    border-radius: 100% 0 100% 0;
+    animation-name: seasonCLeafP;
+    animation-duration: 11s;
+    animation-timing-function: ease-in;
+    animation-iteration-count: infinite;
+  }
+  @keyframes seasonCLeafP {
+    0%   { top: -8%; opacity: 0; transform: rotate(0); }
+    10%  { opacity: 1; }
+    60%  { transform: translateX(12px) rotate(270deg); }
+    90%  { opacity: 1; }
+    100% { top: 110%; opacity: 0; transform: translateX(-8px) rotate(450deg); }
+  }
+  .seasonC--cool .seasonC__particles span {
+    width: 4px; height: 4px; background: #FFFFFF; border-radius: 50%;
+    animation-name: seasonCSnowP;
+    animation-duration: 10s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+  }
+  @keyframes seasonCSnowP {
+    0%   { top: -10%; opacity: 0; transform: translateX(0); }
+    10%  { opacity: 0.9; }
+    50%  { transform: translateX(-6px); }
+    90%  { opacity: 0.9; }
+    100% { top: 110%; opacity: 0; transform: translateX(6px); }
+  }
+
+  /* Header — TOP + etiqueta arriba */
+  .seasonC__head {
+    position: absolute;
+    top: clamp(1.125rem, 1.6vw, 1.375rem);
+    left: clamp(1.5rem, 2.2vw, 1.9rem);
+    right: clamp(1.5rem, 2.2vw, 1.9rem);
+    z-index: 3;
+    display: flex; flex-direction: column;
+    gap: var(--s-2);
+  }
+  .seasonC__top-slot {
+    min-height: 24px;
+    display: flex; align-items: flex-start;
+  }
+  .seasonC__top {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--color-sage, #3D4F3A); color: #fff;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 5px 11px 5px 9px; border-radius: 999px;
+    line-height: 1; width: fit-content;
+  }
+  .seasonC__top svg { color: #E8B24F; }
+  .seasonC__label {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-text-primary); opacity: 0.7; line-height: 1;
+  }
+
+  /* Icono */
+  .seasonC__icon {
+    position: relative; z-index: 2;
+    display: flex; justify-content: center; align-items: center;
+    height: 120px;
+    margin: 0 0 var(--s-3);
+    flex-shrink: 0;
+  }
+  .seasonC__icon svg {
+    filter: drop-shadow(0 10px 16px rgba(26, 31, 46, 0.16)) drop-shadow(0 2px 4px rgba(26, 31, 46, 0.1));
+    overflow: visible;
+  }
+
+  /* Body */
+  .seasonC__body { position: relative; z-index: 2; display: flex; flex-direction: column; flex: 1; }
+
+  .seasonC__range {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0 0 4px;
+    text-transform: lowercase;
+    text-align: center;
+  }
+  .seasonC__season {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    text-align: center;
+    margin-bottom: var(--s-3);
+  }
+  .seasonC--sage  .seasonC__season { color: var(--color-sage, #3D4F3A); }
+  .seasonC--ochre .seasonC__season { color: #B38633; }
+  .seasonC--coral .seasonC__season { color: var(--color-primary); }
+  .seasonC--cool  .seasonC__season { color: #5E7286; }
+
+  .seasonC__intro {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.8125rem; line-height: 1.4;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin: 0 0 var(--s-4);
+    min-height: 2.3rem;
+  }
+
+  /* Stats */
+  .seasonC__stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    padding: var(--s-3) 0;
+    border-top: 1px solid rgba(26, 31, 46, 0.1);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.1);
+    margin-bottom: var(--s-4);
+  }
+  .seasonC__stat {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    text-align: center;
+  }
+  .seasonC__stat-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: rgba(61, 79, 58, 0.12);
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 3px;
+  }
+  .seasonC__stat-value {
+    font-family: var(--font-display); font-size: 0.875rem; font-weight: 900;
+    line-height: 1; letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+  }
+  .seasonC__stat-label {
+    font-family: var(--font-sans); font-size: 0.5625rem; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* Highlights */
+  .seasonC__highlights {
+    list-style: none; padding: 0; margin: 0 0 var(--s-4);
+    display: flex; flex-direction: column; gap: 6px;
+    flex: 1;
+  }
+  .seasonC__highlights li {
+    display: flex; align-items: flex-start; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.4;
+    color: var(--color-text-secondary);
+  }
+  .seasonC__highlights svg {
+    color: var(--color-primary); flex-shrink: 0; margin-top: 3px;
+    background: rgba(233, 133, 111, 0.14);
+    border-radius: 50%; padding: 3px; box-sizing: content-box;
+  }
+
+  /* Link interno (ej. Guía Descenso Internacional) */
+  .seasonC__link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.6px;
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 8px 0;
+    margin-bottom: var(--s-2);
+    border-bottom: 1px dashed rgba(233, 133, 111, 0.4);
+    width: fit-content;
+    transition: all 200ms var(--ease-out);
+  }
+  .seasonC__link:hover {
+    color: var(--color-primary-hover, #D66F59);
+    border-bottom-color: var(--color-primary-hover, #D66F59);
+    transform: translateX(2px);
+  }
+  .seasonC__link svg { transition: transform 200ms; }
+  .seasonC__link:hover svg { transform: translateX(2px); }
+
+  /* Recomendado */
+  .seasonC__rec {
+    display: flex; align-items: center; gap: 8px;
+    padding: var(--s-2) var(--s-3);
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-top: auto;
+  }
+  .seasonC__rec svg { color: var(--color-primary); flex-shrink: 0; }
+
+  /* Iconos Lottie-style */
+  .flower-rotate {
+    transform-box: fill-box; transform-origin: center;
+    animation: sCSpinFlower 14s linear infinite;
+  }
+  @keyframes sCSpinFlower { to { transform: rotate(360deg); } }
+  .sun-core { transform-box: fill-box; transform-origin: center; animation: sCPulseSun 2.8s ease-in-out infinite; }
+  @keyframes sCPulseSun { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+  .sun-rays { transform-box: fill-box; transform-origin: center; animation: sCSpinRays 20s linear infinite; }
+  @keyframes sCSpinRays { to { transform: rotate(360deg); } }
+  .cloud-float { animation: sCFloatCloud 5.5s ease-in-out infinite; }
+  @keyframes sCFloatCloud {
+    0%,100% { transform: translate(0, 0); }
+    50%     { transform: translate(6px, -3px); }
+  }
+  .leaf__inner {
+    transform-box: fill-box; transform-origin: center;
+    animation: sCFallLeaf 5s ease-in-out infinite;
+  }
+  .leaf--1 .leaf__inner { animation-delay: 0s; }
+  .leaf--2 .leaf__inner { animation-delay: 1.3s; }
+  @keyframes sCFallLeaf {
+    0%   { transform: translateY(-8px) rotate(-10deg); }
+    50%  { transform: translateY(4px) rotate(12deg); }
+    100% { transform: translateY(-8px) rotate(-10deg); }
+  }
+  .snow { animation: sCSnowCascade 3s ease-in infinite; }
+  .snow--1 { animation-delay: 0s; }
+  .snow--2 { animation-delay: 0.8s; }
+  .snow--3 { animation-delay: 1.6s; }
+  @keyframes sCSnowCascade {
+    0%   { transform: translateY(-14px); opacity: 0; }
+    30%  { opacity: 1; } 70% { opacity: 1; }
+    100% { transform: translateY(18px); opacity: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flower-rotate, .sun-core, .sun-rays, .cloud-float, .leaf__inner, .snow,
+    .seasonC, .seasonC__shimmer, .seasonC__particles span {
+      animation: none;
+    }
+  }
+</style>

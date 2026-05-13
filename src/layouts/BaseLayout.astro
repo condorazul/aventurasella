@@ -1,0 +1,305 @@
+---
+import '@styles/global.css';
+import Header from '@components/layout/Header.astro';
+import Footer from '@components/layout/Footer.astro';
+import WhatsAppFloat from '@components/ui/WhatsAppFloat.astro';
+import BackToTop from '@components/ui/BackToTop.astro';
+import CookieBanner from '@components/ui/CookieBanner.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { t, getHtmlLang, getAlternates, getLocaleFromPath } from '@utils/i18n';
+import type { TranslationKey } from '@i18n/slugs';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  currentPath?: string;
+  translationKey?: TranslationKey;
+  /** Override hreflang URLs por idioma (útil para blog posts dinámicos donde
+   *  los slugs cambian por idioma). Si se pasa, sustituye a getAlternates(translationKey). */
+  customAlternates?: Record<Locale, string>;
+}
+
+const {
+  title,
+  description,
+  ogImage = '/images/og/og-home-es.jpg',
+  currentPath = Astro.url.pathname,
+  translationKey,
+  customAlternates,
+} = Astro.props;
+
+// Detecta locale desde Astro.currentLocale (Astro i18n) o desde la URL como fallback
+const lang: Locale = (((Astro as any).currentLocale as Locale) ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+const htmlLang = getHtmlLang(lang);
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+// Si la página declaró translationKey, generamos hreflang para todos los idiomas
+const alternates = customAlternates ?? (translationKey ? getAlternates(translationKey) : null);
+const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+---
+
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- ============== Consent Mode v2 · inicialización con DENIED por defecto ==============
+         Obligatorio para Google Ads en EEE desde marzo 2024. DEBE ejecutarse ANTES
+         de cargar Google Analytics, Google Ads, Meta Pixel o cualquier otro script
+         publicitario/analítico. El CookieBanner emite la señal de 'update' cuando
+         el usuario acepta/configura. Ver /legal/cookies/ y CookieBanner.astro.
+    ============================================================================== -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ window.dataLayer.push(arguments); }
+
+      // Intentar leer preferencias guardadas del usuario
+      let stored = null;
+      try {
+        const raw = localStorage.getItem('aes-cookie-consent-v1');
+        if (raw) stored = JSON.parse(raw);
+      } catch (e) { /* silently ignore */ }
+
+      const prefs = (stored && stored.prefs) ? stored.prefs : {
+        analytics_storage: false,
+        ad_storage: false,
+        ad_user_data: false,
+        ad_personalization: false,
+      };
+
+      gtag('consent', 'default', {
+        analytics_storage:   prefs.analytics_storage  ? 'granted' : 'denied',
+        ad_storage:          prefs.ad_storage         ? 'granted' : 'denied',
+        ad_user_data:        prefs.ad_user_data       ? 'granted' : 'denied',
+        ad_personalization:  prefs.ad_personalization ? 'granted' : 'denied',
+        functionality_storage: 'granted',
+        security_storage:      'granted',
+        wait_for_update: 500,
+      });
+    </script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Aventura en el Sella" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#f4f0e8" />
+
+    <link rel="canonical" href={canonicalUrl} />
+    {alternates && (
+      <>
+        <link rel="alternate" hreflang="es" href={`${siteBase}${alternates.es}`} />
+        <link rel="alternate" hreflang="en" href={`${siteBase}${alternates.en}`} />
+        <link rel="alternate" hreflang="fr" href={`${siteBase}${alternates.fr}`} />
+        <link rel="alternate" hreflang="pt" href={`${siteBase}${alternates.pt}`} />
+        <link rel="alternate" hreflang="x-default" href={`${siteBase}${alternates.es}`} />
+      </>
+    )}
+    <!-- Favicon set completo · NO usar ?v=N cache-busters (colisionan con Disallow: /*?* en robots.txt) -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+    {/* og:locale dinámico según idioma actual + alternates con los otros 3 */}
+    <meta property="og:locale" content={getHtmlLang(lang).replace('-', '_')} />
+    {(['es','en','fr','pt'] as const).filter(l => l !== lang).map(l => (
+      <meta property="og:locale:alternate" content={getHtmlLang(l).replace('-', '_')} />
+    ))}
+    <meta property="og:site_name" content="Aventura en el Sella" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, Astro.site).href} />
+    <meta name="twitter:image:alt" content={title} />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{t('a11y_skip_link', lang)}</a>
+
+    <Header currentPath={currentPath} translationKey={translationKey} />
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <WhatsAppFloat />
+    <BackToTop />
+
+    <CookieBanner />
+
+    <script>
+      // Reveal on scroll
+      const els = document.querySelectorAll('[data-reveal]');
+      if ('IntersectionObserver' in window && els.length) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+        );
+        els.forEach((el) => observer.observe(el));
+      } else {
+        els.forEach((el) => el.classList.add('is-visible'));
+      }
+
+      // Universal drag-to-scroll · funciona en mouse, touch y pen via Pointer Events
+      // Se aplica a cualquier track con atributo [data-drag-scroll]
+      (function () {
+        const tracks = document.querySelectorAll<HTMLElement>('[data-drag-scroll]');
+        tracks.forEach((track) => {
+          let isDown = false;
+          let hasMoved = false;
+          let startX = 0;
+          let startScrollLeft = 0;
+          let pointerId: number | null = null;
+          let lastX = 0;
+          let velocity = 0;
+          let rafId: number | null = null;
+
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+          // Evitar drag nativo de imágenes dentro del track
+          track.querySelectorAll<HTMLImageElement>('img').forEach((img) => {
+            img.addEventListener('dragstart', (e) => e.preventDefault());
+          });
+
+          const onDown = (e: PointerEvent) => {
+            // Solo click izquierdo de ratón o touch/pen
+            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            isDown = true;
+            hasMoved = false;
+            startX = e.clientX;
+            lastX = e.clientX;
+            velocity = 0;
+            startScrollLeft = track.scrollLeft;
+            pointerId = e.pointerId;
+            track.classList.add('is-dragging');
+            // Scroll-snap más suave durante el drag
+            (track.style as any).scrollSnapType = 'x proximity';
+            try { track.setPointerCapture(e.pointerId); } catch (_) {}
+            if (rafId) cancelAnimationFrame(rafId);
+          };
+
+          const onMove = (e: PointerEvent) => {
+            if (!isDown) return;
+            const delta = e.clientX - startX;
+            if (Math.abs(delta) > 3) hasMoved = true;
+            velocity = e.clientX - lastX;
+            lastX = e.clientX;
+            track.scrollLeft = startScrollLeft - delta;
+          };
+
+          const onUp = (e: PointerEvent) => {
+            if (!isDown) return;
+            isDown = false;
+            track.classList.remove('is-dragging');
+            try { if (pointerId != null) track.releasePointerCapture(pointerId); } catch (_) {}
+            pointerId = null;
+
+            // Inercia sutil tras soltar (fluidez)
+            if (!prefersReduced && Math.abs(velocity) > 2) {
+              let v = velocity;
+              const decay = 0.92;
+              const step = () => {
+                track.scrollLeft -= v;
+                v *= decay;
+                if (Math.abs(v) > 0.3) {
+                  rafId = requestAnimationFrame(step);
+                } else {
+                  // Restablecer scroll-snap mandatory (o el que tenga por CSS)
+                  (track.style as any).scrollSnapType = '';
+                  rafId = null;
+                }
+              };
+              rafId = requestAnimationFrame(step);
+            } else {
+              (track.style as any).scrollSnapType = '';
+            }
+          };
+
+          track.addEventListener('pointerdown', onDown);
+          track.addEventListener('pointermove', onMove);
+          track.addEventListener('pointerup', onUp);
+          track.addEventListener('pointercancel', onUp);
+          track.addEventListener('pointerleave', (e) => {
+            if (isDown) onUp(e as PointerEvent);
+          });
+
+          // Evitar que el click dispare links/botones si ha habido drag real
+          track.addEventListener('click', (e) => {
+            if (hasMoved) {
+              e.preventDefault();
+              e.stopPropagation();
+              // Consumir el flag · el próximo click limpio pasará
+              hasMoved = false;
+            }
+          }, true);
+        });
+      })();
+    </script>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--color-primary);
+        color: white;
+        padding: 0.5rem 1rem;
+        z-index: var(--z-tooltip);
+        border-radius: 0 0 var(--radius-md) 0;
+      }
+      .skip-link:focus { top: 0; }
+
+      /* Universal drag-to-scroll · cursor affordance + no selección durante drag */
+      [data-drag-scroll] {
+        cursor: grab;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        touch-action: pan-y pinch-zoom;  /* permite scroll vertical + zoom, drag horizontal manejado por JS */
+      }
+      [data-drag-scroll].is-dragging {
+        cursor: grabbing;
+        scroll-behavior: auto;  /* instantáneo durante drag */
+      }
+      [data-drag-scroll] img,
+      [data-drag-scroll] picture {
+        -webkit-user-drag: none;
+        -khtml-user-drag: none;
+        user-drag: none;
+        pointer-events: none;  /* el drag sobre imágenes lo maneja el contenedor */
+      }
+      /* Links y botones dentro del track · permitir click normal */
+      [data-drag-scroll] a,
+      [data-drag-scroll] button {
+        -webkit-user-select: auto;
+        user-select: auto;
+      }
+    </style>
+  </body>
+</html>

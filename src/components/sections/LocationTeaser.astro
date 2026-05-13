@@ -1,0 +1,578 @@
+---
+/**
+ * LocationTeaser · teaser de ubicación para la Home
+ * SEO local: ranking #1 "descenso del sella" (geo Arriondas + Asturias)
+ * · Columna izquierda: 4 ciudades con distancias en layout editorial (hairlines)
+ * · Columna derecha: mapa Leaflet interactivo real con pin destacado en Arriondas
+ * · CTA a /como-llegar/ (página completa con ALSA, Renfe, coche)
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— Dónde nos encontrarás',
+    titlePre: 'En ',
+    titleEm: 'Arriondas',
+    titlePost: ',',
+    titleLine2: 'corazón del Sella.',
+    leadPre: 'Nuestras oficinas están en ',
+    leadCity: 'Arriondas',
+    leadAfterCity: ' (Asturias), ',
+    leadEm: 'kilómetro cero del descenso',
+    leadConn: '. Bien conectada en coche, autobús ',
+    leadAlsa: 'ALSA',
+    leadAnd: ' y tren ',
+    leadRenfe: 'Renfe Cercanías\u00A0AM',
+    leadEnd: '.',
+    citiesEyebrow: '— Desde tu ciudad',
+    minLabel: 'min',
+    hourLabel: 'h',
+    refCapital: 'Capital de Asturias',
+    refCoast: 'Costa asturiana',
+    refCantabria: 'Cantabria',
+    refRadio: 'Radio A-66 + A-64',
+    ctaPrimary: 'Cómo llegar en detalle',
+    ctaSecondary: 'Ver dirección completa',
+    mapAriaLabel: 'Mapa interactivo de Arriondas y ciudades cercanas',
+    mapNote: 'Arriondas · Asturias',
+    pinLabelArriondas: 'Nuestras instalaciones',
+  },
+  en: {
+    eyebrow: '— Where to find us',
+    titlePre: 'In ',
+    titleEm: 'Arriondas',
+    titlePost: ',',
+    titleLine2: 'the heart of the Sella.',
+    leadPre: 'Our offices are in ',
+    leadCity: 'Arriondas',
+    leadAfterCity: ' (Asturias), ',
+    leadEm: 'kilometre zero of the descent',
+    leadConn: '. Well connected by car, ',
+    leadAlsa: 'ALSA',
+    leadAnd: ' bus and ',
+    leadRenfe: 'Renfe Cercanías\u00A0AM',
+    leadEnd: ' train.',
+    citiesEyebrow: '— From your city',
+    minLabel: 'min',
+    hourLabel: 'h',
+    refCapital: 'Capital of Asturias',
+    refCoast: 'Asturian coast',
+    refCantabria: 'Cantabria',
+    refRadio: 'A-66 + A-64 axis',
+    ctaPrimary: 'How to get there in detail',
+    ctaSecondary: 'See full address',
+    mapAriaLabel: 'Interactive map of Arriondas and nearby cities',
+    mapNote: 'Arriondas · Asturias',
+    pinLabelArriondas: 'Our premises',
+  },
+  fr: {
+    eyebrow: '— Où nous trouver',
+    titlePre: 'À ',
+    titleEm: 'Arriondas',
+    titlePost: ',',
+    titleLine2: 'cœur du Sella.',
+    leadPre: 'Nos bureaux se trouvent à ',
+    leadCity: 'Arriondas',
+    leadAfterCity: ' (Asturies), ',
+    leadEm: 'kilomètre zéro de la descente',
+    leadConn: '. Bien desservi en voiture, bus ',
+    leadAlsa: 'ALSA',
+    leadAnd: ' et train ',
+    leadRenfe: 'Renfe Cercanías\u00A0AM',
+    leadEnd: '.',
+    citiesEyebrow: '— Depuis ta ville',
+    minLabel: 'min',
+    hourLabel: 'h',
+    refCapital: 'Capitale des Asturies',
+    refCoast: 'Côte asturienne',
+    refCantabria: 'Cantabrie',
+    refRadio: 'Axe A-66 + A-64',
+    ctaPrimary: 'Comment arriver en détail',
+    ctaSecondary: 'Voir l\'adresse complète',
+    mapAriaLabel: 'Carte interactive d\'Arriondas et des villes proches',
+    mapNote: 'Arriondas · Asturies',
+    pinLabelArriondas: 'Nos installations',
+  },
+  pt: {
+    eyebrow: '— Onde nos encontras',
+    titlePre: 'Em ',
+    titleEm: 'Arriondas',
+    titlePost: ',',
+    titleLine2: 'coração do Sella.',
+    leadPre: 'Os nossos escritórios estão em ',
+    leadCity: 'Arriondas',
+    leadAfterCity: ' (Astúrias), ',
+    leadEm: 'quilómetro zero da descida',
+    leadConn: '. Bem ligada de carro, autocarro ',
+    leadAlsa: 'ALSA',
+    leadAnd: ' e comboio ',
+    leadRenfe: 'Renfe Cercanías\u00A0AM',
+    leadEnd: '.',
+    citiesEyebrow: '— Desde a tua cidade',
+    minLabel: 'min',
+    hourLabel: 'h',
+    refCapital: 'Capital das Astúrias',
+    refCoast: 'Costa asturiana',
+    refCantabria: 'Cantábria',
+    refRadio: 'Eixo A-66 + A-64',
+    ctaPrimary: 'Como chegar em detalhe',
+    ctaSecondary: 'Ver morada completa',
+    mapAriaLabel: 'Mapa interativo de Arriondas e cidades próximas',
+    mapNote: 'Arriondas · Astúrias',
+    pinLabelArriondas: 'As nossas instalações',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+// Time formatters per locale · respetan ES original "50 min" / "1 h 55 min"
+function fmtMin(m: number): string {
+  return `${m} ${t.minLabel}`;
+}
+function fmtHMin(h: number, m: number): string {
+  return `${h} ${t.hourLabel} ${m} ${t.minLabel}`;
+}
+
+// Ciudades origen con distancias · layout 2×2 editorial
+const ciudades = [
+  { c: 'Oviedo',    km: 52,  t: fmtMin(50),       highlight: true,  ref: t.refCapital },
+  { c: 'Gijón',     km: 75,  t: fmtMin(55),       highlight: false, ref: t.refCoast },
+  { c: 'Santander', km: 160, t: fmtHMin(1, 55),   highlight: false, ref: t.refCantabria },
+  { c: 'Madrid',    km: 440, t: fmtHMin(4, 30),   highlight: false, ref: t.refRadio },
+];
+
+// Coords para el mapa Leaflet
+const mapCenter = { lat: 43.389, lng: -5.195 };  // Arriondas
+const kmLabel = lang === 'en' ? 'km' : 'km';
+const points = [
+  { name: 'Arriondas',    lat: 43.38667, lng: -5.19111, primary: true,  label: t.pinLabelArriondas },
+  { name: 'Oviedo',       lat: 43.3619,  lng: -5.8494,  primary: false, label: `52 ${kmLabel} · ${fmtMin(50)}` },
+  { name: 'Gijón',        lat: 43.5452,  lng: -5.6615,  primary: false, label: `75 ${kmLabel} · ${fmtMin(55)}` },
+  { name: 'Cangas de Onís', lat: 43.3533, lng: -5.1304, primary: false, label: `12 ${kmLabel} · ${fmtMin(15)}` },
+  { name: 'Ribadesella',  lat: 43.4614,  lng: -5.0594,  primary: false, label: `18 ${kmLabel} · ${fmtMin(20)}` },
+];
+---
+
+<section class="loct" aria-labelledby="loct-title">
+  <div class="container container--xl">
+    <header class="loct__header" data-reveal>
+      <span class="loct__eyebrow">{t.eyebrow}</span>
+      <h2 id="loct-title" class="loct__title">
+        {t.titlePre}<span class="serif-italic">{t.titleEm}</span>{t.titlePost}<br/>
+        {t.titleLine2}
+      </h2>
+      <p class="loct__lead">
+        {t.leadPre}<strong>{t.leadCity}</strong>{t.leadAfterCity}<em class="loct__em">{t.leadEm}</em>{t.leadConn}<strong>{t.leadAlsa}</strong>{t.leadAnd}<strong>{t.leadRenfe}</strong>{t.leadEnd}
+      </p>
+    </header>
+
+    <div class="loct__grid">
+
+      <!-- Columna IZQUIERDA · 4 fichas editoriales (hairlines · no bloques) -->
+      <div class="loct__cities" data-reveal>
+        <span class="loct__citiesEyebrow">{t.citiesEyebrow}</span>
+        <ol class="loct__citiesGrid">
+          {ciudades.map(city => (
+            <li class={`loctCity${city.highlight ? ' is-highlight' : ''}`}>
+              <div class="loctCity__body">
+                <h3 class="loctCity__name">{city.c}</h3>
+                <span class="loctCity__km">
+                  {city.km}<small>km</small>
+                  <span class="loctCity__dot" aria-hidden="true"></span>
+                  <em>{city.t}</em>
+                </span>
+                <span class="loctCity__ref">{city.ref}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div class="loct__ctas">
+          <a href={getLocalePath('como_llegar', lang)} class="loct__cta loct__cta--primary">
+            <span>{t.ctaPrimary}</span>
+            <span class="loct__ctaIcon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </a>
+          <a href={getLocalePath('contacto', lang)} class="loct__cta loct__cta--link">
+            {t.ctaSecondary}
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna DERECHA · mapa Leaflet interactivo real -->
+      <div class="loct__mapWrap" data-reveal data-reveal-type="slide-right" data-reveal-delay="1">
+        <div
+          id="loct-map"
+          class="loct__map"
+          data-center-lat={mapCenter.lat}
+          data-center-lng={mapCenter.lng}
+          data-points={JSON.stringify(points)}
+          aria-label={t.mapAriaLabel}
+        ></div>
+        <span class="loct__mapNote" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          {t.mapNote}
+        </span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  /* Leaflet lazy-loader · carga JS solo cuando el mapa entra en viewport */
+  (function () {
+    const mapEl = document.getElementById('loct-map');
+    if (!mapEl || (window as any).__loctMapInit) return;
+
+    const initMap = () => {
+      if ((window as any).__loctMapInit) return;
+      (window as any).__loctMapInit = true;
+
+      const centerLat = parseFloat(mapEl.dataset.centerLat || '43.389');
+      const centerLng = parseFloat(mapEl.dataset.centerLng || '-5.195');
+      let pts = [];
+      try { pts = JSON.parse(mapEl.dataset.points || '[]'); } catch {}
+
+      const L = (window as any).L;
+      if (!L) return;
+
+      const map = L.map(mapEl, {
+        center: [centerLat, centerLng],
+        zoom: 9,
+        scrollWheelZoom: false,       /* evita capturar scroll vertical accidental */
+        zoomControl: true,
+        attributionControl: true,
+      });
+
+      /* Tile CARTO · light con tono cálido · se ve editorial y premium */
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19,
+      }).addTo(map);
+
+      /* Icono primary (Arriondas) · coral · más grande */
+      const primaryIcon = L.divIcon({
+        className: 'loct__pin loct__pin--primary',
+        html: '<span></span>',
+        iconSize: [28, 28],
+        iconAnchor: [14, 28],
+      });
+      /* Icono secundario · sage · más pequeño */
+      const secondaryIcon = L.divIcon({
+        className: 'loct__pin',
+        html: '<span></span>',
+        iconSize: [18, 18],
+        iconAnchor: [9, 18],
+      });
+
+      pts.forEach((p) => {
+        const icon = p.primary ? primaryIcon : secondaryIcon;
+        const marker = L.marker([p.lat, p.lng], { icon, title: p.name }).addTo(map);
+        marker.bindPopup(`<strong>${p.name}</strong><br/><small>${p.label || ''}</small>`, {
+          className: 'loct__popup',
+          closeButton: false,
+        });
+      });
+
+      /* Habilita scroll wheel al hacer click dentro del mapa · evita capturar scroll de página */
+      mapEl.addEventListener('click', () => { map.scrollWheelZoom.enable(); }, { once: true });
+      mapEl.addEventListener('mouseout', () => { map.scrollWheelZoom.disable(); });
+    };
+
+    const loadLeaflet = () => {
+      if ((window as any).L) { initMap(); return; }
+      /* CSS primero (no bloqueante) */
+      if (!document.querySelector('link[data-leaflet-css]')) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+        link.setAttribute('data-leaflet-css', '1');
+        document.head.appendChild(link);
+      }
+      /* JS con onload */
+      const s = document.createElement('script');
+      s.src = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+      s.async = true;
+      s.onload = initMap;
+      document.head.appendChild(s);
+    };
+
+    /* Lazy-load cuando el mapa entra cerca del viewport */
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { loadLeaflet(); io.disconnect(); }
+        });
+      }, { rootMargin: '200px 0px' });
+      io.observe(mapEl);
+    } else {
+      loadLeaflet();
+    }
+  })();
+</script>
+
+<style>
+  .loct {
+    padding-block: clamp(3rem, 5vw, 4.25rem);        /* reducido · pega bien con el mapa superior */
+    background: var(--color-bg-warm, #F6F1E3);        /* cream más cálido · rompe con el base del mapa */
+  }
+  .loct__header {
+    max-width: 760px;
+    margin: 0 auto clamp(2rem, 4vw, 2.75rem);
+    text-align: center;
+  }
+  .loct__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  }
+  .loct__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0 0 1rem;
+  }
+  .loct__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .loct__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .loct__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .loct__em {
+    font-family: var(--font-serif); font-style: italic; color: var(--color-sage, #3D4F3A);
+  }
+
+  .loct__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1280px; margin: 0 auto;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    /* Side-by-side · grid ciudades más ancho · mapa vertical rectangular compacto */
+    .loct__grid { grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.9fr); gap: clamp(2.5rem, 4vw, 3.5rem); }
+  }
+
+  /* ============== Cities editorial (hairlines) ============== */
+  .loct__cities { display: flex; flex-direction: column; }
+  .loct__citiesEyebrow {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+  .loct__citiesGrid {
+    list-style: none; padding: 0; margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+    border-top: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  @media (min-width: 500px) { .loct__citiesGrid { grid-template-columns: repeat(2, 1fr); } }
+
+  .loctCity {
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.125rem, 2vw, 1.5rem);
+    border-right: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+    min-height: 130px;
+    display: flex; align-items: flex-start;
+    transition: background 300ms ease;
+  }
+  .loctCity:hover { background: rgba(255, 255, 255, 0.4); }
+  .loctCity.is-highlight { background: rgba(233, 133, 111, 0.04); }
+  .loctCity.is-highlight:hover { background: rgba(233, 133, 111, 0.08); }
+
+  /* 2-col (500+): última col sin border-right, últimas 2 sin border-bottom */
+  @media (min-width: 500px) {
+    .loctCity:nth-child(2n) { border-right: none; }
+    .loctCity:nth-last-child(-n+2) { border-bottom: none; }
+  }
+  /* 1-col (<500): sin border-right, último sin border-bottom */
+  @media (max-width: 499.98px) {
+    .loctCity { border-right: none; }
+    .loctCity:last-child { border-bottom: none; }
+  }
+
+  .loctCity__body { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  .loctCity__name {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.2vw, 1.75rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .loctCity__km {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .loctCity__km small {
+    font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.2px;
+    margin-left: 2px;
+    color: var(--color-primary);
+    text-transform: uppercase;
+  }
+  .loctCity__dot {
+    width: 3px; height: 3px; border-radius: 50%;
+    background: rgba(26, 31, 46, 0.25);
+    flex-shrink: 0;
+  }
+  .loctCity__km em {
+    font-style: normal;
+    color: var(--color-text-muted);
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .loctCity__ref {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .loct__ctas {
+    display: inline-flex; flex-wrap: wrap; gap: 1rem;
+    margin-top: clamp(1.5rem, 3vw, 2rem);
+    align-items: center;
+  }
+  .loct__cta {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    transition: transform 260ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1));
+    text-decoration: none;
+  }
+  .loct__cta--primary {
+    padding: 0.75rem 0.75rem 0.75rem 1.25rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+  .loct__cta--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -12px rgba(26, 31, 46, 0.45);
+  }
+  .loct__ctaIcon {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--color-bg-base, #FBF8F1);
+    color: var(--color-text-primary);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: transform 260ms ease;
+  }
+  .loct__cta--primary:hover .loct__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  .loct__cta--link {
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    color: var(--color-text-primary);
+    border-bottom: 1.5px solid var(--color-sage, #3D4F3A);
+    padding-bottom: 2px;
+  }
+  .loct__cta--link:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .loct__cta--link svg { transition: transform 220ms; }
+  .loct__cta--link:hover svg { transform: translateX(3px); }
+
+  /* ============== Map Leaflet · portrait rectangular compacto ============== */
+  .loct__mapWrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 5;                    /* vertical rectangular · más compacto que 4:3 */
+    min-height: 320px;
+    max-height: 440px;                      /* no crecer sin control · mantiene compacto */
+    border-radius: var(--radius-2xl, 2rem);
+    overflow: hidden;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    box-shadow: 0 24px 56px -24px rgba(26, 31, 46, 0.18);
+    isolation: isolate;
+  }
+  @media (max-width: 899.98px) {
+    .loct__mapWrap { aspect-ratio: 4 / 3; max-height: none; }  /* landscape más neutro en mobile/tablet */
+  }
+  .loct__map { width: 100%; height: 100%; background: #F0EEE8; }
+  .loct__mapNote {
+    position: absolute;
+    bottom: 1rem; left: 1rem;
+    z-index: 400;
+    display: inline-flex; align-items: center; gap: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    background: #FFFFFF;
+    color: var(--color-text-primary);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    box-shadow: 0 8px 20px -6px rgba(26, 31, 46, 0.18);
+    pointer-events: none;
+  }
+  .loct__mapNote svg { color: var(--color-primary); }
+
+  /* ============== Pins Leaflet (custom) ============== */
+  /* Globals para Leaflet markers custom · no Astro-scoped */
+  :global(.loct__pin) {
+    background: transparent !important;
+    border: 0;
+  }
+  :global(.loct__pin span) {
+    display: block;
+    width: 100%; height: 100%;
+    background: var(--color-sage, #3D4F3A);
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+  :global(.loct__pin--primary span) {
+    background: var(--color-primary, #E9856F);
+    box-shadow: 0 6px 16px rgba(233, 133, 111, 0.5),
+                0 0 0 4px rgba(233, 133, 111, 0.15);
+    position: relative;
+  }
+  :global(.loct__pin--primary span::after) {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: 4px; bottom: 4px;
+    background: #FFFFFF;
+    border-radius: 50%;
+  }
+
+  :global(.loct__popup .leaflet-popup-content-wrapper) {
+    border-radius: var(--radius-lg, 1rem);
+    background: #FFFFFF;
+    box-shadow: 0 12px 28px -8px rgba(26, 31, 46, 0.25);
+    padding: 0;
+  }
+  :global(.loct__popup .leaflet-popup-content) {
+    margin: 0.75rem 1rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+  :global(.loct__popup .leaflet-popup-content strong) {
+    color: var(--color-text-primary, #1A1F2E);
+    font-size: 0.9375rem;
+    font-weight: 800;
+  }
+  :global(.loct__popup .leaflet-popup-content small) {
+    color: var(--color-text-muted, #8A8578);
+    font-size: 0.75rem;
+  }
+  :global(.loct__popup .leaflet-popup-tip) { background: #FFFFFF; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .loct__cta, .loct__ctaIcon { transition: none; }
+    .loct__cta--primary:hover { transform: none; }
+  }
+</style>

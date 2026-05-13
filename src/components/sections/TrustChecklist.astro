@@ -1,0 +1,268 @@
+---
+/**
+ * TrustChecklist · 5 garantías diferenciales que reducen fricción al reservar
+ * Va entre Reviews y FAQ · banda compacta warm cream
+ * Impacto: mejora conversión · reduce abandono · refuerza Google E-E-A-T (trustworthiness)
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— Reservar es fácil',
+    title_line1: 'Sin sorpresas,',
+    title_line2: 'sin letra pequeña.',
+    cta: 'Reservar mi plaza',
+    cta_href: '/reservar/',
+    items: [
+      { icon: 'clock',    title: 'Confirmación en 2 minutos',    text: 'Sin pagar ahora. Reservas en un momento y recibes la confirmación al instante.' },
+      { icon: 'card',     title: 'Paga el día de la actividad',  text: 'Con tarjeta al reservar o el día que recojas la canoa. Tú eliges.' },
+      { icon: 'whatsapp', title: 'Confirmaciones por WhatsApp',  text: 'Recibes todo por WhatsApp y email — sin tener que revisar spam ni esperar.' },
+      { icon: 'shield',   title: 'Cancelación flexible',         text: 'Hasta 24 h antes sin coste si pagaste por adelantado. Sin letra pequeña.' },
+      { icon: 'chat',     title: 'Atención en minutos',          text: 'Respondemos por WhatsApp, email o teléfono durante toda la temporada.' },
+    ],
+  },
+  en: {
+    eyebrow: '— Booking is easy',
+    title_line1: 'No surprises,',
+    title_line2: 'no fine print.',
+    cta: 'Book my spot',
+    cta_href: '/en/book/',
+    items: [
+      { icon: 'clock',    title: 'Confirmation in 2 minutes',    text: 'No payment now. Book in a moment and get your confirmation instantly.' },
+      { icon: 'card',     title: 'Pay on the day of the activity', text: 'By card when booking or on the day you pick up the canoe. You choose.' },
+      { icon: 'whatsapp', title: 'WhatsApp confirmations',       text: 'You receive everything by WhatsApp and email — no need to check spam or wait.' },
+      { icon: 'shield',   title: 'Flexible cancellation',        text: 'Up to 24 h before at no cost if you paid in advance. No fine print.' },
+      { icon: 'chat',     title: 'Reply in minutes',             text: 'We answer by WhatsApp, email or phone throughout the whole season.' },
+    ],
+  },
+  fr: {
+    eyebrow: '— Réserver est facile',
+    title_line1: 'Sans surprises,',
+    title_line2: 'sans petits caractères.',
+    cta: 'Réserver ma place',
+    cta_href: '/fr/reserver/',
+    items: [
+      { icon: 'clock',    title: 'Confirmation en 2 minutes',     text: 'Sans payer maintenant. Vous réservez en un instant et recevez la confirmation immédiatement.' },
+      { icon: 'card',     title: 'Paiement le jour de l\'activité', text: 'Par carte à la réservation ou le jour où vous récupérez le canoë. Vous choisissez.' },
+      { icon: 'whatsapp', title: 'Confirmations par WhatsApp',    text: 'Vous recevez tout par WhatsApp et email — sans avoir à vérifier les spams ni attendre.' },
+      { icon: 'shield',   title: 'Annulation flexible',           text: 'Jusqu\'à 24 h avant sans frais si vous avez payé à l\'avance. Sans petits caractères.' },
+      { icon: 'chat',     title: 'Réponse en quelques minutes',   text: 'Nous répondons par WhatsApp, email ou téléphone pendant toute la saison.' },
+    ],
+  },
+  pt: {
+    eyebrow: '— Reservar é fácil',
+    title_line1: 'Sem surpresas,',
+    title_line2: 'sem letra pequena.',
+    cta: 'Reservar o meu lugar',
+    cta_href: '/pt/reservar/',
+    items: [
+      { icon: 'clock',    title: 'Confirmação em 2 minutos',     text: 'Sem pagar agora. Reservas num momento e recebes a confirmação ao instante.' },
+      { icon: 'card',     title: 'Paga no dia da atividade',     text: 'Com cartão ao reservar ou no dia em que recolheres a canoa. Tu escolhes.' },
+      { icon: 'whatsapp', title: 'Confirmações por WhatsApp',    text: 'Recebes tudo por WhatsApp e email — sem ter de verificar spam nem esperar.' },
+      { icon: 'shield',   title: 'Cancelamento flexível',        text: 'Até 24 h antes sem custo se pagaste antecipadamente. Sem letra pequena.' },
+      { icon: 'chat',     title: 'Atendimento em minutos',       text: 'Respondemos por WhatsApp, email ou telefone durante toda a época.' },
+    ],
+  },
+} as const;
+
+const t = i18n[lang] ?? i18n.es;
+const trust = t.items;
+---
+
+<section class="trustC" aria-labelledby="trustC-title">
+  <div class="container container--xl">
+    <header class="trustC__header" data-reveal>
+      <div class="trustC__headerMain">
+        <span class="trustC__eyebrow">{t.eyebrow}</span>
+        <h2 id="trustC-title" class="trustC__title">
+          {t.title_line1}<br/>
+          <span class="serif-italic">{t.title_line2}</span>
+        </h2>
+      </div>
+      <a href={t.cta_href} class="trustC__cta">
+        <span>{t.cta}</span>
+        <span class="trustC__ctaIcon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </a>
+    </header>
+
+    <ul class="trustC__list">
+      {trust.map((t, i) => (
+        <li class="trustC__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+          <span class="trustC__itemIcon" aria-hidden="true">
+            {t.icon === 'clock' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            )}
+            {t.icon === 'card' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            )}
+            {t.icon === 'whatsapp' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            )}
+            {t.icon === 'shield' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            )}
+            {t.icon === 'chat' && (
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            )}
+          </span>
+          <div class="trustC__itemBody">
+            <h3 class="trustC__itemTitle">{t.title}</h3>
+            <p class="trustC__itemText">{t.text}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .trustC {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-warm, #F5F1E8);
+    position: relative;
+  }
+  .trustC::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(26, 31, 46, 0.12), transparent);
+  }
+
+  .trustC__header {
+    max-width: 1200px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    display: flex; flex-direction: column; gap: 1.5rem;
+    align-items: flex-start; justify-content: space-between;
+  }
+  @media (min-width: 820px) {
+    .trustC__header { flex-direction: row; align-items: flex-end; gap: 2rem; }
+  }
+  .trustC__headerMain { min-width: 0; }
+  .trustC__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  }
+  .trustC__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .trustC__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+
+  .trustC__cta {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.85rem 0.5rem 0.85rem 1.5rem;
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 24px rgba(61, 79, 58, 0.28);
+    flex-shrink: 0;
+  }
+  .trustC__cta:hover {
+    transform: translateY(-2px);
+    background: #4A5E47;
+    box-shadow: 0 14px 32px rgba(61, 79, 58, 0.4);
+  }
+  .trustC__ctaIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: #FBF8F1; color: var(--color-sage, #3D4F3A);
+    transition: transform 260ms ease;
+  }
+  .trustC__cta:hover .trustC__ctaIcon { transform: rotate(-8deg) translateX(2px); }
+
+  /* Grid de 5 items · responsive */
+  .trustC__list {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 1200px;
+    display: grid; grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  @media (min-width: 540px)  { .trustC__list { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 820px)  { .trustC__list { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 1100px) { .trustC__list { grid-template-columns: repeat(5, 1fr); } }
+
+  /* Cards editoriales · radius generoso + hover lift editorial */
+  .trustC__item {
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.875rem;
+    padding: clamp(1.5rem, 2.8vw, 2rem);
+    background: #FBF8F1;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: var(--radius-xl, 1.5rem);
+    transition: transform 300ms var(--ease-out, cubic-bezier(0.16, 1, 0.3, 1)),
+                box-shadow 300ms ease,
+                border-color 300ms ease,
+                background 300ms ease;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .trustC__item::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(61, 79, 58, 0.05) 0%, rgba(244, 181, 163, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 300ms ease;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .trustC__item:hover {
+    transform: translateY(-4px);
+    border-color: rgba(61, 79, 58, 0.25);
+    box-shadow: var(--shadow-md, 0 10px 24px rgba(26, 31, 46, 0.08), 0 2px 6px rgba(26, 31, 46, 0.04));
+    background: #FFFFFF;
+  }
+  .trustC__item:hover::before { opacity: 1; }
+
+  .trustC__itemIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 46px; height: 46px;
+    background: rgba(61, 79, 58, 0.08);
+    color: var(--color-sage, #3D4F3A);
+    border-radius: var(--radius-pill, 999px);
+    flex-shrink: 0;
+    transition: background 280ms ease, color 280ms ease, transform 280ms var(--ease-bounce, cubic-bezier(0.34, 1.56, 0.64, 1));
+  }
+  .trustC__item:hover .trustC__itemIcon {
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    transform: scale(1.08) rotate(-5deg);
+  }
+
+  .trustC__itemBody { display: flex; flex-direction: column; gap: 0.4rem; }
+  .trustC__itemTitle {
+    font-family: var(--font-display); font-size: 0.9375rem; font-weight: 900;
+    line-height: 1.25; letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .trustC__itemText {
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trustC__item { transition: background-color 200ms ease; }
+    .trustC__item:hover { transform: none; }
+    .trustC__cta:hover { transform: none; }
+    .trustC__cta:hover .trustC__ctaIcon { transform: none; }
+  }
+</style>

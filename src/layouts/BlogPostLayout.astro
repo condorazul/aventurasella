@@ -1,0 +1,2663 @@
+---
+/**
+ * BlogPostLayout · template editorial canónico del blog (validado 2026-04-30).
+ *
+ * Diseño de blog oficial de aventuraenelsella.es. Aplicar a TODA entrada nueva
+ * sin variar el template. Variaciones permitidas solo a nivel contenido (foto cover,
+ * foto inline, FAQs, longitud). Ver memoria `feedback_blog_design_system.md`.
+ *
+ * Anatomía:
+ *   - Reading progress bar fixed top (coral gradient)
+ *   - Hero: breadcrumb · category eyebrow · H1 + serif italic accent · lead Fraunces · byline
+ *   - Cover full-width · slide LTR semi-lento al revelar
+ *   - Layout 2 cols (≥1024px): article 1fr + sidebar 320px sticky
+ *   - Body: dropcap coral en 1er p · counters automáticos "— 01" en H2s · pull quote sin caja
+ *   - FAQ y cluster sin cards · solo hairlines (sin doble fondo)
+ *   - Firma editorial centrada del equipo · desde Arriondas
+ *   - Sidebar sage subtle: autor + TOC autogenerado + CTA + share (WhatsApp/X/copy)
+ *   - Related posts cards limpias · ReservaCTA cierre
+ *
+ * Mantiene todas las clases `.post__*` heredadas (intro, h2, h3, pull, callout, table, figure).
+ */
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import ReservaCTA from '@components/sections/ReservaCTA.astro';
+import { BLOG_POSTS, getPostBySlug, getRelatedPosts, formatDateES } from '@data/blog-posts';
+import { BLOG_POSTS_EN, getPostBySlugEn, getRelatedPostsEn, formatDateEn } from '@data/blog-posts-en';
+import { BLOG_POSTS_FR, getPostBySlugFr, getRelatedPostsFr, formatDateFr } from '@data/blog-posts-fr';
+import { BLOG_POSTS_PT, getPostBySlugPt, getRelatedPostsPt, formatDatePt } from '@data/blog-posts-pt';
+import { localBusinessSchema } from '@data/business-schema';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+interface FAQ { q: string; a: string; }
+
+interface Props {
+  slug: string;
+  faqs?: FAQ[];
+}
+
+const { slug, faqs = [] } = Astro.props;
+
+// Locale detection · same approach as BaseLayout
+const lang: Locale = (((Astro as any).currentLocale as Locale) ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+// Load metadata + helpers from the right data file
+const post =
+  lang === 'en' ? getPostBySlugEn(slug) :
+  lang === 'fr' ? getPostBySlugFr(slug) :
+  lang === 'pt' ? getPostBySlugPt(slug) :
+  getPostBySlug(slug);
+
+if (!post) {
+  throw new Error(`BlogPostLayout: no post found for slug "${slug}" (lang="${lang}").`);
+}
+
+const related =
+  lang === 'en' ? getRelatedPostsEn(slug, 2) :
+  lang === 'fr' ? getRelatedPostsFr(slug, 2) :
+  lang === 'pt' ? getRelatedPostsPt(slug, 2) :
+  getRelatedPosts(slug, 2);
+const formatDate =
+  lang === 'en' ? formatDateEn :
+  lang === 'fr' ? formatDateFr :
+  lang === 'pt' ? formatDatePt :
+  formatDateES;
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const blogBasePath =
+  lang === 'en' ? '/en/blog' :
+  lang === 'fr' ? '/fr/blog' :
+  lang === 'pt' ? '/pt/blog' :
+  '/blog';
+const canonicalUrl = `${baseUrl}${blogBasePath}/${post.slug}/`;
+const currentPath = `${blogBasePath}/${post.slug}/`;
+const imageUrl = `${baseUrl}/images/optimized/${post.image}-lg.jpg`;
+
+// ============== hreflang específico por post ==============
+// Los 4 arrays de blog-posts-{lang}.ts siguen el mismo orden, así que el
+// índice del post en su array nos da el equivalente en otros idiomas.
+const allLangData: Record<Locale, readonly { slug: string }[]> = {
+  es: BLOG_POSTS,
+  en: BLOG_POSTS_EN,
+  fr: BLOG_POSTS_FR,
+  pt: BLOG_POSTS_PT,
+};
+const currentLangData = allLangData[lang];
+const postIdx = currentLangData.findIndex(p => p.slug === slug);
+
+const blogAlternates: Record<Locale, string> = {
+  es: '/blog/',
+  en: '/en/blog/',
+  fr: '/fr/blog/',
+  pt: '/pt/blog/',
+};
+if (postIdx >= 0) {
+  for (const l of ['es', 'en', 'fr', 'pt'] as const) {
+    const equivalent = allLangData[l]?.[postIdx];
+    if (equivalent) {
+      const prefix = l === 'es' ? '' : `/${l}`;
+      blogAlternates[l] = `${prefix}/blog/${equivalent.slug}/`;
+    }
+  }
+}
+
+// ============== i18n strings · chrome del layout ==============
+const i18n = {
+  es: {
+    breadcrumbHome: 'Inicio',
+    breadcrumbBlog: 'Blog',
+    bylinePrefix: 'Por',
+    bylineTeam: 'El equipo de Aventura en el Sella',
+    bylineCity: 'desde Arriondas',
+    readingTime: 'min de lectura',
+    faqKicker: 'Preguntas frecuentes',
+    faqTitleA: 'Lo que más',
+    faqTitleB: 'nos preguntáis',
+    clusterKicker: 'Seguir leyendo',
+    clusterTitleA: 'Información relacionada',
+    clusterTitleB: 'que te puede servir',
+    signA: 'Escrito por',
+    signB: 'el equipo de Aventura en el Sella',
+    signCity: 'desde Arriondas, junto al río',
+    authorKicker: 'Escrito por',
+    authorTeamA: 'El equipo de',
+    authorTeamB: 'Aventura en el Sella',
+    authorCity: 'Desde Arriondas, Asturias',
+    tocKicker: 'En esta entrada',
+    tocAria: 'Tabla de contenidos',
+    ctaKicker: 'Reserva',
+    ctaTitleA: 'Tu descenso del Sella,',
+    ctaTitleB: 'todo incluido',
+    ctaItem1: 'Canoa, pala, chaleco y picnic asturiano',
+    ctaItem2: 'Mascotas gratis · monitor titulado',
+    ctaItem3: 'Reserva sin pagar ahora',
+    ctaBtn: 'Elegir día',
+    ctaLink: 'Ver qué incluye en detalle →',
+    ctaHref: '/reservar/',
+    ctaDetailsHref: '/reserva-premium/',
+    shareTitle: 'Compartir esta entrada',
+    shareWhatsApp: 'Compartir por WhatsApp',
+    shareTwitter: 'Compartir en X',
+    shareCopy: 'Copiar enlace',
+    shareToast: 'Copiado',
+    relatedKicker: 'Más guías del blog',
+    relatedTitleA: 'Otras entradas',
+    relatedTitleB: 'para leer',
+    relatedReadMore: 'Leer entrada',
+    breadcrumbAria: 'Breadcrumb',
+    articleSectionAria: 'Información del artículo',
+    signAside: 'Firma del equipo',
+    articleHref: '/blog/',
+  },
+  en: {
+    breadcrumbHome: 'Home',
+    breadcrumbBlog: 'Blog',
+    bylinePrefix: 'By',
+    bylineTeam: 'The team at Aventura en el Sella',
+    bylineCity: 'from Arriondas',
+    readingTime: 'min read',
+    faqKicker: 'Frequently asked questions',
+    faqTitleA: 'What you',
+    faqTitleB: 'ask us most',
+    clusterKicker: 'Keep reading',
+    clusterTitleA: 'Related information',
+    clusterTitleB: 'that may help',
+    signA: 'Written by',
+    signB: 'the team at Aventura en el Sella',
+    signCity: 'from Arriondas, by the river',
+    authorKicker: 'Written by',
+    authorTeamA: 'The team at',
+    authorTeamB: 'Aventura en el Sella',
+    authorCity: 'From Arriondas, Asturias',
+    tocKicker: 'In this article',
+    tocAria: 'Table of contents',
+    ctaKicker: 'Booking',
+    ctaTitleA: 'Your Sella River descent,',
+    ctaTitleB: 'all inclusive',
+    ctaItem1: 'Canoe, paddle, life jacket and Asturian picnic',
+    ctaItem2: 'Pets free · certified instructor',
+    ctaItem3: 'Reserve without paying now',
+    ctaBtn: 'Choose a date',
+    ctaLink: "See what's included in detail →",
+    ctaHref: '/en/premium-booking/',
+    ctaDetailsHref: '/en/premium-booking/',
+    shareTitle: 'Share this article',
+    shareWhatsApp: 'Share on WhatsApp',
+    shareTwitter: 'Share on X',
+    shareCopy: 'Copy link',
+    shareToast: 'Copied',
+    relatedKicker: 'More guides from the blog',
+    relatedTitleA: 'Other articles',
+    relatedTitleB: 'to read',
+    relatedReadMore: 'Read article',
+    breadcrumbAria: 'Breadcrumb',
+    articleSectionAria: 'Article information',
+    signAside: "Team signature",
+    articleHref: '/en/blog/',
+  },
+  fr: {
+    breadcrumbHome: 'Accueil',
+    breadcrumbBlog: 'Blog',
+    bylinePrefix: 'Par',
+    bylineTeam: "L'équipe d'Aventura en el Sella",
+    bylineCity: "depuis Arriondas",
+    readingTime: 'min de lecture',
+    faqKicker: 'Questions fréquentes',
+    faqTitleA: 'Ce que vous',
+    faqTitleB: 'nous demandez le plus',
+    clusterKicker: 'Continuer la lecture',
+    clusterTitleA: 'Informations liées',
+    clusterTitleB: 'qui peuvent aider',
+    signA: 'Écrit par',
+    signB: "l'équipe d'Aventura en el Sella",
+    signCity: 'depuis Arriondas, au bord du fleuve',
+    authorKicker: 'Écrit par',
+    authorTeamA: "L'équipe de",
+    authorTeamB: 'Aventura en el Sella',
+    authorCity: 'Depuis Arriondas, Asturies',
+    tocKicker: 'Dans cet article',
+    tocAria: 'Table des matières',
+    ctaKicker: 'Réservation',
+    ctaTitleA: 'Ta descente du Sella,',
+    ctaTitleB: 'tout inclus',
+    ctaItem1: 'Canoë, pagaie, gilet et pique-nique asturien',
+    ctaItem2: 'Animaux gratuits · moniteur diplômé',
+    ctaItem3: 'Réserver sans payer maintenant',
+    ctaBtn: 'Choisir une date',
+    ctaLink: 'Voir ce qui est inclus en détail →',
+    ctaHref: '/fr/reservation-premium/',
+    ctaDetailsHref: '/fr/reservation-premium/',
+    shareTitle: 'Partager cet article',
+    shareWhatsApp: 'Partager sur WhatsApp',
+    shareTwitter: 'Partager sur X',
+    shareCopy: 'Copier le lien',
+    shareToast: 'Copié',
+    relatedKicker: 'Plus de guides du blog',
+    relatedTitleA: "D'autres articles",
+    relatedTitleB: 'à lire',
+    relatedReadMore: "Lire l'article",
+    breadcrumbAria: "Fil d'Ariane",
+    articleSectionAria: "Informations de l'article",
+    signAside: "Signature de l'équipe",
+    articleHref: '/fr/blog/',
+  },
+  pt: {
+    breadcrumbHome: 'Início',
+    breadcrumbBlog: 'Blog',
+    bylinePrefix: 'Por',
+    bylineTeam: 'A equipa de Aventura en el Sella',
+    bylineCity: 'desde Arriondas',
+    readingTime: 'min de leitura',
+    faqKicker: 'Perguntas frequentes',
+    faqTitleA: 'O que mais',
+    faqTitleB: 'nos perguntam',
+    clusterKicker: 'Continuar a ler',
+    clusterTitleA: 'Informação relacionada',
+    clusterTitleB: 'que pode ajudar',
+    signA: 'Escrito por',
+    signB: 'a equipa de Aventura en el Sella',
+    signCity: 'desde Arriondas, junto ao rio',
+    authorKicker: 'Escrito por',
+    authorTeamA: 'A equipa de',
+    authorTeamB: 'Aventura en el Sella',
+    authorCity: 'Desde Arriondas, Astúrias',
+    tocKicker: 'Neste artigo',
+    tocAria: 'Índice',
+    ctaKicker: 'Reserva',
+    ctaTitleA: 'A tua descida do Sella,',
+    ctaTitleB: 'tudo incluído',
+    ctaItem1: 'Canoa, remo, colete e piquenique asturiano',
+    ctaItem2: 'Animais grátis · monitor qualificado',
+    ctaItem3: 'Reservar sem pagar agora',
+    ctaBtn: 'Escolher dia',
+    ctaLink: 'Ver o que está incluído em detalhe →',
+    ctaHref: '/pt/reserva-premium/',
+    ctaDetailsHref: '/pt/reserva-premium/',
+    shareTitle: 'Partilhar este artigo',
+    shareWhatsApp: 'Partilhar no WhatsApp',
+    shareTwitter: 'Partilhar no X',
+    shareCopy: 'Copiar link',
+    shareToast: 'Copiado',
+    relatedKicker: 'Mais guias do blog',
+    relatedTitleA: 'Outros artigos',
+    relatedTitleB: 'para ler',
+    relatedReadMore: 'Ler artigo',
+    breadcrumbAria: 'Trilho de navegação',
+    articleSectionAria: 'Informação do artigo',
+    signAside: 'Assinatura da equipa',
+    articleHref: '/pt/blog/',
+  },
+};
+const t =
+  lang === 'en' ? i18n.en :
+  lang === 'fr' ? i18n.fr :
+  lang === 'pt' ? i18n.pt :
+  i18n.es;
+
+const jsonLdGraph: any[] = [
+  localBusinessSchema(baseUrl, lang),
+  {
+    '@type': 'BlogPosting',
+    '@id': `${canonicalUrl}#article`,
+    headline: post.h1,
+    name: post.title,
+    description: post.description,
+    url: canonicalUrl,
+    mainEntityOfPage: canonicalUrl,
+    inLanguage:
+      lang === 'en' ? 'en-GB' :
+      lang === 'fr' ? 'fr-FR' :
+      lang === 'pt' ? 'pt-PT' :
+      'es-ES',
+    image: {
+      '@type': 'ImageObject',
+      url: imageUrl,
+      width: 1920,
+      height: 1200,
+    },
+    author:    { '@id': `${baseUrl}/#business` },
+    publisher: { '@id': `${baseUrl}/#business` },
+    datePublished: post.datePublished,
+    dateModified: post.dateModified,
+    keywords: post.keyword,
+    articleSection: post.category,
+    isPartOf: { '@id': `${baseUrl}${blogBasePath}/#blog` },
+  },
+  {
+    '@type': 'BreadcrumbList',
+    '@id': `${canonicalUrl}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: t.breadcrumbHome, item:
+          lang === 'en' ? `${baseUrl}/en/` :
+          lang === 'fr' ? `${baseUrl}/fr/` :
+          lang === 'pt' ? `${baseUrl}/pt/` :
+          baseUrl },
+      { '@type': 'ListItem', position: 2, name: t.breadcrumbBlog, item: `${baseUrl}${blogBasePath}/` },
+      { '@type': 'ListItem', position: 3, name: post.h1,          item: canonicalUrl },
+    ],
+  },
+];
+
+if (faqs.length > 0) {
+  jsonLdGraph.push({
+    '@type': 'FAQPage',
+    '@id': `${canonicalUrl}#faq`,
+    mainEntity: faqs.map(f => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: f.a.replace(/<[^>]+>/g, ''),
+      },
+    })),
+  });
+}
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': jsonLdGraph,
+};
+
+// ============== TOC server-side (más fiable que JS · sin caché de navegador) ==
+// Capturamos el HTML del slot, extraemos H2s con id y construimos el índice.
+const slotHtml = await Astro.slots.render('default');
+
+interface TocItem { id: string; title: string; subtitle: string; }
+const tocItems: TocItem[] = [];
+const h2Regex = /<h2\b[^>]*?\bid="([^"]+)"[^>]*>([\s\S]*?)<\/h2>/gi;
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+let m: RegExpExecArray | null;
+while ((m = h2Regex.exec(slotHtml)) !== null) {
+  const id = m[1];
+  const inner = m[2];
+  // Solo H2s con class post__h2 (los del cuerpo editorial · no FAQs ni CTAs)
+  const fullMatch = m[0];
+  if (!/class="[^"]*\bpost__h2\b/.test(fullMatch)) continue;
+  const parts = inner.split(/<br\b[^>]*>/i);
+  tocItems.push({
+    id,
+    title: stripTags(parts[0]),
+    subtitle: parts.length > 1 ? stripTags(parts.slice(1).join(' ')) : '',
+  });
+}
+---
+
+<BaseLayout title={post.title} description={post.description} currentPath={currentPath} translationKey="blog" customAlternates={blogAlternates}>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="article:published_time" content={post.datePublished} />
+    <meta property="article:modified_time"  content={post.dateModified} />
+    <meta property="article:author"         content={t.bylineTeam} />
+    <meta property="article:section"        content={post.category} />
+    <meta property="og:type"                content="article" />
+    <meta property="og:title"               content={post.title} />
+    <meta property="og:description"         content={post.description} />
+    <meta property="og:image"               content={imageUrl} />
+    <meta property="og:url"                 content={canonicalUrl} />
+    <meta name="twitter:card"               content="summary_large_image" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- Reading progress bar (top of viewport) -->
+  <div class="edProgress" aria-hidden="true">
+    <span class="edProgress__fill" id="edProgressFill"></span>
+  </div>
+
+  <article class="ed" itemscope itemtype="https://schema.org/BlogPosting">
+    <meta itemprop="headline" content={post.h1} />
+    <meta itemprop="datePublished" content={post.datePublished} />
+    <meta itemprop="dateModified"  content={post.dateModified} />
+
+    <!-- ============ 1 · HERO ============ -->
+    <header class="edH">
+      <div class="edH__inner">
+        <nav class="edH__crumb" aria-label={t.breadcrumbAria}>
+          <a href={
+            lang === 'en' ? '/en/' :
+            lang === 'fr' ? '/fr/' :
+            lang === 'pt' ? '/pt/' :
+            '/'
+          }>{t.breadcrumbHome}</a>
+          <span aria-hidden="true">·</span>
+          <a href={t.articleHref}>{t.breadcrumbBlog}</a>
+          <span aria-hidden="true">·</span>
+          <span aria-current="page">{post.h1}</span>
+        </nav>
+
+        <span class="edH__cat">{post.category}</span>
+
+        <h1 class="edH__title" itemprop="name">{post.h1}</h1>
+
+        <p class="edH__lead">{post.excerpt}</p>
+
+        <div class="edH__byline">
+          <span class="edH__bylineLeft" itemprop="author" itemscope itemtype="https://schema.org/Organization">
+            {t.bylinePrefix} <span class="edH__bylineName" itemprop="name">{t.bylineTeam}</span> · <span class="edH__bylineCity">{t.bylineCity}</span>
+          </span>
+          <span class="edH__bylineDot" aria-hidden="true">·</span>
+          <time class="edH__bylineDate" datetime={post.datePublished} itemprop="datePublished">{formatDate(post.datePublished)}</time>
+          <span class="edH__bylineDot" aria-hidden="true">·</span>
+          <span class="edH__bylineRead">{post.readingTime} {t.readingTime}</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============ 2 · COVER ============ -->
+    <div class="edCover">
+      <div class="edCover__inner">
+        <figure class="edCover__figure" data-img-reveal>
+          <Picture
+            src={post.image}
+            alt={post.imageAlt}
+            sizes="(min-width: 1100px) 1080px, 92vw"
+            aspectRatio="16 / 9"
+            priority="high"
+          />
+        </figure>
+      </div>
+    </div>
+
+    <!-- ============ 3 · LAYOUT 2 COLS (article + sidebar) ============ -->
+    <div class="edLayout">
+      <div class="edLayout__inner">
+
+        <!-- ============ 3a · BODY (slot) ============ -->
+        <div class="edBody" itemprop="articleBody">
+          <Fragment set:html={slotHtml} />
+
+          {faqs.length > 0 && (
+            <section class="edFaq" aria-labelledby="ed-faq-title">
+              <span class="edFaq__kicker">{t.faqKicker}</span>
+              <h2 id="ed-faq-title" class="edFaq__h2">
+                {t.faqTitleA} <span class="serif-italic">{t.faqTitleB}</span>
+              </h2>
+              <dl class="edFaq__list">
+                {faqs.map(f => (
+                  <div class="edFaq__item">
+                    <dt class="edFaq__q">{f.q}</dt>
+                    <dd class="edFaq__a" set:html={f.a} />
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+
+          <!-- Cluster links (en columna izquierda, sin doble fondo) -->
+          <section class="edCluster" aria-labelledby="ed-cluster-title">
+            <span class="edCluster__kicker">{t.clusterKicker}</span>
+            <h2 id="ed-cluster-title" class="edCluster__h2">
+              {t.clusterTitleA}<br/>
+              <span class="serif-italic">{t.clusterTitleB}</span>
+            </h2>
+            <ul class="edCluster__list" role="list">
+              {post.relatedPages.map(link => (
+                <li>
+                  <a href={link.href} class="edCluster__link">
+                    <span>{link.label}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <!-- Firma final del equipo -->
+          <aside class="edSign" aria-label={t.signAside}>
+            <div class="edSign__inner">
+              <span class="edSign__line" aria-hidden="true"></span>
+              <p class="edSign__text">
+                {t.signA} <strong>{t.signB}</strong><br/>
+                {t.signCity} · <time datetime={post.datePublished}>{formatDate(post.datePublished)}</time>
+              </p>
+            </div>
+          </aside>
+        </div>
+
+        <!-- ============ 3b · SIDEBAR ============ -->
+        <aside class="edSide" aria-label={t.articleSectionAria}>
+          <div class="edSide__sticky">
+
+            <!-- Autor card -->
+            <section class="edSide__author" aria-labelledby="ed-author-title">
+              <span class="edSide__authorMark" aria-hidden="true">A</span>
+              <div class="edSide__authorBody">
+                <span class="edSide__authorKicker">{t.authorKicker}</span>
+                <h2 id="ed-author-title" class="edSide__authorName">
+                  {t.authorTeamA}<br/>
+                  <span class="serif-italic">{t.authorTeamB}</span>
+                </h2>
+                <p class="edSide__authorMeta">
+                  {t.authorCity}<br/>
+                  <time datetime={post.datePublished}>{formatDate(post.datePublished)}</time>
+                </p>
+              </div>
+            </section>
+
+            <!-- TOC (SSR · server-rendered desde los H2 del slot) -->
+            {tocItems.length > 0 && (
+              <nav class="edSide__toc" id="edToc" aria-label={t.tocAria}>
+                <span class="edSide__tocKicker">{t.tocKicker}</span>
+                <ol class="edSide__tocList" id="edTocList" role="list">
+                  {tocItems.map(item => (
+                    <li>
+                      <a href={`#${item.id}`} data-toc-link={item.id}>
+                        {item.subtitle ? (
+                          <>
+                            <span class="edSide__tocTitle">{item.title}</span>
+                            <span class="edSide__tocSub">{item.subtitle}</span>
+                          </>
+                        ) : (
+                          item.title
+                        )}
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
+            <!-- CTA card -->
+            <section class="edSide__cta" aria-labelledby="ed-cta-title">
+              <span class="edSide__ctaKicker">{t.ctaKicker}</span>
+              <h2 id="ed-cta-title" class="edSide__ctaTitle">
+                {t.ctaTitleA}<br/>
+                <span class="serif-italic">{t.ctaTitleB}</span>
+              </h2>
+              <ul class="edSide__ctaList" role="list">
+                <li>{t.ctaItem1}</li>
+                <li>{t.ctaItem2}</li>
+                <li>{t.ctaItem3}</li>
+              </ul>
+              <a href={t.ctaHref} class="edSide__ctaBtn">
+                <span>{t.ctaBtn}</span>
+                <span class="edSide__ctaIcon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+              <a href={t.ctaDetailsHref} class="edSide__ctaLink">
+                {t.ctaLink}
+              </a>
+            </section>
+
+            <!-- Compartir -->
+            <section class="edSide__share" aria-labelledby="ed-share-title">
+              <span id="ed-share-title" class="edSide__shareKicker">{t.shareTitle}</span>
+              <div class="edSide__shareRow">
+                <a class="edSide__shareBtn" data-share="whatsapp" href={`https://wa.me/?text=${encodeURIComponent(post.h1 + ' — ' + canonicalUrl)}`} target="_blank" rel="noopener noreferrer" aria-label={t.shareWhatsApp}>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                </a>
+                <a class="edSide__shareBtn" data-share="twitter" href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.h1)}&url=${encodeURIComponent(canonicalUrl)}`} target="_blank" rel="noopener noreferrer" aria-label={t.shareTwitter}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <button class="edSide__shareBtn" type="button" data-share="copy" aria-label={t.shareCopy}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                </button>
+                <span class="edSide__shareToast" id="edShareToast" aria-live="polite">{t.shareToast}</span>
+              </div>
+            </section>
+          </div>
+        </aside>
+
+      </div>
+    </div>
+
+    <!-- ============ 4 · RELATED POSTS ============ -->
+    {related.length > 0 && (
+      <section class="edRelated" aria-labelledby="ed-related-title">
+        <div class="edRelated__inner">
+          <span class="edRelated__kicker">{t.relatedKicker}</span>
+          <h2 id="ed-related-title" class="edRelated__h2">
+            {t.relatedTitleA} <span class="serif-italic">{t.relatedTitleB}</span>
+          </h2>
+          <ul class="edRelated__grid" role="list">
+            {related.map(r => (
+              <li>
+                <a href={`${blogBasePath}/${r.slug}/`} class="edRelated__card">
+                  <div class="edRelated__media">
+                    <Picture
+                      src={r.image}
+                      alt={r.imageAlt}
+                      sizes="(min-width: 900px) 45vw, 92vw"
+                      aspectRatio="16 / 10"
+                    />
+                  </div>
+                  <div class="edRelated__body">
+                    <div class="edRelated__metaTop">
+                      <span class="edRelated__cat">{r.category}</span>
+                      <span class="edRelated__metaSep" aria-hidden="true">·</span>
+                      <span class="edRelated__time">{r.readingTime} {t.readingTime}</span>
+                    </div>
+                    <h3 class="edRelated__title">{r.h1}</h3>
+                    <p class="edRelated__excerpt">{r.excerpt}</p>
+                    <span class="edRelated__more">
+                      <span>{t.relatedReadMore}</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </span>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
+    <!-- ============ 5 · RESERVA CTA ============ -->
+    <ReservaCTA />
+  </article>
+</BaseLayout>
+
+<script>
+  // -------- TOC: solo interactividad (el HTML ya viene SSR) --------
+  const tocList = document.getElementById('edTocList');
+  const body = document.querySelector('.edBody');
+  if (tocList && body) {
+    const headings = body.querySelectorAll<HTMLElement>('h2.post__h2[id]');
+    const links = tocList.querySelectorAll<HTMLAnchorElement>('a[data-toc-link]');
+    const linkMap = new Map<string, HTMLAnchorElement>();
+    links.forEach(l => linkMap.set(l.dataset.tocLink || '', l));
+
+    if (headings.length > 0 && links.length > 0) {
+      // Active section tracking via IntersectionObserver
+      let activeId: string | null = null;
+      const setActive = (id: string | null) => {
+        if (id === activeId) return;
+        activeId = id;
+        links.forEach(l => l.classList.remove('is-active'));
+        if (id) {
+          const a = linkMap.get(id);
+          if (a) a.classList.add('is-active');
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter(e => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (visible.length > 0) {
+            setActive((visible[0].target as HTMLElement).id);
+          }
+        },
+        { rootMargin: '-20% 0px -65% 0px', threshold: 0 }
+      );
+      headings.forEach(h => observer.observe(h));
+
+      // smooth scroll
+      links.forEach(l => {
+        l.addEventListener('click', (e) => {
+          const href = l.getAttribute('href');
+          if (!href || !href.startsWith('#')) return;
+          const target = document.getElementById(href.slice(1));
+          if (!target) return;
+          e.preventDefault();
+          window.scrollTo({
+            top: target.getBoundingClientRect().top + window.scrollY - 96,
+            behavior: 'smooth'
+          });
+          history.replaceState(null, '', href);
+        });
+      });
+    }
+  }
+
+  // -------- Reading progress bar --------
+  const progressFill = document.getElementById('edProgressFill');
+  const article = document.querySelector('.edBody');
+  if (progressFill && article) {
+    let ticking = false;
+    const update = () => {
+      const rect = (article as HTMLElement).getBoundingClientRect();
+      const articleTop = rect.top + window.scrollY;
+      const articleHeight = rect.height;
+      const scrolled = window.scrollY - articleTop + window.innerHeight * 0.5;
+      const ratio = Math.max(0, Math.min(1, scrolled / articleHeight));
+      (progressFill as HTMLElement).style.transform = `scaleX(${ratio})`;
+      ticking = false;
+    };
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(update);
+        ticking = true;
+      }
+    }, { passive: true });
+    update();
+  }
+
+  // -------- Share buttons (copy link) --------
+  const copyBtn = document.querySelector<HTMLButtonElement>('[data-share="copy"]');
+  const toast = document.getElementById('edShareToast');
+  if (copyBtn && toast) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.classList.add('is-visible');
+        setTimeout(() => toast.classList.remove('is-visible'), 1600);
+      } catch (e) {
+        // Fallback silencioso
+      }
+    });
+  }
+
+  // -------- Slide LTR para imágenes y figuras --------
+  const targets = document.querySelectorAll<HTMLElement>('[data-img-reveal], .post__figure');
+  if (targets.length > 0 && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          (e.target as HTMLElement).classList.add('is-revealed');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(t => io.observe(t));
+  }
+
+  // -------- Reveal slide-up + fade para pull quotes --------
+  const pulls = document.querySelectorAll<HTMLElement>('.post__pull');
+  if (pulls.length > 0 && 'IntersectionObserver' in window) {
+    const ioPull = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          (e.target as HTMLElement).classList.add('is-revealed');
+          ioPull.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -10% 0px' });
+    pulls.forEach(p => ioPull.observe(p));
+  }
+
+  // -------- Reveal slide-up + fade para tablas editoriales --------
+  const tables = document.querySelectorAll<HTMLElement>('.post__table');
+  if (tables.length > 0 && 'IntersectionObserver' in window) {
+    const ioTable = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          (e.target as HTMLElement).classList.add('is-revealed');
+          ioTable.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    tables.forEach(t => ioTable.observe(t));
+  }
+</script>
+
+<style>
+  /* =========================================================
+     BASE · todo sobre cream sin alternancias innecesarias
+     ========================================================= */
+  .ed {
+    background: var(--color-bg-base);
+    color: var(--color-text-primary);
+  }
+
+  /* =========================================================
+     1 · HERO · título-arriba/foto-debajo
+     ========================================================= */
+  .edH {
+    padding-block: clamp(4.5rem, 8vw, 7rem) clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .edH__inner {
+    max-width: 880px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .edH__crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .edH__crumb a {
+    color: var(--color-text-muted);
+    transition: color 240ms var(--ease-out);
+  }
+  .edH__crumb a:hover { color: var(--color-primary); }
+  .edH__crumb span[aria-hidden] { opacity: 0.4; }
+  .edH__crumb span[aria-current] {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    max-width: 28ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .edH__cat {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid currentColor;
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .edH__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 6.4vw, 4.75rem);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+    text-wrap: balance;
+  }
+
+  .edH__lead {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
+    line-height: 1.5;
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin-bottom: clamp(1.75rem, 3vw, 2.25rem);
+    text-wrap: balance;
+  }
+
+  .edH__byline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.6rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border-subtle);
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.04em;
+  }
+  .edH__bylineName {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .edH__bylineCity {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+  }
+  .edH__bylineDot { opacity: 0.4; }
+  .edH__bylineDate,
+  .edH__bylineRead { color: var(--color-text-muted); }
+
+  /* =========================================================
+     2 · COVER · slide LTR semi-lento
+     ========================================================= */
+  .edCover {
+    padding-block: 0 clamp(2rem, 4.5vw, 3.5rem);
+  }
+  .edCover__inner {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+  .edCover__figure {
+    margin: 0;
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+    overflow: hidden;
+    /* slide LTR initial */
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .edCover__figure.is-revealed {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .edCover :global(.picture) {
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  /* =========================================================
+     3 · LAYOUT 2 COLS (article 1fr + sidebar 320px)
+     ========================================================= */
+  .edLayout {
+    padding-block: clamp(2rem, 4vw, 3.5rem) clamp(3rem, 6vw, 5rem);
+  }
+  .edLayout__inner {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  @media (min-width: 1024px) {
+    .edLayout__inner {
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: clamp(3rem, 5vw, 4.5rem);
+    }
+  }
+
+  /* =========================================================
+     3a · BODY · contenido del artículo
+     ========================================================= */
+  .edBody {
+    max-width: 680px;
+  }
+
+  /* ---- Intro · sin caja, dropcap sutil ---- */
+  .edBody :global(.post__intro) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.2rem, 1.9vw, 1.5rem);
+    line-height: 1.55;
+    color: var(--color-text-primary);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    padding: 0;
+    border: 0;
+    text-wrap: pretty;
+  }
+  .edBody :global(.post__intro strong) {
+    font-style: normal;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.02em;
+  }
+
+  /* ---- H2 ---- */
+  .edBody :global(.post__h2) {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-top: clamp(2.75rem, 5vw, 4rem);
+    margin-bottom: clamp(1rem, 2vw, 1.4rem);
+    text-wrap: balance;
+    scroll-margin-top: 96px;
+  }
+  .edBody :global(.post__h2 .serif-italic) {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  /* Subtítulo entre paréntesis dentro de H2 · italic muted, más ligero */
+  .edBody :global(.post__h2 .post__h2__sub) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.78em;
+    color: var(--color-text-muted, #8a8578);
+    letter-spacing: 0;
+    margin-left: 0.25em;
+  }
+  /* Palabra clave de énfasis dentro del subtítulo · coral, peso 600 */
+  .edBody :global(.post__h2 .post__h2__sub em) {
+    font-style: italic;
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 1.1em;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---- H3 ---- */
+  .edBody :global(.post__h3) {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin-top: clamp(2rem, 3.5vw, 2.75rem);
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.005em;
+  }
+
+  /* ---- Párrafos ---- */
+  .edBody :global(p) {
+    font-size: clamp(1rem, 1.15vw, 1.075rem);
+    line-height: 1.8;
+    color: var(--color-text-primary);
+    margin-bottom: 1.5rem;
+    max-width: 65ch;
+  }
+  .edBody :global(p strong) {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  .edBody :global(p em),
+  .edBody :global(li em) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+  .edBody :global(p a),
+  .edBody :global(li a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: rgba(233, 133, 111, 0.45);
+    text-underline-offset: 4px;
+    transition: text-decoration-color 240ms var(--ease-out), color 240ms var(--ease-out);
+  }
+  .edBody :global(p a:hover),
+  .edBody :global(li a:hover) {
+    color: var(--color-primary-active);
+    text-decoration-color: currentColor;
+  }
+
+  /* ---- Listas ---- */
+  .edBody :global(ul),
+  .edBody :global(ol) {
+    margin-bottom: 1.75rem;
+    padding-left: 0;
+    list-style: none;
+    max-width: 65ch;
+  }
+  .edBody :global(ul li),
+  .edBody :global(ol li) {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.7rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    font-size: clamp(1rem, 1.15vw, 1.05rem);
+  }
+  .edBody :global(ul li::before) {
+    content: '';
+    position: absolute;
+    left: 0.45rem;
+    top: 0.65em;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-sage, #3d4f3a);
+    box-shadow: 0 0 0 3px var(--color-sage-subtle, #e8ece6);
+    transition: transform 240ms var(--ease-out);
+  }
+  .edBody :global(ul li:hover::before) {
+    transform: scale(1.15);
+  }
+  .edBody :global(ol) {
+    counter-reset: edOrdered;
+  }
+  .edBody :global(ol li) {
+    counter-increment: edOrdered;
+  }
+  .edBody :global(ol li::before) {
+    content: counter(edOrdered, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: var(--color-primary);
+  }
+
+  /* ---- Pull quote · editorial deluxe · comilla watermark + reveal animado ---- */
+  .edBody :global(.post__pull) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    color: var(--color-primary);
+    text-align: center;
+    margin-block: clamp(3.5rem, 7vw, 5.5rem);
+    padding: clamp(3.5rem, 6vw, 5rem) clamp(0.75rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2rem);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    text-wrap: balance;
+    max-width: 36ch;
+    margin-inline: auto;
+    position: relative;
+    /* reveal · slide up + fade al entrar en viewport */
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+  /* Comilla decorativa watermark arriba (Fraunces italic enorme con opacidad baja) */
+  .edBody :global(.post__pull::before) {
+    content: '“';
+    position: absolute;
+    top: clamp(-0.5rem, 0.5vw, 0.25rem);
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(6rem, 11vw, 9rem);
+    line-height: 0.85;
+    color: var(--color-primary);
+    opacity: 0.18;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: 0;
+  }
+  /* Hairline coral abajo · firma editorial sutil */
+  .edBody :global(.post__pull::after) {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--color-primary);
+    margin: clamp(1.25rem, 2.5vw, 1.75rem) auto 0;
+    opacity: 0.6;
+  }
+  .edBody :global(.post__pull.is-revealed) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  /* Strong/em dentro del pull quote: coral más saturado para mantener el flujo italic */
+  .edBody :global(.post__pull strong),
+  .edBody :global(.post__pull em) {
+    font-family: inherit;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--color-primary-active, #c85c44);
+  }
+
+  /* ---- Callout sage · simple, sin border-left grueso ---- */
+  .edBody :global(.post__callout) {
+    padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.5rem, 3vw, 2rem);
+    margin-block: clamp(1.75rem, 3.5vw, 2.5rem);
+    background: var(--color-sage-subtle, #e8ece6);
+    border-radius: clamp(0.875rem, 1.75vw, 1.25rem);
+    border-left: 0;
+    max-width: 65ch;
+  }
+  /* Solo el <strong> directo (título) recibe estilo de kicker uppercase */
+  .edBody :global(.post__callout > strong) {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-sage, #3d4f3a);
+    margin-bottom: 0.5rem;
+  }
+  /* Los <strong> dentro de párrafos del callout son énfasis inline normales */
+  .edBody :global(.post__callout p strong) {
+    display: inline;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .edBody :global(.post__callout p) {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    max-width: none;
+  }
+  .edBody :global(.post__callout p:last-child) {
+    margin-bottom: 0;
+  }
+  /* Listas dentro del callout · estilo limpio, interpunct sage como bullet */
+  .edBody :global(.post__callout ul.post__callout__items) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    max-width: none;
+  }
+  .edBody :global(.post__callout ul.post__callout__items li) {
+    position: relative;
+    padding-left: 1rem;
+    margin: 0;
+    font-size: 0.93rem;
+    line-height: 1.65;
+    color: var(--color-text-primary);
+  }
+  .edBody :global(.post__callout ul.post__callout__items li::before) {
+    content: '·';
+    position: absolute;
+    left: 0;
+    top: -0.05em;
+    width: auto;
+    height: auto;
+    background: transparent;
+    color: var(--color-sage, #3d4f3a);
+    font-size: 1.4em;
+    line-height: 1;
+    font-weight: 700;
+    border-radius: 0;
+  }
+  .edBody :global(.post__callout ul.post__callout__items li strong) {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  /* =========================================================
+     Tabla DELUXE editorial · primera col Fraunces italic coral,
+     headers tracked, hover con accent vertical, reveal animado
+     ========================================================= */
+  .edBody :global(.post__table) {
+    margin-block: clamp(2.75rem, 5vw, 4rem);
+    overflow-x: auto;
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    /* Reveal · slide-up + fade al entrar viewport */
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .edBody :global(.post__table.is-revealed) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .edBody :global(.post__table table) {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 480px;
+    border-top: 1px solid rgba(26, 31, 46, 0.14);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.14);
+  }
+  /* Headers · microtipografía refinada · tracking amplio · em-dash editorial */
+  .edBody :global(.post__table th) {
+    padding: 1.6rem 1.4rem 1rem;
+    text-align: left;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 0.66rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    background: transparent;
+    border-bottom: 1px solid rgba(233, 133, 111, 0.45);
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+  /* Cells · más respiro vertical · línea de lectura confortable */
+  .edBody :global(.post__table td) {
+    padding: 1.5rem 1.4rem;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.06);
+    vertical-align: top;
+    position: relative;
+  }
+  /* Primera columna · Fraunces italic display, peso ligero, coral */
+  .edBody :global(.post__table td:first-child) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1.075rem;
+    letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    padding-left: 1.6rem;
+  }
+  .edBody :global(.post__table td:first-child strong) {
+    font-family: inherit;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+  .edBody :global(.post__table tr:last-child td) { border-bottom: 0; }
+  /* Hover · accent vertical coral 2px que se desliza en la izquierda */
+  .edBody :global(.post__table tbody tr) {
+    transition: background 280ms var(--ease-out);
+  }
+  .edBody :global(.post__table tbody tr:hover) {
+    background: rgba(233, 133, 111, 0.045);
+  }
+  .edBody :global(.post__table tbody tr td:first-child::before) {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 1.7rem;
+    bottom: 1.7rem;
+    width: 2px;
+    background: var(--color-primary);
+    opacity: 0;
+    transform: scaleY(0.4);
+    transform-origin: center;
+    transition: opacity 280ms var(--ease-out), transform 320ms var(--ease-out);
+    pointer-events: none;
+    border-radius: 2px;
+  }
+  .edBody :global(.post__table tbody tr:hover td:first-child::before) {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  /* ---- Concerns list · preguntas-respuesta con numeral grande Fraunces italic ---- */
+  .edBody :global(.post__concerns) {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-block: clamp(2rem, 4vw, 2.75rem);
+    max-width: none;
+    counter-reset: edConcernCount;
+  }
+  .edBody :global(.post__concern) {
+    counter-increment: edConcernCount;
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: clamp(1rem, 2.2vw, 1.6rem);
+    padding-block: clamp(1.5rem, 2.8vw, 2rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: start;
+    position: relative;
+  }
+  .edBody :global(.post__concern:first-child) { padding-top: clamp(0.5rem, 1vw, 0.75rem); }
+  .edBody :global(.post__concern:last-child) {
+    border-bottom: 0;
+    padding-bottom: clamp(0.5rem, 1vw, 0.75rem);
+  }
+  .edBody :global(.post__concern::before) {
+    content: counter(edConcernCount, decimal-leading-zero);
+    grid-column: 1;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.4vw, 1.65rem);
+    line-height: 1;
+    color: var(--color-primary);
+    padding-top: 0.15rem;
+    letter-spacing: -0.01em;
+    opacity: 0.95;
+  }
+  .edBody :global(.post__concern__body) {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+  .edBody :global(h3.post__concern__q) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.15rem, 1.95vw, 1.4rem);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .edBody :global(.post__concern__body p) {
+    font-size: 0.97rem;
+    line-height: 1.78;
+    color: var(--color-text-primary);
+    margin: 0;
+    max-width: 60ch;
+  }
+  .edBody :global(.post__concern__body p strong) {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+  .edBody :global(.post__concern__body p + p) {
+    margin-top: 0.5rem;
+  }
+
+  /* ---- Checklist · listas de items con icono circular sage + label + desc ----
+     Para guías tipo "qué llevar / qué hace falta / detalles a no olvidar".               */
+  .edBody :global(.post__checklist) {
+    display: flex;
+    flex-direction: column;
+    margin-block: clamp(2rem, 4vw, 2.75rem);
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    max-width: none;
+  }
+  .edBody :global(.post__checklist__item) {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: clamp(0.85rem, 1.75vw, 1.15rem);
+    padding-block: clamp(1.1rem, 2vw, 1.4rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: start;
+    transition: padding-left 320ms var(--ease-out), background 320ms var(--ease-out);
+  }
+  .edBody :global(.post__checklist__item:last-child) {
+    border-bottom: 0;
+  }
+  .edBody :global(.post__checklist__item:hover) {
+    padding-left: 0.4rem;
+    background: rgba(233, 133, 111, 0.035);
+  }
+  .edBody :global(.post__checklist__icon) {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-sage-subtle, #e8ece6);
+    color: var(--color-sage, #3d4f3a);
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background 280ms var(--ease-out), color 280ms var(--ease-out), transform 280ms var(--ease-out);
+  }
+  .edBody :global(.post__checklist__item:hover .post__checklist__icon) {
+    background: var(--color-primary);
+    color: #fff;
+    transform: scale(1.08);
+  }
+  .edBody :global(.post__checklist__body) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    padding-top: 0.3rem;
+    max-width: 60ch;
+  }
+  .edBody :global(.post__checklist__label) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    letter-spacing: -0.005em;
+  }
+  .edBody :global(.post__checklist__desc) {
+    font-size: 0.93rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    display: block;
+  }
+
+  /* ---- Zones · stack tipográfico para listas tipo "anillos / niveles / zonas" ----
+     Cada item tiene: distancia/label grande Fraunces italic + nombre + descripción.
+     Sin cards · solo hairlines · pura tipografía editorial.                            */
+  .edBody :global(.post__zones) {
+    display: flex;
+    flex-direction: column;
+    margin-block: clamp(2rem, 4vw, 2.75rem);
+    padding-block: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    max-width: none;
+  }
+  .edBody :global(.post__zone) {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    padding-block: clamp(1.5rem, 2.8vw, 2rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: baseline;
+    transition: padding-left 320ms var(--ease-out), background 320ms var(--ease-out);
+  }
+  .edBody :global(.post__zone:last-child) {
+    border-bottom: 0;
+  }
+  .edBody :global(.post__zone:hover) {
+    padding-left: 0.4rem;
+    background: rgba(233, 133, 111, 0.03);
+  }
+  .edBody :global(.post__zone__distance) {
+    grid-column: 1;
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+  .edBody :global(.post__zone__num) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+    line-height: 1;
+    color: var(--color-primary);
+    letter-spacing: -0.01em;
+  }
+  .edBody :global(.post__zone__unit) {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    opacity: 0.75;
+  }
+  .edBody :global(.post__zone__body) {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+  .edBody :global(h3.post__zone__name) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.05rem, 1.7vw, 1.2rem);
+    line-height: 1.3;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+  .edBody :global(h3.post__zone__name .serif-italic) {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .edBody :global(p.post__zone__desc) {
+    font-size: 0.94rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 52ch;
+  }
+  .edBody :global(p.post__zone__desc strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  /* Modifier --wide · primera col más ancha y num más pequeño (para meses, etiquetas largas) */
+  .edBody :global(.post__zones--wide .post__zone) {
+    grid-template-columns: 8.5rem 1fr;
+  }
+  .edBody :global(.post__zones--wide .post__zone__num) {
+    font-size: clamp(1.2rem, 2vw, 1.55rem);
+  }
+
+  /* Mobile · distancia arriba, body abajo */
+  @media (max-width: 600px) {
+    .edBody :global(.post__zone),
+    .edBody :global(.post__zones--wide .post__zone) {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .edBody :global(.post__zone__distance) {
+      gap: 0.4rem;
+    }
+  }
+
+  /* ---- Timeline · "X hora por hora" con time prefix Fraunces italic ---- */
+  .edBody :global(ol.post__timeline) {
+    list-style: none;
+    margin: clamp(2rem, 4vw, 2.75rem) 0;
+    padding: 0;
+    max-width: none;
+    counter-reset: none;
+  }
+  .edBody :global(ol.post__timeline li) {
+    display: grid;
+    grid-template-columns: 5.25rem 1fr;
+    gap: clamp(0.85rem, 1.5vw, 1.25rem);
+    padding: clamp(1.1rem, 2vw, 1.4rem) 0;
+    margin: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    align-items: baseline;
+    counter-increment: none;
+  }
+  .edBody :global(ol.post__timeline li:first-child) {
+    padding-top: clamp(0.5rem, 1vw, 0.75rem);
+  }
+  .edBody :global(ol.post__timeline li:last-child) {
+    border-bottom: 0;
+    padding-bottom: clamp(0.5rem, 1vw, 0.75rem);
+  }
+  .edBody :global(ol.post__timeline li::before) {
+    content: none !important;
+  }
+  .edBody :global(ol.post__timeline li time) {
+    grid-column: 1;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--color-primary);
+    letter-spacing: -0.005em;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .edBody :global(ol.post__timeline li .post__timeline__body) {
+    grid-column: 2;
+    font-size: 0.97rem;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+  }
+  .edBody :global(ol.post__timeline li .post__timeline__body strong) {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.005em;
+    margin-right: 0.15rem;
+  }
+  /* Mobile · time arriba, body abajo */
+  @media (max-width: 600px) {
+    .edBody :global(ol.post__timeline li) {
+      grid-template-columns: 1fr;
+      gap: 0.4rem;
+    }
+    .edBody :global(ol.post__timeline li time) {
+      text-align: left;
+      font-size: 0.95rem;
+    }
+  }
+
+  /* ---- Essentials grid · 4 cards visuales para listas tipo "lo esencial" ---- */
+  .edBody :global(.post__essentials) {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 2vw, 1.25rem);
+    margin-block: clamp(2rem, 4vw, 2.75rem);
+    max-width: none;
+  }
+  @media (min-width: 720px) {
+    .edBody :global(.post__essentials) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .edBody :global(.post__essentials--three) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .edBody :global(.post__essential) {
+    padding: clamp(1.4rem, 2.5vw, 1.75rem);
+    background: transparent;
+    border: 1px solid rgba(61, 79, 58, 0.14);
+    border-radius: clamp(1rem, 2vw, 1.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 280ms var(--ease-out), transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out);
+  }
+  .edBody :global(.post__essential:hover) {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 32px -22px rgba(26, 31, 46, 0.18);
+  }
+  .edBody :global(.post__essential__icon) {
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-sage-subtle, #e8ece6);
+    color: var(--color-sage, #3d4f3a);
+    border-radius: 50%;
+    margin-bottom: 0.4rem;
+    transition: background 280ms var(--ease-out), color 280ms var(--ease-out);
+  }
+  .edBody :global(.post__essential:hover .post__essential__icon) {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .edBody :global(h3.post__essential__label) {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.05rem;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .edBody :global(p.post__essential__desc) {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: none;
+  }
+  .edBody :global(p.post__essential__desc strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .edBody :global(ol.post__essential__options) {
+    list-style: none;
+    margin: 0.4rem 0 0;
+    padding: 0;
+    max-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    counter-reset: optsCount;
+  }
+  .edBody :global(ol.post__essential__options li) {
+    counter-increment: optsCount;
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .edBody :global(ol.post__essential__options li::before) {
+    content: counter(optsCount);
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    width: 19px;
+    height: 19px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0;
+  }
+  .edBody :global(ol.post__essential__options li strong) {
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  /* ---- Figuras inline · slide LTR + rounded ---- */
+  .edBody :global(.post__figure) {
+    margin-block: clamp(2.25rem, 4.5vw, 3.25rem);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    overflow: hidden;
+    /* slide LTR initial state */
+    opacity: 0;
+    transform: translateX(-32px);
+    transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out);
+    will-change: opacity, transform;
+  }
+  .edBody :global(.post__figure.is-revealed) {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .edBody :global(.post__figure .picture) {
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+  }
+  .edBody :global(.post__figure figcaption) {
+    margin-top: 0.85rem;
+    padding-inline: 0.5rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    line-height: 1.5;
+  }
+
+  /* =========================================================
+     FAQ DELUXE · counters Fraunces italic, Q editorial, A respira
+     ========================================================= */
+  .edFaq {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-top: clamp(2.25rem, 4.5vw, 3.25rem);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .edFaq__kicker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.85rem;
+  }
+  .edFaq__h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.4vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.5rem);
+    text-wrap: balance;
+  }
+  .edFaq__h2 .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+  }
+  .edFaq__list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    counter-reset: edFaqCount;
+  }
+  .edFaq__item {
+    counter-increment: edFaqCount;
+    padding-block: clamp(1.5rem, 2.8vw, 2.1rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: padding-left 320ms var(--ease-out);
+  }
+  .edFaq__item:first-child { padding-top: clamp(0.5rem, 1vw, 0.75rem); }
+  .edFaq__item:last-child { border-bottom: 0; }
+  .edFaq__item:hover {
+    padding-left: 0.4rem;
+  }
+  /* Pregunta · counter Fraunces italic coral + texto display ampliado */
+  .edFaq__q {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    margin-bottom: 0.95rem;
+    letter-spacing: -0.008em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: baseline;
+    gap: 0.95rem;
+    text-wrap: balance;
+  }
+  .edFaq__q::before {
+    content: counter(edFaqCount, decimal-leading-zero);
+    flex-shrink: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    letter-spacing: 0.04em;
+    opacity: 0.95;
+    transition: color 280ms var(--ease-out);
+  }
+  .edFaq__item:hover .edFaq__q::before {
+    color: var(--color-primary-active, #c85c44);
+  }
+  /* Respuesta · respira más, indentada para alinear con la pregunta */
+  .edFaq__a {
+    font-size: 0.98rem;
+    line-height: 1.85;
+    color: var(--color-text-primary);
+    max-width: 65ch;
+    padding-left: calc(0.85rem + 1.6em);
+  }
+  .edFaq__a :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: rgba(233, 133, 111, 0.45);
+    transition: text-decoration-color 240ms var(--ease-out);
+  }
+  .edFaq__a :global(a:hover) {
+    text-decoration-color: var(--color-primary);
+  }
+  .edFaq__a :global(strong) { font-weight: 600; }
+  .edFaq__a :global(p) { margin-bottom: 0.6rem; }
+  .edFaq__a :global(p:last-child) { margin-bottom: 0; }
+  /* En mobile · indentación más conservadora para no perder ancho de lectura */
+  @media (max-width: 600px) {
+    .edFaq__a { padding-left: 1.6rem; }
+  }
+
+  /* =========================================================
+     Cluster links DELUXE · counter Fraunces italic, label ampliado,
+     hover con coral wash sutil + arrow translate
+     ========================================================= */
+  .edCluster {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-top: clamp(2.25rem, 4.5vw, 3.25rem);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .edCluster__kicker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.85rem;
+  }
+  .edCluster__h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-bottom: clamp(1.75rem, 3.5vw, 2.25rem);
+    text-wrap: balance;
+  }
+  .edCluster__h2 .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+  }
+  .edCluster__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    counter-reset: edClusterCount;
+  }
+  .edCluster__list li {
+    counter-increment: edClusterCount;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .edCluster__list li:last-child { border-bottom: 0; }
+  /* Cluster ya tiene counter "01 —" como marca · ocultar el bullet global ul */
+  .edCluster__list li::before {
+    content: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  .edCluster__link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.3rem 0.5rem 1.3rem 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.5vw, 1.175rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: color 280ms var(--ease-out);
+    position: relative;
+  }
+  /* Counter Fraunces italic coral antes del label */
+  .edCluster__link::before {
+    content: counter(edClusterCount, decimal-leading-zero) '  —';
+    flex-shrink: 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.85rem;
+    color: var(--color-primary);
+    opacity: 0.95;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    transition: color 280ms var(--ease-out), transform 280ms var(--ease-out);
+  }
+  .edCluster__link span {
+    flex: 1;
+    min-width: 0;
+  }
+  .edCluster__link svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    transition: transform 320ms var(--ease-out), opacity 280ms var(--ease-out);
+    opacity: 0.6;
+  }
+  .edCluster__link:hover {
+    color: var(--color-primary);
+  }
+  .edCluster__link:hover::before {
+    color: var(--color-primary-active, #c85c44);
+    transform: translateX(2px);
+  }
+  .edCluster__link:hover svg {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+
+  /* =========================================================
+     Firma final del equipo · cierre editorial
+     ========================================================= */
+  .edSign {
+    margin-top: clamp(3rem, 5vw, 4rem);
+  }
+  .edSign__inner {
+    text-align: center;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+  .edSign__line {
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--color-primary);
+    margin: 0 auto 1.25rem;
+    opacity: 0.7;
+  }
+  .edSign__text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: none;
+  }
+  .edSign__text strong {
+    font-style: normal;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: 0.005em;
+  }
+  .edSign__text time {
+    color: var(--color-primary);
+  }
+
+  /* =========================================================
+     3b · SIDEBAR (sticky)
+     ========================================================= */
+  .edSide {
+    /* en mobile aparece debajo del body por orden DOM */
+  }
+  .edSide__sticky {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 3vw, 2.5rem);
+  }
+  @media (min-width: 1024px) {
+    .edSide__sticky {
+      position: sticky;
+      top: 96px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+      /* sutil scrollbar custom */
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-border-subtle) transparent;
+    }
+    .edSide__sticky::-webkit-scrollbar { width: 4px; }
+    .edSide__sticky::-webkit-scrollbar-thumb {
+      background: var(--color-border-subtle);
+      border-radius: 4px;
+    }
+  }
+
+  /* ---- Autor card · sin caja, microtipografía ---- */
+  .edSide__author {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding-bottom: clamp(1.5rem, 2.8vw, 2rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .edSide__authorMark {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.25rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: -0.02em;
+  }
+  .edSide__authorBody {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .edSide__authorKicker {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .edSide__authorName {
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--color-text-primary);
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+  .edSide__authorName .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .edSide__authorMeta {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    margin: 0;
+  }
+
+  /* ---- TOC ---- */
+  .edSide__toc {
+    padding-bottom: clamp(1.5rem, 2.8vw, 2rem);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .edSide__tocKicker {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+  .edSide__tocList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: edTocCount;
+  }
+  .edSide__tocList li {
+    counter-increment: edTocCount;
+    margin-bottom: 0.85rem;
+    padding-left: 2rem;
+    position: relative;
+  }
+  .edSide__tocList li::before {
+    content: counter(edTocCount, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    transition: color 240ms var(--ease-out);
+  }
+  .edSide__tocList a {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    text-underline-offset: 3px;
+    transition: color 240ms var(--ease-out);
+  }
+  .edSide__tocList a:hover {
+    color: var(--color-primary);
+  }
+  .edSide__tocList a.is-active {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .edSide__tocList li:has(a.is-active)::before {
+    color: var(--color-primary);
+  }
+  /* Cuando un H2 tiene <br/>, el TOC parte el item en título + subtítulo */
+  .edSide__tocTitle {
+    display: block;
+  }
+  .edSide__tocSub {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: var(--color-text-muted);
+    letter-spacing: 0;
+  }
+
+  /* ---- CTA card · sin caja, hairlines arriba/abajo ---- */
+  .edSide__cta {
+    padding-block: clamp(1.5rem, 2.8vw, 2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .edSide__ctaKicker {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .edSide__ctaTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.4rem);
+    font-weight: 900;
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .edSide__ctaTitle .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .edSide__ctaList {
+    list-style: none;
+    margin: 0.25rem 0 0.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .edSide__ctaList li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .edSide__ctaList li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7em;
+    width: 7px;
+    height: 1px;
+    background: var(--color-primary);
+  }
+  .edSide__ctaBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1.1rem 0.85rem 1.25rem;
+    background: var(--color-text-primary);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 999px;
+    margin-top: 0.5rem;
+    transition: background 240ms var(--ease-out), transform 240ms var(--ease-out);
+  }
+  .edSide__ctaBtn:hover {
+    background: var(--color-primary);
+    transform: translateY(-1px);
+  }
+  .edSide__ctaIcon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    transition: transform 240ms var(--ease-out);
+  }
+  .edSide__ctaBtn:hover .edSide__ctaIcon {
+    transform: translateX(2px);
+  }
+  .edSide__ctaLink {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.82rem;
+    color: var(--color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    align-self: flex-start;
+    transition: border-color 240ms var(--ease-out);
+  }
+  .edSide__ctaLink:hover {
+    border-bottom-color: var(--color-primary);
+  }
+
+  /* =========================================================
+     4 · RELATED POSTS · cards limpias sin doble fondo
+     ========================================================= */
+  .edRelated {
+    padding-block: clamp(3.5rem, 6vw, 5.5rem);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .edRelated__inner {
+    max-width: 1180px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+  .edRelated__kicker {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+  .edRelated__h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    text-wrap: balance;
+  }
+  .edRelated__h2 .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--color-primary);
+  }
+  .edRelated__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* Related cards no necesitan bullet · son cards visuales */
+  .edRelated__grid li {
+    padding-left: 0;
+  }
+  .edRelated__grid li::before {
+    content: none;
+    background: transparent;
+    box-shadow: none;
+  }
+  @media (min-width: 720px) {
+    .edRelated__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .edRelated__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    text-decoration: none;
+    transition: transform 360ms var(--ease-out), filter 360ms var(--ease-out);
+  }
+  .edRelated__card:hover {
+    transform: translateY(-3px);
+  }
+  .edRelated__media {
+    position: relative;
+    overflow: hidden;
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    box-shadow: 0 12px 28px -22px rgba(26, 31, 46, 0.14);
+    transition: box-shadow 360ms var(--ease-out);
+  }
+  .edRelated__card:hover .edRelated__media {
+    box-shadow: 0 24px 52px -28px rgba(26, 31, 46, 0.22);
+  }
+  .edRelated__media :global(.picture) {
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+  }
+  .edRelated__media :global(img) {
+    transition: transform 900ms var(--ease-out);
+  }
+  .edRelated__card:hover .edRelated__media :global(img) {
+    transform: scale(1.05);
+  }
+  .edRelated__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  /* Meta line · cat coral + interpunct · tiempo lectura */
+  .edRelated__metaTop {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 0.1rem;
+  }
+  .edRelated__cat {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .edRelated__metaSep {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    opacity: 0.5;
+  }
+  .edRelated__time {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .edRelated__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.012em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+    transition: color 280ms var(--ease-out);
+  }
+  .edRelated__card:hover .edRelated__title {
+    color: var(--color-primary);
+  }
+  .edRelated__excerpt {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 52ch;
+  }
+  .edRelated__more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.92rem;
+    color: var(--color-primary);
+    margin-top: 0.4rem;
+    transition: gap 320ms var(--ease-out);
+  }
+  .edRelated__more svg {
+    flex-shrink: 0;
+    transition: transform 320ms var(--ease-out);
+  }
+  .edRelated__card:hover .edRelated__more {
+    gap: 0.65rem;
+  }
+  .edRelated__card:hover .edRelated__more svg {
+    transform: translateX(4px);
+  }
+
+  /* =========================================================
+     Reading progress bar (top fixed)
+     ========================================================= */
+  .edProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+    z-index: 90;
+    pointer-events: none;
+  }
+  .edProgress__fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-active, #c85c44) 100%);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 120ms linear;
+    will-change: transform;
+  }
+
+  /* =========================================================
+     Editorial dropcap · primer párrafo después del intro
+     ========================================================= */
+  .edBody :global(.post__intro + p)::first-letter {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(3.75rem, 7vw, 5rem);
+    line-height: 0.85;
+    color: var(--color-primary);
+    float: left;
+    padding: 0.5rem 0.65rem 0 0;
+    margin-bottom: -0.35rem;
+  }
+
+  /* =========================================================
+     Section numbers · "— 01" antes de cada H2 (counter)
+     ========================================================= */
+  .edBody {
+    counter-reset: edSection;
+  }
+  .edBody :global(.post__h2) {
+    counter-increment: edSection;
+  }
+  .edBody :global(.post__h2)::before {
+    content: '— ' counter(edSection, decimal-leading-zero);
+    display: block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    color: var(--color-primary);
+    margin-bottom: 0.85rem;
+    opacity: 0.95;
+  }
+
+  /* =========================================================
+     SIDEBAR · sage subtle panel · denota separación
+     ========================================================= */
+  @media (min-width: 1024px) {
+    .edSide__sticky {
+      background: var(--color-sage-subtle, #e8ece6);
+      padding: clamp(1.75rem, 2.4vw, 2.25rem) clamp(1.5rem, 2.2vw, 2rem);
+      border-radius: clamp(1rem, 2vw, 1.5rem);
+      gap: clamp(1.5rem, 2.5vw, 2rem);
+      max-height: calc(100vh - 120px);
+    }
+  }
+
+  /* En mobile · sigue sin bg para evitar caja flotante mid-page */
+  @media (max-width: 1023px) {
+    .edSide {
+      background: var(--color-sage-subtle, #e8ece6);
+      border-radius: clamp(1rem, 2vw, 1.5rem);
+      padding: clamp(1.75rem, 4vw, 2.25rem);
+    }
+  }
+
+  /* Refinar bordes interiores · ahora todo está dentro de un panel sage */
+  .edSide__author,
+  .edSide__toc,
+  .edSide__cta {
+    border-bottom-color: rgba(61, 79, 58, 0.15);
+  }
+  .edSide__author { padding-top: 0; }
+
+  /* Ajustar colores en panel sage para mejor contraste */
+  .edSide__authorKicker,
+  .edSide__tocKicker {
+    color: rgba(61, 79, 58, 0.7);
+  }
+  .edSide__tocList li::before {
+    color: rgba(61, 79, 58, 0.65);
+  }
+  .edSide__tocList a {
+    color: var(--color-text-primary);
+    opacity: 0.8;
+  }
+  .edSide__tocList a:hover { opacity: 1; }
+  .edSide__authorMeta {
+    color: rgba(26, 31, 46, 0.6);
+  }
+  .edSide__ctaList li {
+    color: var(--color-text-primary);
+    opacity: 0.85;
+  }
+
+  /* Compartir · trío de iconos al final del sidebar */
+  .edSide__share {
+    padding-top: clamp(1.25rem, 2.4vw, 1.6rem);
+    border-top: 1px solid rgba(61, 79, 58, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .edSide__shareKicker {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(61, 79, 58, 0.7);
+  }
+  .edSide__shareRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .edSide__shareBtn {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid rgba(61, 79, 58, 0.25);
+    border-radius: 50%;
+    color: var(--color-sage, #3d4f3a);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 240ms var(--ease-out);
+    padding: 0;
+  }
+  .edSide__shareBtn:hover {
+    background: var(--color-sage, #3d4f3a);
+    color: #fff;
+    border-color: var(--color-sage, #3d4f3a);
+    transform: translateY(-1px);
+  }
+  .edSide__shareToast {
+    position: absolute;
+    right: 0;
+    bottom: -1.65rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--color-sage, #3d4f3a);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 240ms var(--ease-out), transform 240ms var(--ease-out);
+    pointer-events: none;
+  }
+  .edSide__shareToast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* =========================================================
+     Reduced motion
+     ========================================================= */
+  @media (prefers-reduced-motion: reduce) {
+    .edCover__figure,
+    .edBody :global(.post__figure),
+    .edBody :global(.post__pull),
+    .edBody :global(.post__table) {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .edProgress__fill {
+      transition: none !important;
+    }
+  }
+</style>

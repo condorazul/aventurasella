@@ -1,0 +1,687 @@
+---
+/*
+  CookieBanner · Consent Mode v2 (Google Ads compliant · EEE · marzo 2024+)
+  · Muestra banner en la primera visita con Aceptar / Rechazar / Configurar (misma prominencia)
+  · Persiste decisión en localStorage
+  · Emite señales Consent Mode v2 (ad_storage, ad_user_data, ad_personalization, analytics_storage)
+  · Inicialización con DENIED por defecto en BaseLayout (antes de cargar GA/Ads)
+  · Trigger público: window.aesOpenCookieBanner() o click en <a data-cookie-settings>
+*/
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    bannerAria: 'Aviso de cookies',
+    title: 'Usamos cookies',
+    leadPre: 'Las ',
+    leadStrong1: 'técnicas',
+    leadMid1: ' son siempre necesarias. Las de ',
+    leadStrong2: 'análisis y publicidad',
+    leadMid2: ' solo se activan si las aceptas — nos ayudan a mejorar la web y medir si nuestros anuncios funcionan. Puedes rechazarlas o personalizar tu elección.',
+    moreInfo: 'Más información',
+    reject: 'Rechazar',
+    configure: 'Configurar',
+    acceptAll: 'Aceptar todas',
+    modalAria: 'Preferencias de cookies',
+    modalTitle: 'Preferencias de cookies',
+    close: 'Cerrar',
+    introPre: 'Elige qué cookies quieres permitir. Las ',
+    introStrong: 'técnicas',
+    introPost: ' son imprescindibles para que la web funcione. Las demás son opcionales.',
+    catNecessaryTitle: 'Técnicas (estrictamente necesarias)',
+    catNecessaryNote: 'Imprescindibles · siempre activas',
+    catNecessaryDesc: 'Permiten la navegación y el funcionamiento básico del sitio. Sin ellas la web no puede operar. No requieren consentimiento.',
+    catAlways: 'Siempre',
+    catAnalyticsTitle: 'Analíticas',
+    catAnalyticsNote: 'Google Analytics 4',
+    catAnalyticsDesc: 'Medimos visitas de forma anónima y agregada para mejorar contenidos y experiencia de uso.',
+    catAdMeasureTitle: 'Publicidad · medición',
+    catAdMeasureNote: 'Google Ads conversion tracking',
+    catAdMeasureDesc: 'Nos permite saber si nuestros anuncios funcionan — si un clic en un anuncio acaba en una reserva. Datos sin identificarte.',
+    catAdDataTitle: 'Datos para publicidad',
+    catAdDataNote: 'Compartir con Google',
+    catAdDataDesc: 'Permite que Google reciba datos agregados de eventos para optimizar el rendimiento de los anuncios.',
+    catAdPersTitle: 'Publicidad personalizada',
+    catAdPersNote: 'Remarketing',
+    catAdPersDesc: 'Permite mostrarte anuncios más relevantes basados en tu interés (por ejemplo, si ya has visitado nuestra web).',
+    rejectAll: 'Rechazar todas',
+    saveSel: 'Guardar selección',
+    legalPre: 'Conforme al ',
+    legalStrong1: 'RGPD',
+    legalMid1: ', ',
+    legalStrong2: 'LOPDGDD',
+    legalMid2: ' y ',
+    legalStrong3: 'LSSI-CE art. 22.2',
+    legalMid3: '. Puedes cambiar tu elección en cualquier momento desde el enlace "Configurar cookies" del pie de página. Más detalles en la ',
+    legalLink1: 'Política de Cookies',
+    legalAnd: ' y la ',
+    legalLink2: 'Política de Privacidad',
+    legalDot: '.',
+  },
+  en: {
+    bannerAria: 'Cookie notice',
+    title: 'We use cookies',
+    leadPre: '',
+    leadStrong1: 'Necessary',
+    leadMid1: ' cookies are always required. ',
+    leadStrong2: 'Analytics and advertising',
+    leadMid2: ' cookies are only enabled if you accept them — they help us improve the site and measure whether our ads work. You can reject or customize your choice.',
+    moreInfo: 'More info',
+    reject: 'Reject',
+    configure: 'Customize',
+    acceptAll: 'Accept all',
+    modalAria: 'Cookie preferences',
+    modalTitle: 'Cookie preferences',
+    close: 'Close',
+    introPre: 'Choose which cookies to allow. ',
+    introStrong: 'Necessary',
+    introPost: ' cookies are essential for the site to work. The rest are optional.',
+    catNecessaryTitle: 'Necessary (strictly required)',
+    catNecessaryNote: 'Essential · always active',
+    catNecessaryDesc: 'They enable navigation and the basic functioning of the site. Without them the website cannot operate. They do not require consent.',
+    catAlways: 'Always',
+    catAnalyticsTitle: 'Analytics',
+    catAnalyticsNote: 'Google Analytics 4',
+    catAnalyticsDesc: 'We measure visits anonymously and in aggregate to improve content and user experience.',
+    catAdMeasureTitle: 'Advertising · measurement',
+    catAdMeasureNote: 'Google Ads conversion tracking',
+    catAdMeasureDesc: 'It lets us know if our ads work — whether a click on an ad ends in a booking. Data without identifying you.',
+    catAdDataTitle: 'Advertising data',
+    catAdDataNote: 'Share with Google',
+    catAdDataDesc: 'Allows Google to receive aggregated event data to optimize ad performance.',
+    catAdPersTitle: 'Personalized advertising',
+    catAdPersNote: 'Remarketing',
+    catAdPersDesc: 'Lets us show you more relevant ads based on your interest (for example, if you have already visited our website).',
+    rejectAll: 'Reject all',
+    saveSel: 'Save preferences',
+    legalPre: 'In compliance with ',
+    legalStrong1: 'GDPR',
+    legalMid1: ', ',
+    legalStrong2: 'LOPDGDD',
+    legalMid2: ' and ',
+    legalStrong3: 'LSSI-CE art. 22.2',
+    legalMid3: '. You can change your choice at any time via the "Cookie settings" link in the footer. More details in the ',
+    legalLink1: 'Cookie Policy',
+    legalAnd: ' and the ',
+    legalLink2: 'Privacy Policy',
+    legalDot: '.',
+  },
+  fr: {
+    bannerAria: 'Avis de cookies',
+    title: 'Nous utilisons des cookies',
+    leadPre: 'Les cookies ',
+    leadStrong1: 'techniques',
+    leadMid1: ' sont toujours nécessaires. Ceux d\'',
+    leadStrong2: 'analyse et de publicité',
+    leadMid2: ' ne s\'activent que si vous les acceptez — ils nous aident à améliorer le site et à mesurer si nos annonces fonctionnent. Vous pouvez les refuser ou personnaliser votre choix.',
+    moreInfo: 'Plus d\'infos',
+    reject: 'Refuser',
+    configure: 'Personnaliser',
+    acceptAll: 'Accepter tout',
+    modalAria: 'Préférences de cookies',
+    modalTitle: 'Préférences de cookies',
+    close: 'Fermer',
+    introPre: 'Choisissez quels cookies autoriser. Les cookies ',
+    introStrong: 'techniques',
+    introPost: ' sont indispensables au fonctionnement du site. Les autres sont optionnels.',
+    catNecessaryTitle: 'Techniques (strictement nécessaires)',
+    catNecessaryNote: 'Indispensables · toujours actifs',
+    catNecessaryDesc: 'Ils permettent la navigation et le fonctionnement de base du site. Sans eux, le site ne peut pas fonctionner. Ils ne nécessitent pas de consentement.',
+    catAlways: 'Toujours',
+    catAnalyticsTitle: 'Analytique',
+    catAnalyticsNote: 'Google Analytics 4',
+    catAnalyticsDesc: 'Nous mesurons les visites de façon anonyme et agrégée pour améliorer les contenus et l\'expérience d\'utilisation.',
+    catAdMeasureTitle: 'Publicité · mesure',
+    catAdMeasureNote: 'Google Ads conversion tracking',
+    catAdMeasureDesc: 'Cela nous permet de savoir si nos annonces fonctionnent — si un clic sur une annonce aboutit à une réservation. Données sans vous identifier.',
+    catAdDataTitle: 'Données pour la publicité',
+    catAdDataNote: 'Partager avec Google',
+    catAdDataDesc: 'Permet à Google de recevoir des données d\'événements agrégées pour optimiser la performance des annonces.',
+    catAdPersTitle: 'Publicité personnalisée',
+    catAdPersNote: 'Remarketing',
+    catAdPersDesc: 'Permet de vous montrer des annonces plus pertinentes selon votre intérêt (par exemple, si vous avez déjà visité notre site).',
+    rejectAll: 'Refuser tout',
+    saveSel: 'Enregistrer',
+    legalPre: 'Conforme au ',
+    legalStrong1: 'RGPD',
+    legalMid1: ', ',
+    legalStrong2: 'LOPDGDD',
+    legalMid2: ' et ',
+    legalStrong3: 'LSSI-CE art. 22.2',
+    legalMid3: '. Vous pouvez modifier votre choix à tout moment depuis le lien "Paramètres des cookies" dans le pied de page. Plus de détails dans la ',
+    legalLink1: 'Politique des cookies',
+    legalAnd: ' et la ',
+    legalLink2: 'Politique de confidentialité',
+    legalDot: '.',
+  },
+  pt: {
+    bannerAria: 'Aviso de cookies',
+    title: 'Usamos cookies',
+    leadPre: 'As ',
+    leadStrong1: 'técnicas',
+    leadMid1: ' são sempre necessárias. As de ',
+    leadStrong2: 'análise e publicidade',
+    leadMid2: ' só se activam se as aceitares — ajudam-nos a melhorar a web e a medir se os nossos anúncios funcionam. Podes rejeitá-las ou personalizar a tua escolha.',
+    moreInfo: 'Mais info',
+    reject: 'Rejeitar',
+    configure: 'Configurar',
+    acceptAll: 'Aceitar todas',
+    modalAria: 'Preferências de cookies',
+    modalTitle: 'Preferências de cookies',
+    close: 'Fechar',
+    introPre: 'Escolhe que cookies queres permitir. As ',
+    introStrong: 'técnicas',
+    introPost: ' são imprescindíveis para que a web funcione. As restantes são opcionais.',
+    catNecessaryTitle: 'Técnicas (estritamente necessárias)',
+    catNecessaryNote: 'Imprescindíveis · sempre activas',
+    catNecessaryDesc: 'Permitem a navegação e o funcionamento básico do site. Sem elas a web não pode operar. Não requerem consentimento.',
+    catAlways: 'Sempre',
+    catAnalyticsTitle: 'Analítica',
+    catAnalyticsNote: 'Google Analytics 4',
+    catAnalyticsDesc: 'Medimos visitas de forma anónima e agregada para melhorar conteúdos e experiência de uso.',
+    catAdMeasureTitle: 'Publicidade · medição',
+    catAdMeasureNote: 'Google Ads conversion tracking',
+    catAdMeasureDesc: 'Permite-nos saber se os nossos anúncios funcionam — se um clique num anúncio resulta numa reserva. Dados sem te identificar.',
+    catAdDataTitle: 'Dados para publicidade',
+    catAdDataNote: 'Partilhar com a Google',
+    catAdDataDesc: 'Permite que a Google receba dados agregados de eventos para optimizar o desempenho dos anúncios.',
+    catAdPersTitle: 'Publicidade personalizada',
+    catAdPersNote: 'Remarketing',
+    catAdPersDesc: 'Permite mostrar-te anúncios mais relevantes com base no teu interesse (por exemplo, se já visitaste a nossa web).',
+    rejectAll: 'Rejeitar todas',
+    saveSel: 'Guardar preferências',
+    legalPre: 'Em conformidade com o ',
+    legalStrong1: 'RGPD',
+    legalMid1: ', ',
+    legalStrong2: 'LOPDGDD',
+    legalMid2: ' e ',
+    legalStrong3: 'LSSI-CE art. 22.2',
+    legalMid3: '. Podes alterar a tua escolha em qualquer momento a partir do link "Configurar cookies" no rodapé. Mais detalhes na ',
+    legalLink1: 'Política de Cookies',
+    legalAnd: ' e na ',
+    legalLink2: 'Política de Privacidade',
+    legalDot: '.',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+const cookiesHref = getLocalePath('legal_cookies', lang);
+const privacyHref = getLocalePath('legal_privacidad', lang);
+---
+
+<!-- Banner inicial · barra inferior no bloqueante -->
+<div id="ckBanner" class="ckB" role="dialog" aria-label={t.bannerAria} aria-live="polite" hidden>
+  <div class="ckB__inner">
+    <div class="ckB__text">
+      <strong class="ckB__title">{t.title}</strong>
+      <p class="ckB__lead">
+        {t.leadPre}<strong>{t.leadStrong1}</strong>{t.leadMid1}<strong>{t.leadStrong2}</strong>{t.leadMid2}
+      </p>
+      <a href={cookiesHref} class="ckB__more">{t.moreInfo}</a>
+    </div>
+    <div class="ckB__actions">
+      <button type="button" class="ckB__btn ckB__btn--ghost" data-ck-action="reject">{t.reject}</button>
+      <button type="button" class="ckB__btn ckB__btn--ghost" data-ck-action="configure">{t.configure}</button>
+      <button type="button" class="ckB__btn ckB__btn--primary" data-ck-action="accept-all">{t.acceptAll}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de configuración granular · Consent Mode v2 signals -->
+<div id="ckModal" class="ckM" role="dialog" aria-label={t.modalAria} aria-modal="true" hidden>
+  <div class="ckM__overlay" data-ck-action="close-modal" aria-hidden="true"></div>
+  <div class="ckM__panel" role="document">
+    <div class="ckM__head">
+      <h2 class="ckM__title">{t.modalTitle}</h2>
+      <button type="button" class="ckM__close" data-ck-action="close-modal" aria-label={t.close}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <p class="ckM__intro">
+      {t.introPre}<strong>{t.introStrong}</strong>{t.introPost}
+    </p>
+
+    <ul class="ckM__list">
+      <li class="ckM__cat">
+        <div class="ckM__catHead">
+          <div>
+            <strong>{t.catNecessaryTitle}</strong>
+            <span class="ckM__catNote">{t.catNecessaryNote}</span>
+          </div>
+          <span class="ckM__catAlways">{t.catAlways}</span>
+        </div>
+        <p class="ckM__catDesc">{t.catNecessaryDesc}</p>
+      </li>
+
+      <li class="ckM__cat">
+        <div class="ckM__catHead">
+          <label class="ckM__toggle">
+            <input type="checkbox" data-ck-signal="analytics_storage" />
+            <span class="ckM__toggleUi" aria-hidden="true"></span>
+            <div>
+              <strong>{t.catAnalyticsTitle}</strong>
+              <span class="ckM__catNote">{t.catAnalyticsNote}</span>
+            </div>
+          </label>
+        </div>
+        <p class="ckM__catDesc">{t.catAnalyticsDesc}</p>
+      </li>
+
+      <li class="ckM__cat">
+        <div class="ckM__catHead">
+          <label class="ckM__toggle">
+            <input type="checkbox" data-ck-signal="ad_storage" />
+            <span class="ckM__toggleUi" aria-hidden="true"></span>
+            <div>
+              <strong>{t.catAdMeasureTitle}</strong>
+              <span class="ckM__catNote">{t.catAdMeasureNote}</span>
+            </div>
+          </label>
+        </div>
+        <p class="ckM__catDesc">{t.catAdMeasureDesc}</p>
+      </li>
+
+      <li class="ckM__cat">
+        <div class="ckM__catHead">
+          <label class="ckM__toggle">
+            <input type="checkbox" data-ck-signal="ad_user_data" />
+            <span class="ckM__toggleUi" aria-hidden="true"></span>
+            <div>
+              <strong>{t.catAdDataTitle}</strong>
+              <span class="ckM__catNote">{t.catAdDataNote}</span>
+            </div>
+          </label>
+        </div>
+        <p class="ckM__catDesc">{t.catAdDataDesc}</p>
+      </li>
+
+      <li class="ckM__cat">
+        <div class="ckM__catHead">
+          <label class="ckM__toggle">
+            <input type="checkbox" data-ck-signal="ad_personalization" />
+            <span class="ckM__toggleUi" aria-hidden="true"></span>
+            <div>
+              <strong>{t.catAdPersTitle}</strong>
+              <span class="ckM__catNote">{t.catAdPersNote}</span>
+            </div>
+          </label>
+        </div>
+        <p class="ckM__catDesc">{t.catAdPersDesc}</p>
+      </li>
+    </ul>
+
+    <div class="ckM__foot">
+      <button type="button" class="ckB__btn ckB__btn--ghost" data-ck-action="reject">{t.rejectAll}</button>
+      <button type="button" class="ckB__btn ckB__btn--ghost" data-ck-action="save">{t.saveSel}</button>
+      <button type="button" class="ckB__btn ckB__btn--primary" data-ck-action="accept-all">{t.acceptAll}</button>
+    </div>
+
+    <p class="ckM__legal">
+      {t.legalPre}<strong>{t.legalStrong1}</strong>{t.legalMid1}<strong>{t.legalStrong2}</strong>{t.legalMid2}<strong>{t.legalStrong3}</strong>{t.legalMid3}<a href={cookiesHref}>{t.legalLink1}</a>{t.legalAnd}<a href={privacyHref}>{t.legalLink2}</a>{t.legalDot}
+    </p>
+  </div>
+</div>
+
+<style>
+  /* ============== Banner ============== */
+  .ckB {
+    position: fixed;
+    left: clamp(0.75rem, 2vw, 1.5rem);
+    right: clamp(0.75rem, 2vw, 1.5rem);
+    bottom: clamp(0.75rem, 2vw, 1.5rem);
+    z-index: 9998;
+    background: #FFFFFF;
+    color: var(--color-text-primary, #1A1F2E);
+    border: 1px solid rgba(26, 31, 46, 0.1);
+    border-radius: var(--radius-xl, 1.5rem);
+    box-shadow: 0 24px 64px -20px rgba(26, 31, 46, 0.25);
+    padding: clamp(1rem, 2vw, 1.5rem) clamp(1.25rem, 2.5vw, 1.75rem);
+    animation: ckBSlide 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    max-width: 1100px; margin: 0 auto;
+  }
+  @keyframes ckBSlide {
+    from { transform: translateY(24px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .ckB[hidden] { display: none !important; }
+
+  .ckB__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    align-items: center;
+  }
+  @media (min-width: 820px) {
+    .ckB__inner { grid-template-columns: minmax(0, 1fr) auto; }
+  }
+
+  .ckB__text { min-width: 0; }
+  .ckB__title {
+    display: block;
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(0.9375rem, 1.4vw, 1.0625rem);
+    color: var(--color-text-primary);
+    margin-bottom: 0.375rem;
+    letter-spacing: -0.01em;
+  }
+  .ckB__lead {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.55;
+    color: var(--color-text-secondary); margin: 0 0 0.5rem;
+  }
+  .ckB__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .ckB__more {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 800;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1.5px solid var(--color-sage, #3D4F3A);
+    padding-bottom: 1px;
+  }
+  .ckB__more:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .ckB__actions {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    justify-content: flex-start;
+  }
+  @media (min-width: 820px) { .ckB__actions { justify-content: flex-end; flex-wrap: nowrap; } }
+
+  /* Botones compartidos con el modal */
+  .ckB__btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0.625rem 1.125rem;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: transform 220ms, background 220ms, color 220ms, border-color 220ms;
+    border: 1.5px solid transparent;
+  }
+  .ckB__btn:hover { transform: translateY(-1px); }
+  .ckB__btn--primary {
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FFFFFF;
+    border-color: var(--color-text-primary);
+  }
+  .ckB__btn--primary:hover { background: var(--color-sage, #3D4F3A); border-color: var(--color-sage); }
+  .ckB__btn--ghost {
+    background: transparent;
+    color: var(--color-text-primary, #1A1F2E);
+    border-color: rgba(26, 31, 46, 0.2);
+  }
+  .ckB__btn--ghost:hover {
+    background: rgba(26, 31, 46, 0.06);
+    border-color: rgba(26, 31, 46, 0.35);
+  }
+
+  /* ============== Modal configurar ============== */
+  .ckM {
+    position: fixed; inset: 0;
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .ckM[hidden] { display: none !important; }
+  .ckM__overlay {
+    position: absolute; inset: 0;
+    background: rgba(26, 31, 46, 0.55);
+    backdrop-filter: blur(4px);
+    animation: ckMFade 220ms ease;
+  }
+  @keyframes ckMFade { from { opacity: 0; } to { opacity: 1; } }
+
+  .ckM__panel {
+    position: relative;
+    background: #FFFFFF;
+    border-radius: var(--radius-2xl, 2rem);
+    max-width: 620px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    box-shadow: 0 32px 72px -20px rgba(26, 31, 46, 0.35);
+    animation: ckMPop 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes ckMPop {
+    from { transform: translateY(20px) scale(0.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .ckM__head {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.875rem;
+  }
+  .ckM__title {
+    font-family: var(--font-display); font-weight: 900;
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .ckM__close {
+    flex-shrink: 0;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(26, 31, 46, 0.06);
+    border: none; color: var(--color-text-primary);
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 200ms;
+  }
+  .ckM__close:hover { background: rgba(26, 31, 46, 0.14); }
+
+  .ckM__intro {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.25rem;
+  }
+  .ckM__intro strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .ckM__list { list-style: none; padding: 0; margin: 0 0 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .ckM__cat {
+    padding: 0.875rem 1rem;
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.1);
+    border-radius: var(--radius-lg, 1rem);
+  }
+  .ckM__catHead {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.375rem;
+  }
+  .ckM__catHead strong {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.005em;
+  }
+  .ckM__catNote {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .ckM__catDesc {
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.55;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .ckM__catAlways {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    padding: 0.25rem 0.625rem;
+    background: rgba(61, 79, 58, 0.12);
+    border-radius: var(--radius-pill, 999px);
+  }
+
+  /* Toggle switch */
+  .ckM__toggle {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+    flex: 1;
+    min-width: 0;
+  }
+  .ckM__toggle input { position: absolute; opacity: 0; pointer-events: none; }
+  .ckM__toggleUi {
+    position: relative;
+    width: 40px; height: 22px;
+    background: rgba(26, 31, 46, 0.2);
+    border-radius: 999px;
+    transition: background 220ms;
+    flex-shrink: 0;
+  }
+  .ckM__toggleUi::after {
+    content: '';
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 220ms;
+  }
+  .ckM__toggle input:checked + .ckM__toggleUi { background: var(--color-sage, #3D4F3A); }
+  .ckM__toggle input:checked + .ckM__toggleUi::after { transform: translateX(18px); }
+  .ckM__toggle input:focus-visible + .ckM__toggleUi {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .ckM__foot {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    justify-content: flex-end;
+    margin-bottom: 1rem;
+  }
+
+  .ckM__legal {
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.55;
+    color: var(--color-text-muted);
+    margin: 0;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .ckM__legal strong { color: var(--color-text-secondary); font-weight: 700; }
+  .ckM__legal a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+  }
+  .ckM__legal a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ckB, .ckM__overlay, .ckM__panel { animation: none; }
+    .ckB__btn, .ckM__toggleUi, .ckM__toggleUi::after { transition: none; }
+  }
+</style>
+
+<script>
+  (function () {
+    const STORAGE_KEY = 'aes-cookie-consent-v1';
+    const banner = document.getElementById('ckBanner');
+    const modal  = document.getElementById('ckModal');
+    if (!banner || !modal) return;
+
+    const signals = ['analytics_storage', 'ad_storage', 'ad_user_data', 'ad_personalization'];
+
+    // gtag stub (el init real de Consent Mode v2 va en BaseLayout en <head> antes de GA/Ads)
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+
+    function applyConsent(prefs) {
+      const update = {};
+      signals.forEach(s => { update[s] = prefs[s] ? 'granted' : 'denied'; });
+      gtag('consent', 'update', update);
+    }
+
+    function saveAndApply(prefs) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ prefs, ts: Date.now() }));
+      applyConsent(prefs);
+      hideBanner();
+      closeModal();
+    }
+
+    function allGranted() { return signals.reduce((o, s) => (o[s] = true, o), {}); }
+    function allDenied()  { return signals.reduce((o, s) => (o[s] = false, o), {}); }
+
+    function showBanner() { banner.hidden = false; }
+    function hideBanner() { banner.hidden = true; }
+
+    function openModal() {
+      hideBanner();
+      const stored = getStored();
+      const current = stored ? stored.prefs : allDenied();
+      modal.querySelectorAll('input[data-ck-signal]').forEach((el) => {
+        const input = el as HTMLInputElement;
+        const sig = input.dataset.ckSignal;
+        input.checked = !!current[sig];
+      });
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+
+    function getStored() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); }
+      catch { return null; }
+    }
+
+    function readModalSelection() {
+      const prefs = {};
+      modal.querySelectorAll('input[data-ck-signal]').forEach((el) => {
+        const input = el as HTMLInputElement;
+        prefs[input.dataset.ckSignal] = input.checked;
+      });
+      return prefs;
+    }
+
+    // Event delegation en banner y modal
+    function handleAction(action) {
+      switch (action) {
+        case 'accept-all': saveAndApply(allGranted()); break;
+        case 'reject':     saveAndApply(allDenied()); break;
+        case 'configure':  openModal(); break;
+        case 'save':       saveAndApply(readModalSelection()); break;
+        case 'close-modal':
+          /* Si cierra sin decidir y no había decisión previa, mostramos banner otra vez */
+          closeModal();
+          if (!getStored()) showBanner();
+          break;
+      }
+    }
+
+    [banner, modal].forEach(root => {
+      root.addEventListener('click', (e) => {
+        const t = e.target as HTMLElement;
+        const btn = t.closest('[data-ck-action]') as HTMLElement | null;
+        if (!btn) return;
+        e.preventDefault();
+        handleAction(btn.dataset.ckAction || '');
+      });
+    });
+
+    // Abrir modal desde links [data-cookie-settings] (pie de página etc.)
+    document.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      const trigger = t.closest('[data-cookie-settings]');
+      if (!trigger) return;
+      e.preventDefault();
+      openModal();
+    });
+
+    // API pública para disparar programáticamente
+    (window as any).aesOpenCookieBanner = openModal;
+
+    // Init: si ya hay decisión guardada, aplicarla silenciosamente; si no, mostrar banner
+    const stored = getStored();
+    if (stored && stored.prefs) {
+      applyConsent(stored.prefs);
+    } else {
+      // Pequeño delay para evitar flash al cargar la página
+      setTimeout(showBanner, 400);
+    }
+  })();
+</script>

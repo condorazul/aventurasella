@@ -1,0 +1,638 @@
+---
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— 04 / Cómo funciona',
+    title_l1: 'Tu día en el Sella,',
+    title_l2: 'paso a paso.',
+    lead: 'Hemos pensado cada detalle para que solo tengas que concentrarte en pasarlo bien.',
+    facts: {
+      duration: { label: 'Duración', value: '2 — 5 h' },
+      distance: { label: 'Distancia', value: '7 — 15 km' },
+      stops: { label: 'Paradas', value: 'Las que quieras' },
+      from: { label: 'Desde', value: '30 €' },
+    },
+    step_label: 'Paso',
+    pagination_aria: 'Paginación',
+    prev_aria: 'Anterior',
+    next_aria: 'Siguiente',
+    go_to_step_aria: (n: number) => `Ir al paso ${n}`,
+    steps: [
+      {
+        badge: 'INICIO',
+        title: 'Llegas',
+        text: 'Te recibimos en nuestras instalaciones de Arriondas. Haces el check-in y te entregamos el picnic asturiano de regalo —empanada de bonito, bollín preñao y agua— junto con el bidón estanco, el chaleco y el neopreno si el agua lo pide.',
+      },
+      {
+        badge: 'SALIDA',
+        title: 'Te equipamos',
+        text: 'Aparcas en nuestro parking privado y vigilado, recibes una breve clase explicativa y te damos canoa insumergible y pala doble. Eliges cómo arrancar: por nuestra rampa o a la vera del río.',
+      },
+      {
+        badge: 'DISFRUTAS',
+        title: 'Remas a tu ritmo',
+        text: 'Tú marcas el ritmo. El Sella te lleva entre bosque y paisaje, con aguas tranquilas y algún tramo con pulso. Paras donde quieres, te bañas, respiras.',
+      },
+      {
+        badge: 'PICNIC',
+        title: 'Paras donde quieres',
+        text: 'Abres el picnic cuando te apetece. En el recorrido encuentras seis chiringuitos donde tomar algo: Riverland (km 1), El Oasis y El Prau (km 3), El Bosque y La Mediana (km 4) y Toraño (km 8, fin del Mini Sella).',
+      },
+      {
+        badge: 'REGRESO',
+        title: 'Te recogemos',
+        text: 'Al terminar, te llevamos de vuelta. Ducha caliente y la sensación de haber disfrutado del río sin prisas.',
+      },
+    ],
+  },
+  en: {
+    eyebrow: '— 04 / How it works',
+    title_l1: 'Your day on the Sella,',
+    title_l2: 'step by step.',
+    lead: 'We have thought of every detail so you can simply focus on enjoying yourselves.',
+    facts: {
+      duration: { label: 'Duration', value: '2 — 5 h' },
+      distance: { label: 'Distance', value: '7 — 15 km' },
+      stops: { label: 'Stops', value: 'As many as you wish' },
+      from: { label: 'From', value: '€30' },
+    },
+    step_label: 'Step',
+    pagination_aria: 'Pagination',
+    prev_aria: 'Previous',
+    next_aria: 'Next',
+    go_to_step_aria: (n: number) => `Go to step ${n}`,
+    steps: [
+      {
+        badge: 'ARRIVAL',
+        title: 'You arrive',
+        text: 'We welcome you at our base in Arriondas. You check in and we hand you the complimentary Asturian picnic —tuna pie, traditional Asturian bun and water— together with the waterproof barrel, the life jacket and the wetsuit if the water calls for it.',
+      },
+      {
+        badge: 'START',
+        title: 'We kit you out',
+        text: 'You park in our private, guarded car park, receive a short mini-class and we hand you your unsinkable canoe and double paddle. You choose how to set off: down our boarding ramp or right by the riverside.',
+      },
+      {
+        badge: 'ENJOY',
+        title: 'You paddle at your own pace',
+        text: 'You set the rhythm. The Sella carries you through woodland and landscape, with calm waters and the odd lively stretch. You stop where you like, swim, breathe.',
+      },
+      {
+        badge: 'PICNIC',
+        title: 'You stop where you wish',
+        text: 'You open the picnic whenever you fancy. Along the route there are six riverside bars to grab a bite: Riverland (km 1), El Oasis and El Prau (km 3), El Bosque and La Mediana (km 4) and Toraño (km 8, end of the Mini Sella).',
+      },
+      {
+        badge: 'RETURN',
+        title: 'We pick you up',
+        text: 'When you finish, we drive you back. A hot shower and the feeling of having enjoyed the river without rushing.',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: '— 04 / Comment ça marche',
+    title_l1: 'Ta journée sur le Sella,',
+    title_l2: 'étape par étape.',
+    lead: 'Nous avons pensé à chaque détail pour que tu n\'aies plus qu\'à profiter.',
+    facts: {
+      duration: { label: 'Durée', value: '2 — 5 h' },
+      distance: { label: 'Distance', value: '7 — 15 km' },
+      stops: { label: 'Arrêts', value: 'Autant que tu veux' },
+      from: { label: 'Dès', value: '30 €' },
+    },
+    step_label: 'Étape',
+    pagination_aria: 'Pagination',
+    prev_aria: 'Précédent',
+    next_aria: 'Suivant',
+    go_to_step_aria: (n: number) => `Aller à l'étape ${n}`,
+    steps: [
+      {
+        badge: 'ARRIVÉE',
+        title: 'Tu arrives',
+        text: 'Nous t\'accueillons dans nos installations d\'Arriondas. Tu fais le check-in et nous te remettons le pique-nique asturien offert —empanada au thon, petit pain asturien et eau— avec le bidon étanche, le gilet de sauvetage et la combinaison néoprène si l\'eau l\'exige.',
+      },
+      {
+        badge: 'DÉPART',
+        title: 'Nous t\'équipons',
+        text: 'Tu te gares sur notre parking privé et surveillé, tu reçois un bref mini-cours et nous te confions le canoë insubmersible et la pagaie double. Tu choisis ton départ : par notre rampe d\'embarquement ou directement au bord du fleuve.',
+      },
+      {
+        badge: 'PROFITE',
+        title: 'Tu pagaies à ton rythme',
+        text: 'C\'est toi qui donnes le tempo. Le Sella t\'emmène entre forêt et paysage, avec des eaux tranquilles et quelques portions plus vives. Tu t\'arrêtes où tu veux, tu te baignes, tu respires.',
+      },
+      {
+        badge: 'PIQUE-NIQUE',
+        title: 'Tu t\'arrêtes où tu veux',
+        text: 'Tu ouvres le pique-nique quand l\'envie te prend. Sur le parcours tu trouves six paillotes pour boire un verre : Riverland (km 1), El Oasis et El Prau (km 3), El Bosque et La Mediana (km 4) et Toraño (km 8, fin du Mini Sella).',
+      },
+      {
+        badge: 'RETOUR',
+        title: 'Nous venons te chercher',
+        text: 'Une fois terminé, nous te ramenons. Douche chaude et la sensation d\'avoir savouré le fleuve sans presse.',
+      },
+    ],
+  },
+  pt: {
+    eyebrow: '— 04 / Como funciona',
+    title_l1: 'O teu dia no Sella,',
+    title_l2: 'passo a passo.',
+    lead: 'Pensámos em cada detalhe para que só te tenhas de concentrar em divertir-te.',
+    facts: {
+      duration: { label: 'Duração', value: '2 — 5 h' },
+      distance: { label: 'Distância', value: '7 — 15 km' },
+      stops: { label: 'Paragens', value: 'As que quiseres' },
+      from: { label: 'Desde', value: '30 €' },
+    },
+    step_label: 'Passo',
+    pagination_aria: 'Paginação',
+    prev_aria: 'Anterior',
+    next_aria: 'Seguinte',
+    go_to_step_aria: (n: number) => `Ir para o passo ${n}`,
+    steps: [
+      {
+        badge: 'INÍCIO',
+        title: 'Chegas',
+        text: 'Recebemos-te nas nossas instalações de Arriondas. Fazes o check-in e entregamos-te o piquenique asturiano de oferta —empada de bonito, bolinho asturiano e água— junto com o bidão estanque, o colete salva-vidas e o fato de neoprene se a água assim o pedir.',
+      },
+      {
+        badge: 'PARTIDA',
+        title: 'Equipamos-te',
+        text: 'Estacionas no nosso estacionamento privado e vigiado, recebes uma breve mini-aula e entregamos-te a canoa insubmersível e a pá dupla. Escolhes como partir: pela nossa rampa de embarque ou à beira do rio.',
+      },
+      {
+        badge: 'DESFRUTAS',
+        title: 'Remas ao teu ritmo',
+        text: 'És tu que marcas o ritmo. O Sella leva-te entre bosque e paisagem, com águas tranquilas e algum troço com pulso. Páras onde quiseres, banhas-te, respiras.',
+      },
+      {
+        badge: 'PIQUENIQUE',
+        title: 'Páras onde quiseres',
+        text: 'Abres o piquenique quando te apetecer. No percurso encontras seis quiosques onde tomar algo: Riverland (km 1), El Oasis e El Prau (km 3), El Bosque e La Mediana (km 4) e Toraño (km 8, fim do Mini Sella).',
+      },
+      {
+        badge: 'REGRESSO',
+        title: 'Vamos buscar-te',
+        text: 'Ao terminar, levamos-te de volta. Duche quente e a sensação de teres desfrutado do rio sem pressas.',
+      },
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+const tones = ['cream', 'coral', 'cream', 'coral', 'cream'] as const;
+const stepNums = ['01', '02', '03', '04', '05'] as const;
+
+const steps = t.steps.map((s, i) => ({
+  n: stepNums[i],
+  badge: s.badge,
+  title: s.title,
+  text: s.text,
+  tone: tones[i],
+}));
+
+const facts = [
+  t.facts.duration,
+  t.facts.distance,
+  t.facts.stops,
+  t.facts.from,
+];
+---
+
+<section class="howE" aria-labelledby="howE-title">
+  <div class="container container--xl">
+    <header class="howE__header">
+      <div class="howE__heading">
+        <span class="eyebrow howE__eyebrow" data-reveal>{t.eyebrow}</span>
+        <h2 id="howE-title" class="howE__title" data-reveal data-reveal-delay="1">
+          {t.title_l1}<br/>
+          <span class="serif-italic">{t.title_l2}</span>
+        </h2>
+        <p class="body-lg howE__lead" data-reveal data-reveal-delay="2">
+          {t.lead}
+        </p>
+      </div>
+
+      <ul class="howE__facts" data-reveal data-reveal-delay="3">
+        {facts.map(f => (
+          <li class="howE__fact">
+            <span class="howE__fact-label">{f.label}</span>
+            <span class="howE__fact-value">{f.value}</span>
+          </li>
+        ))}
+      </ul>
+    </header>
+
+    <!-- Carrusel -->
+    <div class="howE__carousel" data-reveal data-reveal-delay="4">
+      <div class="howE__track" role="list" id="howE-track" data-drag-scroll>
+        {steps.map((s, i) => (
+          <article
+            class={`howE__card howE__card--${s.tone}`}
+            role="listitem"
+            data-index={i}
+          >
+            <span class="howE__badge">
+              <span class="howE__badge-n">{t.step_label} {s.n}</span>
+              <span class="howE__badge-dot">·</span>
+              <span class="howE__badge-label">{s.badge}</span>
+            </span>
+            <h3 class="howE__card-title">{s.title}</h3>
+            <p class="howE__card-text">{s.text}</p>
+          </article>
+        ))}
+      </div>
+
+      <!-- Dots + flechas -->
+      <div class="howE__controls">
+        <div class="howE__dots" role="tablist" aria-label={t.pagination_aria}>
+          {steps.map((_, i) => (
+            <button
+              type="button"
+              class={`howE__dot ${i === 0 ? 'is-active' : ''}`}
+              data-dot={i}
+              aria-label={t.go_to_step_aria(i + 1)}
+            ></button>
+          ))}
+        </div>
+
+        <div class="howE__nav" aria-hidden="true">
+          <button type="button" class="howE__nav-btn" data-dir="prev" aria-label={t.prev_aria}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="howE__nav-btn" data-dir="next" aria-label={t.next_aria}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const track = document.getElementById('howE-track');
+  if (track) {
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.howE__card'));
+    const dots = Array.from(document.querySelectorAll<HTMLButtonElement>('.howE__dot'));
+    const navBtns = document.querySelectorAll<HTMLButtonElement>('.howE__nav-btn');
+
+    // Flechas
+    navBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = btn.dataset.dir;
+        const firstCard = cards[0];
+        if (!firstCard) return;
+        const step = firstCard.offsetWidth + 20;
+        track.scrollBy({ left: dir === 'next' ? step : -step, behavior: 'smooth' });
+      });
+    });
+
+    // Click en dots → scroll a esa card
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        const idx = Number(dot.dataset.dot);
+        const card = cards[idx];
+        if (!card) return;
+        track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: 'smooth' });
+      });
+    });
+
+    // Detectar card activa con IntersectionObserver
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+          const idx = Number((entry.target as HTMLElement).dataset.index);
+          dots.forEach((d, i) => d.classList.toggle('is-active', i === idx));
+        }
+      });
+    }, { root: track, threshold: [0.6] });
+
+    cards.forEach(c => io.observe(c));
+  }
+</script>
+
+<style>
+  /* ========== BANNER CTA ========== */
+  .howE__banner {
+    background: var(--color-bg-dark, #1a1f2e);
+    color: var(--color-text-on-dark);
+    padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+    padding-inline: clamp(1.5rem, 4vw, 4rem);
+  }
+
+  .howE__banner-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    max-width: var(--container-max, 1280px);
+    margin-inline: auto;
+  }
+
+  .howE__banner-eyebrow {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.6);
+    margin-bottom: 0.375rem;
+  }
+
+  .howE__banner-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.1;
+    color: var(--color-text-on-dark);
+    margin: 0;
+  }
+
+  .howE__banner-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: 0.875rem 1.5rem;
+    background: var(--color-bg-base);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    transition: all var(--duration-base) var(--ease-out);
+    white-space: nowrap;
+  }
+
+  .howE__banner-cta:hover {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    transform: translateY(-2px);
+  }
+
+  .howE__banner-cta svg { transition: transform var(--duration-base) var(--ease-out); }
+  .howE__banner-cta:hover svg { transform: translateX(4px); }
+
+  /* ========== SECTION (sage) ========== */
+  .howE {
+    padding-block: var(--section-padding-lg);
+    background: var(--color-sage);
+    color: var(--color-text-on-dark);
+  }
+
+  /* Header */
+  .howE__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-bottom: var(--s-12);
+    align-items: end;
+  }
+
+  @media (min-width: 960px) {
+    .howE__header {
+      grid-template-columns: 1.3fr 1fr;
+      gap: var(--s-16);
+    }
+  }
+
+  .howE__eyebrow {
+    display: inline-block;
+    color: var(--color-primary-soft);
+    margin-bottom: var(--s-5);
+  }
+
+  .howE__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    font-weight: var(--fw-black);
+    line-height: 0.95;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    margin: 0 0 var(--s-5);
+  }
+
+  .howE__title .serif-italic {
+    color: var(--color-primary-soft);
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .howE__lead {
+    color: rgba(251, 248, 241, 0.86);
+    margin: 0;
+  }
+
+  /* Facts */
+  .howE__facts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-4);
+    list-style: none;
+    padding: var(--s-5);
+    margin: 0;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.2);
+    border-radius: var(--radius-2xl);
+    backdrop-filter: blur(12px);
+  }
+
+  @media (min-width: 640px) {
+    .howE__facts { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  .howE__fact {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-align: center;
+  }
+
+  .howE__fact-label {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.7);
+  }
+
+  .howE__fact-value {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: var(--fw-bold);
+    color: var(--color-text-on-dark);
+  }
+
+  /* ========== CAROUSEL ========== */
+  .howE__carousel { position: relative; }
+
+  .howE__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 85%;
+    gap: var(--s-5);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--s-5);
+    /* Padding vertical y horizontal generosos para que los hovers con scale
+       no se corten */
+    padding: var(--s-4) var(--s-5);
+    margin: calc(var(--s-4) * -1) calc(var(--s-5) * -1);
+    scrollbar-width: none;
+    cursor: grab;
+  }
+  .howE__track:active { cursor: grabbing; }
+  .howE__track::-webkit-scrollbar { display: none; }
+
+  @media (min-width: 640px) { .howE__track { grid-auto-columns: 55%; } }
+  @media (min-width: 960px) { .howE__track { grid-auto-columns: 34%; } }
+  @media (min-width: 1280px) { .howE__track { grid-auto-columns: 28%; } }
+
+  /* Card · sin shadow por defecto, hover sutil solo con lift */
+  .howE__card {
+    scroll-snap-align: start;
+    padding: clamp(2rem, 3.5vw, 3rem);
+    border-radius: var(--radius-3xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-6);
+    min-height: 440px;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    transition: transform 320ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    transform-origin: center center;
+  }
+
+  .howE__card:hover {
+    transform: translateY(-4px);
+  }
+
+  .howE__card--cream {
+    background: var(--color-bg-elevated);
+    color: var(--color-text-primary);
+  }
+
+  .howE__card--coral {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+  }
+
+  /* Badge */
+  .howE__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    align-self: flex-start;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    background: rgba(26, 31, 46, 0.08);
+  }
+
+  .howE__card--coral .howE__badge {
+    background: rgba(251, 248, 241, 0.2);
+  }
+
+  .howE__badge-n { font-family: var(--font-mono); opacity: 0.72; }
+  .howE__badge-dot { opacity: 0.4; }
+
+  .howE__card-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: var(--fw-black);
+    line-height: 0.95;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: inherit;
+    margin: 0;
+  }
+
+  .howE__card-text {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: inherit;
+    opacity: 0.88;
+    margin: 0;
+    margin-top: auto;
+  }
+
+  /* ========== CONTROLS (dots + nav) ========== */
+  .howE__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-6);
+    flex-wrap: wrap;
+  }
+
+  .howE__dots {
+    display: flex;
+    gap: var(--s-2);
+    align-items: center;
+  }
+
+  .howE__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(251, 248, 241, 0.3);
+    cursor: pointer;
+    padding: 0;
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .howE__dot:hover {
+    background: rgba(251, 248, 241, 0.55);
+  }
+
+  .howE__dot.is-active {
+    width: 32px;
+    border-radius: 999px;
+    background: var(--color-primary);
+  }
+
+  /* Nav arrows */
+  .howE__nav {
+    display: flex;
+    gap: var(--s-3);
+  }
+
+  .howE__nav-btn {
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(251, 248, 241, 0.14);
+    border: 1px solid rgba(251, 248, 241, 0.32);
+    border-radius: 50%;
+    color: var(--color-text-on-dark);
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .howE__nav-btn:hover {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+</style>

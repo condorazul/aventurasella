@@ -1,0 +1,2350 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'fr';
+const title = 'Descente du Sella avec chien · Aventure avec votre animal';
+const description = 'Descente du Sella avec chien : animaux gratuits, gilet de sauvetage canin inclus (jusqu’à épuisement), moniteurs dog-friendly. Réservez sans payer maintenant.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/fr/avec-chien/`;
+const ogImage = '/images/optimized/con-perro-cta-lg.jpg';
+
+const jornada = [
+  { num: '01', title: 'Arrivée avec votre chien',  text: 'Nous vous accueillons à Arriondas. <strong>Parking privé gratuit</strong> pour éviter le stress à l’arrivée. Nous expliquons le plan et répondons aux doutes sur l’activité avec votre animal.' },
+  { num: '02', title: 'Évaluation préalable',      text: 'Nous regardons comment est le chien — <strong>calme, nerveux, taille, confiance avec l’eau</strong> — et adaptons le canoë le plus approprié pour que la journée soit confortable pour vous deux.' },
+  { num: '03', title: 'Briefing avec moniteur',    text: '<strong>Moniteurs expérimentés dog-friendly</strong> expliquent comment placer le chien dans le canoë, que faire s’il bouge et les consignes de base. <strong>Tout clair avant d’entrer dans l’eau</strong>.' },
+  { num: '04', title: 'Embarquement tranquille',   text: 'Départ depuis notre rampe privée de 35 m à la rivière. Le chien descend <strong>libre dans le canoë</strong>, jamais attaché — c’est le plus sûr en cas de mouvement ou de chavirement.' },
+  { num: '05', title: 'Pauses quand il faut',      text: 'Des plages fluviales tranquilles pour <strong>s’arrêter, boire de l’eau, étirer les pattes</strong> et laisser le chien respirer. Sans hâte, <strong>au rythme que demande votre animal</strong>.' },
+  { num: '06', title: 'Retour et vestiaires',      text: '<strong>Notre transfert</strong> vous ramène. Vestiaires avec douches chaudes pour vous et zone extérieure avec eau pour sécher le chien. Journée bouclée.' },
+];
+
+const llevar = [
+  { icon: 'leash',    t: 'Laisse + harnais',                  s: 'Obligatoire à terre (embarquement, accès, vestiaires). Harnais confortable mieux que collier' },
+  { icon: 'bowl',     t: 'Eau et gamelle pliable',            s: 'Essentiel s’il fait chaud. Nous nous arrêtons autant de fois que nécessaire pour l’hydrater' },
+  { icon: 'towel',    t: 'Serviette supplémentaire pour le chien', s: 'Mieux séparée de la vôtre · à la fin du parcours il sort trempé et vous serez content de ne pas partager' },
+  { icon: 'bag',      t: 'Sacs hygiéniques',                  s: 'Respect de la rivière et de ses rives. Tout ce qui descend remonte avec nous' },
+  { icon: 'human',    t: 'Votre équipement personnel',        s: 'Tenue confortable qui peut se mouiller, chaussures sûres, serviette et change. Comme toute descente' },
+];
+
+const beneficios = [
+  { t: 'Animaux 100 % gratuits',           s: 'Votre chien ne paie pas. Il vient avec vous dans le canoë sans coût supplémentaire — sauf le samedi de la Descente Internationale.' },
+  { t: 'Moniteurs dog-friendly',           s: 'Avec une réelle expérience à descendre le Sella avec des animaux. Dans le briefing préalable, ils vous apprennent quoi regarder avant d’entrer dans l’eau et comment agir si votre chien s’inquiète pendant la descente.' },
+  { t: 'Plan tranquille et adaptable',     s: 'Le Sella touristique est une rivière calme — courant tranquille, pauses à la demande, sans white-water ni exigence sportive.' },
+  { t: 'Consignes claires avant le départ', s: 'Briefing spécifique sur comment placer le chien, que faire s’il bouge et comment garder le canoë équilibré avec lui à bord.' },
+  { t: 'Vestiaires + parking privé',       s: 'Douches chaudes pour vous + zone extérieure avec eau pour rincer le chien à la fin. Parking surveillé toute la journée.' },
+  { t: 'Un chien par canoë',               s: 'Pour assurer espace, équilibre et confort. Si vous venez avec plus d’un, nous vous aidons à coordonner les embarcations.' },
+  { t: 'Sans payer maintenant',            s: 'Réservez sans avancer d’argent. Payez par carte avant ou le jour même en récupérant le canoë — comme vous préférez.' },
+  { t: 'Modifier ou annuler',              s: 'Modifications et annulations flexibles avant le jour. Si vous avez payé par carte, remboursement avec 24 h de préavis.' },
+];
+
+const faqs = [
+  { q: 'Combien coûte la descente du Sella avec un chien ?',
+    a: `Le chien <strong>ne paie pas</strong> — les animaux viennent gratuitement dans le canoë. Les personnes : <strong>40 € par adulte</strong> (à partir de 13 ans) et <strong>30 € par enfant</strong> (5-12 ans, <strong>âge minimum 5 ans révolus et 1,15 m de hauteur</strong>). La seule exception est le samedi de la <a href="${getLocalePath('descenso_internacional', 'fr')}">Descente Internationale du Sella</a>, qui pour le bruit de l’événement n’admet pas les animaux. Vous pouvez <a href="${getLocalePath('precios', 'fr')}">voir le détail complet des tarifs</a>.` },
+  { q: 'Peut-on faire la descente du Sella avec un chien ?',
+    a: 'Oui, c’est l’une des activités dog-friendly les plus populaires de la rivière. La seule chose que nous demandons, c’est <strong>du bon sens avec le chien</strong> : évaluer s’il tolère l’eau, s’il reste tranquille un moment et s’il obéit aux ordres de base. Si c’est un chien sociable et équilibré, l’expérience se passe en général très bien.' },
+  { q: 'Mon chien peut-il monter dans le transfert retour ?',
+    a: 'Oui, sans problème. <strong>Votre animal peut monter dans notre transfert retour</strong> à la fin du parcours choisi (Mini Sella ou Complète). Il monte avec vous dans le minibus avec le reste du groupe, comme le canoë — <strong>sans coût supplémentaire</strong>.' },
+  { q: 'Mon chien doit-il porter un gilet de sauvetage ?',
+    a: `Ce n’est pas obligatoire, mais <strong>c’est recommandé si votre chien ne nage pas bien ou s’il est de petite/moyenne taille</strong>. <strong>Le gilet de sauvetage canin, c’est nous qui le fournissons</strong> sans coût supplémentaire · nous avons plusieurs tailles dans la boutique <em>jusqu’à épuisement des stocks</em>. C’est pourquoi <a href="${getLocalePath('reservar', 'fr')}">réserver à l’avance est clé</a> · ils s’envolent en été. Si vous venez avec un chien et voulez vous assurer, prévenez-nous à la réservation et nous gardons le gilet à votre nom.` },
+  { q: 'Peut-il être attaché au canoë ?',
+    a: '<strong>Non, jamais.</strong> En cas de chavirement, une laisse attachée est un risque sérieux pour le chien et les personnes. Dans le canoë <strong>il va libre</strong>. Hors de l’eau (embarquement, accès, vestiaires) il doit être en laisse.' },
+  { q: 'Combien de chiens peuvent aller par canoë ?',
+    a: 'Pour la sécurité et l’équilibre, <strong>l’habituel est un chien par canoë</strong>. Si vous venez avec plus d’un, nous les répartissons entre les canoës du groupe. Pour des cas spéciaux (petit chien + petit chien tranquilles), nous pouvons l’évaluer à l’arrivée.' },
+  { q: 'Les grands chiens peuvent-ils venir ?',
+    a: 'Oui, à condition que ce soit un chien <strong>tranquille, habitué à sortir et qui tolère l’eau</strong>. Les grands chiens occupent plus d’espace et affectent davantage l’équilibre, c’est pourquoi nous l’évaluons avant l’embarquement. Un grand chien tranquille va en général bien mieux qu’un petit chien très nerveux.' },
+  { q: 'Faut-il que mon chien sache nager ?',
+    a: 'Ce n’est pas indispensable, mais il est utile de le savoir à l’avance. Si votre chien n’a <strong>pas d’expérience dans l’eau</strong> ou ne transmet pas de sécurité en nageant, <strong>il vaut mieux porter un gilet canin</strong> · nous vous le fournissons jusqu’à épuisement des stocks. Le Sella touristique a un courant tranquille, mais le gilet apporte un vrai plus.' },
+  { q: 'Que faire si mon chien stresse ou ne veut pas continuer ?',
+    a: 'On s’arrête. Il y a <strong>des plages fluviales tranquilles</strong> où le chien peut descendre, étirer les pattes, boire de l’eau et respirer. S’il stresse beaucoup, nous pouvons trouver une sortie anticipée depuis la rive et coordonner le retour. <strong>Personne ne descend contre la volonté de son chien</strong>.' },
+  { q: 'Vaut-il mieux la Mini ou la Complète avec un chien ?',
+    a: 'Pour des chiens peu habitués ou âgés, nous recommandons la <strong>Mini Sella</strong> (Arriondas → Toraño, 7 km, 2-3 h) — rythme tranquille et moins de temps dans l’eau. Pour des chiens actifs et en forme, la <strong>Complète</strong> (Arriondas → Fríes, 14,5 km, 4-5 h) est parfaitement viable avec des pauses.' },
+  { q: 'Faut-il réserver à l’avance ?',
+    a: 'Oui, <strong>surtout en haute saison</strong>. Réservez sans payer maintenant : confirmez votre place, payez par carte avant ou le jour même en récupérant le canoë. Si vous annulez avant le jour, sans coût ; si vous avez payé par carte, remboursement avec 24 h de préavis.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Descente du Sella avec chien : guide complet pour profiter avec votre animal',
+      description: 'Guide pour la descente du Sella avec chien : règles, gilet de sauvetage canin inclus (jusqu’à épuisement), comment placer le chien dans le canoë, que prendre et pourquoi c’est le plan dog-friendly phare des Asturies.',
+      inLanguage: 'fr-FR',
+      mainEntityOfPage: canonicalUrl,
+      url: canonicalUrl,
+      image: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/optimized/con-perro-cta-lg.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-19',
+      dateModified:  '2026-05-12',
+      articleSection: 'Animaux',
+      keywords: ['descente du sella avec chien', 'descente du sella animaux gratuits', 'canoë avec chien sella', 'gilet canin sella', 'dog-friendly arriondas'],
+      isPartOf: { '@type': 'WebSite', '@id': `${baseUrl}/#website`, name: 'Aventura en el Sella', url: baseUrl },
+      about: { '@type': 'Thing', name: 'Descente du Sella avec chien · activité dog-friendly aux Asturies' },
+    },
+    {
+      '@type': 'Service',
+      '@id': `${canonicalUrl}#service`,
+      name: 'Descente du Sella avec chien',
+      description: 'Activité de descente du Sella en canoë dog-friendly. Animaux gratuits. Gilet de sauvetage canin inclus sans coût supplémentaire (jusqu’à épuisement). Moniteurs avec expérience canine, briefing spécifique, consignes claires. Tout inclus : canoë, gilet humain homologué, gilet canin, transfert, parking et vestiaires avec zone extérieure pour sécher le chien.',
+      serviceType: 'Descente du Sella dog-friendly',
+      category: 'Tourisme actif · Animaux',
+      url: canonicalUrl,
+      provider: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      areaServed: { '@type': 'Place', name: 'Arriondas, Asturies' },
+      audience: { '@type': 'Audience', audienceType: 'Familles et propriétaires d’animaux' },
+      offers: {
+        '@type': 'AggregateOffer',
+        priceCurrency: 'EUR',
+        lowPrice: '0.00',
+        highPrice: '40.00',
+        offerCount: 3,
+        availability: 'https://schema.org/InStock',
+        url: `${baseUrl}/fr/reserver/`,
+        offers: [
+          { '@type': 'Offer', name: 'Animal',             price: '0.00',  priceCurrency: 'EUR', url: `${baseUrl}/fr/reserver/`, description: 'Gratuit · tous les animaux voyagent sans coût' },
+          { '@type': 'Offer', name: 'Enfant (5-12 ans)',  price: '30.00', priceCurrency: 'EUR', url: `${baseUrl}/fr/reserver/` },
+          { '@type': 'Offer', name: 'Adulte (13+ ans)',   price: '40.00', priceCurrency: 'EUR', url: `${baseUrl}/fr/reserver/` },
+        ],
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '147',
+        bestRating: '5',
+        worstRating: '1',
+      },
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil',     item: `${baseUrl}/fr/` },
+        { '@type': 'ListItem', position: 2, name: 'Avec chien',  item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} ogImage={ogImage} currentPath="/fr/avec-chien/" translationKey="con_perro">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO · Crème lumineux ============== -->
+  <section class="cnh cnh--cream" aria-labelledby="cnh-title">
+
+    <div class="cnh__inner">
+      <nav class="cnh__breadcrumb" aria-label="Breadcrumb">
+        <a href="/fr/">Accueil</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Avec chien</span>
+      </nav>
+
+      <span class="cnh__eyebrow">
+        <span class="cnh__eyebrow-dot" aria-hidden="true"></span>
+        Dog-friendly · Saison 2026
+      </span>
+
+      <h1 id="cnh-title" class="cnh__title">
+        Descente du Sella<br/>
+        <span class="serif-italic">avec <span class="cnh__underlined">chien<svg class="cnh__swoosh" width="200" height="18" viewBox="0 0 200 18" fill="none" aria-hidden="true"><path d="M3 14C30 6 74 4 118 8c27 2.5 54 6 78 4" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/></svg></span></span>
+      </h1>
+
+      <p class="cnh__lead">
+        <strong>Aventure avec votre animal aux Asturies</strong>. Une journée dog-friendly pensée
+        en détail — avec consignes claires avant le départ, moniteurs ayant de l’expérience canine
+        et une rivière calme pour profiter ensemble. <strong>Le chien vient gratuitement</strong>.
+      </p>
+
+      <div class="cnh__stats">
+        <div class="cnh__stat">
+          <span class="cnh__stat-value">Gratuit</span>
+          <span class="cnh__stat-label">Votre chien ne paie pas</span>
+        </div>
+        <div class="cnh__stat-divider" aria-hidden="true"></div>
+        <div class="cnh__stat">
+          <span class="cnh__stat-value">40 €</span>
+          <span class="cnh__stat-label">Par personne · tout inclus</span>
+        </div>
+        <div class="cnh__stat-divider" aria-hidden="true"></div>
+        <div class="cnh__stat">
+          <span class="cnh__stat-value">4.5 ⭐</span>
+          <span class="cnh__stat-label">147 avis</span>
+        </div>
+      </div>
+
+      <div class="cnh__ctas">
+        <a href={getLocalePath('reservar', 'fr')} class="cnh__cta cnh__cta--primary">
+          Réserver avec mon chien
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="tel:+34681093673" class="cnh__cta cnh__cta--phone" aria-label="Appeler le 681 093 673">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <span>Appeler</span>
+        </a>
+        <a href={getLocalePath('precios', 'fr')} class="cnh__cta cnh__cta--ghost">
+          Voir tarifs et formules
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== INTRO ============== -->
+  <section class="cni">
+    <div class="container container--xl">
+      <div class="cni__grid">
+        <div class="cni__media" data-reveal>
+          <div class="cni__mediaMain">
+            <Picture src="con-perro-intro-1" alt="Chien à bord d’un canoë sur la descente du Sella" sizes="(min-width: 960px) 44vw, 90vw" aspectRatio="1 / 1" bare />
+          </div>
+          <div class="cni__mediaSmall" aria-hidden="true">
+            <Picture src="con-perro-intro-2" alt="Chien profitant du Sella avec sa famille" sizes="220px" aspectRatio="1 / 1" bare />
+          </div>
+          <a class="cni__contact" href="https://wa.me/34681093673?text=Bonjour,%20j%27ai%20une%20question%20sur%20la%20descente%20du%20Sella%20avec%20mon%20chien" target="_blank" rel="noopener noreferrer">
+            <span class="cni__contactIcon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.8-.9-2.1-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-1-.5-2-.8-2.9-1.9-.7-.6-1.2-1.4-1.6-2.1-.2-.3 0-.5.1-.7.1-.2.3-.4.5-.6.2-.2.2-.3.3-.5.1-.2.1-.4 0-.5-.1-.2-.7-1.7-1-2.3-.3-.6-.5-.5-.7-.5-.2 0-.4 0-.6 0-.2 0-.5.1-.8.4-.3.3-1.1 1-1.1 2.6 0 1.6 1.1 3.1 1.3 3.3.2.2 2.3 3.6 5.7 5 3.4 1.4 3.4.9 4 .9.6-.1 1.8-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.1-.3-.2-.6-.3z"/></svg>
+            </span>
+            <div class="cni__contactBody">
+              <strong>Doutes avec votre chien ?</strong>
+              <span>WhatsApp · réponse rapide</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="cni__content" data-reveal data-reveal-delay="2">
+          <span class="cni__eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            La question habituelle
+          </span>
+          <h2 class="cni__title">
+            Peut-on descendre<br/>
+            le Sella <span class="serif-italic">avec un chien ?</span>
+          </h2>
+          <p class="cni__lead">
+            <strong>Oui, et les animaux viennent totalement gratuits.</strong> Le Sella est l’un des
+            plans dog-friendly phares des Asturies — rivière calme, pauses quand le
+            chien le demande, et une équipe qui sait quoi regarder avant d’entrer dans l’eau.
+          </p>
+
+          <ul class="cni__features">
+            <li class="cni__feature">
+              <span class="cni__featureIcon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="11" cy="4.5" r="1.5"/><circle cx="6.5" cy="7.5" r="1.5"/><circle cx="15.5" cy="7.5" r="1.5"/><path d="M11 11c-4 0-6 4-6 6 0 1.66 1.34 3 3 3h6c1.66 0 3-1.34 3-3 0-2-2-6-6-6z"/></svg>
+              </span>
+              <div class="cni__featureBody">
+                <h3 class="cni__featureTitle">Animaux 100 % gratuits</h3>
+                <p class="cni__featureText">Votre chien ne paie pas. Il vient avec vous dans le canoë <strong>sans coût supplémentaire</strong>. La seule exception est le samedi de la Descente Internationale.</p>
+              </div>
+            </li>
+            <li class="cni__feature">
+              <span class="cni__featureIcon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </span>
+              <div class="cni__featureBody">
+                <h3 class="cni__featureTitle">Moniteurs dog-friendly</h3>
+                <p class="cni__featureText">Avec une réelle expérience à descendre le Sella avec des animaux. <strong>Ils savent quoi regarder avant d’entrer dans l’eau</strong> et comment préparer la journée pour vous deux.</p>
+              </div>
+            </li>
+          </ul>
+
+          <a href={getLocalePath('reservar', 'fr')} class="cni__cta">
+            Réserver avec mon chien
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== JOURNÉE · 6 étapes ============== -->
+  <section class="cnj">
+    <div class="container container--xl">
+      <header class="cnj__header" data-reveal>
+        <span class="cnj__eyebrow">— Comment se passe la journée avec votre chien</span>
+        <h2 class="cnj__title">
+          Une journée sur le Sella,<br/>
+          <span class="serif-italic">étape par étape</span>
+        </h2>
+        <p class="cnj__lead">
+          Savoir comment se déroule la journée aide à décider. Voici comment nous préparons
+          l’expérience pour que <strong>vous et votre chien soyez confortables et en sécurité</strong> du début à la fin — sans hâte, sans surprises.
+        </p>
+      </header>
+
+      <ol class="cnjT">
+        {jornada.map((j, i) => (
+          <li class={`cnjT__step ${i % 2 === 0 ? 'cnjT__step--left' : 'cnjT__step--right'}`} data-reveal>
+            <span class="cnjT__node" aria-hidden="true">{j.num}</span>
+            <div class="cnjT__body">
+              <h3 class="cnjT__title">{j.title}</h3>
+              <p class="cnjT__text" set:html={j.text} />
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- ============== SÉCURITÉ ============== -->
+  <section class="cns">
+    <div class="container container--xl">
+      <header class="cns__header" data-reveal>
+        <span class="cns__eyebrow">— Sécurité et confiance</span>
+        <h2 class="cns__title">
+          Quoi surveiller avec votre chien,<br/>
+          <span class="serif-italic">et comment nous le résolvons</span>
+        </h2>
+        <p class="cns__lead">
+          La première question est toujours <strong>« est-ce sûr pour mon chien ? »</strong> — et elle est
+          logique. La réponse courte est oui, lorsque c’est fait avec bon sens, consignes
+          claires et une évaluation honnête de votre animal.
+        </p>
+      </header>
+
+      <ol class="cns__grid">
+        <li class="cns__item" data-reveal data-reveal-delay="1">
+          <span class="cns__num" aria-hidden="true">01</span>
+          <h3 class="cns__itemTitle">Animaux 100 % gratuits</h3>
+          <p class="cns__itemText">Votre chien ne paie pas. Il vient avec vous dans le canoë <strong>sans coût supplémentaire</strong>, avec consignes dog-friendly expliquées avant le départ.</p>
+        </li>
+        <li class="cns__item" data-reveal data-reveal-delay="2">
+          <span class="cns__num" aria-hidden="true">02</span>
+          <h3 class="cns__itemTitle">Le chien va libre dans le canoë</h3>
+          <p class="cns__itemText"><strong>Jamais attaché</strong>. En cas de chavirement ou de mouvement brusque, une laisse attachée est un risque sérieux — pour lui et pour vous.</p>
+        </li>
+        <li class="cns__item" data-reveal data-reveal-delay="3">
+          <span class="cns__num" aria-hidden="true">03</span>
+          <h3 class="cns__itemTitle">Laisse obligatoire à terre</h3>
+          <p class="cns__itemText">À l’embarquement, accès et vestiaires toujours en laisse. <strong>Respect total des autres usagers et des autres chiens</strong>.</p>
+        </li>
+        <li class="cns__item" data-reveal data-reveal-delay="4">
+          <span class="cns__num" aria-hidden="true">04</span>
+          <h3 class="cns__itemTitle">Gilet canin recommandé</h3>
+          <p class="cns__itemText">Ce n’est pas obligatoire, mais <strong>nous le recommandons</strong> si votre chien ne nage pas bien ou si vous voulez un vrai plus de sécurité.</p>
+        </li>
+        <li class="cns__item" data-reveal data-reveal-delay="5">
+          <span class="cns__num" aria-hidden="true">05</span>
+          <h3 class="cns__itemTitle">Un chien par canoë</h3>
+          <p class="cns__itemText">Pour assurer <strong>espace, équilibre et confort</strong>. Si vous venez avec plus d’un, nous les répartissons entre les canoës du groupe.</p>
+        </li>
+        <li class="cns__item" data-reveal data-reveal-delay="6">
+          <span class="cns__num" aria-hidden="true">06</span>
+          <h3 class="cns__itemTitle">Moniteurs avec expérience canine</h3>
+          <p class="cns__itemText">Ils savent quoi regarder avant d’entrer dans l’eau, comment placer le chien dans le canoë et comment agir s’il bouge. <strong>Nous n’improvisons pas</strong>.</p>
+        </li>
+      </ol>
+
+      <div class="cns__cta" data-reveal>
+        <a href={getLocalePath('reservar', 'fr')} class="cns__ctaBtn">
+          <span>Réserver avec mon chien</span>
+          <span class="cns__ctaBtnIcon" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== EXIGENCES · Éditorial VS ============== -->
+  <section class="cnr">
+    <div class="container container--xl">
+      <header class="cnr__header" data-reveal>
+        <span class="cnr__eyebrow">— Est-ce le plan pour votre chien ?</span>
+        <h2 class="cnr__title">
+          Évaluez honnêtement,<br/>
+          <span class="serif-italic">avant de réserver.</span>
+        </h2>
+        <p class="cnr__lead">
+          L’activité se passe à merveille avec des chiens équilibrés et habitués à sortir.
+          Mais <strong>ce n’est pas idéal pour tous les animaux</strong> — voici comment l’évaluer.
+        </p>
+      </header>
+
+      <div class="cnrVS">
+        <div class="cnrVS__col cnrVS__col--ok" data-reveal data-reveal-delay="1">
+          <span class="cnrVS__bigLabel cnrVS__bigLabel--ok">Idéal</span>
+          <span class="cnrVS__sub">6 signes · votre chien va apprécier</span>
+          <h3 class="cnrVS__title">Chiens qui apprécient</h3>
+          <div class="cnrVS__sep" aria-hidden="true"></div>
+          <ul class="cnrVS__list">
+            <li><strong>Tranquilles</strong> et habitués à sortir avec vous</li>
+            <li><strong>Sociables</strong> avec les gens et les autres chiens</li>
+            <li>Tolèrent bien les <strong>nouveaux environnements</strong></li>
+            <li><strong>Sans peur de l’eau</strong></li>
+            <li>Obéissent aux <strong>ordres de base</strong></li>
+            <li>En bon <strong>état physique</strong></li>
+          </ul>
+        </div>
+
+        <div class="cnrVS__divider" aria-hidden="true">
+          <span class="cnrVS__vs">vs</span>
+        </div>
+
+        <div class="cnrVS__col cnrVS__col--warn" data-reveal data-reveal-delay="2">
+          <span class="cnrVS__bigLabel cnrVS__bigLabel--warn">Pas idéal</span>
+          <span class="cnrVS__sub">6 signes · mieux à une autre occasion</span>
+          <h3 class="cnrVS__title">Mieux attendre</h3>
+          <div class="cnrVS__sep" aria-hidden="true"></div>
+          <ul class="cnrVS__list">
+            <li><strong>Stressé facilement</strong> dans des environnements nouveaux</li>
+            <li>A <strong>peur de l’eau</strong></li>
+            <li>Est <strong>extrêmement agité</strong></li>
+            <li>A des problèmes de <strong>mobilité</strong></li>
+            <li>Très âgé et <strong>se fatigue vite</strong></li>
+            <li><strong>Récemment opéré</strong> ou blessé</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== QUOI APPORTER ============== -->
+  <section class="cnq">
+    <div class="container container--xl">
+      <header class="cnq__header" data-reveal>
+        <span class="cnq__eyebrow">— Préparez la journée</span>
+        <h2 class="cnq__title">
+          Ce que vous apportez,<br/>
+          <span class="serif-italic">rien de plus.</span>
+        </h2>
+        <p class="cnq__lead">
+          Pas besoin de surcharger — l’important est inclus dans la réservation.
+          Voilà <strong>la seule chose que vous devez apporter</strong> pour que la journée soit confortable
+          pour vous deux.
+        </p>
+      </header>
+
+      <div class="cnqSlider" data-slider>
+        <ul class="cnqSlider__track" data-slider-track data-drag-scroll>
+          {llevar.map((it, i) => {
+            const categoryLabels = {
+              leash: 'LAISSE',
+              bowl:  'HYDRATATION',
+              towel: 'SERVIETTE',
+              vest:  'GILET',
+              bag:   'HYGIÈNE',
+              human: 'VOTRE ÉQUIPEMENT',
+            };
+            const num = String(i + 1).padStart(2, '0');
+            return (
+              <li class={`cnqCard ${i % 2 === 1 ? 'cnqCard--coral' : 'cnqCard--cream'}`} data-reveal data-reveal-delay={(i % 3) + 1}>
+                <span class="cnqCard__badge">
+                  <span class="cnqCard__badgeIcon" aria-hidden="true">
+                    {it.icon === 'leash'  && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><path d="M9 7l3 3v6a4 4 0 0 0 4 4h2"/></svg>}
+                    {it.icon === 'bowl'   && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18l-2 7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M12 8v4"/></svg>}
+                    {it.icon === 'towel'  && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 9h16M9 4v16"/></svg>}
+                    {it.icon === 'vest'   && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10l-1 5 2 2v9H6v-9l2-2z"/></svg>}
+                    {it.icon === 'bag'    && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/></svg>}
+                    {it.icon === 'human'  && <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="2.5"/><path d="M12 7.5V14m0 0l-3 7m3-7l3 7"/></svg>}
+                  </span>
+                  {num} · {categoryLabels[it.icon]}
+                </span>
+                <h3 class="cnqCard__title">{it.t}</h3>
+                <p class="cnqCard__text">{it.s}</p>
+              </li>
+            );
+          })}
+        </ul>
+        <div class="cnqSlider__nav">
+          <button type="button" class="cnqSlider__btn" data-slider-prev aria-label="Carte précédente">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button type="button" class="cnqSlider__btn" data-slider-next aria-label="Carte suivante">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <p class="cnq__note" data-reveal>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Nous fournissons le reste : <strong>canoë, gilets humains homologués, gilet canin (plusieurs tailles · jusqu’à épuisement), briefing dog-friendly, transfert retour, parking privé et vestiaires avec zone extérieure pour sécher le chien</strong>.</span>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- ============== AVANTAGES · Marquee ============== -->
+  <section class="cnb" aria-labelledby="cnb-title">
+    <h2 id="cnb-title" class="cnb__srOnly">Pourquoi avec nous · 8 raisons dog-friendly</h2>
+    <div class="cnb__band" aria-label="Avantages de la descente du Sella avec chien">
+      <div class="cnb__track">
+        {beneficios.map((b) => (
+          <span class="cnb__item">
+            <svg class="cnb__star" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0.5C12.4 6 13 7.6 14.3 9c1.3 1.3 3 2 9 2.4-6 0.4-7.7 1-9 2.3-1.3 1.3-2 3-2.4 9-0.4-6-1-7.7-2.3-9C8.3 12.4 6.6 11.8 0.6 11.4c6-0.4 7.7-1 9-2.4C10.9 7.6 11.6 6 12 0.5z"/>
+            </svg>
+            <span class="cnb__label">{b.t}</span>
+          </span>
+        ))}
+        {beneficios.map((b) => (
+          <span class="cnb__item" aria-hidden="true">
+            <svg class="cnb__star" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 0.5C12.4 6 13 7.6 14.3 9c1.3 1.3 3 2 9 2.4-6 0.4-7.7 1-9 2.3-1.3 1.3-2 3-2.4 9-0.4-6-1-7.7-2.3-9C8.3 12.4 6.6 11.8 0.6 11.4c6-0.4 7.7-1 9-2.4C10.9 7.6 11.6 6 12 0.5z"/>
+            </svg>
+            <span class="cnb__label">{b.t}</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== AVIS ============== -->
+  <section class="cnrev">
+    <div class="container container--xl">
+      <header class="cnrev__header" data-reveal>
+        <span class="cnrev__eyebrow">— Avis clients</span>
+        <h2 class="cnrev__title">
+          Ce que disent ceux<br/>
+          <span class="serif-italic">qui sont déjà descendus</span>
+        </h2>
+        <div class="cnrev__rating">
+          <div class="cnrev__stars" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <strong>4.5</strong> · 147 avis Google + TripAdvisor
+        </div>
+      </header>
+
+      <div class="cnrevG">
+        <article class="cnrevC" data-reveal data-reveal-delay="1">
+          <svg class="cnrevC__quote" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2zm10 0h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2z"/></svg>
+          <p class="cnrevC__text">Bon service, personnel attentif et très sympathique. L’expérience était géniale, j’ai adoré.</p>
+          <div class="cnrevC__meta">
+            <span class="cnrevC__name">Anaïs Suárez Blanco</span>
+            <span class="cnrevC__src">Google · 5⭐</span>
+          </div>
+        </article>
+
+        <article class="cnrevC" data-reveal data-reveal-delay="2">
+          <svg class="cnrevC__quote" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2zm10 0h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2z"/></svg>
+          <p class="cnrevC__text">Tout à l’heure et très aimables. Une expérience à essayer une fois dans sa vie, <strong>recommandée aux jeunes et aux moins jeunes</strong>.</p>
+          <div class="cnrevC__meta">
+            <span class="cnrevC__name">Nacho A.</span>
+            <span class="cnrevC__src">TripAdvisor · 5⭐</span>
+          </div>
+        </article>
+
+        <article class="cnrevC" data-reveal data-reveal-delay="3">
+          <svg class="cnrevC__quote" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10 11H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2zm10 0h-4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v8c0 2-2 4-4 4v-2c1 0 2-1 2-2z"/></svg>
+          <p class="cnrevC__text">Cela vaut la peine. <strong>Vestiaires et douches</strong> après l’activité. Briefing amusant, un bidon pour vos affaires et le reste, c’est la rivière qui s’en charge.</p>
+          <div class="cnrevC__meta">
+            <span class="cnrevC__name">Carlos S.</span>
+            <span class="cnrevC__src">TripAdvisor · 5⭐</span>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== INTERLIENS ============== -->
+  <section class="cnl">
+    <div class="container container--xl">
+      <header class="cnl__header" data-reveal>
+        <span class="cnl__eyebrow">— Plus d’informations utiles</span>
+        <h2 class="cnl__title">
+          Avant de réserver,<br/>
+          <span class="serif-italic">jetez un œil à ceci</span>
+        </h2>
+      </header>
+
+      <nav class="cnlG" aria-label="Pages associées">
+        <a href={getLocalePath('precios', 'fr')} class="cnlC" data-reveal data-reveal-delay="1">
+          <span class="cnlC__eyebrow">Tarifs</span>
+          <h3 class="cnlC__t">Tarifs de la descente du Sella</h3>
+          <p class="cnlC__s">30 € enfants, 40 € adultes, animaux gratuits. Tout inclus sans extras.</p>
+          <span class="cnlC__arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+        <a href={getLocalePath('cuanto_dura', 'fr')} class="cnlC" data-reveal data-reveal-delay="2">
+          <span class="cnlC__eyebrow">Durée</span>
+          <h3 class="cnlC__t">Durée de la descente du Sella</h3>
+          <p class="cnlC__s">Temps réels par route et par rythme familial. Comment organiser la journée.</p>
+          <span class="cnlC__arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+        <a href={getLocalePath('con_ninos', 'fr')} class="cnlC" data-reveal data-reveal-delay="3">
+          <span class="cnlC__eyebrow">En famille</span>
+          <h3 class="cnlC__t">Descente du Sella avec enfants</h3>
+          <p class="cnlC__s">Tout sur l’aventure en famille : âge minimum, sécurité, quoi apporter et comment ça s’organise.</p>
+          <span class="cnlC__arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+        <a href={getLocalePath('recorrido_mapa', 'fr')} class="cnlC" data-reveal data-reveal-delay="4">
+          <span class="cnlC__eyebrow">Carte</span>
+          <h3 class="cnlC__t">Parcours et carte du Sella</h3>
+          <p class="cnlC__s">Arriondas, Toraño, Fríes. Kilométrage, points clés et halte intermédiaire.</p>
+          <span class="cnlC__arrow" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </nav>
+    </div>
+  </section>
+
+  <!-- ============== FAQ ============== -->
+  <section class="cnf">
+    <div class="container container--xl">
+      <div class="cnf__grid">
+        <aside class="cnf__aside" data-reveal>
+          <span class="cnf__eyebrow">— Questions fréquentes</span>
+          <h2 class="cnf__title">
+            Les doutes<br/>
+            <span class="serif-italic">sur descendre avec chien</span>
+          </h2>
+          <p class="cnf__lead">
+            Avant de réserver, la plupart se posent les <strong>mêmes questions</strong>
+            sur la descente avec animaux. Elles sont résolues ici. S’il vous en manque une,
+            <a href={getLocalePath('contacto', 'fr')}>nous sommes à un message</a>.
+          </p>
+
+          <div class="cnfMore" data-reveal data-reveal-delay="1">
+            <span class="cnfMore__eyebrow">— Il vous en reste une ?</span>
+            <h3 class="cnfMore__title">
+              D’autres<br/>
+              <span class="serif-italic">questions ?</span>
+            </h3>
+            <p class="cnfMore__lead">
+              Nous répondons <strong>en quelques minutes</strong> · sans formulaires, sans attendre.
+            </p>
+            <ul class="cnfMore__channels">
+              <li>
+                <a href="tel:+34681093673" class="cnfMore__ch cnfMore__ch--phone" aria-label="Appeler le 681 093 673">
+                  <span class="cnfMore__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="cnfMore__chBody">
+                    <strong>Appelez-nous</strong>
+                    <small>+34 681 093 673</small>
+                  </span>
+                  <span class="cnfMore__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Bonjour%2C%20j%27ai%20une%20question%20sur%20la%20descente%20avec%20chien" target="_blank" rel="noopener noreferrer" class="cnfMore__ch cnfMore__ch--wa" aria-label="Écrire sur WhatsApp">
+                  <span class="cnfMore__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="cnfMore__chBody">
+                    <strong>WhatsApp</strong>
+                    <small>Réponse en minutes</small>
+                  </span>
+                  <span class="cnfMore__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="cnf__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="cnfI" name="cnf-faq" open={i === 0}>
+              <summary class="cnfI__q">
+                {f.q}
+                <svg class="cnfI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="cnfI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CTA FINAL ============== -->
+  <section class="cncta" aria-labelledby="cncta-title">
+    <div class="cncta__bg" aria-hidden="true">
+      <Picture src="con-perro-cta" alt="Famille avec chien profitant de la descente du Sella à Arriondas" sizes="100vw" bare />
+    </div>
+    <div class="cncta__inner">
+      <span class="cncta__eyebrow">— Réservez votre journée</span>
+      <h2 id="cncta-title" class="cncta__title">
+        Aventure avec votre chien<br/>
+        <span class="serif-italic">sur le Sella</span>
+      </h2>
+      <p class="cncta__lead">
+        Un plan différent, dog-friendly et mémorable à partager avec votre animal.
+        <strong>Réservez sans payer maintenant</strong> — payez par carte ou le jour même en récupérant le canoë.
+      </p>
+      <div class="cncta__ctas">
+        <a href={getLocalePath('reservar', 'fr')} class="cncta__primary">
+          Réserver avec mon chien
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href={getLocalePath('precios', 'fr')} class="cncta__ghost">Voir les tarifs</a>
+      </div>
+      <p class="cncta__refuerzo">Places limitées les jours de forte affluence.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== HERO ============== */
+  .cnh {
+    position: relative;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: var(--color-text-on-dark, #FBF8F1);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .cnh::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.045) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 10%, transparent 70%);
+  }
+  .cnh__inner {
+    position: relative; z-index: 1;
+    max-width: 1000px; margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+  .cnh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.45);
+    margin-bottom: var(--s-8);
+  }
+  .cnh__breadcrumb a {
+    color: rgba(251, 248, 241, 0.7);
+    transition: color 200ms;
+  }
+  .cnh__breadcrumb a:hover { color: var(--color-primary-soft, #F4B5A3); }
+
+  .cnh__eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: var(--s-6);
+  }
+  .cnh__eyebrow-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    animation: cnhPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes cnhPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cnh__eyebrow-dot { animation: none; }
+  }
+
+
+  .cnh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    margin: 0 0 var(--s-5);
+  }
+  .cnh__title .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .cnh__lead {
+    max-width: 620px;
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: rgba(251, 248, 241, 0.82);
+    margin: 0 0 var(--s-6);
+  }
+  .cnh__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .cnh__stats {
+    display: flex; flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2rem);
+    padding-block: var(--s-5);
+    border-top: 1px solid rgba(251, 248, 241, 0.14);
+    border-bottom: 1px solid rgba(251, 248, 241, 0.14);
+    margin-bottom: var(--s-6);
+  }
+  .cnh__stat { display: flex; flex-direction: column; gap: 4px; }
+  .cnh__stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-primary-soft, #F4B5A3);
+  }
+
+  /* Swoosh subrayado bajo "niños" */
+  .cnh__underlined {
+    position: relative;
+    display: inline-block;
+  }
+  .cnh__swoosh {
+    position: absolute;
+    bottom: -0.12em; left: 50%;
+    transform: translateX(-50%);
+    width: 102%; height: auto;
+    pointer-events: none;
+    color: var(--color-primary);
+  }
+  .cnh__stat-label {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    color: rgba(251, 248, 241, 0.62);
+  }
+  .cnh__stat-divider {
+    width: 1px; height: 32px;
+    background: rgba(251, 248, 241, 0.14);
+    display: none;
+  }
+  @media (min-width: 600px) { .cnh__stat-divider { display: block; } }
+
+  .cnh__ctas {
+    display: flex; flex-wrap: wrap; gap: var(--s-3);
+  }
+  .cnh__cta {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .cnh__cta--primary {
+    background: var(--color-primary); color: #fff;
+    box-shadow: 0 10px 28px rgba(233, 133, 111, 0.4);
+  }
+  .cnh__cta--primary:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(233, 133, 111, 0.55);
+  }
+  .cnh__cta--ghost {
+    background: rgba(251, 248, 241, 0.06);
+    color: #FBF8F1;
+    border: 1px solid rgba(251, 248, 241, 0.28);
+  }
+  .cnh__cta--ghost:hover {
+    background: rgba(251, 248, 241, 0.12);
+    border-color: rgba(251, 248, 241, 0.5);
+  }
+  .cnh__cta--phone {
+    background: rgba(251, 248, 241, 0.06);
+    color: #FBF8F1;
+    border: 1px solid rgba(251, 248, 241, 0.28);
+    gap: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .cnh__cta--phone:hover {
+    background: rgba(251, 248, 241, 0.14);
+    border-color: rgba(251, 248, 241, 0.5);
+  }
+  .cnh__cta svg { transition: transform 200ms; }
+  .cnh__cta:hover svg { transform: translateX(3px); }
+  .cnh__cta--phone svg { transition: transform 260ms ease; }
+  .cnh__cta--phone:hover svg { transform: rotate(-10deg); }
+
+  /* Variante Hero B2 · CREAM LUMINOSO · light editorial con acentos coral */
+  .cnh--cream {
+    background:
+      radial-gradient(ellipse 70% 50% at 20% 0%, rgba(244, 181, 163, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 100% 100%, rgba(232, 179, 57, 0.12) 0%, transparent 60%),
+      linear-gradient(180deg, #FDF8F1 0%, #F5EAD8 100%);
+    color: var(--color-text-primary, #1A1F2E);
+    padding-top: clamp(3rem, 6vw, 5rem);
+  }
+  .cnh--cream::before { display: none; }
+  .cnh--cream .cnh__inner { padding-top: clamp(4rem, 8vw, 5rem); }
+  .cnh--cream .cnh__breadcrumb {
+    color: rgba(26, 31, 46, 0.45);
+  }
+  .cnh--cream .cnh__breadcrumb a { color: var(--color-primary); }
+  .cnh--cream .cnh__breadcrumb a:hover { color: var(--color-primary-hover, #D66F59); }
+  .cnh--cream .cnh__eyebrow {
+    background: #fff;
+    border: 1px solid rgba(233, 133, 111, 0.3);
+    color: var(--color-primary);
+  }
+  .cnh--cream .cnh__eyebrow-dot {
+    background: var(--color-primary);
+  }
+  .cnh--cream .cnh__title {
+    color: var(--color-text-primary);
+  }
+  .cnh--cream .cnh__title .serif-italic {
+    color: var(--color-primary);
+  }
+  .cnh--cream .cnh__swoosh {
+    color: var(--color-primary-soft, #F4B5A3);
+    opacity: 0.95;
+  }
+  .cnh--cream .cnh__lead {
+    color: var(--color-text-secondary);
+  }
+  .cnh--cream .cnh__lead strong { color: var(--color-text-primary); }
+  .cnh--cream .cnh__stats {
+    border-top-color: rgba(26, 31, 46, 0.12);
+    border-bottom-color: rgba(26, 31, 46, 0.12);
+  }
+  .cnh--cream .cnh__stat-value { color: var(--color-primary); }
+  .cnh--cream .cnh__stat-label { color: var(--color-text-muted); }
+  .cnh--cream .cnh__stat-divider { background: rgba(26, 31, 46, 0.12); }
+  .cnh--cream .cnh__cta--primary {
+    background: var(--color-primary); color: #fff;
+    box-shadow: 0 12px 28px rgba(233, 133, 111, 0.35);
+  }
+  .cnh--cream .cnh__cta--primary:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-2px);
+  }
+  .cnh--cream .cnh__cta--ghost,
+  .cnh--cream .cnh__cta--phone {
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1.5px solid rgba(26, 31, 46, 0.25);
+  }
+  .cnh--cream .cnh__cta--ghost:hover {
+    border-color: var(--color-primary);
+    background: rgba(233, 133, 111, 0.06);
+  }
+  .cnh--cream .cnh__cta--phone:hover {
+    background: var(--color-sage, #3D4F3A); color: #fff;
+    border-color: var(--color-sage, #3D4F3A);
+  }
+
+  /* ============== INTRO · ¿Se puede? · Editorial con collage ============== */
+  .cni { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); overflow: hidden; }
+  .cni__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(3rem, 6vw, 5rem);
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 960px) {
+    .cni__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 6vw, 5rem);
+    }
+  }
+
+  /* Media izquierda: foto grande + foto pequeña superpuesta + tarjeta contacto */
+  .cni__media {
+    position: relative;
+    max-width: 520px;
+    margin: 0 auto;
+    padding-bottom: clamp(3rem, 6vw, 4.5rem);
+    padding-right: clamp(2rem, 5vw, 4rem);
+  }
+  .cni__mediaMain {
+    position: relative;
+    border-radius: clamp(1.75rem, 3vw, 2.5rem);
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    box-shadow:
+      0 30px 60px rgba(26, 31, 46, 0.18),
+      0 10px 25px rgba(61, 79, 58, 0.12);
+    isolation: isolate;
+    cursor: pointer;
+  }
+  .cni__mediaMain :global(picture),
+  .cni__mediaMain :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+  }
+  /* Shine sweep · franja diagonal de luz cristal al hover */
+  .cni__mediaMain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.18) 40%,
+      rgba(255, 255, 255, 0.42) 50%,
+      rgba(255, 255, 255, 0.18) 60%,
+      transparent 75%
+    );
+    transform: translateX(-120%);
+    transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cni__mediaMain:hover::before {
+    transform: translateX(120%);
+  }
+
+  .cni__mediaSmall {
+    position: absolute;
+    right: -6%; bottom: 10%;
+    width: clamp(140px, 38%, 220px);
+    border-radius: clamp(1.25rem, 2vw, 1.75rem);
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border: 6px solid var(--color-bg-base, #FDF8F1);
+    box-shadow: 0 20px 40px rgba(26, 31, 46, 0.2);
+    transform: rotate(3deg);
+    isolation: isolate;
+    cursor: pointer;
+  }
+  .cni__mediaSmall :global(picture),
+  .cni__mediaSmall :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+  }
+  .cni__mediaSmall::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 25%,
+      rgba(255, 255, 255, 0.18) 40%,
+      rgba(255, 255, 255, 0.42) 50%,
+      rgba(255, 255, 255, 0.18) 60%,
+      transparent 75%
+    );
+    transform: translateX(-120%);
+    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cni__mediaSmall:hover::before {
+    transform: translateX(120%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cni__mediaMain::before,
+    .cni__mediaSmall::before { transition: none; }
+    .cni__mediaMain:hover::before,
+    .cni__mediaSmall:hover::before { transform: translateX(-120%); }
+  }
+  .cni__contact {
+    position: absolute;
+    bottom: 0; left: 0;
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 18px 12px 14px;
+    background: rgba(61, 79, 58, 0.95);
+    color: #FBF8F1;
+    border-radius: 14px;
+    font-family: var(--font-sans);
+    box-shadow: 0 18px 34px rgba(61, 79, 58, 0.3);
+    transition: transform 260ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 260ms ease;
+  }
+  .cni__contact:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 22px 44px rgba(61, 79, 58, 0.45);
+  }
+  .cni__contactIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    color: #25D366;
+    flex-shrink: 0;
+  }
+  .cni__contactBody {
+    display: flex; flex-direction: column; gap: 2px;
+    line-height: 1.2;
+  }
+  .cni__contactBody strong {
+    font-size: 0.875rem; font-weight: 800;
+    letter-spacing: -0.005em;
+  }
+  .cni__contactBody span:last-child {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    letter-spacing: 0.2px;
+  }
+  @media (max-width: 599.98px) {
+    .cni__media { padding-right: 0; padding-bottom: 5rem; }
+    .cni__mediaSmall { right: -4%; bottom: 25%; }
+    .cni__contact { left: 50%; transform: translateX(-50%); }
+    .cni__contact:hover { transform: translateX(-50%) translateY(-3px); }
+  }
+
+  /* Content derecha */
+  .cni__content { min-width: 0; }
+  .cni__eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .cni__eyebrow svg { color: var(--color-sage, #3D4F3A); opacity: 0.85; }
+
+  .cni__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.875rem, 4.8vw, 3.25rem);
+    font-weight: 900; line-height: 1.02;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .cni__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cni__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0 0 clamp(1.75rem, 3.5vw, 2.5rem);
+  }
+  .cni__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Features list · 2 items con icono circular + título + descripción */
+  .cni__features {
+    list-style: none; padding: 0; margin: 0 0 clamp(1.75rem, 3.5vw, 2.5rem);
+    display: flex; flex-direction: column;
+  }
+  .cni__feature {
+    display: grid; grid-template-columns: auto 1fr;
+    gap: clamp(0.875rem, 2vw, 1.25rem);
+    align-items: start;
+    padding: clamp(1.25rem, 2.5vw, 1.625rem) 0;
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+    transition: padding 260ms ease;
+  }
+  .cni__feature:first-child { padding-top: 0; }
+  .cni__feature:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .cni__featureIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: rgba(61, 79, 58, 0.12);
+    color: var(--color-sage, #3D4F3A);
+    transition: background 300ms cubic-bezier(0.22, 1, 0.36, 1),
+                color 300ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cni__feature:hover .cni__featureIcon {
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    transform: scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cni__featureIcon { transition: none; }
+    .cni__feature:hover .cni__featureIcon { transform: none; }
+  }
+  .cni__featureBody { min-width: 0; padding-top: 4px; }
+  .cni__featureTitle {
+    font-family: var(--font-display); font-size: 1.0625rem; font-weight: 800;
+    line-height: 1.25; letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.375rem;
+  }
+  .cni__featureText {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cni__featureText strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .cni__cta {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 0.875rem 1.375rem;
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    border-radius: 12px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    transition: transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 240ms ease,
+                background 240ms ease;
+  }
+  .cni__cta:hover {
+    background: #2C3B2A;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(61, 79, 58, 0.35);
+  }
+  .cni__cta svg { transition: transform 200ms; }
+  .cni__cta:hover svg { transform: translateX(3px); }
+
+  /* ============== JORNADA ============== */
+  .cnj { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .cnj__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .cnj__eyebrow,
+  .cns__eyebrow,
+  .cnr__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cnj__title,
+  .cns__title,
+  .cnr__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cnj__title .serif-italic,
+  .cns__title .serif-italic,
+  .cnr__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cnj__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnj__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Timeline vertical · línea central sage + círculos numerados · alterna izq/dcha */
+  .cnjT {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 1000px;
+    position: relative;
+    --timeline-progress: 0%;
+  }
+  /* Línea base sage subtle más gruesa · z-index 0 para pasar por DEBAJO de los nodos */
+  .cnjT::before {
+    content: ""; position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    width: 3px;
+    background: rgba(61, 79, 58, 0.22);
+    transform: translateX(-50%);
+    border-radius: 3px;
+    z-index: 0;
+  }
+  /* Línea coral que se pinta a medida que haces scroll · z-index 0 para pasar por DEBAJO de los nodos */
+  .cnjT::after {
+    content: ""; position: absolute;
+    left: 50%; top: 0;
+    width: 3px;
+    height: var(--timeline-progress, 0%);
+    background: linear-gradient(180deg, var(--color-primary, #e9856f) 0%, var(--color-primary-active, #c85c44) 100%);
+    transform: translateX(-50%);
+    border-radius: 3px;
+    transition: height 60ms linear;
+    pointer-events: none;
+    box-shadow: 0 0 12px rgba(233, 133, 111, 0.35);
+    z-index: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cnjT { --timeline-progress: 100%; }
+    .cnjT::after { transition: none; }
+  }
+  .cnjT__step {
+    position: relative;
+    z-index: 1;          /* sube el step por encima del ::after coral · circulos tapan la línea */
+    display: grid;
+    grid-template-columns: 1fr 72px 1fr;
+    align-items: start;
+    gap: 1.5rem;
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .cnjT__step:last-child { margin-bottom: 0; }
+
+  .cnjT__node {
+    grid-column: 2;
+    justify-self: center;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: -0.01em;
+    box-shadow: 0 10px 24px rgba(61, 79, 58, 0.28);
+    position: relative;
+    z-index: 1;
+  }
+  .cnjT__body { min-width: 0; }
+  .cnjT__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 2vw, 1.3125rem);
+    font-weight: 800; line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.625rem;
+  }
+  .cnjT__text {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnjT__text strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .cnjT__step--left .cnjT__body {
+    grid-column: 1;
+    text-align: right;
+    padding-right: 1rem;
+  }
+  .cnjT__step--right .cnjT__body {
+    grid-column: 3;
+    padding-left: 1rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .cnjT::before { left: 28px; }
+    .cnjT__step,
+    .cnjT__step--left,
+    .cnjT__step--right {
+      grid-template-columns: 56px 1fr;
+      gap: 1rem;
+    }
+    .cnjT__step--left .cnjT__node,
+    .cnjT__step--right .cnjT__node {
+      grid-column: 1;
+      justify-self: start;
+    }
+    .cnjT__step--left .cnjT__body,
+    .cnjT__step--right .cnjT__body {
+      grid-column: 2;
+      text-align: left;
+      padding: 0;
+    }
+  }
+
+  /* ============== SEGURIDAD ============== */
+  .cns { padding-block: clamp(5rem, 9vw, 7rem); background: var(--color-bg-base); }
+  .cns__header {
+    max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center;
+  }
+  .cns__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cns__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cns__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cns__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    max-width: 640px;
+  }
+  .cns__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Grid 3×2 con número watermark sage muy tenue detrás del contenido */
+  .cns__grid {
+    list-style: none; padding: 0; margin: 0 auto clamp(3rem, 5vw, 4rem);
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 1200px;
+  }
+  @media (min-width: 720px)  { .cns__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cns__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .cns__item {
+    position: relative;
+    padding-top: clamp(3rem, 5vw, 4rem);
+  }
+  .cns__num {
+    position: absolute;
+    top: -0.15em;
+    left: -0.08em;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(5rem, 8vw, 7.5rem);
+    line-height: 0.85;
+    color: rgba(61, 79, 58, 0.12);
+    letter-spacing: -0.04em;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+  }
+  .cns__itemTitle {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.875rem;
+  }
+  .cns__itemText {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cns__itemText strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* CTA oscuro con pill pattern (como el mock de referencia) */
+  .cns__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cns__ctaBtn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.75rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #fff;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    transition: transform 260ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 260ms ease;
+  }
+  .cns__ctaBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(26, 31, 46, 0.35);
+  }
+  .cns__ctaBtnIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-text-primary, #1A1F2E);
+    transition: transform 260ms ease;
+  }
+  .cns__ctaBtn:hover .cns__ctaBtnIcon { transform: rotate(-12deg); }
+
+  /* ============== REQUISITOS ============== */
+  .cnr { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .cnr__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  /* Lead del header requisitos */
+  .cnr__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: var(--s-4) auto 0;
+    max-width: 640px;
+  }
+  .cnr__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Editorial VS · stat-big labels + divisor central (estilo precios rutas) */
+  .cnrVS {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1100px; margin: 0 auto;
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .cnrVS {
+      grid-template-columns: 1fr auto 1fr;
+      gap: clamp(1.5rem, 3vw, 2rem);
+    }
+  }
+
+  .cnrVS__col {
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center;
+    padding: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cnrVS__bigLabel {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+  }
+  .cnrVS__bigLabel--ok { color: var(--color-sage, #3D4F3A); }
+  .cnrVS__bigLabel--warn { color: var(--color-primary); }
+
+  .cnrVS__sub {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .cnrVS__title {
+    font-family: var(--font-display); font-size: clamp(1.125rem, 2vw, 1.3125rem);
+    font-weight: 800; line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
+  }
+
+  .cnrVS__sep {
+    width: clamp(60px, 10vw, 100px);
+    height: 1px;
+    background: rgba(26, 31, 46, 0.18);
+    margin: 0 auto clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+
+  .cnrVS__list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column;
+    gap: 0.625rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6;
+    color: var(--color-text-secondary);
+    max-width: 380px;
+  }
+  .cnrVS__list li strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Divisor central con "vs" rotado */
+  .cnrVS__divider {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    justify-self: center;
+  }
+  .cnrVS__divider::before {
+    content: "";
+    position: absolute;
+    top: clamp(1.5rem, 3vw, 2.5rem);
+    bottom: clamp(1.5rem, 3vw, 2.5rem);
+    width: 1px;
+    background: rgba(26, 31, 46, 0.15);
+  }
+  .cnrVS__vs {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-serif);
+    font-style: italic; font-weight: 400;
+    font-size: clamp(1rem, 1.4vw, 1.125rem);
+    color: var(--color-text-muted);
+    background: var(--color-bg-warm, #F5F1E8);
+    padding: 0.5rem 0.875rem;
+    letter-spacing: 0.2px;
+  }
+  @media (max-width: 899.98px) {
+    .cnrVS__divider { display: none; }
+  }
+
+
+  /* --- Shared base eyebrow/title para Beneficios · Interlinking · FAQ --- */
+  .cnb__eyebrow,
+  .cnl__eyebrow,
+  .cnf__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cnb__title,
+  .cnl__title,
+  .cnf__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cnb__title .serif-italic,
+  .cnl__title .serif-italic,
+  .cnf__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  /* ============== QUÉ LLEVAR · Sage dark editorial + cards alternando cream/coral ============== */
+  .cnq {
+    position: relative;
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: linear-gradient(180deg, #3D4F3A 0%, #344028 100%);
+    color: #FBF8F1;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .cnq::before {
+    content: ""; position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.04) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 15%, transparent 75%);
+    pointer-events: none;
+  }
+  .cnq > * { position: relative; z-index: 1; }
+
+  .cnq__header {
+    max-width: 920px; margin: 0 auto clamp(3rem, 5vw, 4rem);
+  }
+  @media (min-width: 720px) {
+    .cnq__header { padding-right: clamp(2rem, 5vw, 4rem); }
+  }
+  .cnq__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 2.4px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .cnq__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 6vw, 4rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 var(--s-5);
+  }
+  .cnq__title .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cnq__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: rgba(251, 248, 241, 0.8);
+    margin: 0;
+    max-width: 620px;
+  }
+  .cnq__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  /* Slider horizontal deslizable · scroll-snap + hover zoom · flechas de navegación */
+  .cnqSlider {
+    position: relative;
+    max-width: 1400px;
+    margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .cnqSlider__track {
+    list-style: none; padding: clamp(1rem, 2vw, 1.5rem) 0 clamp(1.5rem, 3vw, 2rem);
+    margin: 0;
+    display: flex;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+  }
+  .cnqSlider__track::-webkit-scrollbar { display: none; }
+
+  .cnqCard {
+    flex: 0 0 min(360px, 85vw);
+    scroll-snap-align: center;
+    display: flex; flex-direction: column;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    border-radius: clamp(1.25rem, 2vw, 1.75rem);
+    min-height: 320px;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    transform-origin: center center;
+  }
+  .cnqCard:hover {
+    transform: translateY(-4px) scale(1.02);
+    z-index: 2;
+  }
+
+  /* Navegación del slider */
+  .cnqSlider__nav {
+    display: flex; justify-content: flex-end; gap: 12px;
+    padding-inline: clamp(1rem, 3vw, 2.5rem);
+    margin-top: clamp(0.5rem, 1.5vw, 1rem);
+  }
+  .cnqSlider__btn {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.28);
+    color: #FBF8F1;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 240ms ease, border-color 240ms ease,
+                transform 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .cnqSlider__btn:hover {
+    background: var(--color-primary-soft, #F4B5A3);
+    border-color: var(--color-primary-soft, #F4B5A3);
+    color: #3D4F3A;
+    transform: translateY(-2px);
+  }
+  .cnqSlider__btn:active { transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cnqSlider__track { scroll-behavior: auto; }
+    .cnqCard { transition: none; }
+    .cnqCard:hover { transform: none; }
+    .cnqSlider__btn { transition: none; }
+  }
+  .cnqCard--cream {
+    background: #FDF8F1;
+    color: var(--color-text-primary);
+    box-shadow: 0 18px 36px rgba(20, 28, 18, 0.2);
+  }
+  .cnqCard--coral {
+    background: #EE9680;
+    color: #FBF8F1;
+    box-shadow: 0 18px 36px rgba(20, 28, 18, 0.22);
+  }
+
+  .cnqCard__badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    width: fit-content;
+    padding: 6px 12px 6px 6px;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+  }
+  .cnqCard--cream .cnqCard__badge {
+    background: rgba(26, 31, 46, 0.06);
+    color: var(--color-sage, #3D4F3A);
+  }
+  .cnqCard--coral .cnqCard__badge {
+    background: rgba(26, 31, 46, 0.18);
+    color: #FBF8F1;
+  }
+  .cnqCard__badgeIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cnqCard--cream .cnqCard__badgeIcon {
+    background: #FBF8F1;
+    color: var(--color-sage, #3D4F3A);
+  }
+  .cnqCard--coral .cnqCard__badgeIcon {
+    background: rgba(251, 248, 241, 0.2);
+    color: #FBF8F1;
+  }
+
+  .cnqCard__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.5vw, 1.75rem);
+    font-weight: 900; line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0;
+    text-transform: uppercase;
+  }
+  .cnqCard--cream .cnqCard__title { color: var(--color-text-primary); }
+  .cnqCard--coral .cnqCard__title { color: #FBF8F1; }
+
+  .cnqCard__text {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    margin: 0;
+    margin-top: auto;
+  }
+  .cnqCard--cream .cnqCard__text { color: var(--color-text-secondary); }
+  .cnqCard--coral .cnqCard__text { color: rgba(251, 248, 241, 0.92); }
+
+  .cnq__note {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    background: rgba(251, 248, 241, 0.08);
+    border-left: 2px solid var(--color-primary-soft, #F4B5A3);
+    border-radius: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.6;
+    color: rgba(251, 248, 241, 0.82);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  }
+  .cnq__note svg { color: var(--color-primary-soft, #F4B5A3); flex-shrink: 0; margin-top: 3px; }
+  .cnq__note strong { color: #FBF8F1; font-weight: 700; }
+
+  /* ============== BENEFICIOS · Ticker marquee sage · ancho + tipografía mixta + estrellas animadas ============== */
+  .cnb {
+    padding: 0;
+    background: #B4C58D;
+    overflow: hidden;
+  }
+  .cnb__srOnly {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .cnb__band {
+    background: linear-gradient(90deg, #C1D19B 0%, #B4C58D 100%);
+    padding: clamp(1.75rem, 3.2vw, 2.5rem) 0;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.2),
+      inset 0 -1px 0 rgba(26, 31, 46, 0.1);
+  }
+  .cnb__track {
+    display: flex;
+    width: max-content;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    animation: cnbScroll 50s linear infinite;
+  }
+  .cnb__item {
+    display: inline-flex; align-items: center; gap: clamp(2.5rem, 5vw, 4rem);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+  .cnb__label {
+    display: inline-block;
+    font-size: clamp(1.5rem, 3.2vw, 2.625rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  /* Tipografía alternada · impar (italic serif sage) vs par (bold display navy/coral) */
+  .cnb__item:nth-child(odd) .cnb__label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: #3D4F3A;
+    letter-spacing: -0.015em;
+  }
+  .cnb__item:nth-child(even) .cnb__label {
+    font-family: var(--font-display);
+    font-weight: 900;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+  }
+  /* Cada 4º item usa coral para variedad cromática */
+  .cnb__item:nth-child(4n) .cnb__label {
+    color: var(--color-primary);
+  }
+
+  /* Estrellas animadas con rotación suave */
+  .cnb__star {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    animation: cnbStarSpin 7s ease-in-out infinite;
+    transform-origin: center;
+  }
+  .cnb__item:nth-child(even) .cnb__star { animation-delay: 2s; }
+  .cnb__item:nth-child(3n) .cnb__star {
+    color: var(--color-text-primary);
+    animation-delay: 3.5s;
+  }
+
+  @keyframes cnbScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  @keyframes cnbStarSpin {
+    0%, 100% { transform: rotate(0deg) scale(1); opacity: 0.85; }
+    50%      { transform: rotate(90deg) scale(1.15); opacity: 1; }
+  }
+
+  /* Fade bordes izq/dcha para scroll elegante */
+  .cnb__band::before,
+  .cnb__band::after {
+    content: "";
+    position: absolute;
+    top: 0; bottom: 0;
+    width: clamp(60px, 8vw, 140px);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .cnb__band::before {
+    left: 0;
+    background: linear-gradient(90deg, rgba(193, 209, 155, 1) 0%, rgba(193, 209, 155, 0) 100%);
+  }
+  .cnb__band::after {
+    right: 0;
+    background: linear-gradient(270deg, rgba(180, 197, 141, 1) 0%, rgba(180, 197, 141, 0) 100%);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cnb__track, .cnb__star { animation: none; }
+    .cnb__band { overflow-x: auto; }
+    .cnb__band::before, .cnb__band::after { display: none; }
+  }
+
+  /* ============== OPINIONES · Cream (corte con sage olive del ticker) ============== */
+  .cnrev {
+    padding-block: clamp(5rem, 9vw, 7rem);
+    background: var(--color-bg-base);
+  }
+  .cnrev__header {
+    max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center;
+  }
+  /* Colores del header para fondo cream */
+  .cnrev__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cnrev__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-4);
+  }
+  .cnrev__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .cnrev__rating {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    padding: 8px 16px;
+    background: var(--color-bg-warm, #F5F1E8);
+    border-radius: 999px;
+  }
+  .cnrev__rating strong { color: var(--color-text-primary); font-weight: 800; }
+  .cnrev__stars { display: inline-flex; gap: 1px; color: #E8B339; }
+
+  .cnrevG {
+    display: grid; grid-template-columns: 1fr; gap: var(--s-4);
+    max-width: 1100px; margin: 0 auto;
+  }
+  @media (min-width: 760px)  { .cnrevG { grid-template-columns: repeat(3, 1fr); } }
+
+  .cnrevC {
+    position: relative;
+    padding: clamp(1.75rem, 2.8vw, 2.25rem);
+    background: #fff;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 1.25rem;
+    display: flex; flex-direction: column; gap: var(--s-4);
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 320ms ease;
+  }
+  .cnrevC:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 44px rgba(26, 31, 46, 0.1);
+  }
+  .cnrevC__quote {
+    color: rgba(61, 79, 58, 0.18);
+  }
+  .cnrevC__text {
+    font-family: var(--font-serif); font-size: 1rem; line-height: 1.65;
+    color: var(--color-text-primary);
+    font-style: italic;
+    margin: 0;
+    flex: 1;
+  }
+  .cnrevC__text strong { font-style: normal; font-weight: 700; }
+  .cnrevC__meta {
+    display: flex; flex-direction: column; gap: 2px;
+    padding-top: var(--s-3);
+    border-top: 1px solid rgba(61, 79, 58, 0.12);
+  }
+  .cnrevC__name {
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700;
+    color: var(--color-text-primary);
+  }
+  .cnrevC__src {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.3px;
+  }
+
+  /* ============== INTERLINKING ============== */
+  .cnl { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .cnl__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .cnlG {
+    display: grid; grid-template-columns: 1fr; gap: clamp(1rem, 2vw, 1.5rem);
+    max-width: 1100px; margin: 0 auto;
+    counter-reset: cnlCount;
+  }
+  @media (min-width: 720px)  { .cnlG { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cnlG { grid-template-columns: repeat(4, 1fr); } }
+
+  /* Card editorial · transparente · counter Fraunces italic + arrow svg circular */
+  .cnlC {
+    counter-increment: cnlCount;
+    position: relative;
+    display: flex; flex-direction: column; gap: 0.65rem;
+    padding: clamp(1.5rem, 2.6vw, 1.9rem);
+    background: transparent;
+    border: 1px solid rgba(61, 79, 58, 0.16);
+    border-radius: clamp(1.25rem, 2.5vw, 1.75rem);
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 320ms ease,
+                box-shadow 360ms ease,
+                background 360ms ease;
+    text-decoration: none;
+    overflow: hidden;
+    min-height: 240px;
+  }
+  .cnlC::before {
+    content: counter(cnlCount, decimal-leading-zero);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--color-primary);
+    letter-spacing: 0.04em;
+    opacity: 0.95;
+    margin-bottom: 0.15rem;
+    transition: color 280ms ease;
+  }
+  .cnlC:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 18px 42px -22px rgba(26, 31, 46, 0.18);
+  }
+  .cnlC:hover::before {
+    color: var(--color-primary-active, #c85c44);
+  }
+  .cnlC__eyebrow {
+    font-family: var(--font-sans); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .cnlC__t {
+    font-family: var(--font-display); font-size: clamp(1.05rem, 1.5vw, 1.175rem); font-weight: 800;
+    line-height: 1.25; letter-spacing: -0.008em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+    transition: color 280ms ease;
+  }
+  .cnlC:hover .cnlC__t { color: var(--color-primary); }
+  .cnlC__s {
+    font-family: var(--font-sans); font-size: 0.86rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnlC__arrow {
+    margin-top: auto;
+    align-self: flex-start;
+    width: 36px; height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-sage-subtle, #e8ece6);
+    color: var(--color-sage, #3D4F3A);
+    transition: background 320ms ease, color 320ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cnlC:hover .cnlC__arrow {
+    background: var(--color-primary);
+    color: #fff;
+    transform: translateX(6px);
+  }
+
+  /* ============== FAQ ============== */
+  .cnf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .cnf__grid {
+    display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 4rem);
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 960px) { .cnf__grid { grid-template-columns: 1fr 1.3fr; } }
+
+  .cnf__aside { position: sticky; top: 6rem; align-self: start; display: flex; flex-direction: column; gap: clamp(2rem, 3.5vw, 2.5rem); }
+  @media (max-width: 959.98px) { .cnf__aside { position: static; } }
+
+  /* ¿Tienes más preguntas? · sin caja · hairline top como separador editorial */
+  .cnfMore {
+    background: transparent;
+    border-radius: 0;
+    border-top: 1px solid var(--color-border-subtle);
+    padding: clamp(1.5rem, 2.6vw, 1.9rem) 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .cnfMore__eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .cnfMore__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 2.4vw, 1.7rem);
+    font-weight: 900;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-transform: none;
+  }
+  .cnfMore__title .serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--color-sage, #3d4f3a);
+    letter-spacing: 0;
+  }
+  .cnfMore__lead {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0 0 0.4rem;
+  }
+  .cnfMore__channels {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .cnfMore__ch {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.7rem 0.9rem 0.7rem 0.7rem;
+    background: #fff;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--color-text-primary);
+    transition: background 280ms ease, transform 280ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 280ms ease;
+  }
+  .cnfMore__ch:hover {
+    background: var(--color-text-primary);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 32px -18px rgba(26, 31, 46, 0.28);
+  }
+  .cnfMore__chIcon {
+    width: 36px; height: 36px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-sage-subtle, #e8ece6);
+    color: var(--color-sage, #3d4f3a);
+    transition: background 280ms ease, color 280ms ease;
+  }
+  .cnfMore__ch--wa .cnfMore__chIcon {
+    background: rgba(37, 211, 102, 0.16);
+    color: #25D366;
+  }
+  .cnfMore__ch:hover .cnfMore__chIcon {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .cnfMore__chBody {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+  .cnfMore__chBody strong {
+    font-family: var(--font-display);
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .cnfMore__chBody small {
+    font-size: 0.74rem;
+    color: var(--color-text-muted);
+    transition: color 280ms ease;
+  }
+  .cnfMore__ch:hover .cnfMore__chBody small {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .cnfMore__chArrow {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-primary);
+    transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1), color 280ms ease;
+  }
+  .cnfMore__ch:hover .cnfMore__chArrow {
+    transform: translateX(4px);
+    color: #fff;
+  }
+
+  .cnf__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnf__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .cnf__lead a {
+    color: var(--color-sage, #3D4F3A);
+    font-weight: 600;
+    border-bottom: 1px dashed var(--color-sage, #3D4F3A);
+  }
+
+  .cnf__list { display: flex; flex-direction: column; gap: var(--s-2); }
+
+  .cnfI {
+    background: #fff;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: border-color 240ms;
+  }
+  .cnfI[open] { border-color: rgba(61, 79, 58, 0.35); }
+
+  .cnfI__q {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--s-3);
+    padding: 1.125rem 1.25rem;
+    cursor: pointer;
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    list-style: none;
+  }
+  .cnfI__q::-webkit-details-marker { display: none; }
+  .cnfI__chev {
+    flex-shrink: 0; margin-top: 2px;
+    color: var(--color-sage, #3D4F3A);
+    transition: transform 240ms;
+  }
+  .cnfI[open] .cnfI__chev { transform: rotate(180deg); }
+
+  .cnfI__a {
+    padding: 0 1.25rem 1.25rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnfI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .cnfI__a a {
+    color: var(--color-sage, #3D4F3A); font-weight: 600;
+    border-bottom: 1px dashed var(--color-sage, #3D4F3A);
+  }
+
+  /* ============== CTA FINAL ============== */
+  .cncta {
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(480px, 60vh, 620px);
+    display: flex; align-items: center;
+    overflow: hidden;
+    color: #fff;
+  }
+  .cncta__bg {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .cncta__bg :global(picture),
+  .cncta__bg :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    object-position: center;
+  }
+  .cncta__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,31,46,0.85) 0%, rgba(26,31,46,0.55) 100%);
+    z-index: 1;
+  }
+  .cncta__inner {
+    position: relative; z-index: 2;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+    text-align: center;
+  }
+  .cncta__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cncta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 var(--s-5);
+  }
+  .cncta__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cncta__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 var(--s-6);
+  }
+  .cncta__lead strong { color: #fff; font-weight: 700; }
+  .cncta__ctas {
+    display: flex; flex-wrap: wrap; gap: var(--s-3);
+    justify-content: center;
+    margin-bottom: var(--s-5);
+  }
+  .cncta__primary,
+  .cncta__ghost {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .cncta__primary {
+    background: var(--color-primary); color: #fff;
+    box-shadow: 0 10px 28px rgba(233, 133, 111, 0.45);
+  }
+  .cncta__primary:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-2px);
+  }
+  .cncta__ghost {
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+  }
+  .cncta__ghost:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+  .cncta__primary svg { transition: transform 200ms; }
+  .cncta__primary:hover svg { transform: translateX(3px); }
+  .cncta__refuerzo {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    color: rgba(255, 255, 255, 0.62);
+    margin: 0;
+  }
+
+</style>

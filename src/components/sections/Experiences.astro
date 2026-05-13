@@ -1,0 +1,680 @@
+---
+import Picture from '@components/ui/Picture.astro';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— 03 / Modalidades',
+    titleLine1: 'Elige tu',
+    titleLine2: 'descenso del Sella',
+    lead1: 'Dos formas de vivir el río, ',
+    leadStrong: 'mismo precio',
+    lead2: ' y todo incluido. Tú decides en el agua si llegas hasta el final o prefieres la versión corta.',
+    specDuration: 'Duración',
+    specDistance: 'Distancia',
+    specPrice: 'Precio',
+    specPriceValue: 'Desde 30 €',
+    cta: 'Reservar ahora',
+    modalidades: [
+      {
+        number: '01',
+        tag: 'Ideal con peques',
+        title: 'Mini',
+        highlight: 'Sella',
+        text: 'Ruta corta pensada para familias con niños pequeños o para quien quiere una experiencia más tranquila sin renunciar al paisaje.',
+        duration: '2 — 3 h',
+        distance: '7 km',
+        href: '/recorrido-y-mapa/#mini-sella',
+        image: 'mini-sella-card',
+        imageAlt: 'Ruta Mini Sella · descenso corto de 7 km por el río Sella, ideal para familias con niños',
+        accent: 'sage',
+        requirement: 'Edad mínima: 5 años y 1,15 m · sin excepciones',
+      },
+      {
+        number: '02',
+        tag: 'Ruta clásica',
+        title: 'Descenso',
+        highlight: 'completo',
+        text: '15 km desde Arriondas hasta Fríes. La experiencia más completa con el paisaje más espectacular del Sella.',
+        duration: '4 — 5 h',
+        distance: '15 km',
+        href: '/recorrido-y-mapa/#completo',
+        image: 'descenso-completo',
+        imageAlt: 'Descenso completo del Sella · 15 km en canoa desde Arriondas hasta Fríes por el paisaje asturiano',
+        accent: 'coral',
+      },
+    ],
+  },
+  en: {
+    eyebrow: '— 03 / Options',
+    titleLine1: 'Choose your',
+    titleLine2: 'Sella River descent',
+    lead1: 'Two ways to enjoy the river, ',
+    leadStrong: 'same price',
+    lead2: ' and everything included. You decide on the water whether to paddle all the way or take the shorter version.',
+    specDuration: 'Duration',
+    specDistance: 'Distance',
+    specPrice: 'Price',
+    specPriceValue: 'From €30',
+    cta: 'Book now',
+    modalidades: [
+      {
+        number: '01',
+        tag: 'Great with kids',
+        title: 'Mini',
+        highlight: 'Sella',
+        text: 'A short route designed for families with young children or anyone who prefers a calmer experience without missing the scenery.',
+        duration: '2 — 3 h',
+        distance: '7 km',
+        href: '/en/route-and-map/#mini-sella',
+        image: 'mini-sella-card',
+        imageAlt: 'Mini Sella route · short 7 km descent of the Sella river, ideal for families with kids',
+        accent: 'sage',
+        requirement: 'Minimum age: 5 years and 1.15 m · no exceptions',
+      },
+      {
+        number: '02',
+        tag: 'Classic route',
+        title: 'Full',
+        highlight: 'route',
+        text: '15 km from Arriondas to Fríes. The full experience with the most spectacular scenery of the Sella.',
+        duration: '4 — 5 h',
+        distance: '15 km',
+        href: '/en/route-and-map/#completo',
+        image: 'descenso-completo',
+        imageAlt: 'Full Sella descent · 15 km by canoe from Arriondas to Fríes through the Asturian landscape',
+        accent: 'coral',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: '— 03 / Options',
+    titleLine1: 'Choisis ta',
+    titleLine2: 'descente du Sella',
+    lead1: 'Deux façons de vivre la rivière, ',
+    leadStrong: 'même prix',
+    lead2: ' et tout inclus. C’est sur l’eau que tu décides si tu vas jusqu’au bout ou si tu préfères la version courte.',
+    specDuration: 'Durée',
+    specDistance: 'Distance',
+    specPrice: 'Prix',
+    specPriceValue: 'À partir de 30 €',
+    cta: 'Réserver',
+    modalidades: [
+      {
+        number: '01',
+        tag: 'Idéal avec enfants',
+        title: 'Mini',
+        highlight: 'Sella',
+        text: 'Un parcours court pensé pour les familles avec de jeunes enfants ou pour qui veut une expérience plus tranquille sans renoncer au paysage.',
+        duration: '2 — 3 h',
+        distance: '7 km',
+        href: '/fr/parcours-et-carte/#mini-sella',
+        image: 'mini-sella-card',
+        imageAlt: 'Parcours Mini Sella · descente courte de 7 km sur la rivière Sella, idéale pour les familles avec enfants',
+        accent: 'sage',
+        requirement: 'Âge minimum : 5 ans et 1,15 m · sans exception',
+      },
+      {
+        number: '02',
+        tag: 'Parcours classique',
+        title: 'Parcours',
+        highlight: 'complet',
+        text: '15 km depuis Arriondas jusqu’à Fríes. L’expérience la plus complète avec le paysage le plus spectaculaire du Sella.',
+        duration: '4 — 5 h',
+        distance: '15 km',
+        href: '/fr/parcours-et-carte/#completo',
+        image: 'descenso-completo',
+        imageAlt: 'Descente complète du Sella · 15 km en canoë depuis Arriondas jusqu’à Fríes à travers le paysage asturien',
+        accent: 'coral',
+      },
+    ],
+  },
+  pt: {
+    eyebrow: '— 03 / Modalidades',
+    titleLine1: 'Escolhe a tua',
+    titleLine2: 'descida do Sella',
+    lead1: 'Duas formas de viver o rio, ',
+    leadStrong: 'mesmo preço',
+    lead2: ' e tudo incluído. És tu que decides na água se chegas até ao fim ou preferes a versão curta.',
+    specDuration: 'Duração',
+    specDistance: 'Distância',
+    specPrice: 'Preço',
+    specPriceValue: 'Desde 30 €',
+    cta: 'Reservar agora',
+    modalidades: [
+      {
+        number: '01',
+        tag: 'Ideal com crianças',
+        title: 'Mini',
+        highlight: 'Sella',
+        text: 'Percurso curto pensado para famílias com crianças pequenas ou para quem quer uma experiência mais tranquila sem abdicar da paisagem.',
+        duration: '2 — 3 h',
+        distance: '7 km',
+        href: '/pt/percurso-e-mapa/#mini-sella',
+        image: 'mini-sella-card',
+        imageAlt: 'Percurso Mini Sella · descida curta de 7 km pelo rio Sella, ideal para famílias com crianças',
+        accent: 'sage',
+        requirement: 'Idade mínima: 5 anos e 1,15 m · sem exceções',
+      },
+      {
+        number: '02',
+        tag: 'Percurso clássico',
+        title: 'Percurso',
+        highlight: 'completo',
+        text: '15 km desde Arriondas até Fríes. A experiência mais completa com a paisagem mais espetacular do Sella.',
+        duration: '4 — 5 h',
+        distance: '15 km',
+        href: '/pt/percurso-e-mapa/#completo',
+        image: 'descenso-completo',
+        imageAlt: 'Descida completa do Sella · 15 km de canoa desde Arriondas até Fríes pela paisagem asturiana',
+        accent: 'coral',
+      },
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+const modalidades = t.modalidades;
+---
+
+<section class="experiences" id="modalidades">
+  <div class="container container--xl">
+    <header class="experiences__header">
+      <div>
+        <span class="eyebrow experiences__eyebrow" data-reveal>{t.eyebrow}</span>
+        <h2 class="experiences__title" data-reveal data-reveal-delay="1">
+          {t.titleLine1}<br/>
+          <span class="serif-italic">{t.titleLine2}</span>
+        </h2>
+      </div>
+      <p class="experiences__lead body-lg" data-reveal data-reveal-delay="2">
+        {t.lead1}<strong>{t.leadStrong}</strong>{t.lead2}
+      </p>
+    </header>
+
+    <div class="experiences__grid">
+      {modalidades.map((exp, i) => (
+        <a href={exp.href} class={`exp exp--${exp.accent}`} data-reveal data-reveal-type="slide-right" data-reveal-delay={i + 1}>
+          <div class="exp__media">
+            <Picture
+              src={exp.image}
+              alt={exp.imageAlt}
+              sizes="(min-width: 768px) 33vw, 100vw"
+              bare={true}
+            />
+            <div class="exp__media-overlay"></div>
+            <span class="exp__tag">{exp.tag}</span>
+            <span class="exp__number">{exp.number}</span>
+          </div>
+
+          <div class="exp__body">
+            <h3 class="exp__title">
+              {exp.title}<br/>
+              <span class="serif-italic">{exp.highlight}</span>
+            </h3>
+            <p class="exp__text">{exp.text}</p>
+            {exp.requirement && (
+              <p class="exp__requirement">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                {exp.requirement}
+              </p>
+            )}
+
+            <dl class="exp__specs">
+              <div class="exp__spec">
+                <dt>{t.specDuration}</dt>
+                <dd>{exp.duration}</dd>
+              </div>
+              <div class="exp__spec">
+                <dt>{t.specDistance}</dt>
+                <dd>{exp.distance}</dd>
+              </div>
+              <div class="exp__spec">
+                <dt>{t.specPrice}</dt>
+                <dd class="exp__spec-price">{t.specPriceValue}</dd>
+              </div>
+            </dl>
+
+            <span class="exp__cta">
+              {t.cta}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .experiences {
+    padding-block: var(--section-padding-lg);
+    background: var(--color-bg-base);
+  }
+
+  .experiences__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-bottom: var(--s-16);
+    align-items: end;
+  }
+
+  @media (min-width: 960px) {
+    .experiences__header {
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--s-16);
+    }
+  }
+
+  .experiences__eyebrow {
+    display: inline-block;
+    color: var(--color-primary);
+    margin-bottom: var(--s-5);
+  }
+
+  .experiences__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 6vw, 5rem);
+    font-weight: var(--fw-black);
+    line-height: 0.92;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .experiences__title .serif-italic {
+    color: var(--color-sage);
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .experiences__lead {
+    color: var(--color-text-secondary);
+    max-width: 460px;
+  }
+
+  .experiences__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 768px) {
+    .experiences__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-8);
+    }
+  }
+
+  /* ============== INCLUDES BAND ============== */
+  .includes {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding: clamp(2rem, 4vw, 3.5rem) 0;
+    background: transparent;
+    border-radius: 0;
+    border: 0;
+  }
+
+  .includes__header {
+    text-align: center;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  .includes__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-3);
+  }
+
+  .includes__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: var(--fw-black);
+    line-height: 1.05;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-3);
+  }
+
+  .includes__title .serif-italic {
+    color: var(--color-sage);
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .includes__lead {
+    font-size: 0.9375rem;
+    color: var(--color-text-secondary);
+    line-height: var(--lh-body);
+  }
+
+  .includes__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--s-4);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--s-6);
+  }
+
+  @media (min-width: 768px) {
+    .includes__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .includes__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: var(--s-5) var(--s-4);
+    background: var(--color-bg-base);
+    border-radius: var(--radius-2xl);
+    text-align: center;
+  }
+
+  .includes__value {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: var(--fw-black);
+    letter-spacing: var(--ls-tighter);
+    color: var(--color-primary);
+    line-height: 1;
+  }
+
+  .includes__label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin-top: var(--s-2);
+  }
+
+  .includes__note {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .includes__requirement {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-2);
+    margin: 0 auto var(--s-5);
+    max-width: 640px;
+    padding: 0.625rem 1rem;
+    background: rgba(233, 133, 111, 0.08);
+    border: 1px solid rgba(233, 133, 111, 0.25);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-text-primary);
+    text-align: center;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .includes__requirement svg {
+    flex-shrink: 0;
+    color: var(--color-primary);
+  }
+
+  .includes__requirement strong {
+    font-weight: var(--fw-semibold);
+  }
+
+  .includes__extras {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: var(--s-3);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--color-border-subtle);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .includes__dot {
+    color: var(--color-text-muted);
+    opacity: 0.6;
+  }
+
+  .includes__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    width: 100%;
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    padding: 1.375rem 2rem;
+    background: var(--color-primary);
+    color: var(--color-text-on-primary);
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: var(--shadow-lg), var(--shadow-glow-primary);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .includes__cta:hover {
+    background: var(--color-primary-hover);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), var(--shadow-glow-primary);
+  }
+
+  .includes__cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  .includes__cta svg {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+
+  /* ============== CARD ============== */
+  .exp {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-elevated);
+    border-radius: var(--radius-3xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform var(--duration-base) var(--ease-out),
+      box-shadow var(--duration-base) var(--ease-out);
+  }
+
+  .exp:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-2xl);
+  }
+
+  .exp__media {
+    position: relative;
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+  }
+
+  .exp__media :global(picture),
+  .exp__media :global(img) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .exp__media :global(img) {
+    object-fit: cover;
+    transition: transform 900ms var(--ease-out);
+  }
+
+  .exp:hover .exp__media :global(img) {
+    transform: scale(1.08);
+  }
+
+  .exp__media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(26,31,46,0.1) 0%, transparent 40%, rgba(26,31,46,0.35) 100%);
+  }
+
+  .exp__tag {
+    position: absolute;
+    top: var(--s-5);
+    left: var(--s-5);
+    display: inline-block;
+    padding: 0.5rem 0.875rem;
+    background: rgba(251, 248, 241, 0.92);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-pill);
+    font-size: 0.625rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .exp__number {
+    position: absolute;
+    top: var(--s-5);
+    right: var(--s-5);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-wider);
+    color: rgba(251, 248, 241, 0.85);
+  }
+
+  /* ============== BODY ============== */
+  .exp__body {
+    display: flex;
+    flex-direction: column;
+    padding: var(--s-8) var(--s-7) var(--s-7);
+    gap: var(--s-4);
+    flex: 1;
+  }
+
+  .exp__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: var(--fw-black);
+    line-height: 0.95;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+  }
+
+  .exp__title .serif-italic {
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    letter-spacing: -0.02em;
+  }
+
+  .exp--coral .exp__title .serif-italic { color: var(--color-primary); }
+  .exp--sage .exp__title .serif-italic { color: var(--color-sage); }
+
+  .exp__text {
+    font-size: var(--fs-body-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--lh-body);
+    flex: 1;
+  }
+
+  .exp__requirement {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    margin: 0;
+  }
+
+  .exp__requirement svg {
+    flex-shrink: 0;
+  }
+
+  /* ============== SPECS ============== */
+  .exp__specs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+    border-top: 1px solid var(--color-border-subtle);
+    border-bottom: 1px solid var(--color-border-subtle);
+    margin: 0;
+  }
+
+  .exp__spec {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .exp__spec dt {
+    font-size: 0.625rem;
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .exp__spec dd {
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  .exp__spec-price {
+    color: var(--color-primary) !important;
+  }
+
+  /* CTA */
+  .exp__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: 0.6875rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-text-primary);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .exp:hover .exp__cta {
+    color: var(--color-primary);
+    gap: var(--s-4);
+  }
+</style>

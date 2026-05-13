@@ -1,0 +1,344 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'fr';
+const title = 'Politique de confidentialité · Aventura en el Sella';
+const description = 'Politique de confidentialité d\'Aventura en el Sella. Comment nous traitons vos données personnelles conformément au RGPD et à la LOPDGDD espagnole : finalités, base légale, conservation et droits.';
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/fr/legal/confidentialite/`;
+const lastUpdated = '2026-05-12';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#page`,
+  name: 'Politique de confidentialité',
+  description,
+  inLanguage: 'fr-FR',
+  url: canonicalUrl,
+  isPartOf: { '@type': 'WebSite', name: 'Aventura en el Sella', url: baseUrl },
+  dateModified: lastUpdated,
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/fr/legal/confidentialite/" translationKey="legal_privacidad">
+  <Fragment slot="head">
+    <meta name="robots" content="index, follow" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="lgl">
+
+    <div class="lgl__inner">
+      <nav class="lgl__breadcrumb" aria-label="Fil d'Ariane">
+        <a href={getLocalePath('home', lang)}>Accueil</a>
+        <span aria-hidden="true">/</span>
+        <a href={getLocalePath('legal_aviso', lang)}>Légal</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Confidentialité</span>
+      </nav>
+
+      <span class="lgl__eyebrow">— Informations légales</span>
+      <h1 class="lgl__title">Politique de confidentialité</h1>
+      <p class="lgl__updated">Dernière mise à jour : <time datetime={lastUpdated}>12 mai 2026</time></p>
+
+      <nav class="lgl__toc" aria-label="Table des matières">
+        <h2 class="lgl__tocTitle">Sommaire</h2>
+        <ol>
+          <li><a href="#responsable">1. Responsable du traitement</a></li>
+          <li><a href="#donnees">2. Quelles données nous recueillons</a></li>
+          <li><a href="#finalites">3. Finalités du traitement</a></li>
+          <li><a href="#base">4. Base légale</a></li>
+          <li><a href="#conservation">5. Durées de conservation</a></li>
+          <li><a href="#destinataires">6. Destinataires</a></li>
+          <li><a href="#transferts">7. Transferts internationaux</a></li>
+          <li><a href="#droits">8. Vos droits</a></li>
+          <li><a href="#securite">9. Mesures de sécurité</a></li>
+          <li><a href="#mineurs">10. Mineurs</a></li>
+          <li><a href="#changements">11. Modifications de cette politique</a></li>
+        </ol>
+      </nav>
+
+      <article class="lgl__prose">
+
+        <section id="responsable">
+          <h2>1. Responsable du traitement</h2>
+          <p>
+            Conformément au <strong>Règlement (UE) 2016/679 sur la protection des données
+            (RGPD)</strong> et à la <strong>loi organique espagnole 3/2018 du 5 décembre,
+            relative à la protection des données personnelles et à la garantie des droits
+            numériques (LOPDGDD)</strong>, nous vous informons que le responsable du
+            traitement de vos données personnelles est :
+          </p>
+          <ul class="lgl__data">
+            <li><strong>Titulaire :</strong> David Javier Pintado Laruelo (personne physique · auto-entrepreneur)</li>
+            <li><strong>NIF (numéro fiscal espagnol) :</strong> 09394016B</li>
+            <li><strong>Nom commercial :</strong> Aventuraenelsella.es</li>
+            <li><strong>Domicile fiscal :</strong> Bermudo I el Diácono 3 Bajo, 33012 Oviedo, Asturies</li>
+            <li><strong>Adresse de l'activité :</strong> Calle Juan Carlos I, 18, Bajo II (accès par Aipol), 33540 Arriondas, Asturies</li>
+            <li><strong>Téléphone :</strong> <a href="tel:+34681093673">+34 681 09 36 73</a></li>
+            <li><strong>Email de contact :</strong> <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a></li>
+          </ul>
+        </section>
+
+        <section id="donnees">
+          <h2>2. Quelles données nous recueillons</h2>
+          <p>Les données personnelles que nous traitons proviennent directement de vous lorsque vous :</p>
+          <ul>
+            <li><strong>Effectuez une réservation</strong> en ligne, par téléphone ou WhatsApp.</li>
+            <li><strong>Remplissez le formulaire de contact</strong> du site web.</li>
+            <li><strong>Nous écrivez par e-mail ou messagerie</strong> (WhatsApp, réseaux sociaux).</li>
+            <li><strong>Naviguez sur notre site web</strong> (données techniques et de navigation via cookies).</li>
+          </ul>
+          <p>Les données traitées peuvent inclure, selon le cas :</p>
+          <ul>
+            <li>Nom et prénom.</li>
+            <li>Adresse e-mail.</li>
+            <li>Numéro de téléphone.</li>
+            <li>Détails de la réservation (date, parcours, nombre de personnes, âge des mineurs le cas échéant).</li>
+            <li>Informations de paiement (toujours traitées via des plateformes externes certifiées — nous ne conservons pas les données de carte bancaire).</li>
+            <li>Données de navigation : adresse IP, type d'appareil, navigateur, pages visitées (via cookies techniques et analytiques).</li>
+          </ul>
+        </section>
+
+        <section id="finalites">
+          <h2>3. Finalités du traitement</h2>
+          <p>Nous utilisons vos données personnelles exclusivement pour :</p>
+          <ul>
+            <li><strong>Gérer votre réservation</strong> de la descente du Sella et fournir le service contracté.</li>
+            <li><strong>Répondre à vos demandes</strong> et communiquer avec vous avant, pendant et après l'activité.</li>
+            <li><strong>Émettre la facture</strong> correspondante et remplir nos obligations comptables et fiscales.</li>
+            <li><strong>Envoyer des communications commerciales</strong> liées à nos services, <strong>uniquement si vous avez donné votre consentement exprès</strong>.</li>
+            <li><strong>Améliorer le site web</strong> grâce à une analyse statistique agrégée de la navigation (si vous acceptez les cookies analytiques).</li>
+          </ul>
+        </section>
+
+        <section id="base">
+          <h2>4. Base légale</h2>
+          <p>La base juridique du traitement de vos données est, selon le cas :</p>
+          <ul>
+            <li><strong>Exécution du contrat</strong> (art. 6.1.b RGPD) : lorsque vous réservez une activité, nous traitons vos données pour vous fournir le service.</li>
+            <li><strong>Respect d'une obligation légale</strong> (art. 6.1.c RGPD) : facturation, obligations comptables et fiscales.</li>
+            <li><strong>Consentement</strong> (art. 6.1.a RGPD) : envoi de communications commerciales et utilisation de cookies non essentiels. Vous pouvez le retirer à tout moment sans effet rétroactif.</li>
+            <li><strong>Intérêt légitime</strong> (art. 6.1.f RGPD) : répondre à vos questions lorsque vous nous contactez directement (par e-mail ou formulaire), et sécurité du site web.</li>
+          </ul>
+        </section>
+
+        <section id="conservation">
+          <h2>5. Durées de conservation</h2>
+          <ul>
+            <li><strong>Données de réservation et facturation :</strong> pendant la durée de la relation commerciale et les délais légaux requis (jusqu'à 6 ans selon le Code de Commerce espagnol et la réglementation fiscale).</li>
+            <li><strong>Données de contact (formulaire, e-mail, WhatsApp) :</strong> le temps nécessaire pour traiter votre demande, et au maximum 1 an après si aucune réservation n'est conclue.</li>
+            <li><strong>Données de communications commerciales :</strong> jusqu'au retrait de votre consentement.</li>
+            <li><strong>Données de navigation :</strong> selon les durées indiquées dans la <a href={getLocalePath('legal_cookies', lang)}>Politique des cookies</a>.</li>
+          </ul>
+          <p>
+            À l'issue de ces délais, les données sont bloquées et conservées uniquement
+            pour la durée strictement nécessaire pour répondre à d'éventuelles
+            responsabilités légales, puis supprimées de manière sécurisée.
+          </p>
+        </section>
+
+        <section id="destinataires">
+          <h2>6. Destinataires</h2>
+          <p>
+            Nous ne cédons ni ne vendons vos données personnelles à des tiers. Seuls les
+            <strong>prestataires de services</strong> nécessaires à la fourniture de
+            l'activité peuvent y accéder, tous étant liés par un contrat de sous-traitant
+            conforme au RGPD :
+          </p>
+          <ul>
+            <li>Plateforme de paiement (pour traiter les paiements par carte).</li>
+            <li>Fournisseur d'hébergement et de messagerie.</li>
+            <li>Plateformes de messagerie (WhatsApp Business) et d'analyse web (si vous acceptez les cookies analytiques).</li>
+            <li>Cabinet de gestion ou de conseil pour le respect des obligations fiscales et sociales.</li>
+            <li>Compagnie d'assurance (données minimales nécessaires à la couverture de l'activité).</li>
+            <li>Autorités compétentes, en cas d'obligation légale.</li>
+          </ul>
+        </section>
+
+        <section id="transferts">
+          <h2>7. Transferts internationaux</h2>
+          <p>
+            Certains prestataires (par exemple Google Analytics, Meta ou services de
+            messagerie) peuvent traiter des données en dehors de l'Espace économique
+            européen. Dans ce cas, ces transferts internationaux sont effectués avec les
+            garanties appropriées prévues par le RGPD :
+            <strong>Clauses contractuelles types</strong> approuvées par la Commission
+            européenne ou décisions d'adéquation.
+          </p>
+        </section>
+
+        <section id="droits">
+          <h2>8. Vos droits</h2>
+          <p>En tant que personne concernée, vous avez le droit d' :</p>
+          <ul>
+            <li><strong>Accès :</strong> connaître quelles de vos données nous traitons.</li>
+            <li><strong>Rectification :</strong> corriger des données inexactes ou incomplètes.</li>
+            <li><strong>Suppression</strong> (« droit à l'oubli ») : demander la suppression de vos données lorsqu'elles ne sont plus nécessaires ou que vous avez retiré votre consentement.</li>
+            <li><strong>Opposition :</strong> vous opposer au traitement pour des motifs liés à votre situation particulière.</li>
+            <li><strong>Limitation :</strong> demander la limitation du traitement pendant la résolution d'une demande de rectification ou d'opposition.</li>
+            <li><strong>Portabilité :</strong> recevoir vos données dans un format structuré, couramment utilisé et lisible par machine.</li>
+            <li><strong>Retirer le consentement</strong> à tout moment, sans affecter la licéité du traitement antérieur.</li>
+          </ul>
+          <p>
+            Pour exercer l'un de ces droits, écrivez à
+            <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            en indiquant le droit que vous souhaitez exercer et en joignant, si
+            nécessaire, une copie d'une pièce d'identité. Nous répondrons dans un délai
+            maximum d'un mois.
+          </p>
+          <p>
+            Si vous estimez que le traitement de vos données n'est pas conforme à la
+            réglementation, vous pouvez déposer une réclamation auprès de l'
+            <strong>Agence espagnole de protection des données (AEPD)</strong>, située au
+            C/ Jorge Juan 6, 28001 Madrid, ou via son site électronique :
+            <a href="https://www.aepd.es" target="_blank" rel="noopener noreferrer">www.aepd.es</a>.
+          </p>
+        </section>
+
+        <section id="securite">
+          <h2>9. Mesures de sécurité</h2>
+          <p>
+            Nous appliquons les mesures techniques et organisationnelles appropriées pour
+            garantir un niveau de sécurité adapté au risque du traitement, y compris :
+            communications chiffrées (HTTPS), mots de passe robustes, mises à jour
+            régulières des logiciels, sauvegardes et accès restreint aux données aux seuls
+            membres du personnel autorisés.
+          </p>
+        </section>
+
+        <section id="mineurs">
+          <h2>10. Mineurs</h2>
+          <p>
+            Pour les réservations incluant des mineurs, leurs données sont traitées à la
+            demande des titulaires de l'autorité parentale ou de la tutelle, et sont
+            utilisées exclusivement pour la bonne exécution de l'activité (taille du gilet
+            de sauvetage, équipement, assurance). Nous n'effectuons aucun traitement
+            commercial avec les données de mineurs.
+          </p>
+        </section>
+
+        <section id="changements">
+          <h2>11. Modifications de cette politique</h2>
+          <p>
+            Nous pourrons mettre à jour cette politique de confidentialité pour l'adapter
+            aux évolutions législatives, jurisprudentielles ou techniques. La version en
+            vigueur sera toujours celle publiée sur ce site web, avec la date de dernière
+            mise à jour indiquée en tête du document.
+          </p>
+        </section>
+
+        <div class="lgl__contact" aria-label="Contact confidentialité">
+          <p>
+            Pour toute question sur le traitement de vos données, vous pouvez nous écrire à
+            <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            ou nous appeler au <a href="tel:+34681093673">+34 681 09 36 73</a>.
+          </p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lgl {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 10% 0%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-base);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    min-height: 80vh;
+  }
+  .lgl__inner { max-width: 900px; margin: 0 auto; padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 3rem) 0; }
+  .lgl__breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .lgl__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .lgl__breadcrumb a:hover { color: var(--color-primary); }
+  .lgl__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1rem;
+  }
+  .lgl__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .lgl__updated {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .lgl__toc {
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.12);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .lgl__tocTitle {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0 1rem;
+  }
+  .lgl__toc ol { padding-left: 1.25rem; margin: 0; columns: 1; column-gap: 2rem; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-secondary); }
+  @media (min-width: 720px) { .lgl__toc ol { columns: 2; } }
+  .lgl__toc ol li { margin-bottom: 0.5rem; }
+  .lgl__toc a { color: var(--color-text-primary); transition: color 200ms; border-bottom: 1px solid transparent; }
+  .lgl__toc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .lgl__prose { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .lgl__prose section { padding-top: clamp(2rem, 4vw, 3rem); scroll-margin-top: 5rem; }
+  .lgl__prose section:first-child { padding-top: 0; }
+  .lgl__prose h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  .lgl__prose p { margin: 0 0 1rem; color: var(--color-text-secondary); }
+  .lgl__prose p strong { color: var(--color-text-primary); font-weight: 700; }
+  .lgl__prose ul { padding-left: 1.25rem; margin: 0 0 1rem; }
+  .lgl__prose ul li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+  .lgl__prose ul.lgl__data {
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem 1.25rem 2.75rem;
+    list-style: none;
+  }
+  .lgl__prose ul.lgl__data li { padding-left: 0; position: relative; margin-bottom: 0.625rem; }
+  .lgl__prose ul.lgl__data li::before { content: "·"; position: absolute; left: -1.25rem; color: var(--color-sage, #3D4F3A); font-weight: 900; }
+  .lgl__prose a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 200ms, border-color 200ms;
+  }
+  .lgl__prose a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .lgl__contact {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding: 1.5rem 1.75rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 3px solid var(--color-sage, #3D4F3A);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .lgl__contact p { margin: 0; }
+</style>

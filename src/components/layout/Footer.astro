@@ -1,0 +1,411 @@
+---
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    col_descenso: 'Descenso del Sella',
+    col_guias: 'Guías',
+    col_empresa: 'Empresa',
+    nav_recorrido: 'Recorrido y mapa',
+    nav_premium: 'Reserva Premium',
+    nav_con_ninos: 'Con niños',
+    nav_con_perro: 'Con perro',
+    nav_descenso_internacional: 'Descenso Internacional',
+    nav_opiniones: 'Opiniones',
+    nav_cuanto: 'Cuánto dura',
+    nav_mejor_epoca: 'Mejor época',
+    nav_como_llegar: 'Cómo llegar',
+    nav_blog: 'Blog',
+    nav_precios: 'Precios',
+    nav_quienes: 'Quiénes somos',
+    nav_contacto: 'Contacto',
+    nav_reservar: 'Reservar',
+    tagline: 'Tu día en el río Sella, cuidado al detalle. Desde Arriondas, con más de 25 años enseñando Asturias a quien viene a visitarla.',
+    aria_logo: 'Aventura en el Sella',
+    aria_phone: 'Teléfono',
+    aria_email: 'Email',
+    aria_google: 'Ver ficha en Google',
+    aria_tripadvisor: 'Ver reseñas en TripAdvisor',
+    addr_extra: '(acceso por las instalaciones de Aipol)',
+    rights: 'Todos los derechos reservados.',
+    legal_aviso: 'Aviso legal',
+    legal_privacidad: 'Privacidad',
+    legal_cookies: 'Cookies',
+    legal_terminos: 'Términos de contratación',
+    legal_config_cookies: 'Configurar cookies',
+  },
+  en: {
+    col_descenso: 'Sella Descent',
+    col_guias: 'Guides',
+    col_empresa: 'Company',
+    nav_recorrido: 'Route and map',
+    nav_premium: 'Premium Booking',
+    nav_con_ninos: 'With kids',
+    nav_con_perro: 'With dog',
+    nav_descenso_internacional: 'International Descent',
+    nav_opiniones: 'Reviews',
+    nav_cuanto: 'How long does it take',
+    nav_mejor_epoca: 'Best time',
+    nav_como_llegar: 'How to get there',
+    nav_blog: 'Blog',
+    nav_precios: 'Prices',
+    nav_quienes: 'About us',
+    nav_contacto: 'Contact',
+    nav_reservar: 'Book',
+    tagline: 'Your day on the Sella river, looked after to the last detail. From Arriondas, with more than 25 years showing Asturias to those who come to visit it.',
+    aria_logo: 'Aventura en el Sella',
+    aria_phone: 'Phone',
+    aria_email: 'Email',
+    aria_google: 'See our Google profile',
+    aria_tripadvisor: 'See reviews on TripAdvisor',
+    addr_extra: '(access through Aipol facilities)',
+    rights: 'All rights reserved.',
+    legal_aviso: 'Legal notice',
+    legal_privacidad: 'Privacy',
+    legal_cookies: 'Cookies',
+    legal_terminos: 'Terms and conditions',
+    legal_config_cookies: 'Cookie settings',
+  },
+  fr: {
+    col_descenso: 'Descente du Sella',
+    col_guias: 'Guides',
+    col_empresa: 'Entreprise',
+    nav_recorrido: 'Parcours et carte',
+    nav_premium: 'Réservation Premium',
+    nav_con_ninos: 'Avec enfants',
+    nav_con_perro: 'Avec chien',
+    nav_descenso_internacional: 'Descente Internationale',
+    nav_opiniones: 'Avis',
+    nav_cuanto: 'Durée',
+    nav_mejor_epoca: 'Meilleure période',
+    nav_como_llegar: 'Comment arriver',
+    nav_blog: 'Blog',
+    nav_precios: 'Tarifs',
+    nav_quienes: 'Qui sommes-nous',
+    nav_contacto: 'Contact',
+    nav_reservar: 'Réserver',
+    tagline: 'Ta journée sur la rivière Sella, soignée dans les moindres détails. Depuis Arriondas, avec plus de 25 ans à faire découvrir les Asturies à qui vient nous rendre visite.',
+    aria_logo: 'Aventura en el Sella',
+    aria_phone: 'Téléphone',
+    aria_email: 'Email',
+    aria_google: 'Voir notre fiche Google',
+    aria_tripadvisor: 'Voir les avis sur TripAdvisor',
+    addr_extra: '(accès par les installations d\'Aipol)',
+    rights: 'Tous droits réservés.',
+    legal_aviso: 'Mentions légales',
+    legal_privacidad: 'Confidentialité',
+    legal_cookies: 'Cookies',
+    legal_terminos: 'Conditions générales',
+    legal_config_cookies: 'Paramétrer les cookies',
+  },
+  pt: {
+    col_descenso: 'Descida do Sella',
+    col_guias: 'Guias',
+    col_empresa: 'Empresa',
+    nav_recorrido: 'Percurso e mapa',
+    nav_premium: 'Reserva Premium',
+    nav_con_ninos: 'Com crianças',
+    nav_con_perro: 'Com cão',
+    nav_descenso_internacional: 'Descida Internacional',
+    nav_opiniones: 'Opiniões',
+    nav_cuanto: 'Quanto tempo dura',
+    nav_mejor_epoca: 'Melhor época',
+    nav_como_llegar: 'Como chegar',
+    nav_blog: 'Blog',
+    nav_precios: 'Preços',
+    nav_quienes: 'Quem somos',
+    nav_contacto: 'Contacto',
+    nav_reservar: 'Reservar',
+    tagline: 'O teu dia no rio Sella, cuidado ao detalhe. Desde Arriondas, com mais de 25 anos a mostrar as Astúrias a quem nos vem visitar.',
+    aria_logo: 'Aventura en el Sella',
+    aria_phone: 'Telefone',
+    aria_email: 'Email',
+    aria_google: 'Ver perfil no Google',
+    aria_tripadvisor: 'Ver opiniões no TripAdvisor',
+    addr_extra: '(acesso pelas instalações da Aipol)',
+    rights: 'Todos os direitos reservados.',
+    legal_aviso: 'Aviso legal',
+    legal_privacidad: 'Privacidade',
+    legal_cookies: 'Cookies',
+    legal_terminos: 'Termos e condições',
+    legal_config_cookies: 'Configurar cookies',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+
+const year = new Date().getFullYear();
+
+/* Estructura alineada con el menú principal · coherencia total nav ↔ footer */
+const cols = [
+  {
+    title: t.col_descenso,
+    links: [
+      { label: t.nav_recorrido,              href: getLocalePath('recorrido_mapa', lang) },
+      { label: t.nav_premium,                href: getLocalePath('reserva_premium', lang) },
+      { label: t.nav_con_ninos,              href: getLocalePath('con_ninos', lang) },
+      { label: t.nav_con_perro,              href: getLocalePath('con_perro', lang) },
+      { label: t.nav_descenso_internacional, href: getLocalePath('descenso_internacional', lang) },
+      { label: t.nav_opiniones,              href: getLocalePath('opiniones', lang) },
+    ],
+  },
+  {
+    title: t.col_guias,
+    links: [
+      { label: t.nav_cuanto,                 href: getLocalePath('cuanto_dura', lang) },
+      { label: t.nav_mejor_epoca,            href: getLocalePath('mejor_epoca', lang) },
+      { label: t.nav_como_llegar,            href: getLocalePath('como_llegar', lang) },
+      { label: t.nav_blog,                   href: getLocalePath('blog', lang) },
+    ],
+  },
+  {
+    title: t.col_empresa,
+    links: [
+      { label: t.nav_precios,                href: getLocalePath('precios', lang) },
+      { label: t.nav_quienes,                href: getLocalePath('quienes_somos', lang) },
+      { label: t.nav_contacto,               href: getLocalePath('contacto', lang) },
+      { label: t.nav_reservar,               href: getLocalePath('reservar', lang) },
+    ],
+  },
+];
+---
+
+<footer class="site-footer">
+  <div class="container container--xl">
+    <!-- Big wordmark -->
+    <div class="site-footer__wordmark" data-reveal>
+      <span>Aventura</span>
+      <span class="serif-italic">en el Sella</span>
+    </div>
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <img
+          src="/images/logo/logo-footer.png"
+          alt={t.aria_logo}
+          width="140"
+          height="105"
+          loading="lazy"
+        />
+        <p class="site-footer__tagline">
+          {t.tagline}
+        </p>
+
+        <address class="site-footer__contact">
+          <a href="tel:+34681093673" class="site-footer__contact-item" aria-label={t.aria_phone}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>+34 681 09 36 73</span>
+          </a>
+          <a href="mailto:info@aventuraenelsella.es" class="site-footer__contact-item" aria-label={t.aria_email}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>info@aventuraenelsella.es</span>
+          </a>
+          <div class="site-footer__contact-item site-footer__contact-item--addr">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>
+              Calle Juan Carlos&nbsp;I, 18 — Bajo II<br/>
+              <small>{t.addr_extra}</small><br/>
+              33540 Arriondas · Asturias
+            </span>
+          </div>
+          <div class="site-footer__social">
+            <a href="https://share.google/huLLaIz31FiYohuTV" target="_blank" rel="noopener" aria-label={t.aria_google}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.35 11.1h-9.17v2.73h6.51c-.33 3.81-3.5 5.44-6.5 5.44C8.36 19.27 5 16.25 5 12c0-4.1 3.2-7.27 7.2-7.27 3.09 0 4.9 1.97 4.9 1.97L19 4.72S16.56 2 12.1 2C6.42 2 2.03 6.8 2.03 12c0 5.05 4.13 10 10.22 10 5.35 0 9.25-3.67 9.25-9.09 0-1.15-.15-1.81-.15-1.81z"/></svg>
+            </a>
+            <a href="https://www.tripadvisor.es/Attraction_Review-g608995-d12635919-Reviews-Aventura_en_el_Sella-Arriondas_Parres_Municipality_Asturias.html" target="_blank" rel="noopener" aria-label={t.aria_tripadvisor}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c-5.5 0-10 4.5-10 10s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm-3-8c0-1.7-1.3-3-3-3s-3 1.3-3 3 1.3 3 3 3 3-1.3 3-3zm9 0c0-1.7-1.3-3-3-3s-3 1.3-3 3 1.3 3 3 3 3-1.3 3-3z"/></svg>
+            </a>
+          </div>
+        </address>
+      </div>
+
+      {cols.map(col => (
+        <div class="site-footer__col">
+          <h4 class="site-footer__col-title eyebrow">{col.title}</h4>
+          <ul>
+            {col.links.map(link => (
+              <li><a href={link.href}>{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>© {year} Aventura en el Sella · {t.rights}</p>
+      <ul class="site-footer__legal">
+        <li><a href={getLocalePath('legal_aviso', lang)}>{t.legal_aviso}</a></li>
+        <li><a href={getLocalePath('legal_privacidad', lang)}>{t.legal_privacidad}</a></li>
+        <li><a href={getLocalePath('legal_cookies', lang)}>{t.legal_cookies}</a></li>
+        <li><a href={getLocalePath('legal_terminos', lang)}>{t.legal_terminos}</a></li>
+        <li><a href="#" data-cookie-settings>{t.legal_config_cookies}</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-bg-dark);
+    color: var(--color-text-on-dark);
+    padding-block: clamp(5rem, 10vw, 8rem) clamp(2rem, 4vw, 3rem);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .site-footer__wordmark {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: clamp(0.5rem, 1.5vw, 1.25rem);
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 10rem);
+    font-weight: var(--fw-black);
+    line-height: 0.9;
+    letter-spacing: var(--ls-tightest);
+    text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+    white-space: nowrap;
+    opacity: 0.98;
+  }
+
+  .site-footer__wordmark .serif-italic {
+    font-weight: var(--fw-regular);
+    text-transform: none;
+    color: var(--color-primary-soft);
+    font-size: 0.85em;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    gap: var(--s-12);
+    grid-template-columns: 1fr;
+    margin-bottom: var(--s-16);
+    padding-top: var(--s-10);
+    border-top: 1px solid var(--color-border-on-dark);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: 1.8fr repeat(3, 1fr);
+      gap: var(--s-10);
+    }
+  }
+
+  .site-footer__brand img {
+    width: 140px;
+    height: auto;
+    margin-bottom: var(--s-6);
+  }
+
+  .site-footer__tagline {
+    font-size: var(--fs-body-sm);
+    line-height: var(--lh-body);
+    color: rgba(244, 240, 232, 0.72);
+    max-width: 360px;
+    margin-bottom: var(--s-6);
+  }
+
+  .site-footer__contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    font-style: normal;
+  }
+
+  .site-footer__contact-item {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--s-3);
+    font-size: var(--fs-body-sm);
+    color: rgba(244, 240, 232, 0.82);
+    transition: color var(--duration-base) var(--ease-out);
+    line-height: 1.5;
+  }
+  .site-footer__contact-item svg { margin-top: 3px; flex-shrink: 0; }
+  .site-footer__contact-item--addr small {
+    font-size: 0.7rem;
+    color: rgba(244, 240, 232, 0.55);
+    font-style: italic;
+  }
+
+  a.site-footer__contact-item:hover {
+    color: var(--color-primary-soft);
+  }
+
+  .site-footer__social {
+    display: flex; gap: var(--s-3);
+    margin-top: var(--s-3);
+  }
+  .site-footer__social a {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px;
+    border: 1px solid rgba(244, 240, 232, 0.22);
+    border-radius: 50%;
+    color: rgba(244, 240, 232, 0.7);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+  .site-footer__social a:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .site-footer__col-title {
+    color: rgba(244, 240, 232, 0.5);
+    margin-bottom: var(--s-5);
+  }
+
+  .site-footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .site-footer__col a {
+    font-size: var(--fs-body-sm);
+    color: rgba(244, 240, 232, 0.85);
+    transition: all var(--duration-base) var(--ease-out);
+  }
+
+  .site-footer__col a:hover {
+    color: var(--color-primary-soft);
+    padding-left: 4px;
+  }
+
+  .site-footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--color-border-on-dark);
+    font-size: var(--fs-caption);
+    color: rgba(244, 240, 232, 0.5);
+  }
+
+  @media (min-width: 768px) {
+    .site-footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .site-footer__legal {
+    display: flex;
+    gap: var(--s-6);
+  }
+
+  .site-footer__legal a {
+    color: rgba(244, 240, 232, 0.5);
+    transition: color var(--duration-base) var(--ease-out);
+  }
+
+  .site-footer__legal a:hover {
+    color: var(--color-primary-soft);
+  }
+</style>

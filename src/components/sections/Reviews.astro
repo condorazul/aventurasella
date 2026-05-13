@@ -1,0 +1,516 @@
+---
+/**
+ * ReviewsB — Carrusel de tarjetas con flechas, auto-advance, swipe táctil
+ * Inspirado en image copy 8, adaptado a tarjetas rectas (no rueda)
+ * Incluye barra de progreso que se llena hasta 4,5/5 con estrellas
+ *
+ * NOTA i18n: las reseñas son citas literales de clientes reales (ver memoria
+ * `reference_reviews.md`). Se traducen a EN/FR/PT manteniendo el tono coloquial
+ * original sin inventar contenido nuevo. Los nombres de los autores son reales
+ * y no se traducen.
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— Opiniones reales',
+    title1: 'Historias que',
+    title2: 'nos hacen felices',
+    scoreMax: '/ 5',
+    scoreMetaPrefix: 'Basado en',
+    scoreMetaReviews: '147 reseñas',
+    scoreMetaSuffix: 'Google + TripAdvisor',
+    prev: 'Anterior',
+    next: 'Siguiente',
+    dotLabel: (i: number) => `Ir a la reseña ${i+1}`,
+    reviews: [
+      { rating: 5, title: 'Trabajadores atentos y simpáticos', text: 'Buen servicio, trabajadores atentos y muy simpáticos. La experiencia genial, me ha encantado.', author: 'Anaïs Suárez', meta: 'Google · Oct 2025',      initial: 'A', color: 'coral' },
+      { rating: 5, title: 'Una experiencia para toda la vida', text: 'Todo puntual y muy amables. Una experiencia para probar una vez en la vida, recomendada para jóvenes y mayores.', author: 'Nacho A.', meta: 'TripAdvisor · Ago 2025', initial: 'N', color: 'sage' },
+      { rating: 5, title: 'Actividad y calma a la vez',        text: 'Merece la pena. Tienes vestuarios y puedes ducharte tras la actividad. Instrucciones divertidas y un bidón donde meter muchas cosas.', author: 'Carlos S.', meta: 'TripAdvisor · May 2025', initial: 'C', color: 'coral' },
+      { rating: 5, title: 'Organización impecable',            text: 'Reservamos por WhatsApp en cinco minutos. Monitores profesionales, transfer puntual y una ruta espectacular.', author: 'María G.', meta: 'Google · Jul 2025',       initial: 'M', color: 'sage' },
+      { rating: 5, title: 'Perfecto en familia',               text: 'Fuimos con dos niños y fue perfecto. Equipos de calidad, picnic asturiano delicioso y transfer de vuelta cómodo.', author: 'Sophie L.', meta: 'TripAdvisor · Jun 2025', initial: 'S', color: 'coral' },
+    ],
+  },
+  en: {
+    eyebrow: '— Real reviews',
+    title1: 'Stories that',
+    title2: 'make us happy',
+    scoreMax: '/ 5',
+    scoreMetaPrefix: 'Based on',
+    scoreMetaReviews: '147 verified reviews',
+    scoreMetaSuffix: 'Google + TripAdvisor',
+    prev: 'Previous',
+    next: 'Next',
+    dotLabel: (i: number) => `Go to review ${i+1}`,
+    reviews: [
+      { rating: 5, title: 'Attentive and friendly staff',      text: 'Great service, attentive and very friendly staff. The experience was amazing, I loved it.', author: 'Anaïs Suárez', meta: 'Google · Oct 2025',      initial: 'A', color: 'coral' },
+      { rating: 5, title: 'A once-in-a-lifetime experience',   text: 'Everything on time and very kind. An experience to try once in a lifetime, recommended for young and old.', author: 'Nacho A.', meta: 'TripAdvisor · Aug 2025', initial: 'N', color: 'sage' },
+      { rating: 5, title: 'Adventure and calm at once',        text: 'Worth it. You get changing rooms and can shower after the activity. Fun instructions and a dry barrel where you can stash plenty of stuff.', author: 'Carlos S.', meta: 'TripAdvisor · May 2025', initial: 'C', color: 'coral' },
+      { rating: 5, title: 'Flawless organisation',             text: 'We booked via WhatsApp in five minutes. Professional guides, punctual shuttle and a spectacular route.', author: 'María G.', meta: 'Google · Jul 2025',       initial: 'M', color: 'sage' },
+      { rating: 5, title: 'Perfect for families',              text: 'We went with two kids and it was perfect. Quality gear, delicious Asturian picnic and a comfortable shuttle back.', author: 'Sophie L.', meta: 'TripAdvisor · Jun 2025', initial: 'S', color: 'coral' },
+    ],
+  },
+  fr: {
+    eyebrow: '— Avis réels',
+    title1: 'Des histoires qui',
+    title2: 'nous rendent heureuses',
+    scoreMax: '/ 5',
+    scoreMetaPrefix: 'Basé sur',
+    scoreMetaReviews: '147 avis vérifiés',
+    scoreMetaSuffix: 'Google + TripAdvisor',
+    prev: 'Précédent',
+    next: 'Suivant',
+    dotLabel: (i: number) => `Aller à l'avis ${i+1}`,
+    reviews: [
+      { rating: 5, title: 'Équipe attentive et sympathique',   text: 'Très bon service, une équipe attentive et très sympathique. Une expérience géniale, j\'ai adoré.', author: 'Anaïs Suárez', meta: 'Google · Oct 2025',      initial: 'A', color: 'coral' },
+      { rating: 5, title: 'Une expérience pour la vie',        text: 'Tout à l\'heure et très aimables. Une expérience à vivre au moins une fois, recommandée aux jeunes comme aux moins jeunes.', author: 'Nacho A.', meta: 'TripAdvisor · Août 2025', initial: 'N', color: 'sage' },
+      { rating: 5, title: 'Aventure et calme à la fois',       text: 'Ça vaut le coup. Il y a des vestiaires et on peut se doucher après l\'activité. Des consignes amusantes et un bidon étanche où ranger plein de choses.', author: 'Carlos S.', meta: 'TripAdvisor · Mai 2025', initial: 'C', color: 'coral' },
+      { rating: 5, title: 'Organisation impeccable',           text: 'Réservation par WhatsApp en cinq minutes. Moniteurs pros, navette ponctuelle et un parcours spectaculaire.', author: 'María G.', meta: 'Google · Juil. 2025',    initial: 'M', color: 'sage' },
+      { rating: 5, title: 'Parfait en famille',                text: 'Nous y sommes allés avec deux enfants et c\'était parfait. Du matériel de qualité, un pique-nique asturien délicieux et une navette retour confortable.', author: 'Sophie L.', meta: 'TripAdvisor · Juin 2025', initial: 'S', color: 'coral' },
+    ],
+  },
+  pt: {
+    eyebrow: '— Opiniões reais',
+    title1: 'Histórias que',
+    title2: 'nos fazem felizes',
+    scoreMax: '/ 5',
+    scoreMetaPrefix: 'Com base em',
+    scoreMetaReviews: '147 avaliações verificadas',
+    scoreMetaSuffix: 'Google + TripAdvisor',
+    prev: 'Anterior',
+    next: 'Seguinte',
+    dotLabel: (i: number) => `Ir para a avaliação ${i+1}`,
+    reviews: [
+      { rating: 5, title: 'Equipa atenta e simpática',         text: 'Bom serviço, equipa atenta e muito simpática. A experiência foi genial, adorei.', author: 'Anaïs Suárez', meta: 'Google · Out 2025',      initial: 'A', color: 'coral' },
+      { rating: 5, title: 'Uma experiência para a vida',       text: 'Tudo pontual e muito amáveis. Uma experiência para provar uma vez na vida, recomendada para jovens e adultos.', author: 'Nacho A.', meta: 'TripAdvisor · Ago 2025', initial: 'N', color: 'sage' },
+      { rating: 5, title: 'Aventura e calma ao mesmo tempo',   text: 'Vale a pena. Há balneários e pode-se tomar duche depois da atividade. Instruções divertidas e um bidão onde levar muitas coisas.', author: 'Carlos S.', meta: 'TripAdvisor · Mai 2025', initial: 'C', color: 'coral' },
+      { rating: 5, title: 'Organização impecável',             text: 'Reservámos por WhatsApp em cinco minutos. Monitores profissionais, transfer pontual e um percurso espetacular.', author: 'María G.', meta: 'Google · Jul 2025',       initial: 'M', color: 'sage' },
+      { rating: 5, title: 'Perfeito em família',               text: 'Fomos com duas crianças e foi perfeito. Equipamento de qualidade, piquenique asturiano delicioso e transfer de regresso confortável.', author: 'Sophie L.', meta: 'TripAdvisor · Jun 2025', initial: 'S', color: 'coral' },
+    ],
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+const reviews = t.reviews;
+---
+
+<section class="reviewsB">
+  <div class="container container--xl">
+    <header class="reviewsB__header">
+      <div>
+        <span class="reviewsB__eyebrow">{t.eyebrow}</span>
+        <h2 class="reviewsB__title">
+          {t.title1}<br/>
+          <span class="serif-italic">{t.title2}</span>
+        </h2>
+      </div>
+
+      <div class="reviewsB__score">
+        <div class="reviewsB__score-row">
+          <span class="reviewsB__score-value">4,5</span>
+          <span class="reviewsB__score-max">{t.scoreMax}</span>
+          <div class="reviewsB__score-stars" aria-hidden="true">
+            {[1,2,3,4,5].map(() => (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ))}
+          </div>
+        </div>
+        <div class="reviewsB__bar" aria-hidden="true">
+          <div class="reviewsB__bar-fill"></div>
+        </div>
+        <span class="reviewsB__score-meta">{t.scoreMetaPrefix} <strong>{t.scoreMetaReviews}</strong> · {t.scoreMetaSuffix}</span>
+      </div>
+    </header>
+
+    <div class="reviewsB__slider" data-slider>
+      <button class="reviewsB__arrow reviewsB__arrow--prev" type="button" aria-label={t.prev} data-prev>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="reviewsB__track" data-track data-drag-scroll>
+        {reviews.map((r, i) => (
+          <article class={`reviewsB__card reviewsB__card--${r.color}`} style={`--i: ${i}`}>
+            <div class="reviewsB__stars">
+              {Array.from({ length: r.rating }).map(() => (
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              ))}
+            </div>
+            <h3 class="reviewsB__card-title">{r.title}</h3>
+            <p class="reviewsB__text">{r.text}</p>
+            <footer class="reviewsB__foot">
+              <div class="reviewsB__avatar" aria-hidden="true">{r.initial}</div>
+              <div>
+                <div class="reviewsB__author">{r.author}</div>
+                <div class="reviewsB__meta">{r.meta}</div>
+              </div>
+            </footer>
+          </article>
+        ))}
+      </div>
+
+      <button class="reviewsB__arrow reviewsB__arrow--next" type="button" aria-label={t.next} data-next>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <div class="reviewsB__dots" data-dots>
+      {reviews.map((_, i) => (
+        <button class="reviewsB__dot" type="button" data-dot={i} aria-label={t.dotLabel(i)}></button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-slider]').forEach(slider => {
+    const track = slider.querySelector<HTMLElement>('[data-track]')!;
+    const prev  = slider.querySelector<HTMLButtonElement>('[data-prev]')!;
+    const next  = slider.querySelector<HTMLButtonElement>('[data-next]')!;
+    const dotsContainer = slider.parentElement!.querySelector<HTMLElement>('[data-dots]')!;
+    const dots  = Array.from(dotsContainer.querySelectorAll<HTMLButtonElement>('[data-dot]'));
+    const cards = Array.from(track.children) as HTMLElement[];
+
+    let current = 0;
+    let autoTimer: number | undefined;
+
+    function cardStep() {
+      if (cards.length < 2) return 0;
+      const a = cards[0].getBoundingClientRect();
+      const b = cards[1].getBoundingClientRect();
+      return b.left - a.left;
+    }
+
+    function visibleCount() {
+      const style = getComputedStyle(track);
+      return parseInt(style.getPropertyValue('--visible') || '1', 10);
+    }
+
+    function maxIndex() {
+      return Math.max(0, cards.length - visibleCount());
+    }
+
+    function goTo(i: number) {
+      current = Math.max(0, Math.min(i, maxIndex()));
+      track.scrollTo({ left: current * cardStep(), behavior: 'smooth' });
+      updateDots();
+    }
+
+    function updateDots() {
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+    }
+
+    function nextSlide() {
+      const max = maxIndex();
+      goTo(current >= max ? 0 : current + 1);
+    }
+
+    function startAuto() {
+      stopAuto();
+      autoTimer = window.setInterval(nextSlide, 5000);
+    }
+    function stopAuto() {
+      if (autoTimer) { clearInterval(autoTimer); autoTimer = undefined; }
+    }
+
+    prev.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+    next.addEventListener('click', () => { goTo(current + 1); startAuto(); });
+    dots.forEach((d, i) => d.addEventListener('click', () => { goTo(i); startAuto(); }));
+
+    // Sync current con scroll manual (swipe)
+    let scrollTimer: number | undefined;
+    track.addEventListener('scroll', () => {
+      if (scrollTimer) clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(() => {
+        const step = cardStep();
+        if (step > 0) {
+          current = Math.round(track.scrollLeft / step);
+          current = Math.max(0, Math.min(current, maxIndex()));
+          updateDots();
+        }
+      }, 120);
+    });
+
+    slider.addEventListener('mouseenter', stopAuto);
+    slider.addEventListener('mouseleave', startAuto);
+    track.addEventListener('touchstart', stopAuto, { passive: true });
+    track.addEventListener('touchend',   startAuto, { passive: true });
+
+    // Init
+    updateDots();
+    // Empieza tras render
+    requestAnimationFrame(() => {
+      // Activar barra animada
+      const bar = slider.parentElement!.parentElement!.querySelector<HTMLElement>('.reviewsB__bar-fill');
+      if (bar) bar.classList.add('is-ready');
+      startAuto();
+    });
+
+    // Pausar cuando no se ve
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => e.isIntersecting ? startAuto() : stopAuto());
+    }, { threshold: 0.2 });
+    io.observe(slider);
+  });
+</script>
+
+<style>
+  .reviewsB {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    background: var(--color-bg-base);
+  }
+
+  .reviewsB__header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-8);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    align-items: end;
+  }
+  @media (min-width: 960px) { .reviewsB__header { grid-template-columns: 1.4fr 1fr; gap: var(--s-12); } }
+
+  .reviewsB__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: var(--s-4);
+  }
+  .reviewsB__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 4.5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary); margin: 0;
+  }
+  .reviewsB__title .serif-italic {
+    color: var(--color-primary); font-weight: 400; text-transform: none; font-style: italic;
+  }
+
+  /* Score card con barra animada */
+  .reviewsB__score {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    padding: var(--s-5) var(--s-6);
+  }
+  .reviewsB__score-row {
+    display: flex; align-items: baseline; gap: var(--s-2);
+    margin-bottom: var(--s-3);
+  }
+  .reviewsB__score-value {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 2.75rem);
+    font-weight: 900; line-height: 1; letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+  .reviewsB__score-max {
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 600;
+    color: var(--color-text-muted);
+  }
+  .reviewsB__score-stars {
+    display: inline-flex; gap: 2px;
+    color: var(--color-ochre, #E8B24F);
+    margin-left: auto;
+  }
+  .reviewsB__bar {
+    position: relative;
+    height: 6px;
+    background: var(--color-border-subtle);
+    border-radius: 999px;
+    overflow: hidden;
+    margin-bottom: var(--s-3);
+  }
+  .reviewsB__bar-fill {
+    position: absolute; inset: 0 auto 0 0;
+    width: 90%; /* 4,5 / 5 = 90% */
+    background: linear-gradient(90deg, var(--color-primary), var(--color-ochre, #E8B24F));
+    border-radius: 999px;
+    transform-origin: left;
+    transform: scaleX(0);
+    transition: transform 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .reviewsB__bar-fill.is-ready { transform: scaleX(1); }
+  .reviewsB__score-meta {
+    display: block;
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+  .reviewsB__score-meta strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Slider */
+  .reviewsB__slider {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  @media (max-width: 640px) {
+    .reviewsB__slider { grid-template-columns: 1fr; }
+    .reviewsB__arrow  { display: none; }
+  }
+
+  .reviewsB__arrow {
+    width: 44px; height: 44px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 200ms var(--ease-out);
+    z-index: 2;
+  }
+  .reviewsB__arrow:hover {
+    background: var(--color-primary);
+    color: var(--color-text-on-primary, #fff);
+    border-color: var(--color-primary);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(233, 133, 111, 0.35);
+  }
+  .reviewsB__arrow:active { transform: scale(0.95); }
+  .reviewsB__arrow--prev:hover svg { animation: reviewsBArrowL 500ms var(--ease-out); }
+  .reviewsB__arrow--next:hover svg { animation: reviewsBArrowR 500ms var(--ease-out); }
+  @keyframes reviewsBArrowL {
+    0%,100% { transform: translateX(0); }
+    50%     { transform: translateX(-3px); }
+  }
+  @keyframes reviewsBArrowR {
+    0%,100% { transform: translateX(0); }
+    50%     { transform: translateX(3px); }
+  }
+
+  .reviewsB__track {
+    --visible: 1;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% - var(--gap, 1rem) * (var(--visible) - 1)) / var(--visible));
+    gap: var(--gap, 1rem);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+    padding-block: var(--s-3);
+  }
+  .reviewsB__track::-webkit-scrollbar { display: none; }
+  @media (min-width: 640px)  { .reviewsB__track { --visible: 2; --gap: 1.25rem; } }
+  @media (min-width: 1024px) { .reviewsB__track { --visible: 3; --gap: 1.5rem; } }
+
+  .reviewsB__card {
+    scroll-snap-align: start;
+    display: flex; flex-direction: column;
+    padding: var(--s-7) var(--s-6);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    transition:
+      transform 420ms cubic-bezier(0.34, 1.25, 0.64, 1),
+      box-shadow 420ms var(--ease-out),
+      border-color 300ms var(--ease-out);
+    opacity: 0;
+    transform: translateY(28px) scale(0.96);
+    animation: reviewsBCardIn 620ms cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+    animation-delay: calc(var(--i, 0) * 110ms + 120ms);
+  }
+  .reviewsB__card::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(60% 80% at 50% 0%, rgba(233, 133, 111, 0.08), transparent 70%);
+    opacity: 0;
+    transition: opacity 320ms var(--ease-out);
+    pointer-events: none;
+  }
+  .reviewsB__card { position: relative; overflow: hidden; }
+  .reviewsB__card:hover {
+    transform: translateY(-8px) scale(1.015);
+    box-shadow: 0 18px 36px rgba(26, 31, 46, 0.12);
+    border-color: rgba(233, 133, 111, 0.35);
+  }
+  .reviewsB__card:hover::before { opacity: 1; }
+  .reviewsB__card:hover .reviewsB__avatar { transform: scale(1.08) rotate(-4deg); }
+  .reviewsB__card:hover .reviewsB__stars svg { animation: reviewsBStarPop 420ms var(--ease-out) both; }
+  .reviewsB__card:hover .reviewsB__stars svg:nth-child(1) { animation-delay: 0ms;   }
+  .reviewsB__card:hover .reviewsB__stars svg:nth-child(2) { animation-delay: 60ms;  }
+  .reviewsB__card:hover .reviewsB__stars svg:nth-child(3) { animation-delay: 120ms; }
+  .reviewsB__card:hover .reviewsB__stars svg:nth-child(4) { animation-delay: 180ms; }
+  .reviewsB__card:hover .reviewsB__stars svg:nth-child(5) { animation-delay: 240ms; }
+
+  @keyframes reviewsBCardIn {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes reviewsBStarPop {
+    0%   { transform: scale(1)   rotate(0);  }
+    50%  { transform: scale(1.3) rotate(8deg); }
+    100% { transform: scale(1)   rotate(0);  }
+  }
+
+  .reviewsB__avatar {
+    transition: transform 320ms cubic-bezier(0.34, 1.25, 0.64, 1);
+  }
+  .reviewsB__stars svg {
+    transition: transform 200ms var(--ease-out);
+    transform-origin: center;
+  }
+
+  .reviewsB__stars {
+    display: flex; gap: 2px;
+    color: var(--color-ochre, #E8B24F);
+    margin-bottom: var(--s-4);
+  }
+  .reviewsB__card-title {
+    font-family: var(--font-display); font-size: 1.0625rem; font-weight: 800;
+    line-height: 1.2; letter-spacing: -0.01em;
+    color: var(--color-text-primary); margin: 0 0 var(--s-3);
+  }
+  .reviewsB__text {
+    font-family: var(--font-serif); font-size: 0.9375rem; line-height: 1.55;
+    color: var(--color-text-secondary); margin: 0 0 var(--s-6);
+    flex: 1;
+  }
+  .reviewsB__foot {
+    display: grid; grid-template-columns: auto 1fr; gap: var(--s-3);
+    align-items: center;
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .reviewsB__avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-family: var(--font-display); font-size: 0.8125rem; font-weight: 700;
+  }
+  .reviewsB__card--coral .reviewsB__avatar { background: var(--gradient-primary, var(--color-primary)); }
+  .reviewsB__card--sage  .reviewsB__avatar { background: var(--color-sage); }
+  .reviewsB__author {
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    color: var(--color-text-primary); line-height: 1.2;
+  }
+  .reviewsB__meta {
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    color: var(--color-text-muted); margin-top: 2px;
+  }
+
+  /* Dots */
+  .reviewsB__dots {
+    display: flex; justify-content: center; gap: var(--s-2);
+    margin-top: var(--s-5);
+  }
+  .reviewsB__dot {
+    width: 24px; height: 4px;
+    background: var(--color-border-subtle);
+    border: 0; border-radius: 999px;
+    cursor: pointer;
+    transition: background 220ms var(--ease-out), width 220ms var(--ease-out);
+  }
+  .reviewsB__dot.is-active {
+    background: var(--color-primary);
+    width: 40px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reviewsB__track { scroll-behavior: auto; }
+    .reviewsB__bar-fill { transition: none; }
+  }
+</style>

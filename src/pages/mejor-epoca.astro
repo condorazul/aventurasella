@@ -1,0 +1,2558 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+
+const title = 'Mejor época para hacer el descenso del Sella · mes a mes';
+const description = 'La mejor época para hacer el descenso del Sella: mes a mes, clima, caudal, afluencia y consejos. Reserva sin pagar ahora · mascotas gratis.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/mejor-epoca/`;
+
+// Calendario 12 meses · rating de idealidad (0=fuera temporada · 1=inicio/fin · 2=bueno · 3=muy bueno · 4=ideal)
+// Color class: off / soft / mid / high / coral (alta afluencia)
+const meses = [
+  { n: 'Ene', full: 'Enero',      rating: 0, label: 'Fuera de temporada',          tone: 'off'   },
+  { n: 'Feb', full: 'Febrero',    rating: 0, label: 'Fuera de temporada',          tone: 'off'   },
+  { n: 'Mar', full: 'Marzo',      rating: 0, label: 'Fuera de temporada',          tone: 'off'   },
+  { n: 'Abr', full: 'Abril',      rating: 2, label: 'Inicio de temporada',         tone: 'soft'  },
+  { n: 'May', full: 'Mayo',       rating: 3, label: 'Muy buena — poca gente',      tone: 'mid'   },
+  { n: 'Jun', full: 'Junio',      rating: 4, label: 'Ideal — caudal + clima',      tone: 'high'  },
+  { n: 'Jul', full: 'Julio',      rating: 3, label: 'Popular — buen clima',        tone: 'warm'  },
+  { n: 'Ago', full: 'Agosto',     rating: 2, label: 'Alta afluencia — reserva ya', tone: 'coral' },
+  { n: 'Sep', full: 'Septiembre', rating: 4, label: 'Ideal — tranquilidad + clima',tone: 'high'  },
+  { n: 'Oct', full: 'Octubre',    rating: 2, label: 'Fin temporada · paisaje otoñal', tone: 'ocre' },
+  { n: 'Nov', full: 'Noviembre',  rating: 0, label: 'Fuera de temporada',          tone: 'off'   },
+  { n: 'Dic', full: 'Diciembre',  rating: 0, label: 'Fuera de temporada',          tone: 'off'   },
+];
+
+// 4 estaciones para los tabs
+const estaciones = [
+  {
+    id: 'primavera',
+    tab: 'Primavera',
+    meses: 'Abr – Jun',
+    eyebrow: 'Primavera',
+    route: 'Caudal vivo, verde Cantábrico',
+    stats: [
+      { v: '14–18', u: '°C',    l: 'agua' },
+      { v: 'Alto',  u: '',      l: 'caudal' },
+      { v: 'Baja',  u: '',      l: 'afluencia' },
+    ],
+    desc: 'La mejor época para hacer el descenso del Sella si buscas <strong>tranquilidad y paisaje verde</strong>. El caudal es más activo por el deshielo y las lluvias de primavera, el río está en su mejor momento y hay muy poca gente. Temperatura del agua más fresca — <strong>recomendado ir con neopreno</strong> disponible al recogerlo.',
+    features: ['Caudal activo', 'Poca afluencia', 'Verde intenso', 'Neopreno recomendado', 'Días largos', 'Aire limpio'],
+    photo: 'sella-primavera',
+    badges: ['Verde', 'Tranquila', 'Caudal alto'],
+  },
+  {
+    id: 'verano',
+    tab: 'Verano',
+    meses: 'Jun – Ago',
+    eyebrow: 'Verano',
+    route: 'Sol, ambiente y agua cálida',
+    popular: true,
+    ribbon: 'El favorito · más animado',
+    stats: [
+      { v: '18–22', u: '°C',    l: 'agua' },
+      { v: 'Medio', u: '',      l: 'caudal' },
+      { v: 'Alta',  u: '',      l: 'afluencia' },
+    ],
+    desc: 'El descenso del Sella <strong>en verano</strong> es la opción más popular del año. Buen clima, agua cálida para bañarse y ambiente animado en las playas fluviales. <strong>Agosto</strong> concentra la temporada en su apogeo — jornadas con más luz, más vida en el río y el mejor ambiente. <a href="/reservar/">Consulta el calendario de reserva</a>: verás qué días están activos y cuáles no. Con 5-7 días de antelación suele ser suficiente, cuanto antes mejor.',
+    features: ['Agua cálida', 'Clima estable', 'Ambiente animado', 'Reserva antelación', 'Picnics en orilla', 'Familia y amigos'],
+    photo: 'sella-verano',
+    badges: ['Soleada', 'Familiar', 'Agua cálida'],
+  },
+  {
+    id: 'otono',
+    tab: 'Otoño',
+    meses: 'Sep – Oct',
+    eyebrow: 'Otoño',
+    route: 'El secreto mejor guardado del Sella',
+    stats: [
+      { v: '16–20', u: '°C',    l: 'agua' },
+      { v: 'Medio', u: '',      l: 'caudal' },
+      { v: 'Baja',  u: '',      l: 'afluencia' },
+    ],
+    desc: '<strong>Septiembre</strong> suele ser el mejor mes del año: clima aún cálido, menos gente y el río con buen caudal. Octubre trae <strong>paisaje otoñal</strong> entre los tonos ocres del bosque. Un plan íntimo, sin prisas — para quien busca <strong>el Sella más tranquilo</strong>.',
+    features: ['Equilibrio perfecto', 'Poca gente', 'Paisaje otoñal', 'Clima suave', 'Luz dorada', 'Fotos espectaculares'],
+    photo: 'sella-otono',
+    badges: ['Tranquila', 'Paisaje ocre', 'Luz dorada'],
+  },
+  {
+    id: 'invierno',
+    tab: 'Invierno',
+    meses: 'Nov – Mar',
+    eyebrow: 'Invierno',
+    route: 'Fuera de temporada · a consultar',
+    stats: [
+      { v: '8–14',  u: '°C',    l: 'agua' },
+      { v: 'Muy alto', u: '',   l: 'caudal' },
+      { v: '—',     u: '',      l: 'cerrado' },
+    ],
+    desc: 'La <strong>temporada regular del descenso del Sella es de abril a octubre</strong>. Fuera de esos meses, la actividad no está operativa de forma regular por el caudal elevado, las temperaturas del agua y las condiciones variables. Si tienes una fecha concreta en mente, <strong>escríbenos</strong> y lo vemos.',
+    features: ['Fuera de temporada', 'Caudal muy alto', 'Agua fría', 'Condiciones variables', 'Consultar disponibilidad', 'Planifica para primavera'],
+    photo: 'sella-invierno',
+    badges: ['Consultar', 'Fuera temporada'],
+  },
+];
+
+// Afluencia por mes · % relativo al pico (agosto = 100) + foto estacional + info flip
+// photo: imagen actual placeholder · temp: temperatura media del agua · nota: tagline al dorso
+const afluencia = [
+  { m: 'Ene', full: 'Enero',      p: 0,   photo: 'sella-enero',       temp: '—',      nota: 'Fuera de temporada' },
+  { m: 'Feb', full: 'Febrero',    p: 0,   photo: 'sella-febrero',     temp: '—',      nota: 'Fuera de temporada' },
+  { m: 'Mar', full: 'Marzo',      p: 0,   photo: 'sella-marzo',       temp: '—',      nota: 'Fuera de temporada' },
+  { m: 'Abr', full: 'Abril',      p: 18,  photo: 'sella-abril',       temp: '14 °C',  nota: 'Inicio temporada · verde' },
+  { m: 'May', full: 'Mayo',       p: 35,  photo: 'sella-mayo',        temp: '16 °C',  nota: 'Primavera · caudal vivo' },
+  { m: 'Jun', full: 'Junio',      p: 60,  photo: 'sella-junio',       temp: '18 °C',  nota: 'Ideal · poca gente' },
+  { m: 'Jul', full: 'Julio',      p: 85,  photo: 'sella-julio',       temp: '20 °C',  nota: 'Popular · buen clima' },
+  { m: 'Ago', full: 'Agosto',     p: 100, photo: 'sella-agosto',      temp: '22 °C',  nota: 'El más animado' },
+  { m: 'Sep', full: 'Septiembre', p: 40,  photo: 'sella-septiembre',  temp: '20 °C',  nota: 'Secreto · mejor equilibrio' },
+  { m: 'Oct', full: 'Octubre',    p: 22,  photo: 'sella-octubre',     temp: '16 °C',  nota: 'Otoño · paisaje dorado' },
+  { m: 'Nov', full: 'Noviembre',  p: 0,   photo: 'sella-noviembre',   temp: '—',      nota: 'Fuera de temporada' },
+  { m: 'Dic', full: 'Diciembre',  p: 0,   photo: 'sella-diciembre',   temp: '—',      nota: 'Fuera de temporada' },
+];
+
+// Consejos estacionales (6)
+const consejos = [
+  { t: 'Agosto · reserva con antelación',           s: 'Es el mes con <strong>más demanda del año</strong>. En temporada alta, con <strong>5-7 días</strong> suele ser suficiente — cuanto antes, mejor. En el <a href="/reservar/">calendario de reserva</a> verás qué días están disponibles (activos) y cuáles no.' },
+  { t: 'Septiembre · el secreto',                   s: 'Clima cálido, poca gente y el río tranquilo. El <strong>mejor equilibrio del año</strong> si puedes elegir fecha.' },
+  { t: 'Primavera · lleva neopreno',                s: 'El agua está fresca (14–18 °C). El neopreno mantiene la temperatura corporal y hace la experiencia mucho más cómoda.' },
+  { t: 'Fines de semana · o entre semana',          s: 'En julio y agosto los sábados saturan. <strong>Martes, miércoles o jueves</strong> ofrecen el mismo río con la mitad de afluencia.' },
+  { t: 'Consulta el parte del día',                 s: 'Caudal, temperatura y viento influyen en el ritmo del descenso. Nosotros te avisamos si hay cambios la tarde anterior.' },
+  { t: 'Horario abierto · 10:30–12:30',             s: 'Reserva <strong>Premium · horario abierto</strong>: llegáis a nuestras instalaciones de Arriondas cuando os venga bien <strong>entre las 10:30 y las 12:30</strong>, sin elegir hora concreta. Por normativa de la <strong>Confederación Hidrográfica del Cantábrico</strong>, la permanencia en el río es <strong>hasta las 18:00 h</strong>.' },
+];
+
+// FAQ (8 preguntas adaptadas a época)
+const faqs = [
+  { q: '¿Cuál es la mejor época para hacer el descenso del Sella?',
+    a: 'Las mejores épocas son <strong>junio y septiembre</strong>: buen clima, caudal estable y afluencia baja-media. Julio y agosto tienen el mejor clima pero también la mayor demanda. Mayo y octubre son ideales para quien busca tranquilidad total, asumiendo que el agua está más fresca.' },
+  { q: '¿Se puede hacer el descenso del Sella en verano?',
+    a: 'Sí, el descenso del Sella <strong>en verano</strong> (junio-agosto) es la opción más popular. Buen clima, agua cálida y ambiente animado. Agosto concentra la mayor afluencia del año — con <strong>5-7 días de antelación</strong> suele ser suficiente (cuanto antes, mejor). En el <a href="/reservar/">calendario de reserva</a> verás qué días están activos.' },
+  { q: '¿Y en primavera? ¿Merece la pena?',
+    a: 'Primavera es <strong>excelente si buscas tranquilidad</strong>: caudal más activo por el deshielo, paisaje verde y muy poca gente. La temperatura del agua es más fresca (14–18 °C), por lo que recomendamos ir con neopreno — te lo damos al recogerlo.' },
+  { q: '¿Se puede hacer el descenso en invierno?',
+    a: 'La <strong>temporada regular es de abril a octubre</strong>. Fuera de esos meses la actividad no está operativa de forma habitual por el caudal elevado y la temperatura del agua. Si quieres una fecha concreta fuera de temporada, escríbenos y lo valoramos.' },
+  { q: '¿Cuándo hay menos gente en el Sella?',
+    a: 'Los meses de <strong>mayo, septiembre y octubre</strong> son los más tranquilos. Si prefieres ir en plena temporada evitando saturación, elige <strong>entre semana</strong> (martes a jueves) y horarios de salida tempranos.' },
+  { q: '¿El descenso depende del caudal del río?',
+    a: 'Influye en el ritmo y el tiempo. Con <strong>caudal alto</strong> (primavera, otoño tras lluvias), el río baja más rápido y la corriente empuja. Con caudal bajo (final del verano seco), el ritmo es más pausado. Solo se suspende por <strong>crecidas extremas</strong> o tormenta — en esos casos ofrecemos cambio de fecha sin coste.' },
+  { q: '¿Qué temperatura tiene el agua en el Sella?',
+    a: 'Varía según la época: <strong>14–18 °C en primavera</strong>, <strong>18–22 °C en verano</strong>, <strong>16–20 °C en otoño</strong>. El neopreno está disponible en la recogida para las épocas más frescas.' },
+  { q: '¿Hasta cuándo puedo reservar?',
+    a: 'Recomendamos reservar <strong>con al menos 48 h de antelación</strong>. En temporada alta (julio y agosto) con <strong>5-7 días suele ser suficiente</strong> — cuanto antes, mejor. En el <a href="/reservar/">calendario de reserva</a> verás qué días están activos y cuáles no. Las reservas de última hora las gestionamos por <strong>WhatsApp o teléfono</strong> según disponibilidad.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl),
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Mejor época para hacer el descenso del Sella · mes a mes',
+      description: 'Guía completa sobre cuándo hacer el descenso del Sella: clima, caudal, afluencia y recomendaciones mes a mes y por estación.',
+      inLanguage: 'es-ES',
+      mainEntityOfPage: canonicalUrl,
+      image: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/optimized/rio-sella-hermoso-lg.jpg`,
+        width: 1920,
+        height: 1280,
+      },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-20',
+      about: 'Mejor época para hacer el descenso del Sella en canoa, mes a mes',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',      item: baseUrl },
+        { '@type': 'ListItem', position: 2, name: 'Mejor época', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/mejor-epoca/">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO · Warm editorial con watermark 4 estaciones ============== -->
+  <section class="meh" aria-labelledby="meh-title">
+
+    <div class="meh__shapes" aria-hidden="true">
+      <span class="meh__shape meh__shape--1"></span>
+      <span class="meh__shape meh__shape--2"></span>
+      <span class="meh__shape meh__shape--3"></span>
+    </div>
+
+    <!-- Watermark decorativo detrás · "4 ESTACIONES" en serif muy grande, casi invisible -->
+    <span class="meh__watermark" aria-hidden="true">4&nbsp;estaciones</span>
+
+    <div class="meh__inner">
+      <nav class="meh__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Mejor época</span>
+      </nav>
+
+      <span class="meh__eyebrow">— Mejor época · temporada 2026</span>
+
+      <h1 id="meh-title" class="meh__title">
+        ¿Cuándo hacer<br/>
+        el <span class="serif-italic">descenso del Sella</span>?
+      </h1>
+
+      <p class="meh__lead">
+        Hay un momento perfecto para cada plan. Clima, caudal, afluencia y temperatura
+        del agua cambian mucho de un mes a otro en el Sella — aquí tienes la
+        <strong>guía mes a mes desde Arriondas</strong> para elegir el mejor día del año
+        para tu descenso.
+      </p>
+
+      <div class="meh__ctas">
+        <a href="#meh-calendar" class="meh__cta meh__cta--primary">Ver calendario</a>
+        <a href="/reservar/" class="meh__cta meh__cta--link">
+          Reservar ahora
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2 · CALENDARIO 12 MESES (NEW PATTERN) ============== -->
+  <section id="meh-calendar" class="mec" aria-labelledby="mec-title">
+    <div class="container container--xl">
+      <header class="mec__header" data-reveal>
+        <span class="mec__eyebrow">— Mes a mes</span>
+        <h2 id="mec-title" class="mec__title">
+          El <span class="serif-italic">mejor mes</span><br/>
+          para bajar el Sella.
+        </h2>
+        <p class="mec__lead">
+          Cada mes del año tiene su carácter en el río. Pasa el ratón sobre cada mes para ver
+          su <strong>idealidad</strong>, clima y afluencia habitual.
+        </p>
+      </header>
+
+      <ol class="mec__grid" aria-label="Calendario anual del descenso del Sella">
+        {meses.map((m, i) => (
+          <li class={`mec__m mec__m--${m.tone}`} data-reveal data-reveal-delay={(i % 4) + 1} data-rating={m.rating}>
+            <span class="mec__mN">{m.n}</span>
+            <span class="mec__mDots" aria-hidden="true">
+              {Array.from({ length: 4 }).map((_, idx) => (
+                <span class={`mec__mDot ${idx < m.rating ? 'is-on' : ''}`}></span>
+              ))}
+            </span>
+            <span class="mec__mL">{m.label}</span>
+          </li>
+        ))}
+      </ol>
+
+      <div class="mec__legend" data-reveal data-reveal-delay="2">
+        <span class="mec__legendItem"><span class="mec__legendSwatch mec__legendSwatch--high"></span>Ideal</span>
+        <span class="mec__legendItem"><span class="mec__legendSwatch mec__legendSwatch--mid"></span>Muy buena</span>
+        <span class="mec__legendItem"><span class="mec__legendSwatch mec__legendSwatch--warm"></span>Popular</span>
+        <span class="mec__legendItem"><span class="mec__legendSwatch mec__legendSwatch--coral"></span>Alta afluencia</span>
+        <span class="mec__legendItem"><span class="mec__legendSwatch mec__legendSwatch--off"></span>Fuera de temporada</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3 · TABS · 4 ESTACIONES (REUSE) ============== -->
+  <section class="met" aria-labelledby="met-title">
+    <div class="container container--xl">
+      <header class="met__head" data-reveal>
+        <div class="met__headL">
+          <span class="met__kicker">— Por estación</span>
+          <h2 id="met-title" class="met__title">
+            Cada estación,<br/>
+            <span class="serif-italic">su momento.</span>
+          </h2>
+        </div>
+        <div class="met__tabs" role="tablist" aria-label="Elegir estación del año">
+          {estaciones.map((e, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`met-tab-${e.id}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-controls={`met-panel-${e.id}`}
+              class={`met__tab${i === 0 ? ' is-active' : ''}`}
+              data-tab={e.id}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              {e.tab}
+              <span class="met__tabMeses" aria-hidden="true">· {e.meses}</span>
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div class="met__card" data-reveal data-reveal-delay="1">
+        {estaciones.map((e, i) => (
+          <div
+            class={`met__panel${i === 0 ? ' is-active' : ''}${e.popular ? ' met__panel--popular' : ''}`}
+            id={`met-panel-${e.id}`}
+            role="tabpanel"
+            aria-labelledby={`met-tab-${e.id}`}
+            data-panel={e.id}
+            hidden={i !== 0}
+          >
+            {e.popular && (
+              <span class="met__ribbon" aria-label="Favorito del público">
+                <span class="met__ribbonDot" aria-hidden="true"></span>
+                <svg class="met__ribbonIcon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                {e.ribbon}
+              </span>
+            )}
+            <div class="met__content">
+              <span class={`met__eyebrow met__eyebrow--${e.id}`}>{e.eyebrow}</span>
+              <h3 class="met__route">{e.route}</h3>
+              <div class="met__stats">
+                {e.stats.map(s => (
+                  <div class="met__stat">
+                    <strong>{s.v}<small>{s.u}</small></strong>
+                    <span>{s.l}</span>
+                  </div>
+                ))}
+              </div>
+              <p class="met__desc" set:html={e.desc} />
+              <ul class="met__features">
+                {e.features.map(f => <li>{f}</li>)}
+              </ul>
+              <a href="/reservar/" class="met__cta">
+                Reservar en {e.tab.toLowerCase()}
+                <span class="met__ctaIcon" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </span>
+              </a>
+            </div>
+            <div class="met__photo">
+              <Picture src={e.photo} alt={`Descenso del Sella en ${e.tab.toLowerCase()}`} sizes="(min-width: 960px) 45vw, 100vw" bare />
+              <div class="met__badges" aria-hidden="true">
+                {e.badges.map(b => (
+                  <span class="met__badge">{b}</span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 4 · CTA intermedio Sage Dark (REUSE) ============== -->
+  <section class="mem">
+    <div class="container container--md">
+      <div class="mem__wrap" data-reveal>
+        <p class="mem__quote">
+          La <em>reserva previa es obligatoria</em> todo el año. Tranquila:
+          <strong>pago flexible — con tarjeta ahora o el día que recojas tu canoa.</strong>
+        </p>
+        <div class="mem__rule">
+          <span class="mem__ruleLine" aria-hidden="true"></span>
+          <a href="/reservar/" class="mem__pill">
+            <span class="mem__pillDot" aria-hidden="true"></span>
+            <span>Reservar mi plaza</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <span class="mem__ruleLine" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 5 · BARRAS AFLUENCIA 12 MESES (REUSE) ============== -->
+  <section class="mea">
+    <div class="container container--xl">
+      <header class="mea__header" data-reveal>
+        <span class="mea__eyebrow">— Afluencia mensual</span>
+        <h2 class="mea__title">
+          Cuánta gente<br/>
+          <span class="serif-italic">baja cada mes.</span>
+        </h2>
+        <p class="mea__lead">
+          Porcentaje de ocupación habitual respecto al pico de agosto. Elige tu momento según
+          la <strong>tranquilidad</strong> que buscas.
+        </p>
+      </header>
+
+      <div class="mea__chart" data-reveal>
+        <!-- 12 photo-cards · flip 180° Y al hover · reflejo brillo horizontal -->
+        <ol class="mea__cards" aria-label="Galería mensual del Sella">
+          {afluencia.map((a, i) => (
+            <li class="mea__card" aria-label={a.full}>
+              <div class="mea__cardInner">
+                <div class="mea__cardFront">
+                  <div class="mea__cardPhoto">
+                    <Picture src={a.photo} alt="" sizes="120px" bare />
+                    <span class="mea__cardShine" aria-hidden="true"></span>
+                  </div>
+                  <span class="mea__cardM">{a.m}</span>
+                </div>
+                <div class="mea__cardBack" aria-hidden="true">
+                  <span class="mea__cardFull">{a.full}</span>
+                  <span class="mea__cardTemp">{a.temp}</span>
+                  <span class="mea__cardNota">{a.nota}</span>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <ol class="mea__bars">
+          {afluencia.map((a, i) => (
+            <li class="mea__bar" data-level={a.p}>
+              <span class="mea__barTrack" aria-hidden="true">
+                <span class="mea__barFill" style={`--p: ${a.p}%`}></span>
+              </span>
+              <span class="mea__barM">{a.m}</span>
+              <span class="mea__barV">{a.p > 0 ? `${a.p}%` : '—'}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="mea__foot">
+          El pico está en <strong>agosto</strong>. Para menos gente con el mismo río,
+          elige <strong>mayo, septiembre o octubre</strong>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 6 · CONSEJOS · editorial carrusel (Variante B · 1 línea slide) ============== -->
+  <section class="meq" aria-labelledby="meq-title">
+    <div class="container container--xl">
+      <header class="meq__header" data-reveal>
+        <div class="meq__headerMain">
+          <span class="meq__eyebrow">Recomendaciones</span>
+          <h2 id="meq-title" class="meq__title">Elegir tu momento.</h2>
+        </div>
+        <div class="meq__nav" role="group" aria-label="Navegación consejos">
+          <span class="meq__counter" aria-live="polite">
+            <span class="meq__counterCurrent" data-meq-current>01</span>
+            <span class="meq__counterSep" aria-hidden="true">/</span>
+            <span class="meq__counterTotal">{String(consejos.length).padStart(2, '0')}</span>
+          </span>
+          <button type="button" class="meq__navBtn" data-meq-nav="prev" aria-label="Consejo anterior">
+            <svg class="meq__navIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          </button>
+          <button type="button" class="meq__navBtn" data-meq-nav="next" aria-label="Consejo siguiente">
+            <svg class="meq__navIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <hr class="meq__divider" aria-hidden="true" />
+
+      <div class="meq__track" data-meq-track data-drag-scroll role="region" aria-label="Consejos de época (desliza con flechas o arrastrando)" tabindex="0">
+        <ol class="meqL">
+          {consejos.map((c, i) => (
+            <li class={`meqItem${i === 0 ? ' is-active' : ''}`} data-meq-item={i}>
+              <span class="meqItem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <div class="meqItem__body">
+                <h3 class="meqItem__t">{c.t}</h3>
+                <p class="meqItem__s" set:html={c.s} />
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div class="meq__progress" aria-hidden="true">
+        <span class="meq__progressBar" data-meq-progress></span>
+      </div>
+
+      <div class="meq__foot" data-reveal>
+        <a href="#meh-calendar" class="meq__footLink">
+          Ver calendario del año completo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 6.5 · Banda CONTACTO editorial (image 34) ============== -->
+  <section class="meb" aria-labelledby="meb-title">
+    <div class="container container--xl">
+      <div class="meb__inner" data-reveal>
+        <span class="meb__eyebrow">Proceso</span>
+        <h2 id="meb-title" class="meb__title">
+          Reserva tu descenso<br/>
+          <span class="serif-italic">con nosotros.</span>
+        </h2>
+        <p class="meb__sub">
+          <strong>Sin pago anticipado.</strong> Cancelación flexible. Atendemos en minutos —
+          elige el canal que te sea más cómodo.
+        </p>
+        <div class="meb__actions">
+          <a href="/reservar/" class="meb__btn meb__btn--primary">
+            <span>Reservar ahora</span>
+            <span class="meb__btnIcon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </a>
+          <a href="https://wa.me/34681093673?text=Hola%2C+me+gustar%C3%ADa+reservar+el+descenso+del+Sella." target="_blank" rel="noopener noreferrer" class="meb__btn meb__btn--outline">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+          <a href="tel:+34681093673" class="meb__btn meb__btn--link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Llamar</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 7 · INTERLINKING + Panel Reserva (REUSE) ============== -->
+  <section class="mex">
+    <div class="container container--xl">
+      <header class="mex__header" data-reveal>
+        <span class="mex__eyebrow">— Organiza tu descenso</span>
+        <h2 class="mex__title">
+          Antes de reservar,<br/>
+          <span class="serif-italic">échale un ojo.</span>
+        </h2>
+        <p class="mex__lead">
+          Cuando ya tengas la fecha, estas páginas te ayudan a <strong>ultimar el plan</strong>.
+          Pica en cada una para ver el resumen.
+        </p>
+      </header>
+
+      <div class="mex__grid">
+        <aside class="mex__reserva" data-reveal aria-labelledby="mex-reserva-title">
+          <div class="mex__reservaBg" aria-hidden="true">
+            <Picture src="rio-sella-hermoso" alt="" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="mex__reservaScrim" aria-hidden="true"></div>
+          </div>
+          <div class="mex__reservaInner">
+            <span class="mex__reservaKicker">
+              <span class="mex__reservaDot" aria-hidden="true"></span>
+              Reserva previa obligatoria
+            </span>
+            <h3 id="mex-reserva-title" class="mex__reservaT">
+              Elige fecha<br/>
+              <span class="serif-italic">y reserva ya.</span>
+            </h3>
+            <p class="mex__reservaS">
+              Atendemos en minutos por cualquier vía. Pago <strong>con tarjeta al reservar</strong>
+              o el día que recojas la canoa — sin sorpresas.
+            </p>
+
+            <ul class="mex__channels">
+              <li>
+                <a href="tel:+34681093673" class="mex__ch mex__ch--phone">
+                  <span class="mex__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="mex__chBody">
+                    <span class="mex__chLabel">Llámanos</span>
+                    <span class="mex__chValue">+34 681 093 673</span>
+                  </span>
+                  <span class="mex__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Hola%2C+me+gustar%C3%ADa+reservar+el+descenso+del+Sella." target="_blank" rel="noopener noreferrer" class="mex__ch mex__ch--wa">
+                  <span class="mex__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="mex__chBody">
+                    <span class="mex__chLabel">WhatsApp</span>
+                    <span class="mex__chValue">Respuesta en minutos</span>
+                  </span>
+                  <span class="mex__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/reservar/" class="mex__ch mex__ch--web">
+                  <span class="mex__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </span>
+                  <span class="mex__chBody">
+                    <span class="mex__chLabel">Reservar online</span>
+                    <span class="mex__chValue">Motor de reservas</span>
+                  </span>
+                  <span class="mex__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/contacto/" class="mex__ch mex__ch--mail">
+                  <span class="mex__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <span class="mex__chBody">
+                    <span class="mex__chLabel">Escríbenos</span>
+                    <span class="mex__chValue">Formulario de contacto</span>
+                  </span>
+                  <span class="mex__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <nav class="mex__list" aria-label="Páginas relacionadas del descenso del Sella">
+          <details class="mex__item" name="mex-links" open>
+            <summary class="mex__sum">
+              <span class="mex__eyerow">
+                <span class="mex__num" aria-hidden="true">01</span>
+                <span class="mex__smallE">Duración</span>
+              </span>
+              <h3 class="mex__t">Cuánto dura el descenso del Sella</h3>
+              <span class="mex__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="mex__body">
+              <p>Entre <strong>3 y 5 horas</strong> según el recorrido. Mini Sella 2-3 h · Descenso Completo 4-5 h. Factores que influyen y consejos para calcular con realismo.</p>
+              <a href="/cuanto-dura/" class="mex__link">
+                Ver guía completa
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="mex__item" name="mex-links">
+            <summary class="mex__sum">
+              <span class="mex__eyerow">
+                <span class="mex__num" aria-hidden="true">02</span>
+                <span class="mex__smallE">Tarifas</span>
+              </span>
+              <h3 class="mex__t">Precios del descenso</h3>
+              <span class="mex__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="mex__body">
+              <p>30 € niños (5-12 años), 40 € adultos. <strong>Mascotas gratis</strong>. Todo incluido: canoa insumergible, chaleco, pala doble, neopreno en fechas frías, bidón, monitor titulado, picnic asturiano, transfer, parking vigilado, vestuarios con duchas, taquillas con llave y seguros.</p>
+              <a href="/precios/" class="mex__link">
+                Ver desglose completo
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="mex__item" name="mex-links">
+            <summary class="mex__sum">
+              <span class="mex__eyerow">
+                <span class="mex__num" aria-hidden="true">03</span>
+                <span class="mex__smallE">En familia</span>
+              </span>
+              <h3 class="mex__t">Descenso del Sella con niños</h3>
+              <span class="mex__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="mex__body">
+              <p>Edad mínima <strong>5 años y 1,15 m</strong>, seguridad infantil, qué llevar y cómo organizar el día en familia. Julio y agosto son los mejores meses con peques.</p>
+              <a href="/con-ninos/" class="mex__link">
+                Guía del descenso con niños
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="mex__item" name="mex-links">
+            <summary class="mex__sum">
+              <span class="mex__eyerow">
+                <span class="mex__num" aria-hidden="true">04</span>
+                <span class="mex__smallE">Mascotas</span>
+              </span>
+              <h3 class="mex__t">Descenso del Sella con perro</h3>
+              <span class="mex__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="mex__body">
+              <p>Sí, tu perro baja sin coste extra. En verano evita las horas centrales del día por el calor. Primavera y otoño son las mejores épocas para ir con mascota.</p>
+              <a href="/con-perro/" class="mex__link">
+                Guía del descenso con perro
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 8 · FAQ (REUSE inmutable) ============== -->
+  <section class="mef">
+    <div class="container container--xl">
+      <div class="mef__grid">
+        <aside class="mef__aside" data-reveal>
+          <span class="mef__eyebrow">— Preguntas frecuentes</span>
+          <h2 class="mef__title">
+            Dudas sobre<br/>
+            <span class="serif-italic">cuándo ir al Sella</span>
+          </h2>
+          <p class="mef__lead">
+            Las <strong>preguntas más repetidas</strong> sobre la mejor época para hacer el descenso.
+            Si te falta alguna, <a href="/contacto/">estamos a un mensaje</a>.
+          </p>
+        </aside>
+
+        <div class="mef__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="mefI" name="mef-faq" open={i === 0}>
+              <summary class="mefI__q">
+                {f.q}
+                <svg class="mefI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="mefI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 9 · CTA FINAL (REUSE) ============== -->
+  <section class="mecta" aria-labelledby="mecta-title">
+    <div class="mecta__bg" aria-hidden="true">
+      <Picture src="sella-atardecer" alt="" sizes="100vw" bare />
+    </div>
+    <div class="mecta__inner">
+      <span class="mecta__eyebrow">— Elige tu momento</span>
+      <h2 id="mecta-title" class="mecta__title">
+        Ya sabes cuándo<br/>
+        <span class="serif-italic">ir al Sella.</span>
+      </h2>
+      <p class="mecta__lead">
+        Elige el mes que mejor encaje con tu plan, reserva con antelación si es agosto y prepárate
+        para una jornada inolvidable. <strong>Reserva sin pagar ahora</strong> — paga con tarjeta
+        o el día que recojas la canoa.
+      </p>
+      <div class="mecta__ctas">
+        <a href="/reservar/" class="mecta__primary">
+          Reservar mi descenso
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/precios/" class="mecta__ghost">Consultar precios</a>
+      </div>
+      <p class="mecta__refuerzo">Plazas limitadas en julio y agosto.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ============== HERO · Warm editorial con watermark 4 estaciones ============== */
+  .meh {
+    position: relative;
+    background:
+      radial-gradient(ellipse 75% 55% at 10% 100%, rgba(244, 181, 163, 0.2) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 100% 10%, rgba(232, 179, 57, 0.14) 0%, transparent 60%),
+      linear-gradient(180deg, #FBF4E8 0%, #F2E7D0 100%);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .meh__shapes { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  .meh__shape { position: absolute; border-radius: 50%; filter: blur(60px); }
+  .meh__shape--1 { top: 10%; right: -10%; width: 380px; height: 380px; background: radial-gradient(circle, rgba(244, 181, 163, 0.38) 0%, transparent 70%); }
+  .meh__shape--2 { bottom: -12%; left: -8%; width: 320px; height: 320px; background: radial-gradient(circle, rgba(61, 79, 58, 0.16) 0%, transparent 70%); }
+  .meh__shape--3 { top: 40%; left: 55%; width: 220px; height: 220px; background: radial-gradient(circle, rgba(232, 179, 57, 0.18) 0%, transparent 70%); opacity: 0.7; }
+
+  /* Watermark decorativo "4 estaciones" muy grande serif italic detrás del contenido · cortado deliberadamente a la derecha */
+  .meh__watermark {
+    position: absolute;
+    bottom: 2rem; right: -0.08em;
+    font-family: var(--font-serif);
+    font-style: italic; font-weight: 400;
+    font-size: clamp(10rem, 28vw, 22rem);
+    line-height: 0.8;
+    letter-spacing: -0.05em;
+    color: rgba(61, 79, 58, 0.08);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 0;
+    animation: mehWatermarkDrift 16s ease-in-out infinite alternate;
+  }
+  @keyframes mehWatermarkDrift {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-2%); }
+  }
+
+  .meh__inner {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+  .meh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .meh__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .meh__breadcrumb a:hover { color: var(--color-primary); }
+  .meh__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.5rem;
+  }
+  .meh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 900; line-height: 0.96;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.75rem;
+    max-width: 14ch;
+  }
+  .meh__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+    color: var(--color-primary);
+  }
+  .meh__lead {
+    font-family: var(--font-sans); font-size: clamp(1rem, 1.5vw, 1.125rem); line-height: 1.7;
+    color: var(--color-text-secondary);
+    max-width: 560px;
+    margin: 0 0 2.25rem;
+  }
+  .meh__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .meh__ctas { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+  .meh__cta { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-weight: 700; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .meh__cta--primary {
+    padding: 0.95rem 1.6rem;
+    background: var(--color-sage, #3D4F3A); color: #FBF8F1;
+    border-radius: 999px;
+    font-size: 0.8125rem; letter-spacing: 1.2px; text-transform: uppercase;
+    box-shadow: 0 12px 26px rgba(61, 79, 58, 0.3);
+  }
+  .meh__cta--primary:hover { transform: translateY(-2px); box-shadow: 0 16px 34px rgba(61, 79, 58, 0.44); background: #4A5E47; }
+  .meh__cta--link {
+    color: var(--color-text-primary); font-size: 0.9375rem;
+    border-bottom: 2px solid var(--color-primary);
+    padding-bottom: 2px;
+  }
+  .meh__cta--link:hover { color: var(--color-primary); }
+  .meh__cta--link svg { transition: transform 200ms; }
+  .meh__cta--link:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meh__watermark { animation: none; }
+  }
+
+  /* ============== 2 · CALENDAR 12 MESES (NEW PATTERN) ============== */
+  .mec {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-base);
+    position: relative;
+  }
+  .mec__header { max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+  .mec__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.5rem;
+  }
+  .mec__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.25rem;
+  }
+  .mec__title .serif-italic {
+    color: var(--color-primary);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .mec__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .mec__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .mec__grid {
+    list-style: none; padding: 0;
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  @media (min-width: 540px)  { .mec__grid { grid-template-columns: repeat(3, 1fr); } }
+  @media (min-width: 820px)  { .mec__grid { grid-template-columns: repeat(4, 1fr); } }
+  @media (min-width: 1100px) { .mec__grid { grid-template-columns: repeat(6, 1fr); } }
+
+  /* Cada mes tiene su degradado pastel vibrante de base. El hover intensifica. */
+  .mec__m {
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    gap: 0.625rem;
+    padding: 1.25rem 0.875rem 1.125rem;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+    transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 300ms ease;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  /* Gradient base · visible desde inicio · más saturado al hover */
+  .mec__m::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    z-index: -1;
+    transition: opacity 300ms ease, filter 300ms ease;
+    opacity: 0.55;
+  }
+  /* High (junio/septiembre) · mint pastel  */
+  .mec__m--high  { background: #F5FBF4; }
+  .mec__m--high::before   { background: linear-gradient(135deg, #B8E0B0 0%, #D8EED0 60%, #F0F7E8 100%); }
+  /* Mid (mayo) · sage verdoso suave */
+  .mec__m--mid   { background: #F6F9EF; }
+  .mec__m--mid::before    { background: linear-gradient(135deg, #C8D8B0 0%, #E0E8C8 60%, #F0F4E0 100%); }
+  /* Warm (julio) · amarillo mantequilla */
+  .mec__m--warm  { background: #FDF7E5; }
+  .mec__m--warm::before   { background: linear-gradient(135deg, #F7DE9C 0%, #F8E8B8 60%, #FCF3D8 100%); }
+  /* Coral (agosto) · rosa coral pastel */
+  .mec__m--coral { background: #FEF1EC; }
+  .mec__m--coral::before  { background: linear-gradient(135deg, #F5B5A0 0%, #FAC8B5 60%, #FDE0D2 100%); }
+  /* Ocre (octubre) · melocotón otoñal */
+  .mec__m--ocre  { background: #FDF3E8; }
+  .mec__m--ocre::before   { background: linear-gradient(135deg, #F5C8A0 0%, #F8D8B8 60%, #FCE6D0 100%); }
+  /* Soft (abril) · crema sage muy suave */
+  .mec__m--soft  { background: #F6F7EF; }
+  .mec__m--soft::before   { background: linear-gradient(135deg, #D0DAC0 0%, #E8ECD8 60%, #F4F5E8 100%); }
+  /* Off (noviembre-marzo) · gris neutro */
+  .mec__m--off   { background: #F2F2EC; }
+  .mec__m--off::before    { background: linear-gradient(135deg, #D4D4D0 0%, #E4E4DE 60%, #EFEFE8 100%); opacity: 0.35; }
+
+  /* Hover · bg más saturado + lift + glow en borde del tono */
+  .mec__m:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 36px rgba(26, 31, 46, 0.1);
+  }
+  .mec__m:hover::before { opacity: 0.95; filter: saturate(1.15); }
+  .mec__m--high:hover   { border-color: #8AC68A; }
+  .mec__m--mid:hover    { border-color: #A4B788; }
+  .mec__m--warm:hover   { border-color: #E6BE5E; }
+  .mec__m--coral:hover  { border-color: var(--color-primary, #E8856F); }
+  .mec__m--ocre:hover   { border-color: #E8A86E; }
+  .mec__m--soft:hover   { border-color: #B4C29C; }
+  .mec__m--off:hover    { border-color: rgba(26, 31, 46, 0.25); }
+
+  .mec__mN {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+    font-weight: 900;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    line-height: 1;
+  }
+  .mec__m--off .mec__mN { color: var(--color-text-muted); }
+
+  .mec__mDots {
+    display: inline-flex; gap: 4px;
+  }
+  .mec__mDot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: rgba(26, 31, 46, 0.12);
+    transition: background 300ms ease;
+  }
+  .mec__mDot.is-on { background: var(--color-sage, #3D4F3A); }
+  .mec__m--coral .mec__mDot.is-on { background: var(--color-primary); }
+  .mec__m--warm  .mec__mDot.is-on { background: #B8911B; }
+  .mec__m--ocre  .mec__mDot.is-on { background: #B8911B; }
+
+  .mec__mL {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600;
+    color: var(--color-text-muted);
+    letter-spacing: 0.2px; line-height: 1.35;
+    min-height: 2.4em;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .mec__m--off .mec__mL { opacity: 0.7; }
+
+  .mec__legend {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem 1.5rem;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
+    color: var(--color-text-muted);
+    letter-spacing: 0.3px;
+  }
+  .mec__legendItem { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .mec__legendSwatch {
+    display: inline-block; width: 14px; height: 14px; border-radius: 4px;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .mec__legendSwatch--high  { background: linear-gradient(135deg, #B8E0B0, #D8EED0); }
+  .mec__legendSwatch--mid   { background: linear-gradient(135deg, #C8D8B0, #E0E8C8); }
+  .mec__legendSwatch--warm  { background: linear-gradient(135deg, #F7DE9C, #F8E8B8); }
+  .mec__legendSwatch--coral { background: linear-gradient(135deg, #F5B5A0, #FAC8B5); }
+  .mec__legendSwatch--off   { background: linear-gradient(135deg, #D4D4D0, #E4E4DE); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mec__m:hover { transform: none; }
+  }
+
+  /* ============== 3 · TABS 4 ESTACIONES (REUSE patrón /cuanto-dura/ .cdt con clase .met) ============== */
+  .met {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-warm, #F5F1E8);
+    position: relative;
+  }
+
+  .met__head {
+    display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: flex-start; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 900px) {
+    .met__head { flex-direction: row; align-items: flex-end; gap: 2rem; }
+  }
+  .met__headL { min-width: 0; }
+  .met__kicker {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 0.875rem;
+  }
+  .met__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .met__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .met__tabs {
+    display: inline-flex; align-items: center;
+    padding: 0.25rem;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.1);
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(26, 31, 46, 0.05);
+    flex-wrap: wrap;
+  }
+  .met__tab {
+    display: inline-flex; align-items: baseline; gap: 0.375rem;
+    padding: 0.65rem 1rem;
+    background: transparent; border: 0; border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    white-space: nowrap;
+  }
+  .met__tab:hover:not(.is-active) { color: var(--color-text-primary); }
+  .met__tab.is-active {
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    box-shadow: 0 6px 16px rgba(26, 31, 46, 0.25);
+  }
+  .met__tabMeses { font-weight: 500; opacity: 0.7; }
+  .met__tab.is-active .met__tabMeses { opacity: 0.85; }
+  .met__tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+
+  .met__card {
+    position: relative;
+    max-width: 1200px; margin: 0 auto;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+    box-shadow: 0 30px 60px rgba(26, 31, 46, 0.08);
+    overflow: hidden;
+  }
+  .met__panel {
+    display: grid; grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) { .met__panel { grid-template-columns: 1.1fr 1fr; } }
+  .met__panel[hidden] { display: none; }
+  /* Animación default (primera carga) · fade-up sutil */
+  .met__panel.is-active { animation: metPanelIn 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes metPanelIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* Slide direccional al cambiar de tab · según si la nueva tab está a la derecha o a la izquierda */
+  .met__card[data-dir="right"] .met__panel.is-active { animation: metPanelSlideFromRight 520ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .met__card[data-dir="left"]  .met__panel.is-active { animation: metPanelSlideFromLeft  520ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes metPanelSlideFromRight {
+    from { opacity: 0; transform: translateX(72px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes metPanelSlideFromLeft {
+    from { opacity: 0; transform: translateX(-72px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .met__card[data-dir="right"] .met__panel.is-active,
+    .met__card[data-dir="left"]  .met__panel.is-active { animation: none; }
+  }
+
+  /* Ribbon "El favorito" sobre el panel Verano · sage dark, destacado arriba */
+  .met__panel--popular { position: relative; }
+  .met__ribbon {
+    position: absolute;
+    top: clamp(1.25rem, 2.5vw, 1.75rem);
+    left: clamp(1.5rem, 3vw, 2.25rem);
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.6rem;
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    z-index: 3;
+    box-shadow: 0 8px 22px rgba(61, 79, 58, 0.35);
+    animation: metRibbonFloat 4s ease-in-out infinite;
+  }
+  .met__ribbonDot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-primary-soft, #F4B5A3);
+    animation: metRibbonPulse 2s ease-in-out infinite;
+  }
+  .met__ribbonIcon { color: #E8B339; }
+  @keyframes metRibbonFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  @keyframes metRibbonPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244, 181, 163, 0.55); }
+    50%      { box-shadow: 0 0 0 6px rgba(244, 181, 163, 0); }
+  }
+  /* En el panel popular, empujamos el contenido un poco para que el ribbon respire */
+  .met__panel--popular .met__content { padding-top: clamp(3.25rem, 5vw, 4rem); }
+  @media (prefers-reduced-motion: reduce) {
+    .met__ribbon, .met__ribbonDot { animation: none; }
+  }
+
+  .met__content {
+    padding: clamp(2rem, 4vw, 3.25rem);
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .met__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+  .met__eyebrow--primavera { color: var(--color-sage, #3D4F3A); }
+  .met__eyebrow--verano    { color: #B8911B; }
+  .met__eyebrow--otono     { color: var(--color-primary); }
+  .met__eyebrow--invierno  { color: rgba(26, 31, 46, 0.5); }
+
+  .met__route {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 3.6vw, 2.25rem);
+    font-weight: 900; line-height: 1.05;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .met__stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+    width: 100%;
+    padding: 1rem 0 0.5rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .met__stat { display: flex; flex-direction: column; gap: 0.25rem; padding: 0.75rem 0.5rem 0.75rem 0; }
+  .met__stat strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.8vw, 1.875rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+    display: flex; align-items: baseline; gap: 0.15em;
+    white-space: nowrap;
+  }
+  .met__stat strong small {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .met__stat span:last-child {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .met__desc {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .met__desc strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .met__features {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+    width: 100%;
+  }
+  @media (min-width: 500px) { .met__features { grid-template-columns: repeat(3, 1fr); } }
+  .met__features li {
+    padding: 0.55rem 0.9rem;
+    background: rgba(61, 79, 58, 0.06);
+    border: 1px solid rgba(61, 79, 58, 0.15);
+    border-radius: 8px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: 0.2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden; text-overflow: ellipsis;
+    transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+  .met__features li:hover {
+    background: rgba(61, 79, 58, 0.12);
+    border-color: rgba(61, 79, 58, 0.3);
+    transform: translateY(-2px);
+  }
+  .met__panel.is-active .met__features li { animation: metFeatureIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .met__panel.is-active .met__features li:nth-child(1) { animation-delay: 180ms; }
+  .met__panel.is-active .met__features li:nth-child(2) { animation-delay: 240ms; }
+  .met__panel.is-active .met__features li:nth-child(3) { animation-delay: 300ms; }
+  .met__panel.is-active .met__features li:nth-child(4) { animation-delay: 360ms; }
+  .met__panel.is-active .met__features li:nth-child(5) { animation-delay: 420ms; }
+  .met__panel.is-active .met__features li:nth-child(6) { animation-delay: 480ms; }
+  @keyframes metFeatureIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .met__cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    margin-top: 0.5rem;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 24px rgba(26, 31, 46, 0.2);
+  }
+  .met__cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(26, 31, 46, 0.32); }
+  .met__ctaIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #FBF8F1; color: var(--color-text-primary, #1A1F2E);
+    transition: transform 240ms ease;
+  }
+  .met__cta:hover .met__ctaIcon { transform: rotate(-12deg) translateX(2px); }
+
+  .met__photo {
+    position: relative;
+    min-height: 360px;
+    overflow: hidden;
+    border-radius: clamp(0.5rem, 1.5vw, 1rem);
+    isolation: isolate;
+    /* Slide entry: empieza desplazada y oculta */
+    transform: translateX(-80px);
+    opacity: 0;
+    transition:
+      transform 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 900ms ease-out,
+      box-shadow 380ms ease;
+  }
+  /* Cuando el panel está activo, la foto entra desde la izquierda */
+  .met__panel.is-active .met__photo {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  .met__photo:hover {
+    box-shadow: 0 24px 56px -22px rgba(26, 31, 46, 0.28);
+  }
+  .met__photo :global(picture),
+  .met__photo :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0;
+    transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .met__photo:hover :global(img) { transform: scale(1.05); }
+  /* Reflejo glass diagonal en hover · estilo deluxe premium */
+  .met__photo::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 60%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .met__photo:hover::after {
+    animation: metGlass 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes metGlass {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(110%); }
+  }
+  .met__badges {
+    position: absolute;
+    top: clamp(1rem, 2vw, 1.5rem);
+    left: clamp(1rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; gap: 0.5rem;
+    z-index: 1;
+  }
+  .met__badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(26, 31, 46, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .met__badge:hover { background: var(--color-primary); transform: translateX(3px); }
+  .met__panel.is-active .met__badge { animation: metBadgeIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .met__panel.is-active .met__badge:nth-child(1) { animation-delay: 240ms; }
+  .met__panel.is-active .met__badge:nth-child(2) { animation-delay: 340ms; }
+  .met__panel.is-active .met__badge:nth-child(3) { animation-delay: 440ms; }
+  @keyframes metBadgeIn {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  @media (max-width: 899.98px) { .met__photo { min-height: 280px; aspect-ratio: 4 / 3; } }
+  @media (prefers-reduced-motion: reduce) {
+    .met__panel.is-active { animation: none; }
+    .met__cta:hover { transform: none; }
+    .met__photo,
+    .met__photo :global(img),
+    .met__photo::after { transition: none !important; animation: none !important; }
+    .met__photo:hover :global(img) { transform: none; }
+    .met__photo:hover { box-shadow: none; }
+  }
+
+  /* ============== 4 · CTA intermedio sage dark (REUSE) ============== */
+  .mem {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 15% 20%, rgba(244, 181, 163, 0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 50% at 100% 100%, rgba(251, 248, 241, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    position: relative;
+    isolation: isolate;
+  }
+  .mem::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
+  }
+  .mem__wrap { max-width: 780px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .mem__quote {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.45;
+    color: #FBF8F1;
+    margin: 0 0 clamp(2.25rem, 4vw, 2.75rem);
+    letter-spacing: -0.005em;
+  }
+  .mem__quote em { color: var(--color-primary-soft, #F4B5A3); font-style: italic; }
+  .mem__quote strong { font-style: normal; font-weight: 700; color: #FBF8F1; }
+  .mem__rule { display: flex; align-items: center; gap: 1rem; }
+  .mem__ruleLine { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(251, 248, 241, 0.3), transparent); }
+  .mem__pill {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.9rem 1.6rem 0.9rem 1.35rem;
+    background: #FBF8F1; color: var(--color-sage, #3D4F3A);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    flex-shrink: 0;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  }
+  .mem__pill:hover { transform: translateY(-3px); background: var(--color-primary-soft, #F4B5A3); box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42); }
+  .mem__pillDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: memPillPulse 2s ease-in-out infinite;
+  }
+  @keyframes memPillPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.6); }
+    50%      { box-shadow: 0 0 0 6px rgba(233, 133, 111, 0); }
+  }
+  .mem__pill svg { transition: transform 220ms; }
+  .mem__pill:hover svg { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) { .mem__pillDot { animation: none; } }
+
+  /* ============== 5 · BARRAS AFLUENCIA 12 MESES ============== */
+  .mea {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 90% 10%, rgba(233, 133, 111, 0.08) 0%, transparent 60%),
+      var(--color-bg-base);
+  }
+  .mea__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .mea__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.5rem;
+  }
+  .mea__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.25rem;
+  }
+  .mea__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; letter-spacing: -0.01em; text-transform: none; }
+  .mea__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .mea__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .mea__chart {
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ===== 12 Photo-cards encima de las barras (flip 180° Y al hover + shine horizontal) ===== */
+  .mea__cards {
+    list-style: none; padding: 0; margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 0.375rem;
+    perspective: 1200px;
+  }
+  .mea__card {
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+    position: relative;
+  }
+  .mea__cardInner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+  .mea__card:hover .mea__cardInner,
+  .mea__card:focus-within .mea__cardInner {
+    transform: rotateY(180deg);
+  }
+  .mea__cardFront,
+  .mea__cardBack {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(26, 31, 46, 0.08);
+  }
+  /* Front · foto + month label */
+  .mea__cardFront {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    background: #1A1F2E;
+  }
+  .mea__cardPhoto {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .mea__cardPhoto :global(picture),
+  .mea__cardPhoto :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    filter: saturate(1.05) contrast(1.02);
+    transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mea__card:hover .mea__cardPhoto :global(img),
+  .mea__card:hover .mea__cardPhoto :global(picture) { transform: scale(1.08); }
+
+  /* Shine horizontal · reflejo que pasa de izq a dcha continuo + al hover se acelera */
+  .mea__cardShine {
+    position: absolute;
+    top: 0; left: -60%;
+    width: 40%; height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 100%
+    );
+    transform: skewX(-18deg);
+    animation: meaShineLoop 4.6s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes meaShineLoop {
+    0%, 18%   { left: -60%; }
+    52%, 100% { left: 120%; }
+  }
+  .mea__card:hover .mea__cardShine {
+    animation: meaShineHover 850ms ease-in-out;
+    animation-iteration-count: 1;
+  }
+  @keyframes meaShineHover {
+    0%   { left: -60%; }
+    100% { left: 120%; }
+  }
+
+  /* Front gradient overlay on bottom for readability */
+  .mea__cardFront::after {
+    content: "";
+    position: absolute; bottom: 0; left: 0; right: 0; height: 55%;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.78) 100%);
+    pointer-events: none;
+  }
+  .mea__cardM {
+    position: relative; z-index: 1;
+    padding: 0.5rem 0.375rem;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.3px; text-transform: uppercase;
+    color: #FBF8F1;
+    text-align: center;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  }
+
+  /* Back · info textual (rotado 180Y para que salga leíble) */
+  .mea__cardBack {
+    transform: rotateY(180deg);
+    background: linear-gradient(160deg, var(--color-sage, #3D4F3A) 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.25rem;
+    text-align: center;
+  }
+  .mea__cardFull {
+    font-family: var(--font-display); font-size: clamp(0.625rem, 1.4vw, 0.8125rem);
+    font-weight: 900; letter-spacing: 0.4px; text-transform: uppercase;
+    line-height: 1;
+  }
+  .mea__cardTemp {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: clamp(0.875rem, 1.8vw, 1.125rem); font-weight: 400;
+    color: var(--color-primary-soft, #F4B5A3);
+    line-height: 1;
+    margin-top: 0.25rem;
+  }
+  .mea__cardNota {
+    font-family: var(--font-sans); font-size: 0.5625rem; font-weight: 600;
+    line-height: 1.25;
+    color: rgba(251, 248, 241, 0.78);
+    letter-spacing: 0.2px;
+    padding: 0 0.25rem;
+  }
+
+  /* Mobile responsive · 4 cols en móvil pequeño, 6 en medio, 12 en desktop */
+  @media (max-width: 640px) {
+    .mea__cards { grid-template-columns: repeat(4, 1fr); gap: 0.5rem; }
+  }
+  @media (min-width: 640.01px) and (max-width: 900px) {
+    .mea__cards { grid-template-columns: repeat(6, 1fr); gap: 0.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mea__cardInner { transition: none; }
+    .mea__cardShine { animation: none; opacity: 0; }
+    .mea__card:hover .mea__cardShine { animation: none; }
+    .mea__card:hover .mea__cardPhoto :global(img) { transform: none; }
+  }
+
+  .mea__bars {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(12, 1fr);
+    gap: 0.375rem;
+    align-items: end;
+    min-height: 220px;
+  }
+  .mea__bar {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.375rem;
+    min-width: 0;
+  }
+  .mea__barTrack {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(180deg, rgba(26, 31, 46, 0.03), rgba(26, 31, 46, 0.06));
+    border-radius: 6px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 260ms ease, background 260ms ease;
+  }
+  .mea__bar:hover .mea__barTrack {
+    background: linear-gradient(180deg, rgba(26, 31, 46, 0.05), rgba(26, 31, 46, 0.1));
+    box-shadow: inset 0 0 0 1px rgba(233, 133, 111, 0.4);
+  }
+  .mea__barFill {
+    position: relative;
+    width: 100%;
+    height: 0;
+    background: linear-gradient(180deg, var(--color-primary-soft, #F4B5A3), var(--color-primary));
+    border-radius: 6px 6px 4px 4px;
+    transition: height 1500ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: height;
+    overflow: hidden;
+  }
+  /* Shine sweep al hover · diagonal desde arriba a abajo · se dispara siempre */
+  .mea__barFill::after {
+    content: "";
+    position: absolute;
+    top: -30%; left: -50%;
+    width: 60%; height: 160%;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 35%,
+      rgba(255, 255, 255, 0.1) 45%,
+      rgba(255, 255, 255, 0.65) 50%,
+      rgba(255, 255, 255, 0.1) 55%,
+      transparent 65%,
+      transparent 100%
+    );
+    transform: translateX(-100%) skewX(-8deg);
+    pointer-events: none;
+    opacity: 0;
+  }
+  .mea__bar:hover .mea__barFill::after {
+    animation: meaShine 900ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes meaShine {
+    0%   { transform: translateX(-100%) skewX(-8deg); opacity: 0; }
+    15%  { opacity: 1; }
+    85%  { opacity: 1; }
+    100% { transform: translateX(300%) skewX(-8deg); opacity: 0; }
+  }
+  /* Agosto pico · color sage oscuro para destacarlo */
+  .mea__bar[data-level="100"] .mea__barFill { background: linear-gradient(180deg, #4A5E47, var(--color-sage, #3D4F3A)); }
+  .mea__bar[data-level="100"]:hover .mea__barTrack { box-shadow: inset 0 0 0 1px rgba(61, 79, 58, 0.5); }
+  /* Low months: subtle coral */
+  .mea__bar[data-level="0"] .mea__barFill { background: rgba(26, 31, 46, 0.08); }
+  .mea__bar[data-level="0"]:hover .mea__barFill::after { animation: none; }
+
+  /* Animación width → height al entrar viewport */
+  .mea__chart.is-visible .mea__barFill { height: var(--p); }
+  .mea__chart.is-visible .mea__bar:nth-child(1)  .mea__barFill { transition-delay: 50ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(2)  .mea__barFill { transition-delay: 100ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(3)  .mea__barFill { transition-delay: 150ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(4)  .mea__barFill { transition-delay: 200ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(5)  .mea__barFill { transition-delay: 250ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(6)  .mea__barFill { transition-delay: 300ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(7)  .mea__barFill { transition-delay: 350ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(8)  .mea__barFill { transition-delay: 400ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(9)  .mea__barFill { transition-delay: 450ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(10) .mea__barFill { transition-delay: 500ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(11) .mea__barFill { transition-delay: 550ms; }
+  .mea__chart.is-visible .mea__bar:nth-child(12) .mea__barFill { transition-delay: 600ms; }
+
+  .mea__barM {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.3px; text-transform: uppercase;
+    color: var(--color-text-secondary);
+  }
+  .mea__barV {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+  }
+
+  .mea__foot {
+    text-align: center; max-width: 560px; margin: 1.75rem auto 0;
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .mea__foot strong { color: var(--color-text-primary); font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mea__barFill { transition: none; height: var(--p); }
+    .mea__bar:hover .mea__barFill::after { animation: none; }
+  }
+
+  /* ============== 6 · CONSEJOS · editorial carrusel (Variante B sage · 1 línea slide) ============== */
+  .meq {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: #FBF8F1;
+    position: relative;
+    overflow: hidden;
+  }
+  .meq::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(26, 31, 46, 0.12), transparent);
+  }
+
+  /* Header · title left + nav (counter + arrows) right */
+  .meq__header {
+    display: flex; flex-direction: column;
+    gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: flex-start; justify-content: space-between;
+    max-width: 1300px; margin: 0 auto;
+  }
+  @media (min-width: 720px) {
+    .meq__header { flex-direction: row; align-items: flex-end; gap: 2rem; }
+  }
+  .meq__headerMain { min-width: 0; }
+  .meq__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(0.75rem, 1.5vw, 1rem);
+  }
+  .meq__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+
+  /* Navegación · contador + flechas modernas */
+  .meq__nav {
+    display: inline-flex; align-items: center; gap: 0.875rem;
+    flex-shrink: 0;
+  }
+  .meq__counter {
+    display: inline-flex; align-items: baseline; gap: 0.25rem;
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin-right: 0.5rem;
+    letter-spacing: 0.3px;
+  }
+  .meq__counterCurrent {
+    font-family: var(--font-display); font-style: normal;
+    font-size: 1.25rem; font-weight: 900;
+    color: var(--color-sage, #3D4F3A);
+    letter-spacing: -0.02em;
+    min-width: 1.5ch;
+    display: inline-block;
+    transition: color 240ms ease;
+  }
+  .meq__counterSep { opacity: 0.4; padding: 0 0.125rem; }
+  .meq__counterTotal { font-family: var(--font-serif); font-size: 0.9375rem; }
+
+  .meq__navBtn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--color-sage, #3D4F3A);
+    border: 1.5px solid var(--color-sage, #3D4F3A);
+    cursor: pointer;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .meq__navBtn:hover:not(:disabled) {
+    background: var(--color-sage, #3D4F3A);
+    color: #FBF8F1;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(61, 79, 58, 0.28);
+  }
+  .meq__navBtn:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(61, 79, 58, 0.2);
+  }
+  .meq__navBtn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: rgba(61, 79, 58, 0.3);
+  }
+  .meq__navBtn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+  }
+  .meq__navIcon { transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .meq__navBtn[data-meq-nav="prev"]:hover:not(:disabled) .meq__navIcon { transform: translateX(-3px); }
+  .meq__navBtn[data-meq-nav="next"]:hover:not(:disabled) .meq__navIcon { transform: translateX(3px); }
+
+  /* Divider hairline */
+  .meq__divider {
+    border: 0; height: 1px;
+    background: rgba(26, 31, 46, 0.14);
+    max-width: 1300px;
+    margin: clamp(1.5rem, 3vw, 2rem) auto clamp(2rem, 4vw, 3rem);
+  }
+
+  /* Track · scroll horizontal con snap · padding generoso para no cortar el scale de la card activa */
+  .meq__track {
+    max-width: 1300px;
+    margin: 0 auto;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 2rem clamp(0.75rem, 2vw, 1.25rem) 2.5rem;
+    margin-left: calc(clamp(0.75rem, 2vw, 1.25rem) * -1);
+    margin-right: calc(clamp(0.75rem, 2vw, 1.25rem) * -1);
+  }
+  .meq__track::-webkit-scrollbar { display: none; }
+  .meq__track:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 4px; border-radius: 1rem; }
+
+  /* Lista horizontal · todas las cards en una línea */
+  .meqL {
+    list-style: none; padding: 0; margin: 0;
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  /* Cards editoriales · número gigante watermark + body abajo · ancho fijo para snap */
+  .meqItem {
+    position: relative;
+    flex: 0 0 clamp(260px, 30vw, 320px);
+    padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1.5rem, 2.5vw, 1.75rem);
+    background: #F3EFE4;
+    color: var(--color-text-primary);
+    border-radius: 1.25rem;
+    display: flex; flex-direction: column;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    min-height: 240px;
+    scroll-snap-align: start;
+    transform-origin: center;
+    transform: scale(1);
+    transition: transform 460ms cubic-bezier(0.22, 1, 0.36, 1),
+                background 360ms ease,
+                color 360ms ease;
+    will-change: transform, background;
+  }
+
+  .meqItem__num {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 5vw, 3.75rem);
+    font-weight: 900; line-height: 0.9;
+    letter-spacing: -0.03em;
+    color: rgba(26, 31, 46, 0.14);
+    user-select: none; pointer-events: none;
+    transition: color 360ms ease;
+  }
+
+  .meqItem__body {
+    display: flex; flex-direction: column; gap: 0.5rem;
+    margin-top: auto;
+  }
+  .meqItem__t {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    font-weight: 900; line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0;
+    transition: color 360ms ease;
+  }
+  .meqItem__s {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+    transition: color 360ms ease;
+  }
+  .meqItem__s strong { color: var(--color-text-primary); font-weight: 700; transition: color 360ms ease; }
+  .meqItem__s a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.4); transition: color 360ms ease, border-color 360ms ease; }
+
+  /* Card ACTIVA · sage profundo + scale sutil · sin sombra rara */
+  .meqItem.is-active {
+    background: linear-gradient(160deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    transform: scale(1.04);
+    z-index: 2;
+  }
+  .meqItem.is-active .meqItem__num { color: rgba(251, 248, 241, 0.20); }
+  .meqItem.is-active .meqItem__t { color: #FBF8F1; }
+  .meqItem.is-active .meqItem__s { color: rgba(251, 248, 241, 0.88); }
+  .meqItem.is-active .meqItem__s strong { color: #FBF8F1; }
+  .meqItem.is-active .meqItem__s a { color: var(--color-primary-soft, #F4B5A3); border-bottom-color: rgba(244, 181, 163, 0.5); }
+
+  /* Progress bar · línea fina que se llena según el scroll del track */
+  .meq__progress {
+    max-width: 1300px; margin: 0 auto;
+    height: 2px;
+    background: rgba(26, 31, 46, 0.08);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+  .meq__progressBar {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-sage, #3D4F3A), var(--color-primary));
+    border-radius: 999px;
+    transition: width 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Foot link */
+  .meq__foot {
+    text-align: center;
+    margin: clamp(2rem, 4vw, 2.75rem) auto 0;
+  }
+  .meq__footLink {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800;
+    letter-spacing: 0.3px;
+    color: var(--color-text-primary);
+    border-bottom: 1px solid var(--color-primary);
+    padding-bottom: 4px;
+    transition: color 220ms, border-color 220ms;
+  }
+  .meq__footLink:hover { color: var(--color-primary); border-bottom-color: var(--color-text-primary); }
+  .meq__footLink svg { color: var(--color-primary); transition: transform 220ms; }
+  .meq__footLink:hover svg { transform: translateX(4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meqItem { transition: background 200ms ease, color 200ms ease; }
+    .meqItem.is-active { transform: none; }
+    .meq__navBtn { transition: background 200ms, color 200ms; }
+    .meq__navBtn:hover:not(:disabled) { transform: none; }
+    .meq__navIcon { transition: none; }
+    .meq__track { scroll-behavior: auto; }
+    .meq__progressBar { transition: none; }
+    .meq__footLink:hover svg { transform: none; }
+  }
+
+  /* ============== 7 · INTERLINKING + PANEL RESERVA (REUSE cdx · sage dark) ============== */
+  .mex {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 60% 50% at 10% 100%, rgba(244, 181, 163, 0.12) 0%, transparent 65%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+  }
+  .mex::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.03) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 40%, black 10%, transparent 80%);
+    pointer-events: none;
+  }
+  .mex__header { max-width: 900px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .mex__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: 1rem;
+  }
+  .mex__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.25rem;
+  }
+  .mex__title .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
+  .mex__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: rgba(251, 248, 241, 0.78); margin: 0; }
+  .mex__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .mex__grid {
+    display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1200px; margin: 0 auto; align-items: stretch;
+  }
+  @media (min-width: 900px) { .mex__grid { grid-template-columns: 1fr 1.05fr; gap: clamp(2.5rem, 4vw, 3.5rem); } }
+
+  .mex__reserva { position: relative; border-radius: 1.25rem; overflow: hidden; box-shadow: 0 24px 56px rgba(0, 0, 0, 0.4); align-self: stretch; min-height: 100%; }
+  .mex__reservaBg { position: absolute; inset: 0; overflow: hidden; }
+  .mex__reservaBg :global(picture), .mex__reservaBg :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transform-origin: 50% 60%;
+    animation: mexKen 24s ease-in-out infinite alternate;
+  }
+  @keyframes mexKen { 0% { transform: scale(1.02); } 100% { transform: scale(1.12) translate(-1%, 1%); } }
+  .mex__reservaScrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.65) 0%, rgba(15, 20, 30, 0.55) 35%, rgba(15, 20, 30, 0.9) 100%),
+      radial-gradient(ellipse 60% 45% at 15% 80%, rgba(61, 79, 58, 0.4) 0%, transparent 70%);
+  }
+  .mex__reservaInner {
+    position: relative; height: 100%;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 1.25rem);
+    justify-content: flex-start;
+  }
+  .mex__reservaKicker {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0.875rem 0.4rem 0.625rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    align-self: flex-start;
+  }
+  .mex__reservaDot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: mexResPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes mexResPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(233, 133, 111, 0); }
+  }
+  .mex__reservaT {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 3.2vw, 2.125rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0;
+  }
+  .mex__reservaT .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
+  .mex__reservaS { font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.65; color: rgba(251, 248, 241, 0.8); margin: 0 0 0.25rem; }
+  .mex__reservaS strong { color: #FBF8F1; font-weight: 700; }
+
+  .mex__channels { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.625rem; margin-top: auto; }
+  .mex__ch {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 0.875rem;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: rgba(251, 248, 241, 0.08);
+    border: 1px solid rgba(251, 248, 241, 0.14);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mex__ch:hover { background: rgba(251, 248, 241, 0.14); border-color: rgba(244, 181, 163, 0.5); transform: translateX(3px); }
+  .mex__chIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(251, 248, 241, 0.12);
+    color: var(--color-primary-soft, #F4B5A3);
+    transition: background 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .mex__ch--wa .mex__chIcon { color: #25D366; }
+  .mex__ch:hover .mex__chIcon { background: var(--color-primary); color: #FBF8F1; }
+  .mex__ch--wa:hover .mex__chIcon { background: #25D366; color: #FBF8F1; }
+  .mex__chBody { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .mex__chLabel { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; color: #FBF8F1; letter-spacing: 0.3px; }
+  .mex__chValue { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; color: rgba(251, 248, 241, 0.65); letter-spacing: 0.3px; }
+  .mex__chArrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: rgba(251, 248, 241, 0.5);
+    transition: transform 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .mex__ch:hover .mex__chArrow { color: var(--color-primary-soft, #F4B5A3); transform: translateX(4px); }
+
+  .mex__list { display: flex; flex-direction: column; gap: 0.75rem; }
+  .mex__item {
+    background: rgba(251, 248, 241, 0.05);
+    border: 1px solid rgba(251, 248, 241, 0.12);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: background 300ms ease, border-color 300ms ease;
+  }
+  .mex__item[open] { background: rgba(251, 248, 241, 0.09); border-color: rgba(244, 181, 163, 0.4); }
+  .mex__item:hover:not([open]) { background: rgba(251, 248, 241, 0.07); border-color: rgba(251, 248, 241, 0.2); }
+  .mex__sum {
+    list-style: none;
+    display: grid; grid-template-columns: 1fr auto; gap: 1rem;
+    align-items: center;
+    padding: 1.125rem 1.25rem;
+    cursor: pointer;
+    position: relative;
+    transition: padding 300ms ease;
+  }
+  .mex__sum::-webkit-details-marker { display: none; }
+  .mex__item[open] .mex__sum { padding-bottom: 0.625rem; }
+  .mex__eyerow { display: flex; align-items: center; gap: 0.75rem; grid-row: 1; grid-column: 1; margin-bottom: 0.375rem; }
+  .mex__num { font-family: var(--font-serif); font-style: italic; font-size: 0.875rem; color: var(--color-primary-soft, #F4B5A3); letter-spacing: 0.02em; }
+  .mex__smallE { font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(251, 248, 241, 0.55); }
+  .mex__t { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 800; line-height: 1.2; letter-spacing: -0.005em; color: #FBF8F1; margin: 0; grid-row: 2; grid-column: 1; }
+  .mex__chev {
+    grid-row: 1 / span 2; grid-column: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: var(--color-primary);
+    color: #FBF8F1;
+    border-radius: 50%;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1), background-color 300ms ease;
+    flex-shrink: 0;
+  }
+  .mex__item[open] .mex__chev { transform: rotate(90deg); background: var(--color-primary-soft, #F4B5A3); color: var(--color-text-primary, #1A1F2E); }
+  .mex__item:hover .mex__chev { transform: translateX(3px); }
+  .mex__item[open]:hover .mex__chev { transform: rotate(90deg) translateX(0); }
+  .mex__body {
+    padding: 0 1.25rem 1.25rem;
+    animation: mexBodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes mexBodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .mex__body p { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: rgba(251, 248, 241, 0.8); margin: 0.375rem 0 1rem; }
+  .mex__body p strong { color: #FBF8F1; font-weight: 700; }
+  .mex__link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-primary-soft, #F4B5A3);
+    border-bottom: 1px solid rgba(244, 181, 163, 0.4);
+    padding-bottom: 2px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .mex__link:hover { color: #FBF8F1; border-color: #FBF8F1; }
+  .mex__link svg { transition: transform 200ms ease; }
+  .mex__link:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mex__body { animation: none; }
+    .mex__reservaBg :global(img), .mex__reservaBg :global(picture), .mex__reservaDot { animation: none; }
+    .mex__ch:hover, .mex__ch:hover .mex__chArrow { transform: none; }
+    .mex__chev { transition: background-color 200ms ease; }
+    .mex__item[open] .mex__chev { transform: rotate(90deg); }
+    .mex__item:hover .mex__chev { transform: none; }
+    .mex__item[open]:hover .mex__chev { transform: rotate(90deg); }
+  }
+
+  /* ============== 6.5 · Banda CONTACTO editorial (image 34) ============== */
+  .meb {
+    padding-block: clamp(5rem, 10vw, 7.5rem);
+    background: var(--color-bg-warm, #F5F1E8);
+    position: relative;
+  }
+  .meb::before {
+    content: "";
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(26, 31, 46, 0.1), transparent);
+  }
+  .meb__inner {
+    max-width: 820px; margin: 0 auto;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0;
+  }
+  .meb__eyebrow {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .meb__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5.5vw, 3.75rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-text-primary);
+    margin: 0 0 clamp(1rem, 2vw, 1.5rem);
+    max-width: 14ch;
+  }
+  .meb__title .serif-italic {
+    color: var(--color-sage, #3D4F3A);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+  }
+  .meb__sub {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    max-width: 560px;
+    margin: 0 0 clamp(2rem, 4vw, 2.75rem);
+  }
+  .meb__sub strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .meb__actions {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: clamp(0.75rem, 1.5vw, 1rem);
+  }
+  /* Los 3 botones · MISMA forma · MISMO padding · MISMO border-radius
+     Solo varían color/peso para jerarquía visual */
+  .meb__btn {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.875rem 1.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    border-radius: 999px;
+    text-decoration: none;
+    border: 1.5px solid transparent;
+    transition: background 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 260ms ease,
+                color 260ms ease,
+                transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+                box-shadow 260ms ease;
+    white-space: nowrap;
+  }
+  .meb__btn svg { flex-shrink: 0; }
+  .meb__btn:hover { transform: translateY(-2px); }
+
+  /* Icono circular del primary · más pequeño y armónico */
+  .meb__btnIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px;
+    color: currentColor;
+    transition: transform 260ms ease;
+  }
+
+  /* Primary · Reservar (filled dark) */
+  .meb__btn--primary {
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    border-color: var(--color-text-primary, #1A1F2E);
+    box-shadow: 0 10px 24px -8px rgba(26, 31, 46, 0.25);
+  }
+  .meb__btn--primary:hover {
+    background: var(--color-primary, #E9856F);
+    border-color: var(--color-primary, #E9856F);
+    box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.45);
+  }
+  .meb__btn--primary:hover .meb__btnIcon { transform: translateX(3px); }
+
+  /* Outline · WhatsApp (cream + sutil border + acento verde en svg) */
+  .meb__btn--outline {
+    background: transparent;
+    color: var(--color-text-primary, #1A1F2E);
+    border-color: rgba(26, 31, 46, 0.2);
+  }
+  .meb__btn--outline svg { color: #25D366; }
+  .meb__btn--outline:hover {
+    border-color: #25D366;
+    background: rgba(37, 211, 102, 0.08);
+  }
+
+  /* Outline · Llamar (mismo formato que WhatsApp · acento sage) */
+  .meb__btn--link {
+    background: transparent;
+    color: var(--color-text-primary, #1A1F2E);
+    border-color: rgba(26, 31, 46, 0.2);
+  }
+  .meb__btn--link svg { color: var(--color-sage, #3D4F3A); }
+  .meb__btn--link:hover {
+    border-color: var(--color-sage, #3D4F3A);
+    background: rgba(61, 79, 58, 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .meb__btn { transition: background-color 200ms ease, border-color 200ms ease; }
+    .meb__btn:hover { transform: none; }
+    .meb__btnIcon { transition: none; }
+    .meb__btn--primary:hover .meb__btnIcon { transform: none; }
+  }
+
+  /* ============== 8 · FAQ (REUSE cnf sage sidebar) ============== */
+  .mef { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .mef__grid { display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 4rem); max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 4vw, 4rem); }
+  @media (min-width: 960px) { .mef__grid { grid-template-columns: 1fr 1.3fr; } }
+  .mef__aside { position: sticky; top: 6rem; align-self: start; }
+  .mef__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1.25rem;
+  }
+  .mef__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 1.25rem;
+  }
+  .mef__title .serif-italic { color: var(--color-sage, #3D4F3A); font-family: var(--font-serif); font-style: italic; font-weight: 400; letter-spacing: -0.01em; text-transform: none; }
+  .mef__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); margin: 0; }
+  .mef__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .mef__lead a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.35); transition: color 200ms; }
+  .mef__lead a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .mef__list { display: flex; flex-direction: column; gap: 0.625rem; }
+  .mefI {
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: all 300ms ease;
+  }
+  .mefI[open] { background: rgba(61, 79, 58, 0.05); border-color: rgba(61, 79, 58, 0.3); }
+  .mefI:hover:not([open]) { border-color: rgba(26, 31, 46, 0.18); }
+  .mefI__q {
+    list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    line-height: 1.3; letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+  }
+  .mefI__q::-webkit-details-marker { display: none; }
+  .mefI__chev {
+    flex-shrink: 0;
+    color: var(--color-sage, #3D4F3A);
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .mefI[open] .mefI__chev { transform: rotate(180deg); }
+  .mefI__a {
+    padding: 0 1.5rem 1.5rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+    animation: mefABodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes mefABodyIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+  .mefI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .mefI__a a { color: var(--color-sage, #3D4F3A); border-bottom: 1px solid rgba(61, 79, 58, 0.35); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mefI__a { animation: none; }
+    .mefI__chev { transition: none; }
+  }
+
+  /* ============== 9 · CTA FINAL (REUSE cncta) ============== */
+  .mecta {
+    position: relative;
+    min-height: 420px;
+    color: #FBF8F1;
+    overflow: hidden;
+    isolation: isolate;
+    display: flex; align-items: center;
+    padding-block: clamp(4rem, 8vw, 6rem);
+  }
+  .mecta__bg { position: absolute; inset: 0; z-index: 0; }
+  .mecta__bg::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.65) 0%, rgba(15, 20, 30, 0.85) 100%),
+      radial-gradient(ellipse 55% 55% at 50% 50%, rgba(15, 25, 15, 0.35) 0%, transparent 75%);
+  }
+  .mecta__bg :global(picture), .mecta__bg :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .mecta__inner {
+    position: relative; z-index: 1;
+    max-width: 820px; margin: 0 auto;
+    padding: 0 clamp(1.5rem, 4vw, 4rem);
+    text-align: center;
+  }
+  .mecta__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: 1.25rem;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4);
+  }
+  .mecta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.55), 0 0 32px rgba(0, 0, 0, 0.35);
+  }
+  .mecta__title .serif-italic { color: var(--color-primary-soft, #F4B5A3); font-family: var(--font-serif); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: -0.01em; }
+  .mecta__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.7;
+    color: #FBF8F1;
+    max-width: 620px; margin: 0 auto 2rem;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.5), 0 0 24px rgba(0, 0, 0, 0.3);
+  }
+  .mecta__lead strong { color: #FFFFFF; font-weight: 700; }
+
+  .mecta__ctas { display: flex; justify-content: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; }
+  .mecta__primary {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 1rem 1.75rem;
+    background: var(--color-primary); color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(233, 133, 111, 0.4);
+  }
+  .mecta__primary:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(233, 133, 111, 0.55); background: var(--color-primary-hover, #D66F59); }
+  .mecta__primary svg { transition: transform 200ms; }
+  .mecta__primary:hover svg { transform: translateX(3px); }
+  .mecta__ghost {
+    display: inline-flex; align-items: center;
+    padding: 1rem 1.75rem;
+    background: transparent; color: #FBF8F1;
+    border: 1.5px solid rgba(251, 248, 241, 0.5);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 200ms ease;
+  }
+  .mecta__ghost:hover { background: rgba(251, 248, 241, 0.1); border-color: rgba(251, 248, 241, 0.8); }
+  .mecta__refuerzo {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.875rem;
+    color: rgba(251, 248, 241, 0.7);
+    margin: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mecta__primary:hover { transform: none; }
+  }
+</style>
+
+<!-- JS · tabs + barras IntersectionObserver -->
+<script>
+  // Tabs 4 estaciones · slide direccional
+  (function () {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.met__tab');
+    const panels = document.querySelectorAll<HTMLElement>('.met__panel');
+    const card = document.querySelector<HTMLElement>('.met__card');
+    if (!tabs.length || !card) return;
+
+    let currentIndex = 0;
+
+    const activate = (key: string, dir?: 'right' | 'left') => {
+      // Set direction on card BEFORE toggling panels · fuerza reflow para reiniciar la animación
+      if (dir) {
+        card.dataset.dir = dir;
+        // Forzar reflow (por si reactiva el mismo panel y queremos que la animación se reinicie)
+        void card.offsetWidth;
+      }
+      tabs.forEach((t) => {
+        const isActive = t.dataset.tab === key;
+        t.classList.toggle('is-active', isActive);
+        t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        t.setAttribute('tabindex', isActive ? '0' : '-1');
+      });
+      panels.forEach((p) => {
+        const isActive = p.dataset.panel === key;
+        p.classList.toggle('is-active', isActive);
+        if (isActive) p.removeAttribute('hidden');
+        else p.setAttribute('hidden', '');
+      });
+    };
+
+    const clickHandler = (t: HTMLButtonElement) => {
+      const arr = Array.from(tabs);
+      const newIndex = arr.indexOf(t);
+      const dir: 'right' | 'left' = newIndex > currentIndex ? 'right' : (newIndex < currentIndex ? 'left' : (card.dataset.dir as 'right' | 'left') || 'right');
+      currentIndex = newIndex;
+      const key = t.dataset.tab;
+      if (key) activate(key, dir);
+    };
+
+    tabs.forEach((t) => {
+      t.addEventListener('click', () => clickHandler(t));
+      t.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        const arr = Array.from(tabs);
+        const idx = arr.indexOf(t);
+        const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % arr.length : (idx - 1 + arr.length) % arr.length;
+        const next = arr[nextIdx];
+        next.focus();
+        clickHandler(next);
+      });
+    });
+  })();
+
+  // Barras afluencia · detectar cuando entran en viewport y aplicar is-visible
+  (function () {
+    const chart = document.querySelector<HTMLElement>('.mea__chart');
+    if (!chart) return;
+    if (!('IntersectionObserver' in window)) { chart.classList.add('is-visible'); return; }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          chart.classList.add('is-visible');
+          io.unobserve(chart);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -80px 0px' });
+    io.observe(chart);
+  })();
+
+  // Carrusel Consejos · prev/next + counter + progress
+  (function () {
+    const track = document.querySelector<HTMLElement>('[data-meq-track]');
+    const prev  = document.querySelector<HTMLButtonElement>('[data-meq-nav="prev"]');
+    const next  = document.querySelector<HTMLButtonElement>('[data-meq-nav="next"]');
+    const cur   = document.querySelector<HTMLElement>('[data-meq-current]');
+    const prog  = document.querySelector<HTMLElement>('[data-meq-progress]');
+    if (!track || !prev || !next) return;
+
+    const items = track.querySelectorAll<HTMLElement>('[data-meq-item]');
+    const getCardWidth = () => {
+      if (!items[0]) return 0;
+      const rect = items[0].getBoundingClientRect();
+      const styles = getComputedStyle(items[0].parentElement as HTMLElement);
+      const gap = parseFloat(styles.columnGap || styles.gap || '16') || 16;
+      return rect.width + gap;
+    };
+
+    const update = () => {
+      const sMax = track.scrollWidth - track.clientWidth;
+      const cw   = getCardWidth();
+      const idx  = cw > 0 ? Math.round(track.scrollLeft / cw) : 0;
+      const clamped = Math.max(0, Math.min(idx, items.length - 1));
+      // Toggle .is-active · zoom+dark en la card centrada
+      items.forEach((item, i) => {
+        item.classList.toggle('is-active', i === clamped);
+      });
+      if (cur) cur.textContent = String(clamped + 1).padStart(2, '0');
+      if (prog) {
+        const pct = sMax > 0 ? (track.scrollLeft / sMax) * 100 : 0;
+        prog.style.width = pct + '%';
+      }
+      prev.disabled = track.scrollLeft <= 1;
+      next.disabled = track.scrollLeft >= sMax - 1;
+    };
+
+    prev.addEventListener('click', () => {
+      track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+    });
+    next.addEventListener('click', () => {
+      track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
+    });
+    track.addEventListener('scroll', () => {
+      window.requestAnimationFrame(update);
+    }, { passive: true });
+    window.addEventListener('resize', update);
+    // Init
+    update();
+  })();
+</script>

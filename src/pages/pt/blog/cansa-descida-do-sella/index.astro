@@ -1,0 +1,235 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Tenho de estar em boa forma para remar no Sella?',
+    a: '<p>Não. O Sella é um rio calmo (classe I-II) onde a <strong>corrente faz a maior parte do trabalho</strong>. Tens de conseguir remar de forma intermitente e aguentar 2-4 horas numa canoa — isso é algo que praticamente qualquer adulto sem condições médicas especiais consegue. <strong>Não é desporto</strong>: é um passeio com remo.</p>',
+  },
+  {
+    q: 'A descida do Sella é muito cansativa fisicamente?',
+    a: '<p>Pouco. A maioria das pessoas que chega a Arriondas com medo de "não conseguir" acaba o dia surpreendida com a <strong>facilidade</strong>. Os braços sentem alguma coisa no dia seguinte, semelhante a um dia de caminhada suave, mas não tens de ser atleta.</p>',
+  },
+  {
+    q: 'O Mini Sella ou o percurso completo cansa mais?',
+    a: '<p>Proporcionalmente. O <strong>Mini Sella (7 km)</strong> qualquer pessoa acaba sem problemas — 1h30 a 2h30 de rio. O <strong>percurso completo (14,5 km)</strong> leva 3-5 horas e, embora continue calmo, pode ser longo se fores muito sedentário ou com mais de 70 anos. Para primeira experiência, recomendamos o Mini.</p>',
+  },
+  {
+    q: 'Pessoas com problemas de coluna podem remar no Sella?',
+    a: '<p>Depende da condição específica. A descida exige estar sentado numa canoa com encosto baixo durante 2-4 horas e fazer movimentos suaves de remo. <strong>Se tens hérnias ativas, dor lombar crónica ou problemas cervicais graves</strong>, consulta o teu médico e escreve-nos antes de reservar para avaliarmos o caso.</p>',
+  },
+  {
+    q: 'Há idade máxima para a descida do Sella?',
+    a: '<p>Não há limite oficial. Já levámos <strong>pessoas com 70 e 80 anos</strong> que aproveitaram sem problemas, sobretudo no Mini Sella. O que importa é a forma geral e não ter doenças graves. Em caso de dúvida, liga ou <a href="/pt/contacto/">escreve-nos</a>.</p>',
+  },
+  {
+    q: 'E se ficar cansado a meio do percurso?',
+    a: '<p>Está previsto. Fazemos uma <strong>paragem mais longa</strong> numa praia fluvial, descansas meia hora, comes o piquenique, nadas. O adulto mais em forma rema mais na segunda metade. Em casos excecionais abandona-se a descida num quiosque e <a href="/pt/contacto/">o transfer recolhe-vos</a>. Não ficas "preso" no rio.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="cansa-descida-do-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Resposta curta:</strong> não, não cansa muito. O Sella é um rio calmo que corre para o mar sem teres de empurrar. Remas para guiar e não para ir à deriva — não para avançar. Se consegues subir quatro lanços de escadas sem desmaiar, consegues descer o Sella.
+  </p>
+
+  <p>
+    É provavelmente a pergunta que mais ouvimos no balcão, no WhatsApp e por email. De cada vez vem com uma variante: <em>"cansa muito?"</em>, <em>"tenho de estar em forma?"</em>, <em>"vou conseguir chegar ao fim?"</em>. E faz sentido: quando vês fotos de canoístas na Descida Internacional, parece desporto. <strong>Isso não é o que tu e eu vamos fazer.</strong>
+  </p>
+
+  <p>
+    Este guia é a resposta honesta de uma equipa com 25 anos a ver milhares de pessoas descer o Sella. Sem fanfarra, sem minimizar riscos — só o que há.
+  </p>
+
+  <h2 class="post__h2" id="why-not-tiring">Porque <span class="serif-italic">não cansa tanto</span></h2>
+
+  <p>
+    Três razões objetivas pelas quais a descida turística do Sella é mais suave do que as pessoas imaginam.
+  </p>
+
+  <div class="post__essentials post__essentials--three">
+    <article class="post__essential">
+      <h3 class="post__essential__label">A corrente faz o trabalho</h3>
+      <p class="post__essential__desc">
+        O Sella tem um <strong>declive suave e constante</strong>. A canoa avança sozinha · remar serve para corrigir o rumo, não para empurrar. Nada como remar num lago ou no mar.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">A canoa é estável</h3>
+      <p class="post__essential__desc">
+        Inafundável, <strong>1 a 3 lugares</strong>, casco largo e remo duplo ergonómico. Sem rotação de tronco nem posturas forçadas · é uma atividade diferente de uma canoa de competição.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Paragens constantes</h3>
+      <p class="post__essential__desc">
+        A cada 1-2 km há uma <strong>praia fluvial ou quiosque</strong>. Normal são 3-5 paragens no percurso completo · o esforço divide-se, não é uma travessia mas um <em>passeio com etapas</em>.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="frias-final"
+      alt="Fim da descida do Sella em Fríes — o sorriso de ter terminado o percurso completo"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Fríes · fim do percurso completo. Após 14,5 km, a cara na canoa diz tudo: cansa o suficiente, sorri o suficiente.</figcaption>
+  </figure>
+
+  <p class="post__pull">
+    Pessoas que vivem em elevadores, avós com joelhos duvidosos, adolescentes que odeiam desporto, trabalhadores de escritório que nunca põem o pé num ginásio: todos descem o Sella e todos acabam a sorrir. O segredo é que não é esforço — é uma tarde.
+  </p>
+
+  <h2 class="post__h2" id="should-think">Quem <span class="serif-italic">deve</span> pensar bem</h2>
+
+  <p>
+    Dito isto, não é uma atividade adequada para toda a gente. Há condições a avaliar:
+  </p>
+
+  <ul>
+    <li><strong>Gravidez.</strong> Por protocolo de segurança, não permitimos a descida durante a gravidez. Não é o lado físico — seria gerível — mas o risco mínimo de cair à água.</li>
+    <li><strong>Doenças graves em curso.</strong> Cardíaca, respiratória grave, pós-operatório recente. Consulta o médico primeiro.</li>
+    <li><strong>Não saber nadar.</strong> Saber nadar é obrigatório, mesmo com colete salva-vidas. É regra de segurança.</li>
+    <li><strong>Problemas graves de coluna.</strong> Hérnias ativas, dor cervical com mobilidade reduzida. Se consegues conduzir 3 horas sem dor, provavelmente consegues descer o Sella.</li>
+    <li><strong>Pânico de água profunda.</strong> Se água acima da cintura te paralisa, o Sella não vai ser relaxante.</li>
+    <li><strong>Menos de 5 anos.</strong> Questão de colete homologado, não de esforço. Mais contexto em <a href="/pt/com-criancas/">descida do Sella com crianças</a>.</li>
+  </ul>
+
+  <h2 class="post__h2" id="by-age">O que esperar <span class="serif-italic">por idade</span></h2>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–12</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> ideal · diversão máxima. <strong>Percurso completo ·</strong> só se ativo e ≥ 9 anos.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">13–17</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> curto demais. <strong>Percurso completo ·</strong> perfeito · costumam querer mais.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">18–50</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> fácil · descontraído. <strong>Percurso completo ·</strong> fácil · escolhe o ritmo.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">50–65</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> fácil. <strong>Percurso completo ·</strong> gerível com ritmo calmo e paragens.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">65–75</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> gerível · boa opção. <strong>Percurso completo ·</strong> avaliar forma.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">75+</span>
+        <span class="post__zone__unit">anos</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> possível com boa saúde geral. <strong>Percurso completo ·</strong> consultar.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    Como vês, mesmo em idades avançadas o Mini Sella é perfeitamente gerível. Muitas pessoas reformadas descem o Sella connosco a cada época sem incidentes — com o Mini e ritmo descontraído é mais suave que uma caminhada de 3 km.
+  </p>
+
+  <h2 class="post__h2" id="soreness">Vou ter <span class="serif-italic">dores no dia seguinte?</span></h2>
+
+  <p>Muito poucas. As pessoas relatam:</p>
+
+  <ul>
+    <li><strong>Pequenos puxões nos ombros</strong> — sobretudo em primeira vez. Passam em 24-48h.</li>
+    <li><strong>Algum cansaço geral</strong> — mais do sol e ar fresco que do esforço. Dormes lindamente nessa noite.</li>
+    <li><strong>Queimadura solar se não usares creme</strong> — este é o verdadeiro inimigo. O sol refletido na água é intenso. Mais do que cansaço físico, o que te incomoda no dia seguinte é não ter posto creme suficiente. Mais detalhe em <a href="/pt/blog/que-levar-descida-do-sella/">o que levar para a descida do Sella</a>.</li>
+  </ul>
+
+  <h2 class="post__h2" id="reduce">Como reduzir o esforço<br/><span class="serif-italic">(se te preocupa)</span></h2>
+
+  <p>Cinco dicas que damos a quem chega receoso:</p>
+
+  <ol>
+    <li><strong>Escolhe o <a href="/pt/quanto-tempo-dura/">Mini Sella</a> se for a primeira vez.</strong> 7 km · 1h30-2h30. Suficiente para uma experiência completa e acabas a querer mais.</li>
+    <li><strong>Chega cedo ao horário aberto (10:30).</strong> Menos sol de meio-dia, temperatura fresca, voltas alimentado e tomado banho antes da sesta. Lembra · a tua reserva Premium tem <strong>horário aberto entre 10:30 e 12:30</strong>. Comparação de horários em <a href="/pt/blog/melhor-hora-descida-do-sella/">melhor hora do dia para a descida do Sella</a>.</li>
+    <li><strong>Vai em canoa de 3 lugares (K3) se forem 3.</strong> Distribui o esforço por mais remos e torna a descida mais gerível.</li>
+    <li><strong>Rema suave e constantemente.</strong> Mais eficaz que 5 remadas fortes e pausa. A suavidade vence.</li>
+    <li><strong>Bebe água e petisca de hora em hora.</strong> A desidratação derruba-te antes do esforço.</li>
+  </ol>
+
+  <h2 class="post__h2" id="vs-others">Comparado com <span class="serif-italic">outras atividades</span></h2>
+
+  <p>Para teres uma noção real do esforço:</p>
+
+  <div class="post__table">
+    <table>
+      <thead>
+        <tr>
+          <th>Atividade</th>
+          <th>Esforço relativo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Descida do Sella (Mini)</strong></td><td>Baixo · semelhante a caminhada plana de 5 km</td></tr>
+        <tr><td><strong>Descida do Sella (percurso completo)</strong></td><td>Médio-baixo · semelhante a caminhada de 10 km</td></tr>
+        <tr><td>Volta aos Lagos de Covadonga a pé</td><td>Médio</td></tr>
+        <tr><td>Caiaque marítimo 2h</td><td>Médio-alto</td></tr>
+        <tr><td>Ruta del Cares (completa)</td><td>Alto</td></tr>
+        <tr><td>50 km de ciclismo de estrada</td><td>Alto</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    A descida do Sella está no extremo suave da gama de atividades ao ar livre asturianas. Se gostarias de fazer os Lagos mas não tens pernas, o Sella é um plano com <strong>satisfação semelhante e metade da exigência</strong>.
+  </p>
+
+  <h2 class="post__h2" id="summary">Em resumo<br/><span class="serif-italic">(sem rodeios)</span></h2>
+
+  <ul>
+    <li>É um <strong>passeio de canoa</strong>, não um desporto.</li>
+    <li>A <strong>corrente faz o trabalho</strong> — remas para guiar, não para avançar.</li>
+    <li><strong>Mini Sella</strong> praticamente toda a gente faz · <strong>percurso completo</strong> é gerível a ritmo calmo.</li>
+    <li>As <strong>dores do dia seguinte</strong> são mínimas.</li>
+    <li><strong>Exceções reais</strong>: gravidez, não saber nadar, doença grave em curso.</li>
+    <li>Se tens dúvidas sobre o teu caso específico, <a href="/pt/contacto/">liga-nos</a> — avaliamos contigo.</li>
+  </ul>
+
+  <p>
+    Dúvida resolvida — se queres avançar para o próximo passo, consulta <a href="/pt/precos/">preços e opções</a> ou <a href="/pt/reserva-premium/">escolhe uma data</a> e reserva. A maioria dos clientes volta ao balcão com a mesma frase: <em>"não fazia ideia que era assim tão fácil"</em>. É a confirmação mais comum que recebemos.
+  </p>
+</BlogPostLayout>

@@ -1,0 +1,417 @@
+---
+/**
+ * FAQ — 2 columnas con sidebar editorial + acordeón limpio
+ * Incluye FAQPage schema JSON-LD para capturar featured snippets
+ * y "People Also Ask" en Google para "descenso del sella" y long-tails.
+ */
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const i18n = {
+  es: {
+    eyebrow: '— Preguntas frecuentes',
+    title_a: 'Todo lo que querías saber del ',
+    title_em: 'descenso del Sella',
+    lead: 'Estamos <strong>siempre en contacto</strong> para ayudarte y resolver cualquier duda sobre tu <strong>descenso del Sella</strong> — desde la reserva hasta el día de la actividad.',
+    badge_whatsapp: '<strong>WhatsApp 24/7</strong> · respuesta en minutos',
+    badge_phone: '<strong>Teléfono 9:00–19:00</strong> · atención directa',
+    badge_news: '<strong>Novedades diarias del río</strong> · caudal y estado',
+    faqs: [
+      {
+        q: '¿Cuánto dura el descenso del Sella en canoa?',
+        a: 'El descenso del Sella puede durar entre <strong>2 y 5 horas</strong> según la ruta que elijas. El <em>Mini Sella</em> (7 km, de Arriondas a Toraño) dura entre <strong>2 y 3 horas</strong>, ideal con niños o para quienes prefieren una bajada tranquila. El <em>descenso completo</em> (14,5 km, hasta Fríes) dura entre <strong>4 y 5 horas</strong> e incluye los tramos más variados y el paisaje más espectacular del río.',
+      },
+      {
+        q: '¿Cuánto cuesta el descenso del Sella?',
+        a: 'El precio del descenso del Sella en canoa con nosotros es de <strong>30&nbsp;€ para niños</strong> (hasta 12 años) y <strong>40&nbsp;€ para adultos</strong>. El precio es el mismo en ambas rutas e incluye todo el equipo (canoa insumergible, pala doble, chaleco homologado, bidón estanco, neopreno en fechas frías), mini clase con monitores titulados, rampa de embarque opcional, transfer de regreso, picnic asturiano, vestuarios con duchas, taquillas con llave, <strong>parking privado vigilado (300 plazas · también para autocaravanas)</strong> y seguros obligatorios.',
+      },
+      {
+        q: '¿Es apto para niños? ¿Y para familias?',
+        a: 'El descenso del Sella es <strong>ideal para familias</strong>, pero tiene un <strong>requisito estricto de seguridad</strong>: los menores pueden bajar a partir de <strong>5 años cumplidos y 1,15 m de altura mínima</strong>. No es solo por el chaleco salvavidas — también por la naturaleza del río (corriente, profundidad variable, tramos con rápidos) y por exigencia de las <strong>compañías de seguros</strong> con las que operamos. <strong>No se admiten menores que no lleguen al mínimo</strong>, ni aunque vayan acompañados de un adulto o sepan nadar. Si los peques aún no llegan, os invitamos a volver cuando crezcan.',
+      },
+      {
+        q: '¿Cuál es la mejor época para hacer el descenso del Sella?',
+        a: 'El Sella se navega de <strong>marzo a noviembre</strong>. La mejor temporada es <strong>julio y agosto</strong> (agua templada, más horas de luz, caudal ideal). <strong>Septiembre y octubre</strong> son también excelentes: menos afluencia, colores ocres y gastronomía asturiana de temporada. Primavera y principio de otoño para quien busca calma y caudal alto.',
+      },
+      {
+        q: '¿Se puede hacer el descenso del Sella con perro?',
+        a: 'Sí, <strong>las mascotas son bienvenidas y gratis</strong>. Tu perro baja en la canoa contigo sin coste adicional, y al terminar el trayecto <strong>sube contigo a nuestro transfer de regreso sin problemas</strong>. Te recomendamos que el animal esté acostumbrado al agua y lleve su propio chaleco si es pequeño.',
+      },
+      {
+        q: '¿Hay que saber nadar o tener experiencia previa en piragüismo?',
+        a: '<strong>Saber nadar es un requisito obligatorio por ley.</strong> Sin embargo, <strong>no necesitas experiencia previa</strong> en piragüismo. Nuestras canoas son de fondo plano y muy estables, y antes de salir recibirás una <strong>breve charla técnica con nuestros monitores titulados</strong> para aprender a manejar el remo, maniobrar y pasar los rápidos del Sella, un río tranquilo adaptado a todos los niveles.',
+      },
+      {
+        q: '¿Tengo que elegir una hora de salida?',
+        a: 'No. Tu reserva es <strong>Premium · horario abierto</strong>: llega a nuestras instalaciones de Arriondas <strong>cuando te venga bien entre las 10:30 y las 12:30</strong>, sin necesidad de elegir hora concreta. Es una de las <strong>ventajas Premium</strong> · te equipamos al llegar y sales al río según estés listo. <strong>Excepciones</strong>: el sábado del <a href="/descenso-internacional-del-sella/">Descenso Internacional</a> tiene salida única en hora concreta · y si por temporal o condiciones del río necesitamos una hora específica o salida con monitor, te avisamos con antelación. La Confederación Hidrográfica marca permanencia en el río hasta las 18:00 h.',
+      },
+      {
+        q: '¿Hay alguna restricción de salud? ¿Puedo bajar si estoy embarazada?',
+        a: 'Por seguridad, <strong>no se puede realizar la actividad</strong> si: (1) se padece una <strong>enfermedad grave</strong> (cardiovascular, respiratoria, epilepsia u otra condición que pueda verse agravada por el esfuerzo físico o la inmersión), (2) se está <strong>embarazada</strong>, o (3) <strong>no se sabe nadar</strong>. Estas restricciones responden a exigencias de las compañías aseguradoras y a criterios propios de seguridad. Si tienes dudas sobre una condición específica, <a href="/contacto/">consúltanos antes de reservar</a>.',
+      },
+      {
+        q: '¿Qué incluye la reserva? ¿Hay que pagar algo más al llegar?',
+        a: 'La reserva incluye <strong>todo</strong>: canoa insumergible K1/K2/K3, pala doble, chaleco salvavidas, bidón estanco, neopreno en fechas frías, mini clase con monitor titulado, transfer de regreso desde Toraño o Fríes, picnic asturiano (empanada de bonito, bollín preñao y agua), vestuarios con duchas, taquillas con llave, <strong>parking privado vigilado (300 plazas · también para autocaravanas)</strong> y seguros. <strong>No hay sorpresas ni extras</strong> el día de la actividad.',
+      },
+      {
+        q: '¿Cómo se reserva el descenso del Sella?',
+        a: 'Trabajamos <strong>solo bajo reserva previa</strong>. Puedes reservar online desde nuestra web en 2 minutos, o directamente por WhatsApp (+34 681 09 36 73) o email (reservas@aventuraenelsella.es). <strong>Sin pagar por adelantado</strong> — pagas <strong>el día de la actividad al recoger la canoa</strong> o <strong>con tarjeta por adelantado</strong>, lo que te sea más cómodo. Puedes <strong>cambiar o cancelar</strong> en cualquier momento antes del día de la actividad; si pagaste con tarjeta, el reembolso requiere al menos <strong>24 h de antelación</strong>.',
+      },
+    ],
+  },
+  en: {
+    eyebrow: '— Frequently asked questions',
+    title_a: 'Everything you wanted to know about the ',
+    title_em: 'Sella River descent',
+    lead: 'We are <strong>always in touch</strong> to help you and answer any questions about your <strong>Sella River descent</strong> — from booking to the day of the activity.',
+    badge_whatsapp: '<strong>WhatsApp 24/7</strong> · reply in minutes',
+    badge_phone: '<strong>Phone 9:00–19:00</strong> · direct support',
+    badge_news: '<strong>Daily river updates</strong> · flow and status',
+    faqs: [
+      {
+        q: 'How long does the Sella River descent by canoe take?',
+        a: 'The Sella descent can take between <strong>2 and 5 hours</strong> depending on the route you choose. The <em>Mini Sella</em> (7 km, from Arriondas to Toraño) takes <strong>2 to 3 hours</strong>, ideal with children or for those who prefer a calmer paddle. The <em>full descent</em> (14.5 km, down to Fríes) takes <strong>4 to 5 hours</strong> and includes the most varied stretches and the most spectacular scenery of the river.',
+      },
+      {
+        q: 'How much does the Sella River descent cost?',
+        a: 'The price of the Sella River descent by canoe with us is <strong>€30 for children</strong> (up to 12 years old) and <strong>€40 for adults</strong>. The price is the same on both routes and includes all the equipment (unsinkable canoe, double paddle, certified life jacket, dry barrel, wetsuit on cold dates), a mini class with qualified instructors, optional boarding ramp, return transfer, Asturian picnic, changing rooms with showers, lockers with keys, <strong>private guarded parking (300 spaces · also for motorhomes)</strong> and mandatory insurance.',
+      },
+      {
+        q: 'Is it suitable for children? And for families?',
+        a: 'The Sella descent is <strong>ideal for families</strong>, but it has a <strong>strict safety requirement</strong>: minors can paddle from <strong>5 years old and a minimum height of 1.15 m</strong>. It is not only because of the life jacket — it is also due to the nature of the river (current, variable depth, sections with rapids) and the requirements of the <strong>insurance companies</strong> we work with. <strong>Children who do not meet the minimum are not admitted</strong>, even if accompanied by an adult or if they can swim. If the little ones are not there yet, we invite you to come back when they grow.',
+      },
+      {
+        q: 'What is the best time to do the Sella River descent?',
+        a: 'The Sella is navigable from <strong>March to November</strong>. The best season is <strong>July and August</strong> (warm water, more daylight hours, ideal flow). <strong>September and October</strong> are also excellent: fewer crowds, ochre colours and seasonal Asturian cuisine. Spring and early autumn for those looking for calm and high flow.',
+      },
+      {
+        q: 'Can you do the Sella River descent with a dog?',
+        a: 'Yes, <strong>pets are welcome and free</strong>. Your dog rides in the canoe with you at no extra cost, and at the end of the route <strong>they ride with you on our return transfer with no problem</strong>. We recommend that the animal be used to water and wear its own life jacket if it is small.',
+      },
+      {
+        q: 'Do I need to know how to swim or have previous canoeing experience?',
+        a: '<strong>Knowing how to swim is a legally required condition.</strong> However, <strong>you do not need previous experience</strong> in canoeing. Our canoes are flat-bottomed and very stable, and before setting off you will receive a <strong>short technical briefing with our qualified instructors</strong> to learn how to handle the paddle, manoeuvre and pass the rapids of the Sella, a calm river suitable for all levels.',
+      },
+      {
+        q: 'Do I have to choose a departure time?',
+        a: 'No. Your booking is <strong>Premium · open hours</strong>: arrive at our facilities in Arriondas <strong>whenever it suits you, between 10:30 and 12:30</strong>, with no need to pick a specific time. It is one of the <strong>Premium advantages</strong> · we kit you out on arrival and you head to the river when you are ready. <strong>Exceptions</strong>: the Saturday of the <a href="/descenso-internacional-del-sella/">International Descent</a> has a single departure at a set time · and if a storm or river conditions require a specific time or a guided departure, we will let you know in advance. The Hydrographic Confederation sets a river curfew at 18:00.',
+      },
+      {
+        q: 'Are there any health restrictions? Can I paddle if I am pregnant?',
+        a: 'For safety reasons, <strong>the activity cannot be carried out</strong> if: (1) you suffer from a <strong>serious illness</strong> (cardiovascular, respiratory, epilepsy or another condition that may be aggravated by physical effort or immersion), (2) you are <strong>pregnant</strong>, or (3) <strong>you cannot swim</strong>. These restrictions respond to insurance company requirements and our own safety criteria. If you have doubts about a specific condition, <a href="/contacto/">contact us before booking</a>.',
+      },
+      {
+        q: 'What does the booking include? Do I have to pay anything else on arrival?',
+        a: 'The booking includes <strong>everything</strong>: unsinkable K1/K2/K3 canoe, double paddle, life jacket, dry barrel, wetsuit on cold dates, mini class with qualified instructor, return transfer from Toraño or Fríes, Asturian picnic (tuna pie, traditional Asturian bun and water), changing rooms with showers, lockers with keys, <strong>private guarded parking (300 spaces · also for motorhomes)</strong> and insurance. <strong>No surprises or extras</strong> on the day of the activity.',
+      },
+      {
+        q: 'How do you book the Sella River descent?',
+        a: 'We work <strong>by advance booking only</strong>. You can book online from our website in 2 minutes, or directly by WhatsApp (+34 681 09 36 73) or email (reservas@aventuraenelsella.es). <strong>No upfront payment</strong> — you pay <strong>on the day of the activity when you pick up the canoe</strong> or <strong>by card in advance</strong>, whichever suits you best. You can <strong>change or cancel</strong> at any time before the day of the activity; if you paid by card, the refund requires at least <strong>24 h notice</strong>.',
+      },
+    ],
+  },
+  fr: {
+    eyebrow: '— Questions fréquentes',
+    title_a: 'Tout ce que vous vouliez savoir sur la ',
+    title_em: 'descente du Sella',
+    lead: 'Nous sommes <strong>toujours en contact</strong> pour vous aider et répondre à toutes vos questions sur votre <strong>descente du Sella</strong> — de la réservation au jour de l\'activité.',
+    badge_whatsapp: '<strong>WhatsApp 24/7</strong> · réponse en quelques minutes',
+    badge_phone: '<strong>Téléphone 9h00–19h00</strong> · accueil direct',
+    badge_news: '<strong>Actualités quotidiennes de la rivière</strong> · débit et état',
+    faqs: [
+      {
+        q: 'Combien de temps dure la descente du Sella en canoë?',
+        a: 'La descente du Sella peut durer entre <strong>2 et 5 heures</strong> selon le parcours choisi. Le <em>Mini Sella</em> (7 km, d\'Arriondas à Toraño) dure entre <strong>2 et 3 heures</strong>, idéal avec des enfants ou pour ceux qui préfèrent une descente tranquille. Le <em>parcours complet</em> (14,5 km, jusqu\'à Fríes) dure entre <strong>4 et 5 heures</strong> et comprend les tronçons les plus variés et les paysages les plus spectaculaires de la rivière.',
+      },
+      {
+        q: 'Combien coûte la descente du Sella?',
+        a: 'Le prix de la descente du Sella en canoë avec nous est de <strong>30&nbsp;€ pour les enfants</strong> (jusqu\'à 12 ans) et <strong>40&nbsp;€ pour les adultes</strong>. Le prix est le même sur les deux parcours et comprend tout l\'équipement (canoë insubmersible, pagaie double, gilet homologué, bidon étanche, néoprène par temps froid), mini-cours avec moniteurs diplômés, rampe d\'embarquement en option, transfert retour, pique-nique asturien, vestiaires avec douches, casiers avec clé, <strong>parking privé surveillé (300 places · aussi pour camping-cars)</strong> et assurances obligatoires.',
+      },
+      {
+        q: 'Est-ce adapté aux enfants? Et aux familles?',
+        a: 'La descente du Sella est <strong>idéale pour les familles</strong>, mais elle a une <strong>exigence stricte de sécurité</strong>: les mineurs peuvent descendre à partir de <strong>5 ans révolus et 1,15 m de taille minimum</strong>. Ce n\'est pas seulement à cause du gilet de sauvetage — c\'est aussi par la nature de la rivière (courant, profondeur variable, sections avec rapides) et par exigence des <strong>compagnies d\'assurance</strong> avec lesquelles nous opérons. <strong>Les enfants qui n\'atteignent pas le minimum ne sont pas admis</strong>, même accompagnés d\'un adulte ou même s\'ils savent nager. Si les petits ne sont pas encore prêts, nous vous invitons à revenir quand ils auront grandi.',
+      },
+      {
+        q: 'Quelle est la meilleure période pour faire la descente du Sella?',
+        a: 'Le Sella se navigue de <strong>mars à novembre</strong>. La meilleure saison est <strong>juillet et août</strong> (eau tempérée, plus d\'heures de lumière, débit idéal). <strong>Septembre et octobre</strong> sont également excellents: moins de monde, couleurs ocres et gastronomie asturienne de saison. Printemps et début d\'automne pour ceux qui cherchent calme et débit élevé.',
+      },
+      {
+        q: 'Peut-on faire la descente du Sella avec un chien?',
+        a: 'Oui, <strong>les animaux sont les bienvenus et gratuits</strong>. Votre chien descend dans le canoë avec vous sans coût supplémentaire, et à la fin du parcours <strong>il monte avec vous dans notre transfert retour sans problème</strong>. Nous recommandons que l\'animal soit habitué à l\'eau et porte son propre gilet s\'il est petit.',
+      },
+      {
+        q: 'Faut-il savoir nager ou avoir une expérience préalable en canoë?',
+        a: '<strong>Savoir nager est une exigence obligatoire par la loi.</strong> Cependant, <strong>vous n\'avez pas besoin d\'expérience préalable</strong> en canoë. Nos canoës sont à fond plat et très stables, et avant de partir vous recevrez une <strong>brève séance technique avec nos moniteurs diplômés</strong> pour apprendre à manier la pagaie, manœuvrer et passer les rapides du Sella, une rivière tranquille adaptée à tous les niveaux.',
+      },
+      {
+        q: 'Dois-je choisir une heure de départ?',
+        a: 'Non. Votre réservation est <strong>Premium · horaires ouverts</strong>: arrivez à nos installations d\'Arriondas <strong>quand cela vous convient, entre 10h30 et 12h30</strong>, sans avoir à choisir une heure précise. C\'est l\'un des <strong>avantages Premium</strong> · nous vous équipons à l\'arrivée et vous partez sur la rivière quand vous êtes prêts. <strong>Exceptions</strong>: le samedi de la <a href="/descenso-internacional-del-sella/">Descente Internationale</a> a un départ unique à heure précise · et si une tempête ou les conditions de la rivière nécessitent une heure spécifique ou un départ avec moniteur, nous vous prévenons à l\'avance. La Confédération Hydrographique fixe la permanence sur la rivière jusqu\'à 18h00.',
+      },
+      {
+        q: 'Y a-t-il des restrictions de santé? Puis-je descendre si je suis enceinte?',
+        a: 'Pour des raisons de sécurité, <strong>l\'activité ne peut être réalisée</strong> si: (1) vous souffrez d\'une <strong>maladie grave</strong> (cardiovasculaire, respiratoire, épilepsie ou autre condition pouvant être aggravée par l\'effort physique ou l\'immersion), (2) vous êtes <strong>enceinte</strong>, ou (3) <strong>vous ne savez pas nager</strong>. Ces restrictions répondent aux exigences des compagnies d\'assurance et à nos propres critères de sécurité. Si vous avez des doutes sur une condition spécifique, <a href="/contacto/">contactez-nous avant de réserver</a>.',
+      },
+      {
+        q: 'Que comprend la réservation? Faut-il payer autre chose à l\'arrivée?',
+        a: 'La réservation comprend <strong>tout</strong>: canoë insubmersible K1/K2/K3, pagaie double, gilet de sauvetage, bidon étanche, néoprène par temps froid, mini-cours avec moniteur diplômé, transfert retour depuis Toraño ou Fríes, pique-nique asturien (empanada au thon, petit pain asturien et eau), vestiaires avec douches, casiers avec clé, <strong>parking privé surveillé (300 places · aussi pour camping-cars)</strong> et assurances. <strong>Pas de surprises ni d\'extras</strong> le jour de l\'activité.',
+      },
+      {
+        q: 'Comment réserver la descente du Sella?',
+        a: 'Nous travaillons <strong>uniquement sur réservation à l\'avance</strong>. Vous pouvez réserver en ligne depuis notre site en 2 minutes, ou directement par WhatsApp (+34 681 09 36 73) ou email (reservas@aventuraenelsella.es). <strong>Sans payer à l\'avance</strong> — vous payez <strong>le jour de l\'activité en retirant le canoë</strong> ou <strong>par carte à l\'avance</strong>, selon ce qui vous convient le mieux. Vous pouvez <strong>modifier ou annuler</strong> à tout moment avant le jour de l\'activité; si vous avez payé par carte, le remboursement nécessite au moins <strong>24 h d\'avance</strong>.',
+      },
+    ],
+  },
+  pt: {
+    eyebrow: '— Perguntas frequentes',
+    title_a: 'Tudo o que querias saber sobre a ',
+    title_em: 'descida do Sella',
+    lead: 'Estamos <strong>sempre em contacto</strong> para te ajudar e esclarecer qualquer dúvida sobre a tua <strong>descida do Sella</strong> — desde a reserva até ao dia da atividade.',
+    badge_whatsapp: '<strong>WhatsApp 24/7</strong> · resposta em minutos',
+    badge_phone: '<strong>Telefone 9:00–19:00</strong> · atendimento direto',
+    badge_news: '<strong>Novidades diárias do rio</strong> · caudal e estado',
+    faqs: [
+      {
+        q: 'Quanto tempo dura a descida do Sella de canoa?',
+        a: 'A descida do Sella pode durar entre <strong>2 e 5 horas</strong> conforme o percurso que escolheres. O <em>Mini Sella</em> (7 km, de Arriondas a Toraño) dura entre <strong>2 e 3 horas</strong>, ideal com crianças ou para quem prefere uma descida tranquila. A <em>descida completa</em> (14,5 km, até Fríes) dura entre <strong>4 e 5 horas</strong> e inclui os trechos mais variados e a paisagem mais espetacular do rio.',
+      },
+      {
+        q: 'Quanto custa a descida do Sella?',
+        a: 'O preço da descida do Sella de canoa connosco é de <strong>30&nbsp;€ para crianças</strong> (até 12 anos) e <strong>40&nbsp;€ para adultos</strong>. O preço é o mesmo em ambos os percursos e inclui todo o equipamento (canoa insubmersível, remo duplo, colete homologado, bidão estanque, neopreno em datas frias), mini-aula com monitores titulados, rampa de embarque opcional, transfer de regresso, piquenique asturiano, balneários com duches, cacifos com chave, <strong>estacionamento privado vigiado (300 lugares · também para autocaravanas)</strong> e seguros obrigatórios.',
+      },
+      {
+        q: 'É adequado para crianças? E para famílias?',
+        a: 'A descida do Sella é <strong>ideal para famílias</strong>, mas tem um <strong>requisito estrito de segurança</strong>: os menores podem descer a partir dos <strong>5 anos completos e 1,15 m de altura mínima</strong>. Não é apenas pelo colete salva-vidas — também pela natureza do rio (corrente, profundidade variável, trechos com rápidos) e por exigência das <strong>seguradoras</strong> com que operamos. <strong>Não se admitem menores que não atinjam o mínimo</strong>, nem que vão acompanhados de um adulto ou saibam nadar. Se os pequenos ainda não chegam, convidamos-vos a voltar quando crescerem.',
+      },
+      {
+        q: 'Qual é a melhor época para fazer a descida do Sella?',
+        a: 'O Sella navega-se de <strong>março a novembro</strong>. A melhor temporada é <strong>julho e agosto</strong> (água temperada, mais horas de luz, caudal ideal). <strong>Setembro e outubro</strong> também são excelentes: menos afluência, cores ocre e gastronomia asturiana de época. Primavera e início de outono para quem procura calma e caudal alto.',
+      },
+      {
+        q: 'Pode-se fazer a descida do Sella com cão?',
+        a: 'Sim, <strong>os animais são bem-vindos e grátis</strong>. O teu cão desce na canoa contigo sem custo adicional, e ao terminar o percurso <strong>sobe contigo no nosso transfer de regresso sem problemas</strong>. Recomendamos que o animal esteja habituado à água e leve o seu próprio colete se for pequeno.',
+      },
+      {
+        q: 'É preciso saber nadar ou ter experiência prévia em canoagem?',
+        a: '<strong>Saber nadar é um requisito obrigatório por lei.</strong> No entanto, <strong>não precisas de experiência prévia</strong> em canoagem. As nossas canoas são de fundo plano e muito estáveis, e antes de sair receberás uma <strong>breve conversa técnica com os nossos monitores titulados</strong> para aprender a manejar o remo, manobrar e passar os rápidos do Sella, um rio tranquilo adaptado a todos os níveis.',
+      },
+      {
+        q: 'Tenho de escolher uma hora de saída?',
+        a: 'Não. A tua reserva é <strong>Premium · horário aberto</strong>: chega às nossas instalações de Arriondas <strong>quando te der jeito entre as 10:30 e as 12:30</strong>, sem necessidade de escolher uma hora concreta. É uma das <strong>vantagens Premium</strong> · equipamos-te à chegada e sais para o rio quando estiveres pronto. <strong>Exceções</strong>: o sábado da <a href="/descenso-internacional-del-sella/">Descida Internacional</a> tem saída única em hora concreta · e se por temporal ou condições do rio precisarmos de uma hora específica ou saída com monitor, avisamos-te com antecedência. A Confederação Hidrográfica marca permanência no rio até às 18:00.',
+      },
+      {
+        q: 'Há alguma restrição de saúde? Posso descer se estiver grávida?',
+        a: 'Por segurança, <strong>não se pode realizar a atividade</strong> se: (1) se sofre de uma <strong>doença grave</strong> (cardiovascular, respiratória, epilepsia ou outra condição que possa ser agravada pelo esforço físico ou imersão), (2) se está <strong>grávida</strong>, ou (3) <strong>não se sabe nadar</strong>. Estas restrições respondem a exigências das seguradoras e a critérios próprios de segurança. Se tens dúvidas sobre uma condição específica, <a href="/contacto/">contacta-nos antes de reservar</a>.',
+      },
+      {
+        q: 'O que inclui a reserva? Há que pagar algo mais à chegada?',
+        a: 'A reserva inclui <strong>tudo</strong>: canoa insubmersível K1/K2/K3, remo duplo, colete salva-vidas, bidão estanque, neopreno em datas frias, mini-aula com monitor titulado, transfer de regresso desde Toraño ou Fríes, piquenique asturiano (empada de bonito, bolinho asturiano e água), balneários com duches, cacifos com chave, <strong>estacionamento privado vigiado (300 lugares · também para autocaravanas)</strong> e seguros. <strong>Sem surpresas nem extras</strong> no dia da atividade.',
+      },
+      {
+        q: 'Como se reserva a descida do Sella?',
+        a: 'Trabalhamos <strong>apenas com reserva antecipada</strong>. Podes reservar online a partir do nosso site em 2 minutos, ou diretamente por WhatsApp (+34 681 09 36 73) ou email (reservas@aventuraenelsella.es). <strong>Sem pagar adiantado</strong> — pagas <strong>no dia da atividade ao recolher a canoa</strong> ou <strong>com cartão antecipado</strong>, o que te for mais cómodo. Podes <strong>alterar ou cancelar</strong> a qualquer momento antes do dia da atividade; se pagaste com cartão, o reembolso requer pelo menos <strong>24 h de antecedência</strong>.',
+      },
+    ],
+  },
+} as const;
+
+const t = i18n[lang] ?? i18n.es;
+
+// Localiza los href ES que viven embebidos en los textos i18n de las respuestas
+// (atajo a páginas internas mencionadas dentro del párrafo).
+const urlInternacional = getLocalePath('descenso_internacional', lang);
+const urlContacto = getLocalePath('contacto', lang);
+
+const faqs = t.faqs.map(faq => ({
+  q: faq.q,
+  a: faq.a
+    .replace(/href="\/descenso-internacional-del-sella\/"/g, `href="${urlInternacional}"`)
+    .replace(/href="\/contacto\/"/g, `href="${urlContacto}"`),
+}));
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${baseUrl}/#faq`,
+  mainEntity: faqs.map(f => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: f.a.replace(/<[^>]+>/g, ''),
+    },
+  })),
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+
+<section class="faqE">
+  <div class="container container--xl">
+    <div class="faqE__grid">
+      <!-- Sidebar -->
+      <aside class="faqE__aside">
+        <span class="faqE__eyebrow">{t.eyebrow}</span>
+        <h2 class="faqE__title">{t.title_a}<em>{t.title_em}</em></h2>
+        <p class="faqE__lead" set:html={t.lead}></p>
+
+        <div class="faqE__badges">
+          <span class="faqE__badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span set:html={t.badge_whatsapp}></span>
+          </span>
+          <span class="faqE__badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span set:html={t.badge_phone}></span>
+          </span>
+          <span class="faqE__badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span set:html={t.badge_news}></span>
+          </span>
+        </div>
+      </aside>
+
+      <!-- Acordeón -->
+      <div class="faqE__list">
+        {faqs.map((f, i) => (
+          <details class="faqERow" name="faq-home" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="faqERow__sign" aria-hidden="true">
+                <svg class="plus" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="faqERow__a" set:html={f.a}></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faqE {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-elevated, #FFFFFF);
+  }
+
+  .faqE__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  @media (min-width: 900px) {
+    .faqE__grid { grid-template-columns: 1fr 1.3fr; gap: clamp(3rem, 5vw, 5rem); }
+  }
+
+  /* Aside */
+  .faqE__aside { min-width: 0; }
+  .faqE__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: var(--s-4);
+  }
+  .faqE__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-4);
+  }
+  .faqE__title em {
+    font-family: var(--font-serif); font-style: italic;
+    font-weight: 400; color: var(--color-primary);
+    letter-spacing: -0.01em;
+  }
+  .faqE__lead {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--s-6);
+  }
+
+  .faqE__badges {
+    display: flex; flex-direction: column; gap: var(--s-3);
+    margin-top: var(--s-6);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--color-border-subtle);
+  }
+  .faqE__badge {
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.45;
+    color: var(--color-text-secondary);
+  }
+  .faqE__badge strong {
+    color: var(--color-text-primary); font-weight: 700;
+  }
+  .faqE__badge svg {
+    color: var(--color-primary); flex-shrink: 0;
+    background: rgba(233, 133, 111, 0.14);
+    border-radius: 50%;
+    padding: 4px;
+    box-sizing: content-box;
+    margin-top: 2px;
+  }
+
+  /* Lista acordeón */
+  .faqE__list {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+
+  .faqERow {
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: border-color 200ms var(--ease-out);
+  }
+  .faqERow[open] {
+    border-color: rgba(233, 133, 111, 0.35);
+  }
+
+  .faqERow > summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
+    font-weight: 700;
+    line-height: 1.35;
+    color: var(--color-text-primary);
+    transition: color 200ms var(--ease-out);
+  }
+  .faqERow > summary::-webkit-details-marker { display: none; }
+  .faqERow > summary:hover { color: var(--color-primary); }
+
+  .faqERow__sign {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+    transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms;
+  }
+  .faqERow:hover .faqERow__sign { color: var(--color-primary); }
+  .faqERow[open] .faqERow__sign {
+    transform: rotate(45deg);
+    color: var(--color-primary);
+  }
+
+  .faqERow__a {
+    padding: 0 0 var(--s-5);
+    font-family: var(--font-sans);
+    font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+  }
+  .faqERow__a :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 700;
+  }
+</style>

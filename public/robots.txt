@@ -1,0 +1,44 @@
+# Aventura en el Sella · robots.txt
+# https://aventuraenelsella.es
+
+# =========== Bots permitidos (User-agent: *) ===========
+# Incluye Googlebot, Bingbot, DuckDuckBot, y bots de IA legítimos:
+# GPTBot, ChatGPT-User, OAI-SearchBot (OpenAI)
+# ClaudeBot, anthropic-ai (Anthropic)
+# PerplexityBot (Perplexity)
+# Google-Extended (Gemini)
+User-agent: *
+Allow: /
+
+# Bloqueo de paths técnicos
+Disallow: /admin/
+Disallow: /api/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /wp-json/
+Disallow: /*.json$
+
+# Bloqueo querystrings (cache-busters, parámetros tracking)
+# ⚠️ Esto bloquea cualquier URL con ?v=, ?utm=, etc.
+# Por eso favicons/og:image NUNCA usan ?v=N — colisiona con esta regla.
+Disallow: /*?*
+Disallow: /*&*
+
+# =========== Bots de scraping comercial (bloqueados) ===========
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: BLEXBot
+Disallow: /
+
+# =========== Sitemap ===========
+Sitemap: https://aventuraenelsella.es/sitemap-index.xml

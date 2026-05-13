@@ -1,0 +1,82 @@
+# =================================================================
+# Aventura en el Sella · redirects y rewrites de LiteSpeed/Apache
+# =================================================================
+
+# Forzar HTTPS
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # HTTP → HTTPS (solo en producción con certificado)
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # www → no-www (canonical sin www)
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# =================================================================
+# Redirecciones 301 (migración WordPress → Astro)
+# Mapeo documentado en memory/project_current_site.md
+# =================================================================
+
+# Descenso Internacional del Sella — recuperar link juice de la URL antigua
+Redirect 301 /descenso-internacional-del-sella-2022/ /descenso-internacional-del-sella/
+Redirect 301 /descenso-internacional-del-sella-2022  /descenso-internacional-del-sella/
+
+# Consolidar "experiencia única" en la Home
+Redirect 301 /el-descenso-del-sella-una-experiencia-unica/ /
+Redirect 301 /el-descenso-del-sella-una-experiencia-unica  /
+
+# URLs antiguas WordPress → nuevos slugs Astro
+Redirect 301 /descenso-del-sella-con-ninos/      /con-ninos/
+Redirect 301 /el-descenso-del-sella-con-perro/   /con-perro/
+Redirect 301 /mapa-del-descenso-del-sella/       /recorrido-y-mapa/
+Redirect 301 /contacto-descenso-del-sella/       /contacto/
+Redirect 301 /descenso-del-sella-alquiler-canoas/ /precios/
+Redirect 301 /llegar-al-descenso-del-sella/      /arriondas/
+Redirect 301 /politica-privacidad/               /legal/privacidad/
+
+# =================================================================
+# Cache headers (Core Web Vitals)
+# =================================================================
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # Imágenes
+  ExpiresByType image/avif "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/png  "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+
+  # Fuentes
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff  "access plus 1 year"
+
+  # CSS/JS
+  ExpiresByType text/css               "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+
+  # HTML (corto — permitir actualizaciones rápidas de copy)
+  ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# =================================================================
+# Compresión (CWV)
+# =================================================================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>
+
+# =================================================================
+# Security headers básicos
+# =================================================================
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Permissions-Policy "geolocation=(self), camera=(), microphone=()"
+</IfModule>

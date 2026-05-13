@@ -1,0 +1,93 @@
+---
+---
+
+<section class="intro">
+  <div class="container container--lg">
+    <div class="intro__grid">
+      <div class="intro__label-col" data-reveal>
+        <span class="eyebrow intro__eyebrow">01 — Qué te vas a encontrar</span>
+      </div>
+
+      <div class="intro__content">
+        <h2 class="intro__title" data-reveal data-reveal-delay="1">
+          No es solo remar.<br/>
+          <span class="serif-italic">es regalarse un gran día</span><br/>
+          en Asturias.
+        </h2>
+
+        <p class="body-lg intro__lead" data-reveal data-reveal-delay="2">
+          El descenso del Sella es una de las mejores formas de descubrir
+          Asturias desde una perspectiva diferente. Una ruta en canoa por
+          uno de los entornos más conocidos del Principado, con paisajes
+          verdes, zonas de descanso y esa sensación de libertad que
+          convierte un día normal en un día memorable.
+        </p>
+
+        <p class="body intro__text" data-reveal data-reveal-delay="3">
+          Tanto si vienes en pareja como con amigos, niños o con tu perro,
+          te ayudamos a convertir esta actividad en uno de los mejores
+          recuerdos de tu viaje. Sin experiencia previa, sin prisas, sin
+          complicaciones. Tú pones las ganas, nosotros el resto.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro {
+    padding-block: var(--section-padding-lg);
+    background: var(--color-bg-base);
+  }
+
+  .intro__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+  }
+
+  @media (min-width: 960px) {
+    .intro__grid {
+      grid-template-columns: 1fr 3fr;
+      gap: var(--s-16);
+    }
+  }
+
+  .intro__eyebrow {
+    display: inline-block;
+    color: var(--color-primary);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--color-border-default);
+  }
+
+  .intro__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.05;
+    letter-spacing: var(--ls-tighter);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-10);
+    text-wrap: balance;
+  }
+
+  .intro__title .serif-italic {
+    color: var(--color-sage);
+    font-weight: var(--fw-regular);
+    letter-spacing: -0.01em;
+  }
+
+  .intro__lead {
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    line-height: 1.55;
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-6);
+    max-width: 720px;
+  }
+
+  .intro__text {
+    color: var(--color-text-secondary);
+    line-height: var(--lh-body);
+    max-width: 720px;
+  }
+</style>

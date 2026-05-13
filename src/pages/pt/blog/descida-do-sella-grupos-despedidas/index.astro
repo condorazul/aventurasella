@@ -1,0 +1,244 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'A partir de quantas pessoas é considerado grupo?',
+    a: '<p>Na prática, a partir de <strong>8 pessoas</strong> já falamos de grupo, porque implica coordenar canoas, horários e transfer. A partir de 15 pessoas tratamo-lo como reserva de grupo com um contacto único e margem para personalizar o piquenique, hora e paragens. Sem mínimo estrito: em 25 anos organizámos tudo, de casais a autocarros de 60 pessoas.</p>',
+  },
+  {
+    q: 'Fazem descidas do Sella para despedidas de solteiro/a?',
+    a: '<p>Sim. As despedidas são <strong>um dos nossos planos preferidos</strong> — boa onda, risadas e o Sella trata do resto. Como o horário é <strong>Premium · aberto</strong>, chegam às instalações <strong>entre as 10:30 e as 12:30</strong> · sem hora fixa. Se querem o rio mais calmo, cheguem cedo (10:30-11:00) · se preferem ambiente animado a meio-dia, cheguem por volta das 12:00. Reservem com antecedência (agosto enche rápido) e lembrem-se que <strong>não se consome álcool no rio</strong> — fica para o almoço/jantar depois.</p>',
+  },
+  {
+    q: 'Pode-se reservar a descida em exclusividade para um grupo?',
+    a: '<p>O rio é público, por isso <strong>não pode ser "privatizado"</strong>. Podemos reservar um horário específico para que todo o grupo saia em conjunto, com <strong>aula explicativa adaptada ao tamanho do grupo</strong>, monitores qualificados a vigiar o rio durante o dia e tratamento especial no atendimento.</p>',
+  },
+  {
+    q: 'O que fazemos se alguns do grupo não quiserem remar?',
+    a: '<p>É comum. Arriondas tem <strong>cafés, uma praça e um passeio ribeirinho</strong> para esperarem calmamente, e podem juntar-se ao grupo no quiosque final. Quem rema paga preço normal, quem não rema não paga.</p>',
+  },
+  {
+    q: 'Há desconto de grupo?',
+    a: '<p>Depende do volume. A partir de <strong>15-20 pessoas</strong> podemos considerar condições especiais. Escreve para o <a href="/pt/contacto/">formulário de contacto</a> com número exato de pessoas, data preferida e idades (para separar crianças/adultos) e enviaremos orçamento fechado.</p>',
+  },
+  {
+    q: 'Que roupa recomendam para grupos?',
+    a: '<p>A mesma lista que para qualquer descida — temos em <a href="/pt/blog/que-levar-descida-do-sella/">o que levar para a descida do Sella</a>. Dica específica de grupo: <strong>t-shirts da mesma cor ou com slogan</strong> ficam ótimas em fotografias do rio. Muitas despedidas fazem-no e as imagens são espetaculares.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descida-do-sella-grupos-despedidas" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Cobertura:</strong> despedidas de solteiro e solteira, aniversários, bodas de prata, reencontros de amigos, empresas com verdadeiro <em>team building</em>, famílias grandes, malta de amigos. Se achavas que a descida do Sella era só para 2 pessoas numa canoa, aqui explicamos como se organiza quando são 8, 20 ou 50.
+  </p>
+
+  <p>
+    Nos últimos 25 anos vimos tudo no Sella: despedidas com disfarces, casamentos que completam o fim-de-semana com a descida no sábado, empresas a medir coesão de equipa no rio, malta a remar junta desde os 18 anos. O rio adapta-se bem a grupos — só precisa de se organizar com um pouco de cabeça.
+  </p>
+
+  <h2 class="post__h2" id="why-sella">Porque <span class="serif-italic">o Sella funciona</span> para grupos</h2>
+
+  <p>Seis razões pelas quais despedidas, empresas e famílias grandes voltam ao Sella ano após ano.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Para todos</h3>
+      <p class="post__essential__desc">
+        Atletas e não-atletas aproveitam por igual · sem forma física exigida para entrar na canoa.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Ambiente embutido</h3>
+      <p class="post__essential__desc">
+        Quiosques, paragens, fotografias · não é só o rio, é um plano de dia completo.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Preço fechado</h3>
+      <p class="post__essential__desc">
+        <strong>30 € crianças · 40 € adultos</strong>, tudo incluído. Sem surpresas no fim.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Duração gerível</h3>
+      <p class="post__essential__desc">
+        Mini Sella · 1h30-2h30. Percurso completo · 3-5h. Escolhes pelo ritmo do grupo.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Fotografias memoráveis</h3>
+      <p class="post__essential__desc">
+        Canoas em linha, salpicos no Pozo del Arco, piquenique na margem. Muito conteúdo para redes.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Flexibilidade</h3>
+      <p class="post__essential__desc">
+        Se alguém não quiser remar, fica em Arriondas sem problema · cafés, praça e passeio ribeirinho.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-grupos-inline"
+      alt="Grupo de amigos em despedida a remar no Sella numa canoa — o plano que se adapta a grandes grupos"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Malta, despedidas, equipas de empresa, famílias grandes. O Sella adapta-se ao grupo · só precisa de organizar a manhã com cabeça.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="stag-hen">Despedidas <span class="serif-italic">de solteira e solteiro</span></h2>
+
+  <p>
+    Se há um tipo de grupo que pede o Sella vez após vez são as despedidas. E com razão: é um plano completo de dia ao ar livre, compatível com idades mistas (avó, prima, amiga do trabalho), com fotografias para a noiva/noivo, e um ambiente que não cansa.
+  </p>
+
+  <h3 class="post__h3">A receita típica de uma despedida no Sella</h3>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10:30</time>
+      <div class="post__timeline__body"><strong>Chegada a Arriondas.</strong> Registo, balneários, fatos se trouxerem (cabem nos cacifos).</div>
+    </li>
+    <li>
+      <time>10:50</time>
+      <div class="post__timeline__body"><strong>Mini-aula.</strong> Dez minutos · usados para as primeiras piadas e uma fotografia antes de descerem ao rio.</div>
+    </li>
+    <li>
+      <time>11:30</time>
+      <div class="post__timeline__body"><strong>Saída.</strong> Foto de grupo obrigatória na rampa antes de começar.</div>
+    </li>
+    <li>
+      <time>12:30</time>
+      <div class="post__timeline__body"><strong>Paragem no <a href="/pt/blog/pozo-del-arco-sella/">Pozo del Arco</a>.</strong> Banho, foto de grupo, piquenique asturiano a boa hora se quiserem.</div>
+    </li>
+    <li>
+      <time>13:30</time>
+      <div class="post__timeline__body"><strong>Paragem num <a href="/pt/blog/quiosques-descida-do-sella/">quiosque do percurso</a>.</strong> Bebida, música, risos · costuma ser El Oasis ou El Bosque. <em>Sem álcool no rio · fica para depois.</em></div>
+    </li>
+    <li>
+      <time>14:30</time>
+      <div class="post__timeline__body"><strong>Chegada a Toraño ou Fríes.</strong> Transfer de regresso a Arriondas.</div>
+    </li>
+    <li>
+      <time>15:00</time>
+      <div class="post__timeline__body"><strong>Duches e muda.</strong> Nas instalações · água quente e balneários incluídos.</div>
+    </li>
+    <li>
+      <time>16:00</time>
+      <div class="post__timeline__body"><strong>Refeição pós-descida.</strong> Cidraria em Arriondas, Cangas ou Ribadesella · recomendamos sítios se perguntarem.</div>
+    </li>
+  </ol>
+
+  <div class="post__callout">
+    <strong>Dicas da casa para despedidas</strong>
+    <ul class="post__callout__items">
+      <li>Reservem <strong>2-3 semanas antes em agosto</strong> · sábados enchem rápido.</li>
+      <li><strong>T-shirts da mesma cor</strong> para todo o grupo · fotografias memoráveis no rio.</li>
+      <li><strong>Sem álcool no rio.</strong> É proibido por regulamento e os quiosques não servem · fica para a refeição depois.</li>
+      <li>Cuidado com <strong>disfarces volumosos</strong> na canoa · devem ser confortáveis e poder molhar-se.</li>
+      <li>Avisem-nos se alguém estiver <strong>grávida</strong> · não pode remar, mas pode esperar em Arriondas sem problema.</li>
+    </ul>
+  </div>
+
+  <h2 class="post__h2" id="companies">Empresas e <span class="serif-italic">team building</span></h2>
+
+  <p>
+    O Sella funciona bem como atividade empresarial porque <strong>não tem barreira física de entrada</strong> (ninguém fica de fora por não estar em forma), gera conversa entre colegas que normalmente não interagem, e deixa uma memória partilhada que dura meses.
+  </p>
+
+  <p>Para empresas oferecemos habitualmente:</p>
+
+  <ul>
+    <li><strong>Horário dedicado</strong> — todo o grupo sai junto.</li>
+    <li><strong>Monitores qualificados</strong> no rio a vigiar o percurso (briefing antes + caiaques de segurança durante o dia).</li>
+    <li><strong>Piquenique asturiano</strong> reforçado se for evento longo — empada, bolinho, queijo, fruta extra.</li>
+    <li><strong>Fatura fiscal</strong> para o número fiscal da empresa.</li>
+    <li><strong>Coordenação com alojamento local ou catering</strong> se necessário.</li>
+  </ul>
+
+  <p>
+    O plano empresarial típico é chegada cedo ao horário aberto Premium (10:30-11:00), <a href="/pt/quanto-tempo-dura/">descida do percurso completo</a>, refeição depois em cidraria perto de Arriondas ou Cangas. Com 30-40 pessoas organiza-se confortavelmente. Se forem 60+, falamos e vemos como.
+  </p>
+
+  <h2 class="post__h2" id="families">Aniversários, famílias e <span class="serif-italic">grandes reuniões</span></h2>
+
+  <p>
+    Aniversários (sobretudo <strong>40, 50, 60</strong>) e bodas são outro clássico. A chave aqui é que em grupo familiar há idades muito mistas — de primos de 8 anos a avós de 75. A descida do Sella lida bem com isso porque:
+  </p>
+
+  <ul>
+    <li><strong>Canoas até 3 lugares (K3)</strong> permitem combinações de casais + uma criança, três amigos, ou um avô com dois netos.</li>
+    <li><strong>Mini Sella</strong> adapta-se ao nível dos mais velhos — 7 km chegam para celebrar o dia.</li>
+    <li><strong>Toda a gente vê toda a gente</strong> nas paragens. Não é atividade solitária, é experiência partilhada.</li>
+  </ul>
+
+  <p class="post__pull">
+    Jantares de família esquecem-se. Descidas do Sella com três gerações ficam — e costumam acabar na parede da sala de alguém impressas em A3.
+  </p>
+
+  <h2 class="post__h2" id="organisation">Como organizamos <span class="serif-italic">a reserva</span></h2>
+
+  <p>Passo a passo o que pedimos a grandes grupos:</p>
+
+  <ol>
+    <li><strong>Número exato de pessoas</strong> — desagregado por adultos e crianças (até 12).</li>
+    <li><strong>Data específica</strong> + uma alternativa.</li>
+    <li><strong>Hora de chegada preferida</strong> — horário aberto entre 10:30 e 12:30. Se tens preferência (rio mais vazio de manhã, mais ambiente ao meio-dia), diz-nos e aconselhamos.</li>
+    <li><strong>Percurso</strong> — Mini Sella (7 km) ou percurso completo (14,5 km).</li>
+    <li><strong>Notas</strong> — gravidezes (excluídas), pessoas com necessidades especiais, alergias do piquenique, nome do aniversariante ou da noiva/noivo.</li>
+    <li><strong>Contacto único</strong> — uma pessoa responsável pela coordenação.</li>
+  </ol>
+
+  <p>
+    Com isso enviamos orçamento fechado, opções de pagamento (Bizum, transferência, cartão, link de pagamento) e confirmamos a reserva. Para grupos de 15+ pedimos <strong>30-50% de sinal</strong> para bloquear o horário, o resto à chegada.
+  </p>
+
+  <h2 class="post__h2" id="dates">As <span class="serif-italic">melhores datas</span> para um grupo</h2>
+
+  <ul>
+    <li><strong>Junho e setembro:</strong> os dois melhores meses. Clima ameno, rio animado, menos gente, melhores preços em alojamento próximo.</li>
+    <li><strong>Julho e agosto:</strong> os clássicos. Mais ambiente nos quiosques, mas é preciso reservar com antecedência (2-3 semanas mínimo) e sábados enchem.</li>
+    <li><strong>Maio e outubro:</strong> válidos se forem com adultos e roupa técnica. Menos a operar mas muito calmo.</li>
+    <li><strong>Sábado da <a href="/pt/descida-internacional-do-sella/">Descida Internacional do Sella</a>:</strong> sábado de agosto fixado pela Federação (em 2026 · <strong>8 de agosto</strong>). Plano espetacular se o evento te interessa · nesse dia oferecemos <strong>uma única saída turística às 12:00</strong> (35 € por pessoa, vagas limitadas, reserva até 2 dias antes).</li>
+  </ul>
+
+  <p>
+    Detalhes sobre caudal, afluência e clima por mês em <a href="/pt/melhor-epoca/">a melhor época para a descida do Sella</a>.
+  </p>
+
+  <h2 class="post__h2" id="price">Preço <span class="serif-italic">de grupo</span></h2>
+
+  <p>
+    A tarifa base é a mesma de individuais: <strong>30 € por criança (≤12) e 40 € por adulto</strong>, tudo incluído. Ver discriminação completa em <a href="/pt/precos/">preços da descida do Sella</a>. A partir de 15-20 pessoas podemos considerar condições especiais — não prometemos descontos por defeito, mas estudamos por data, horário e serviços.
+  </p>
+
+  <p>
+    Se procuras o <strong>plano top de gama</strong>, a <a href="/pt/reserva-premium/">Reserva Premium</a> reforça o piquenique, adiciona serviços e faz um detalhe muito bem cuidado para ocasiões especiais.
+  </p>
+
+  <h2 class="post__h2" id="summary">O que precisas saber <span class="serif-italic">em 6 pontos</span></h2>
+
+  <ul>
+    <li>A partir de <strong>8-10 pessoas</strong> trata-se como grupo.</li>
+    <li>Podes reservar um <strong>horário dedicado</strong>, mas não podes "fechar" o rio.</li>
+    <li>Preço base <strong>30 € criança / 40 € adulto</strong>, tudo incluído.</li>
+    <li>Reserva <strong>2-3 semanas antes</strong> em agosto.</li>
+    <li>Quem não quiser remar <strong>espera em Arriondas</strong> sem problema.</li>
+    <li>Para grupos <strong>15+ escreve-nos</strong> com data, número e horário para orçamento fechado.</li>
+  </ul>
+
+  <p>
+    Tens um grupo em mente e queres ideias? <a href="/pt/contacto/">Escreve-nos</a> com o básico e damos-te uma proposta concreta em 24 horas. Em agosto, duas semanas antes é o mínimo razoável — em junho ou setembro tens margem.
+  </p>
+</BlogPostLayout>

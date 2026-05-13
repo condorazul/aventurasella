@@ -1,0 +1,262 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Where do you recommend staying to do the Sella descent?',
+    a: '<p>The most practical is to <strong>sleep in Arriondas</strong> or a few kilometres away — avoids early commutes and lets you arrive at our facilities <strong>whenever suits you between 10:30 and 12:30</strong> (Premium open hours · you do not pick a specific time). If you already have a base in <strong>Cangas de Onís, Ribadesella or nearby villages</strong>, that also works: 12-25 minutes by car to our shop.</p><p>In this guide we mention some nearby accommodation as <strong>friendly orientation</strong>. We do not handle reservations, do not charge commission and have no liability over the services they provide — we recommend as friends, nothing more.</p>',
+  },
+  {
+    q: 'Does Aventura en el Sella have a commission or commercial deal with the accommodations?',
+    a: '<p><strong>No.</strong> No commercial agreement, no commission, no arrangement with any of the accommodation we mention. We recommend by proximity and because we know they are serious places near our facilities. To book, contact each establishment directly through their own channels (website, phone, booking platforms).</p>',
+  },
+  {
+    q: 'How far in advance should I book accommodation in Arriondas?',
+    a: '<p>In <strong>July and August</strong>, 1-2 months ahead minimum. Weekends fill up first, and especially the one of the <a href="/en/international-sella-descent/">International Sella Descent</a> (Saturday in August set each year by the Federation · in 2026 <strong>8 August</strong>), when all of eastern Asturias is saturated. In June and September there is more margin (2-3 weeks). In low season (April-May, October) there is almost always room.</p>',
+  },
+  {
+    q: 'Is there a campsite near the Sella descent?',
+    a: '<p>Yes, there are <strong>several campsites in the Arriondas-Cangas area</strong> by the river, some with pitches, bungalows and zones for campervans. Since we have <strong>our own parking for 300 cars and campervans</strong> at the shop, many people travelling by campervan come directly. For overnight camping, check available options online via their official websites before coming — we do not list specific names to avoid confusion.</p>',
+  },
+  {
+    q: 'Hotels, rural houses or apartments? Which to choose?',
+    a: '<p>Depends on the plan: <strong>hotel</strong> if you want services (breakfast, 24h reception); <strong>rural house</strong> if you travel as a group or family and want authentic Asturian atmosphere; <strong>tourist apartment</strong> if you want more autonomy or stays of several days. What matters: <strong>that they have parking</strong> if you come by car, and clarify the check-in time if you arrive late after the descent.</p>',
+  },
+  {
+    q: 'Can I arrive at the descent early if I sleep far away?',
+    a: '<p>Yes, but <strong>calculate the real time</strong>. From Oviedo it is 50 minutes by car, from Gijón 55, from Santander 1h 45 (more detail in <a href="/en/how-to-get-there/">how to get to Arriondas</a>). Since hours are open, you must arrive at our Arriondas facilities <strong>between 10:30 and 12:30</strong>. Sleeping nearby simplifies the morning a lot, especially if coming from outside Asturias.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="where-to-stay-near-sella-descent" faqs={faqs}>
+  <p class="post__intro">
+    <strong>In one sentence:</strong> the ideal is to sleep in Arriondas or under 20 minutes by car. There are <strong>hotels, rural apartments, rural houses and campsites</strong> in the area. We share some concrete names as friendly reference — <strong>we have no commercial relationship with any of them</strong>, no commission, no liability over the service they provide. We recommend as friends.
+  </p>
+
+  <p>
+    Our facilities are in <strong>Arriondas</strong>, the starting point of the Sella descent. The closer you sleep, the more comfortable the plan — especially if your launch is early and you want to arrive with 30 minutes margin without rushing. And since we have <strong>our own parking for 300 cars and campervans</strong>, you can also come straight without worrying about parking in town.
+  </p>
+
+  <p>
+    This guide is <strong>friendly orientation</strong>. We talk about types of accommodation, zones and mention some specific nearby places as reference. To book, do it directly with each establishment — we only organise the Sella descent.
+  </p>
+
+  <h2 class="post__h2" id="zones">The <span class="serif-italic">possible zones</span></h2>
+
+  <p>Four concentric rings · the closer you sleep, the calmer the descent morning.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">0</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Arriondas <span class="serif-italic">· centre</span></h3>
+        <p class="post__zone__desc">Walking or five minutes by car from our shop. Most convenient · ideal if you are coming for a day or without a car.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–15</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Villages of <span class="serif-italic">Parres council</span></h3>
+        <p class="post__zone__desc">Rural house in a village · direct contact with the environment. For those seeking silence, roosters at dawn and coffee on the porch.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">12–15</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Cangas <span class="serif-italic">de Onís</span></h3>
+        <p class="post__zone__desc">Gateway to Picos de Europa. Ideal if you plan to combine the Sella with Covadonga or the Lakes the next day.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">20–25</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Ribadesella <span class="serif-italic">· the coast</span></h3>
+        <p class="post__zone__desc">Sea + river on the same trip. Hotels with port views, modernist promenade and the family beach of Santa Marina a stone's throw away.</p>
+      </div>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-alojamiento-cover"
+      alt="Arriondas · setting of accommodation near the Sella River descent in eastern Asturias"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Villages of Parres, Cangas, Ribadesella · four concentric rings to sleep near the Sella. The closer, the calmer the morning.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="types">Some <span class="serif-italic">nearby places</span> · friendly reference</h2>
+
+  <div class="post__callout">
+    <strong>Important</strong>
+    <p>What follows is an <strong>informal orientation</strong> of places near our shop. <strong>We have no commission, no commercial agreement and no liability</strong> over these accommodations. For availability, prices or reservations, contact each one directly through their own channels. If at booking time you notice anything different from what we mention here, it is because they may have changed services or prices — they are independent businesses.</p>
+  </div>
+
+  <h3 class="post__h3">Hotel Casona del Sella (3★) · Arriondas</h3>
+  <p>
+    In the centre of Arriondas, Plaza Venancio Prado. <strong>200 metres from the Puente de las Piraguas</strong> and very close to our facilities. Restored colonial-style building. They have their own restaurant. Good option if you want to sleep <strong>literally next to the descent</strong>, walk over the next morning, no car needed.
+  </p>
+
+  <h3 class="post__h3">Hoteles Los Acebos · Arriondas and Cangas de Onís</h3>
+  <p>
+    Two establishments from the same group: <strong>Los Acebos Arriondas</strong> (3★, 100 double rooms, rustic décor) and <strong>Los Acebos Cangas de Onís</strong> (2★, 30 rooms). Comfortable, with standard hotel services. Good for families or groups wanting 24h reception. The Arriondas one is especially close to the descent launch area.
+  </p>
+
+  <h3 class="post__h3">Apartamentos Rurales El Mirador de San Juan (3 keys) · San Juan de Parres</h3>
+  <p>
+    Rural apartments <strong>7 km from Arriondas</strong> and 1.9 km from Cangas. Independent entrance, wifi, <strong>pool and landscaped area with barbecues</strong> and children's zone. Views of the Asturian mountains. Ideal for small groups or families wanting autonomy and a middle point between Arriondas and the Picos.
+  </p>
+
+  <h3 class="post__h3">Apartamentos Rurales Cuatrovistes (3 keys) · San Martín de Bada</h3>
+  <p>
+    Apartments <strong>4 km from Cangas de Onís</strong>. Barbecue zone, pool and play area for kids. <strong>Views of the Picos de Europa</strong>. Good option if you plan to combine the Sella descent with a day at the Lakes of Covadonga the next day.
+  </p>
+
+  <p class="post__pull">
+    This is not a closed list or a ranking. There are <strong>many more options</strong> in the area — agrotourism, tourist apartments in villages, rural hotels with charm, accommodations with pools. Look with time, compare and book where the plan, budget and company fit.
+  </p>
+
+  <h2 class="post__h2" id="general-types">Types of accommodation <span class="serif-italic">and for whom</span></h2>
+
+  <p>Four different formulas by whether you travel as a couple, family, group or campervan.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+      </span>
+      <h3 class="post__essential__label">Hotels</h3>
+      <p class="post__essential__desc">
+        Urban and rural in Arriondas and Cangas. Ideal for <strong>couples</strong> · breakfast included, 24h reception, good value outside August.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </span>
+      <h3 class="post__essential__label">Rural houses</h3>
+      <p class="post__essential__desc">
+        The <strong>most authentic option</strong> · restored village houses with fireplace, garden, home cooking. For <strong>families</strong> or rural getaways · rented by night or weekend.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 21V9h6v12"/><path d="M9 9V3"/><path d="M15 9V3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Tourist apartments</h3>
+      <p class="post__essential__desc">
+        <strong>Flexible and autonomous</strong> · own kitchen, several bedrooms, terrace if you are lucky. For groups of 4-6 or stays of 3+ nights with kids who need space.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 21l8.5-15 8.5 15z"/><path d="M12 6v15"/><path d="M3.5 21h17"/></svg>
+      </span>
+      <h3 class="post__essential__label">Campsite · campervan</h3>
+      <p class="post__essential__desc">
+        Campsites along the Sella · pitches, bungalows and campervan zones. We have <strong>our own 300-space parking with campervan access</strong> · you can come straight to the shop if you do not need supervised overnight.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="criteria">Five things to <span class="serif-italic">look out for</span></h2>
+
+  <ol>
+    <li><strong>Own or nearby parking.</strong> In central Arriondas spaces are scarce in high season. Confirm if the accommodation includes parking.</li>
+    <li><strong>Check-in hours.</strong> If you arrive late after the descent, verify they have flexible reception. Small hotels and rural houses may close at 22:00.</li>
+    <li><strong>Pet policy.</strong> If you come with a dog (<a href="/en/with-dog/">free in our canoe</a> and boards the transfer at the end of the route without trouble), make sure the accommodation also admits them.</li>
+    <li><strong>Breakfast included or available nearby.</strong> If you want to arrive early on Premium open hours (10:30) and the accommodation does not serve breakfast, have a plan B. Arriondas has cafés that open early.</li>
+    <li><strong>Recent reviews.</strong> Look at reviews from the last 6 months — accommodations change managers, services and prices. What was worth it two years ago may have changed.</li>
+  </ol>
+
+  <h2 class="post__h2" id="season">Book <span class="serif-italic">by season</span></h2>
+
+  <ul>
+    <li><strong>April-May:</strong> almost always room. 1-2 weeks ahead is enough.</li>
+    <li><strong>June and September:</strong> perfect balance · good climate + availability. Book 2-3 weeks ahead.</li>
+    <li><strong>July:</strong> strong demand starts. Book <strong>1 month minimum</strong>, especially on weekends.</li>
+    <li><strong>August:</strong> peak month · book <strong>1-2 months in advance</strong>. The <strong>Saturday of the <a href="/en/international-sella-descent/">International Descent</a></strong> (in 2026 · 8 August) saturates all of eastern Asturias — if you go that weekend, much further ahead.</li>
+    <li><strong>October:</strong> calm returns. Book 1-2 weeks ahead.</li>
+  </ul>
+
+  <h2 class="post__h2" id="multi-day">Multi-day <span class="serif-italic">plans</span></h2>
+
+  <p>
+    If you will be in the area 2-3 days, here is how accommodation fits depending on the plan you have in mind.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 21 8 11 13 17 17 13 21 21 3 21"/><circle cx="17" cy="6" r="2"/></svg>
+      </span>
+      <h3 class="post__essential__label">Sella + Picos de Europa</h3>
+      <p class="post__essential__desc">
+        Sleep in <strong>Cangas de Onís</strong> or nearby villages. One day descent, another Lakes of Covadonga, afternoon free.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/></svg>
+      </span>
+      <h3 class="post__essential__label">Sella + sea</h3>
+      <p class="post__essential__desc">
+        Sleep in <strong>Ribadesella</strong>. Descent one day, Santa Marina or Vega beaches the next.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Calm family getaway</h3>
+      <p class="post__essential__desc">
+        Sleep in a <strong>rural house</strong> in a village. Descent, walks and Asturian gastronomy without moving much.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17h8M5 17h-1a1 1 0 0 1-1-1v-4a2 2 0 0 1 .879-1.659l2.62-1.747A2 2 0 0 1 7.604 8h8.792a2 2 0 0 1 1.105.594l2.619 1.747A2 2 0 0 1 21 12v4a1 1 0 0 1-1 1h-1"/><circle cx="7.5" cy="17.5" r="2.5"/><circle cx="16.5" cy="17.5" r="2.5"/></svg>
+      </span>
+      <h3 class="post__essential__label">Intensive plan with car</h3>
+      <p class="post__essential__desc">
+        Base in <strong>Arriondas</strong>, move radially · Picos, beaches, Covadonga. Best time-distance ratio for the demanding traveller.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="disclaimer">Important · what we do <span class="serif-italic">and do not do</span></h2>
+
+  <div class="post__callout">
+    <strong>Notice</strong>
+    <p>At <strong>Aventura en el Sella we do not manage accommodation reservations</strong>. We have no commission, no commercial agreement, no liability over the services provided by the accommodations mentioned in this guide. We recommend by proximity and because we know they are places near our shop — <strong>we recommend as friends, nothing more</strong>.</p>
+    <p>For <strong>availability, prices or reservations</strong>, contact each establishment directly through their own channels (website, phone or online booking platforms). If your experience with any accommodation is not as expected, it is between you and them — we cannot intervene.</p>
+  </div>
+
+  <p>
+    If you have doubts about how your accommodation fits with the launch time or which zone to choose, <a href="/en/contact/">write to us</a> — we orient you with no commitment. And when you have a clear date for the descent, check <a href="/en/prices/">prices</a>, <a href="/en/how-long-does-it-take/">how long it takes</a> or <a href="/en/best-time/">the best time of year</a>, and then <a href="/en/premium-booking/">pick a date</a>. The where-to-sleep part you can sort out comfortably from home. For complementary plans see also <a href="/en/blog/what-to-do-after-sella-descent-ribadesella/">what to do after the descent</a>.
+  </p>
+</BlogPostLayout>

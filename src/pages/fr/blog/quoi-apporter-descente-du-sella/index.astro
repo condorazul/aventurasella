@@ -1,0 +1,226 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "Faut-il apporter un maillot de bain pour la descente du Sella ?",
+    a: "<p>Oui — c'est l'option la plus confortable. Un maillot de bain (ou short technique à séchage rapide) est la couche de base. Par-dessus on met le gilet de sauvetage que nous fournissons. <strong>Évite le jean ou le coton</strong> : ils s'imprègnent, deviennent lourds et mettent des heures à sécher.</p>",
+  },
+  {
+    q: "Puis-je apporter mon téléphone dans le canoë ?",
+    a: '<p>Oui — à l\'intérieur du <strong>bidon étanche</strong> que nous remettons avant le départ. Il accueille un téléphone, des clés, un portefeuille et un petit vêtement. Nous recommandons aussi une pochette étanche pour faire des photos en chemin sans ouvrir le bidon à chaque fois.</p>',
+  },
+  {
+    q: "Faut-il apporter une protection solaire et des lunettes de soleil ?",
+    a: "<p>Absolument recommandé. Le reflet de l'eau <strong>multiplie l'exposition solaire</strong> même par temps nuageux. SPF 50 résistant à l'eau, casquette ou visière, et lunettes de soleil avec un cordon (pour ne pas les perdre dans le fleuve). Avec des enfants, réappliquer la crème toutes les 2 heures.</p>",
+  },
+  {
+    q: "Y a-t-il des casiers pour laisser nos affaires ?",
+    a: "<p>Oui. Nous incluons des <strong>casiers avec clé</strong> dans nos installations à Arriondas, pour que tu puisses y laisser le grand sac à dos, le change, les serviettes et tout ce dont tu n'as pas besoin sur le fleuve. Pendant la descente, tu ne portes que l'essentiel dans le bidon étanche.</p>",
+  },
+  {
+    q: "Faut-il apporter de la nourriture ?",
+    a: '<p>Pas besoin : le <strong>pique-nique asturien est inclus</strong> — empanada au thon, petit pain asturien et bouteille d\'eau de 500 ml. <strong>Le pique-nique est fixe et identique pour tous les clients</strong> — il n\'y a pas d\'option végétalienne ou végétarienne. Si tu as une allergie spécifique (gluten, fruits à coque…), <a href="/fr/contact/">préviens-nous à la réservation</a> et nous confirmerons les ingrédients. Le long du parcours, il y a <a href="/fr/blog/buvettes-descente-du-sella/">6 buvettes au bord du fleuve</a> où tu peux faire une halte pour un soda, un jus, une glace ou de l\'eau si tu en as envie.</p>',
+  },
+  {
+    q: "Et si j'apporte trop de vêtements et qu'ils se mouillent ?",
+    a: '<p>Pas catastrophique, mais inconfortable. L\'eau éclabousse en permanence dans le canoë et le bidon étanche ne protège que ce qui est à l\'intérieur. C\'est pourquoi nous recommandons <strong>d\'arriver en maillot, avec des sandales ou des chaussons néoprène et une serviette au casier</strong> pour te changer au retour. Les douches chaudes sont incluses.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="quoi-apporter-descente-du-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Résumé en une ligne :</strong> maillot enfilé, chaussures qui peuvent se mouiller, une serviette au casier et le téléphone dans le bidon que nous te remettons. Le reste — canoë, pagaie double, gilet, bidon, combinaison si besoin, pique-nique — c'est nous. Le reste que tu lis ailleurs, c'est souvent du remplissage.
+  </p>
+
+  <p>
+    Nous préparons la descente du Sella depuis 25 ans pour des milliers de personnes à Arriondas. Et la même question revient chaque matin à l'accueil : <em>« dites, faut-il apporter ça ? »</em>. Ce guide est le résumé honnête de ce dont tu as vraiment besoin, de ce que tu ne dois pas apporter, et des détails que personne ne raconte avant d'avoir la pagaie en main.
+  </p>
+
+  <p>
+    Si tu viens avec le plan déjà fait et veux juste la checklist, <a href="#checklist">va à la liste finale</a>. Si tu veux comprendre pourquoi chaque élément, continue à lire — ça t'épargnera trois messages WhatsApp avant le grand jour.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-quellevar"
+      alt="Équipement de la descente du Sella — préparation avant le départ"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Pagaie double, gilet de sauvetage homologué et bidon étanche — l'équipement est inclus. Tu apportes maillot, sandales et serviette.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="essentials">L'<span class="serif-italic">essentiel</span></h2>
+
+  <p>
+    Quatre choses sont <strong>personnelles</strong> et nous ne les incluons pas. Tout le reste (canoë, pagaie double, gilet de sauvetage, bidon étanche, pique-nique asturien) est de notre côté.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Maillot ou tenue technique</h3>
+      <p class="post__essential__desc">
+        Maillot ou short à séchage rapide. <strong>Évite le coton</strong> — mouillé, il pèse, irrite et ne sèche pas avant le dîner.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a2 2 0 0 1 2-2h2v3l3 1V6h2a2 2 0 0 1 2 2v6"/><path d="M2 14h20v6H2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Chaussures qui peuvent se mouiller</h3>
+      <p class="post__essential__desc">Pas de baskets de running, pas de simples tongs. Dans l'ordre :</p>
+      <ol class="post__essential__options">
+        <li><strong>Chaussons néoprène</strong> — ajustement, accroche et isolation.</li>
+        <li><strong>Sandales de sport</strong> avec sangle au talon (Teva, Chiruca).</li>
+        <li><strong>Tongs avec sangle</strong> si tu ne prévois pas de marcher dans le fleuve.</li>
+      </ol>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Serviette et vêtements secs</h3>
+      <p class="post__essential__desc">
+        Pour après. Reste au <strong>casier avec clé</strong> pendant la descente. Nous incluons douches chaudes et vestiaires · tu pars d'Arriondas, douché, en une heure.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+      </span>
+      <h3 class="post__essential__label">Protection solaire</h3>
+      <p class="post__essential__desc">
+        <strong>SPF 50 résistant à l'eau</strong>, casquette avec cordon, lunettes avec cordon. Le reflet sur l'eau multiplie l'exposition même par temps nuageux.
+      </p>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    Si nous devions retenir un conseil des 25 dernières années, ce serait celui-ci : <strong>arrive en maillot et présente-toi tranquillement entre 10h30 et 12h30</strong> (horaires ouverts · perk Premium). 80 % des petits maux de tête de la journée commencent avec des vestiaires pressés et de la paperasse de dernière minute.
+  </p>
+
+  <h2 class="post__h2" id="not-needed">Ce que tu n'as <span class="serif-italic">pas besoin</span> d'apporter</h2>
+
+  <p>
+    En ligne, tu trouveras des checklists interminables copiées de descentes en eau vive ou d'expéditions en kayak. Le Sella, ce n'est pas ça. Voici l'équipement que <strong>nous fournissons</strong> et que tu n'as pas à apporter :
+  </p>
+
+  <ul>
+    <li><strong>Canoë insubmersible</strong> — simple, double ou K3 (jusqu'à 3 places), selon la réservation.</li>
+    <li><strong>Pagaie double</strong>, ergonomique, adaptée à ta taille.</li>
+    <li><strong>Gilet de sauvetage diplômé</strong> (tailles adulte et enfant).</li>
+    <li><strong>Bidon étanche</strong> pour téléphone, clés et petites affaires personnelles.</li>
+    <li><strong>Combinaison néoprène</strong> si la température l'exige (printemps et début d'automne).</li>
+    <li><strong>Pique-nique asturien</strong> — empanada au thon, petit pain asturien et eau.</li>
+    <li><strong>Transfert retour</strong> jusqu'au point de départ.</li>
+    <li><strong>Assurance</strong> d'activité obligatoire.</li>
+    <li><strong>Vestiaires, douches chaudes et casiers avec clé</strong>.</li>
+  </ul>
+
+  <p>
+    Donc quand tu vois des listes qui te demandent d'apporter un « casque », un « sifflet », une « corde de secours » ou ta « propre combinaison », <strong>ce n'est pas pour le Sella</strong> : c'est pour une descente plus technique. Ce fleuve est calme (classe I – II) et conçu pour tous les publics.
+  </p>
+
+  <h2 class="post__h2" id="phone-money">Téléphone, argent, clés<br/><span class="serif-italic">et le bidon étanche</span></h2>
+
+  <p>
+    La question à un million : <em>« où je mets mon téléphone ? »</em>. Dans le <strong>bidon étanche</strong> que nous te remettons avant le départ. C'est un cylindre en plastique avec une fermeture hermétique attachée au canoë. Il accueille :
+  </p>
+
+  <ul>
+    <li>Téléphone (même dans des étuis livre plus grands).</li>
+    <li>Clés de voiture — tu peux aussi les laisser au casier.</li>
+    <li>Portefeuille avec pièce d'identité, carte et un peu de monnaie.</li>
+    <li>Un petit vêtement ou des lunettes de rechange.</li>
+  </ul>
+
+  <p>
+    Si tu veux faire des photos pendant la descente sans ouvrir le bidon à chaque fois, <strong>une pochette étanche avec cordon</strong> est le meilleur investissement de la journée. Pour 5-10 € dans n'importe quel magasin de plage, tu en obtiens une qui fonctionne et qui transforme la descente en pellicule photo continue sans craindre de mouiller le téléphone.
+  </p>
+
+  <div class="post__callout">
+    <strong>Conseil maison</strong>
+    <p>Apporte <strong>une carte et un peu de monnaie</strong> dans le bidon. Dans les <a href="/fr/blog/buvettes-descente-du-sella/">buvettes au bord du fleuve</a> tu peux prendre un soda, un jus ou une glace (pas d'alcool servi sur le parcours), mais toutes n'ont pas un terminal carte avec bonne couverture. Avec <strong>10-15 € par personne</strong>, tu auras large.</p>
+  </div>
+
+  <h2 class="post__h2" id="with-kids">Si tu es <span class="serif-italic">avec des enfants</span></h2>
+
+  <p>
+    Avec des enfants, la liste s'allonge un peu, mais ça vaut la peine de la passer en revue. <a href="/fr/avec-enfants/">L'âge minimum est de 5 ans et 1,15 m</a> pour la sécurité ; en cas de doute, demande-nous avant de réserver. Les extras que nous recommandons pour une journée avec enfants :
+  </p>
+
+  <ul>
+    <li><strong>Casquette avec cordon</strong> — pas une qui s'envole à la première rafale.</li>
+    <li><strong>T-shirt technique</strong> ou rashguard à manches longues — pour protéger épaules et dos de 3 heures de soleil direct.</li>
+    <li><strong>Crème solaire enfants</strong> SPF 50+ — appliquée avant de quitter la voiture et renouvelée à l'arrêt pique-nique.</li>
+    <li><strong>Goûter supplémentaire</strong> — biscuits, fruits faciles ou barres. Le pique-nique inclus est généreux, mais les enfants grignotent.</li>
+    <li><strong>Change sec complet</strong> au casier — sous-vêtements compris. C'est le détail qui transforme le retour de « gosse trempé sous la clim » en quelque chose de confortable.</li>
+  </ul>
+
+  <p>
+    Il y a beaucoup plus à dire sur la descente du Sella avec de petits enfants — âge réel, peurs parentales typiques, comment organiser la journée. Nous l'avons développé dans un guide à part : <a href="/fr/blog/descente-du-sella-avec-petits-enfants/">descente du Sella avec petits enfants</a>.
+  </p>
+
+  <h2 class="post__h2" id="with-dog">Si tu es <span class="serif-italic">avec un chien</span></h2>
+
+  <p>
+    <a href="/fr/avec-chien/">Les animaux voyagent gratuitement</a> dans nos canoës. Si c'est la première fois de ton chien dans une activité aquatique, apporte :
+  </p>
+
+  <ul>
+    <li><strong>Bol pliable</strong> et une bouteille d'eau supplémentaire — ils se déshydratent plus que tu ne le penses.</li>
+    <li><strong>Laisse courte</strong> (une longue s'emmêle dans la pagaie).</li>
+    <li><strong>Une serviette dédiée</strong> au casier — pas la tienne, fais-nous confiance.</li>
+    <li><strong>Gilet de sauvetage canin</strong> — nous en fournissons un <em>jusqu'à épuisement</em>, mais si tu apportes le tien, tu garantis la taille exacte et tu gagnes du temps à l'accueil.</li>
+    <li><strong>Sa friandise habituelle</strong>. Ne lui donne pas le petit pain asturien, peu importe la moue qu'il te fait.</li>
+  </ul>
+
+  <h2 class="post__h2" id="checklist">Checklist finale <span class="serif-italic">imprimable</span></h2>
+
+  <p>La liste courte. Ce qui doit partir de la maison déjà préparé :</p>
+
+  <div class="post__callout">
+    <strong>Ce que tu apportes</strong>
+    <p>✓ Maillot ou short technique (<em>enfilé depuis la maison</em>)<br/>
+    ✓ T-shirt technique / rashguard<br/>
+    ✓ Chaussons ou sandales avec sangle<br/>
+    ✓ Casquette avec cordon<br/>
+    ✓ Lunettes de soleil avec cordon<br/>
+    ✓ Crème solaire SPF 50 résistante à l'eau<br/>
+    ✓ Serviette + change sec complet (pour le casier)<br/>
+    ✓ Chargeur et pochette étanche pour le téléphone (optionnel mais recommandé)<br/>
+    ✓ Carte ou monnaie pour les buvettes<br/>
+    ✓ Goûter supplémentaire si tu voyages avec des enfants<br/>
+    ✓ Kit chien si tu voyages avec un chien (bol, laisse, serviette, gilet)</p>
+  </div>
+
+  <div class="post__callout">
+    <strong>Ce que nous fournissons</strong>
+    <p>✓ Canoë insubmersible · pagaie double · gilet de sauvetage<br/>
+    ✓ Bidon étanche · combinaison néoprène (si nécessaire)<br/>
+    ✓ Mini-cours pratique avant le départ<br/>
+    ✓ Transfert retour depuis le point d'arrivée<br/>
+    ✓ Pique-nique asturien (empanada au thon + petit pain asturien + eau)<br/>
+    ✓ Vestiaires, douches chaudes, casiers avec clé<br/>
+    ✓ Parking gardé à Arriondas<br/>
+    ✓ Assurance d'activité<br/>
+    ✓ Moniteurs diplômés sur la rivière</p>
+  </div>
+
+  <p>
+    Cela couvert, il ne te reste qu'à <a href="/fr/reservation-premium/">choisir une date</a> et arriver avec de la marge. Le reste, nous le réglons à l'accueil.
+  </p>
+
+  <p>
+    Et si tu as une question spécifique qui n'est pas sur la liste — allergies, mobilité réduite, pointure compliquée, chien énorme, grands-mères ayant peur de l'eau — <a href="/fr/contact/">écris-nous</a> et nous y réfléchissons. En 25 ans, nous avons presque tout vu ; ce qui compte, c'est que tu arrives serein.
+  </p>
+</BlogPostLayout>

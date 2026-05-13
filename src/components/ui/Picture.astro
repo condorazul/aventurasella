@@ -1,0 +1,117 @@
+---
+/**
+ * <Picture> — wrapper responsivo AVIF/WebP/JPG
+ * Implementa el patrón de Documentos/image-optimize.md
+ *
+ * Uso mínimo:
+ *   <Picture src="hero-canoa-lago" alt="..." />
+ *
+ * Hero con prioridad alta:
+ *   <Picture src="hero-canoa-lago" alt="..." priority="high" sizes="100vw" />
+ *
+ * Card con tamaño específico:
+ *   <Picture src="lago-canoas-cabana" alt="..." sizes="(min-width: 960px) 50vw, 100vw" />
+ *
+ * El `src` es el basename de la imagen (sin extensión, sin sufijo de tamaño).
+ * Asume que /public/images/optimized/ contiene:
+ *   {src}-sm.avif / -sm.webp
+ *   {src}.avif    / .webp
+ *   {src}-lg.avif / -lg.webp
+ *   {src}.jpg
+ */
+
+interface Props {
+  /** Basename de la imagen (ej: "hero-canoa-lago") — debe existir en /images/optimized/ */
+  src: string;
+  /** Texto alternativo accesible — obligatorio (usar "" solo para imágenes decorativas) */
+  alt: string;
+  /** "high" = LCP hero (loading=eager, fetchpriority=high); "auto" = contenido normal (lazy) */
+  priority?: 'high' | 'auto';
+  /** Atributo `sizes` para srcset. Default: 100vw */
+  sizes?: string;
+  /** Ancho intrínseco sugerido (default 1920) */
+  width?: number;
+  /** Alto intrínseco sugerido (default 1280, ratio 3:2) */
+  height?: number;
+  /** Clase CSS extra para el <img> */
+  class?: string;
+  /** Ratio de aspecto del contenedor (ej: "16 / 9", "4 / 5", "1 / 1") — aplica aspect-ratio CSS */
+  aspectRatio?: string;
+  /** Si true, no envuelve en un div — solo devuelve el <picture> */
+  bare?: boolean;
+}
+
+const {
+  src,
+  alt,
+  priority = 'auto',
+  sizes = '100vw',
+  width = 1920,
+  height = 1280,
+  class: extraClass = '',
+  aspectRatio,
+  bare = false,
+} = Astro.props;
+
+const base = `/images/optimized/${src}`;
+
+const avifSrcset = `${base}-sm.avif 640w, ${base}.avif 1024w, ${base}-lg.avif 1920w`;
+const webpSrcset = `${base}-sm.webp 640w, ${base}.webp 1024w, ${base}-lg.webp 1920w`;
+const jpgFallback = `${base}.jpg`;
+
+const loading = priority === 'high' ? 'eager' : 'lazy';
+const fetchpriority = priority === 'high' ? 'high' : 'auto';
+const decoding = 'async';
+
+const wrapperStyle = aspectRatio ? `aspect-ratio: ${aspectRatio};` : '';
+---
+
+{bare ? (
+  <picture>
+    <source type="image/avif" srcset={avifSrcset} sizes={sizes} />
+    <source type="image/webp" srcset={webpSrcset} sizes={sizes} />
+    <img
+      src={jpgFallback}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding={decoding}
+      class={extraClass}
+    />
+  </picture>
+) : (
+  <div class="picture" style={wrapperStyle}>
+    <picture>
+      <source type="image/avif" srcset={avifSrcset} sizes={sizes} />
+      <source type="image/webp" srcset={webpSrcset} sizes={sizes} />
+      <img
+        src={jpgFallback}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding={decoding}
+        class={extraClass}
+      />
+    </picture>
+  </div>
+)}
+
+<style>
+  .picture {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .picture picture,
+  .picture img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

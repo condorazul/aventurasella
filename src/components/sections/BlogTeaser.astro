@@ -1,0 +1,292 @@
+---
+import Picture from '@components/ui/Picture.astro';
+import { BLOG_POSTS } from '@data/blog-posts';
+import { BLOG_POSTS_EN } from '@data/blog-posts-en';
+import { BLOG_POSTS_FR } from '@data/blog-posts-fr';
+import { BLOG_POSTS_PT } from '@data/blog-posts-pt';
+import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
+
+/**
+ * Teaser del Blog para la Home · 3 entradas destacadas.
+ * Link interno potente hacia el clúster de blog para reforzar arquitectura SEO.
+ * Selecciona BLOG_POSTS_{LANG} según locale para que Home/EN/FR/PT muestre
+ * sus propias entradas localizadas (slugs SEO específicos por idioma).
+ */
+const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
+
+const postsByLang: Record<Locale, readonly any[]> = {
+  es: BLOG_POSTS,
+  en: BLOG_POSTS_EN,
+  fr: BLOG_POSTS_FR,
+  pt: BLOG_POSTS_PT,
+};
+const posts = postsByLang[lang] ?? BLOG_POSTS;
+
+const featured = [...posts]
+  .sort((a, b) => b.datePublished.localeCompare(a.datePublished))
+  .slice(0, 3);
+
+// Prefijo de URL del blog según idioma (ES sin prefijo, resto con /xx/blog/)
+const blogBase = getLocalePath('blog', lang); // "/blog/" o "/en/blog/" etc.
+
+const i18n = {
+  es: {
+    kicker: '— Del cuaderno de Arriondas',
+    title1: 'Guías y consejos',
+    title2: 'del Sella',
+    lead: '25 años en el río resumidos en guías prácticas. Qué llevar, cuándo bajar, cómo planear el día. Sin rodeos, con los datos que pedimos nosotras cuando éramos clientes.',
+    allCta: 'Ver todas las guías',
+    readLabel: (h1: string) => `Leer · ${h1}`,
+    minRead: 'min',
+    readCta: 'Leer',
+  },
+  // NOTA: glosario indica "min de lectura / min read / min de lecture / min de leitura"
+  // pero la maqueta ES original muestra solo "min" tras el número. Mantenemos paralelo.
+  en: {
+    kicker: '— From the Arriondas notebook',
+    title1: 'Guides and tips',
+    title2: 'from the Sella',
+    lead: '25 years on the river distilled into practical guides. What to pack, when to paddle, how to plan the day. No fluff — the answers we wished we had when we were the clients.',
+    allCta: 'See all guides',
+    readLabel: (h1: string) => `Read · ${h1}`,
+    minRead: 'min read',
+    readCta: 'Read',
+  },
+  fr: {
+    kicker: '— Du carnet d\'Arriondas',
+    title1: 'Guides et conseils',
+    title2: 'du Sella',
+    lead: '25 ans sur la rivière condensés en guides pratiques. Quoi emporter, quand descendre, comment planifier la journée. Sans détours, avec les infos que nous-mêmes cherchions en tant que clientes.',
+    allCta: 'Voir tous les guides',
+    readLabel: (h1: string) => `Lire · ${h1}`,
+    minRead: 'min de lecture',
+    readCta: 'Lire',
+  },
+  pt: {
+    kicker: '— Do caderno de Arriondas',
+    title1: 'Guias e conselhos',
+    title2: 'do Sella',
+    lead: '25 anos no rio resumidos em guias práticos. O que levar, quando descer, como planear o dia. Sem rodeios, com os dados que pedíamos nós quando éramos clientes.',
+    allCta: 'Ver todos os guias',
+    readLabel: (h1: string) => `Ler · ${h1}`,
+    minRead: 'min de leitura',
+    readCta: 'Ler',
+  },
+} as const;
+const t = i18n[lang] ?? i18n.es;
+---
+
+<section class="blogT" aria-labelledby="blogT-title">
+  <div class="blogT__inner">
+    <header class="blogT__header">
+      <span class="blogT__kicker">{t.kicker}</span>
+      <h2 id="blogT-title" class="blogT__title">
+        {t.title1}<br/>
+        <span class="serif-italic">{t.title2}</span>
+      </h2>
+      <p class="blogT__lead">
+        {t.lead}
+      </p>
+      <a href={blogBase} class="blogT__allCta">
+        {t.allCta}
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </header>
+
+    <ul class="blogT__grid" role="list">
+      {featured.map(p => (
+        <li class="blogT__item">
+          <a href={`${blogBase}${p.slug}/`} class="blogT__card" aria-label={t.readLabel(p.h1)}>
+            <div class="blogT__media">
+              <Picture
+                src={p.image}
+                alt={p.imageAlt}
+                sizes="(min-width: 1100px) 30vw, (min-width: 640px) 45vw, 90vw"
+                aspectRatio="4 / 3"
+              />
+            </div>
+
+            <div class="blogT__body">
+              <div class="blogT__tags">
+                <span class="blogT__cat">{p.category}</span>
+                <span class="blogT__dot" aria-hidden="true">·</span>
+                <span class="blogT__read">{p.readingTime} {t.minRead}</span>
+              </div>
+
+              <h3 class="blogT__cardTitle">{p.h1}</h3>
+              <p class="blogT__excerpt">{p.excerpt}</p>
+
+              <span class="blogT__cta">
+                {t.readCta}
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .blogT {
+    padding-block: clamp(4rem, 7vw, 6rem);
+    background: var(--color-bg-base);
+  }
+  .blogT__inner {
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  .blogT__header {
+    max-width: 720px;
+    margin-bottom: clamp(2rem, 4vw, 3.5rem);
+    position: relative;
+  }
+
+  .blogT__kicker {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+
+  .blogT__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+  .blogT__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+
+  .blogT__lead {
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: var(--lh-body);
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin-bottom: var(--s-5);
+  }
+
+  .blogT__allCta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    font-size: var(--fs-body-sm);
+    transition: color var(--duration-base) var(--ease-out);
+  }
+  .blogT__allCta svg {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .blogT__allCta:hover { color: var(--color-primary-hover); }
+  .blogT__allCta:hover svg { transform: translateX(4px); }
+
+  /* Grid */
+  .blogT__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 2.5vw, 2rem);
+  }
+  @media (min-width: 720px) {
+    .blogT__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .blogT__card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-bg-elevated, #FFFFFF);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    overflow: hidden;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    transition: transform 420ms var(--ease-out), box-shadow 420ms var(--ease-out), border-color 420ms var(--ease-out);
+    height: 100%;
+  }
+  .blogT__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 56px -32px rgba(26, 31, 46, 0.18);
+    border-color: rgba(233, 133, 111, 0.25);
+  }
+
+  .blogT__media {
+    position: relative;
+    overflow: hidden;
+  }
+  .blogT__media :global(img) {
+    transition: transform 800ms var(--ease-out);
+  }
+  .blogT__card:hover .blogT__media :global(img) {
+    transform: scale(1.05);
+  }
+
+  .blogT__body {
+    padding: clamp(1.25rem, 2.2vw, 1.6rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+    flex: 1;
+  }
+
+  .blogT__tags {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+  }
+  .blogT__cat {
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    font-size: 0.7rem;
+  }
+  .blogT__dot { opacity: 0.5; }
+
+  .blogT__cardTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.25;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+
+  .blogT__excerpt {
+    font-size: var(--fs-body-sm);
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    flex: 1;
+  }
+
+  .blogT__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-weight: var(--fw-semibold);
+    color: var(--color-primary);
+    font-size: var(--fs-body-sm);
+    margin-top: var(--s-1);
+  }
+  .blogT__cta svg {
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .blogT__card:hover .blogT__cta svg {
+    transform: translateX(4px);
+  }
+</style>

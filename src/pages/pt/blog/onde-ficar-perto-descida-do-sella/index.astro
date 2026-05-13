@@ -1,0 +1,238 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Onde recomendam ficar para fazer a descida do Sella?',
+    a: '<p>O mais prático é <strong>dormir em Arriondas</strong> ou a poucos quilómetros — evita deslocações matinais e permite chegar às nossas instalações <strong>quando te der jeito entre as 10:30 e as 12:30</strong> (horário aberto Premium · não escolhes hora específica). Se já tens base em <strong>Cangas de Onís, Ribadesella ou aldeias próximas</strong>, também funciona: 12-25 minutos de carro até à nossa loja.</p><p>Neste guia mencionamos alguns alojamentos próximos como <strong>orientação amigável</strong>. Não tratamos de reservas, não cobramos comissão e não temos responsabilidade sobre os serviços que prestam.</p>',
+  },
+  {
+    q: 'A Aventura en el Sella tem comissão ou acordo comercial com os alojamentos?',
+    a: '<p><strong>Não.</strong> Sem acordo comercial, sem comissão, sem arranjo com nenhum dos alojamentos mencionados. Recomendamos por proximidade e porque sabemos que são sítios sérios perto das nossas instalações. Para reservar, contacta cada estabelecimento diretamente pelos seus próprios canais.</p>',
+  },
+  {
+    q: 'Com que antecedência reservar alojamento em Arriondas?',
+    a: '<p>Em <strong>julho e agosto</strong>, 1-2 meses antes no mínimo. Fins-de-semana esgotam primeiro, sobretudo o da <a href="/pt/descida-internacional-do-sella/">Descida Internacional do Sella</a> (sábado de agosto fixado anualmente · em 2026 <strong>8 de agosto</strong>), em que todo o oriente asturiano fica saturado. Em junho e setembro há mais margem (2-3 semanas).</p>',
+  },
+  {
+    q: 'Há parque de campismo perto da descida do Sella?',
+    a: '<p>Sim, há <strong>vários parques de campismo na zona Arriondas-Cangas</strong> junto ao rio, alguns com pitches, bungalows e zonas para autocaravanas. Como temos <strong>parque próprio para 300 carros e autocaravanas</strong> na loja, muitas pessoas a viajar em autocaravana vêm diretamente.</p>',
+  },
+  {
+    q: 'Hotéis, casas rurais ou apartamentos? O que escolher?',
+    a: '<p>Depende do plano: <strong>hotel</strong> se queres serviços (pequeno-almoço, receção 24h); <strong>casa rural</strong> se vais em grupo ou família e queres ambiente asturiano autêntico; <strong>apartamento turístico</strong> se queres mais autonomia ou estadia de vários dias.</p>',
+  },
+  {
+    q: 'Posso chegar cedo à descida se durmo longe?',
+    a: '<p>Sim, mas <strong>calcula o tempo real</strong>. De Oviedo são 50 minutos de carro, de Gijón 55, de Santander 1h45 (mais detalhe em <a href="/pt/como-chegar/">como chegar</a>). Como o horário é aberto, tens de chegar às nossas instalações em Arriondas <strong>entre as 10:30 e as 12:30</strong>. Dormir perto simplifica muito a manhã.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="onde-ficar-perto-descida-do-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Numa frase:</strong> o ideal é dormir em Arriondas ou a menos de 20 minutos de carro. Há <strong>hotéis, apartamentos rurais, casas rurais e parques de campismo</strong> na zona. Partilhamos alguns nomes concretos como referência amigável — <strong>não temos qualquer relação comercial com eles</strong>, sem comissão, sem responsabilidade sobre o serviço que prestam. Recomendamos como amigos.
+  </p>
+
+  <p>
+    As nossas instalações ficam em <strong>Arriondas</strong>, ponto de partida da descida do Sella. Quanto mais perto dormires, mais cómodo o plano — sobretudo se a saída é cedo e queres chegar com 30 minutos de margem sem stress. E como temos <strong>parque próprio para 300 carros e autocaravanas</strong>, podes também vir diretamente sem te preocupares com estacionamento na vila.
+  </p>
+
+  <p>
+    Este guia é <strong>orientação amigável</strong>. Falamos de tipos de alojamento, zonas e mencionamos alguns sítios específicos próximos como referência. Para reservar, fá-lo diretamente com cada estabelecimento — só organizamos a descida do Sella.
+  </p>
+
+  <h2 class="post__h2" id="zones">As <span class="serif-italic">zonas possíveis</span></h2>
+
+  <p>Quatro anéis concêntricos · quanto mais perto dormires, mais calma a manhã da descida.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">0</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Arriondas <span class="serif-italic">· centro</span></h3>
+        <p class="post__zone__desc">A pé ou cinco minutos de carro da nossa loja. Mais conveniente · ideal se vens só por um dia ou sem carro.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–15</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Aldeias do <span class="serif-italic">concelho de Parres</span></h3>
+        <p class="post__zone__desc">Casa rural numa aldeia · contacto direto com o ambiente. Para quem procura silêncio, galos de madrugada e café no alpendre.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">12–15</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Cangas <span class="serif-italic">de Onís</span></h3>
+        <p class="post__zone__desc">Porta de entrada para os Picos de Europa. Ideal se planeias combinar o Sella com Covadonga ou os Lagos no dia seguinte.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">20–25</span>
+        <span class="post__zone__unit">min</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Ribadesella <span class="serif-italic">· a costa</span></h3>
+        <p class="post__zone__desc">Mar + rio na mesma viagem. Hotéis com vista para o porto, passeio modernista e a praia familiar de Santa Marina a um salto de pedra.</p>
+      </div>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-alojamiento-cover"
+      alt="Arriondas · cenário de alojamento perto da descida do Sella no oriente asturiano"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Aldeias de Parres, Cangas, Ribadesella · quatro anéis concêntricos para dormir perto do Sella. Quanto mais perto, mais calma a manhã.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="types">Alguns <span class="serif-italic">sítios próximos</span> · referência amigável</h2>
+
+  <div class="post__callout">
+    <strong>Importante</strong>
+    <p>O que se segue é uma <strong>orientação informal</strong> de sítios próximos da nossa loja. <strong>Não temos comissão, não temos acordo comercial e não temos responsabilidade</strong> sobre estes alojamentos. Para disponibilidade, preços ou reservas, contacta cada um diretamente pelos seus próprios canais.</p>
+  </div>
+
+  <h3 class="post__h3">Hotel Casona del Sella (3★) · Arriondas</h3>
+  <p>
+    No centro de Arriondas, Plaza Venancio Prado. <strong>200 metros da Puente de las Piraguas</strong> e muito perto das nossas instalações. Edifício restaurado em estilo colonial. Têm restaurante próprio. Boa opção se queres dormir <strong>literalmente ao lado da descida</strong>.
+  </p>
+
+  <h3 class="post__h3">Hotéis Los Acebos · Arriondas e Cangas de Onís</h3>
+  <p>
+    Dois estabelecimentos do mesmo grupo: <strong>Los Acebos Arriondas</strong> (3★, 100 quartos duplos, decoração rústica) e <strong>Los Acebos Cangas de Onís</strong> (2★, 30 quartos). Confortáveis, com serviços hoteleiros padrão. Bom para famílias ou grupos que querem receção 24h.
+  </p>
+
+  <h3 class="post__h3">Apartamentos Rurales El Mirador de San Juan (3 chaves) · San Juan de Parres</h3>
+  <p>
+    Apartamentos rurais <strong>a 7 km de Arriondas</strong> e 1,9 km de Cangas. Entrada independente, wifi, <strong>piscina e zona ajardinada com churrasqueiras</strong> e zona infantil. Vistas das montanhas asturianas.
+  </p>
+
+  <h3 class="post__h3">Apartamentos Rurales Cuatrovistes (3 chaves) · San Martín de Bada</h3>
+  <p>
+    Apartamentos <strong>a 4 km de Cangas de Onís</strong>. Zona de churrasco, piscina e parque para crianças. <strong>Vistas dos Picos de Europa</strong>. Boa opção se planeias combinar a descida do Sella com um dia nos Lagos de Covadonga.
+  </p>
+
+  <p class="post__pull">
+    Esta não é uma lista fechada nem um ranking. Há <strong>muitas mais opções</strong> na zona — agroturismo, apartamentos turísticos em aldeias, hotéis rurais com encanto, alojamentos com piscina. Procura com tempo, compara e reserva onde o plano, orçamento e companhia encaixem.
+  </p>
+
+  <h2 class="post__h2" id="general-types">Tipos de alojamento <span class="serif-italic">e para quem</span></h2>
+
+  <p>Quatro fórmulas diferentes consoante viajes em casal, família, grupo ou autocaravana.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Hotéis</h3>
+      <p class="post__essential__desc">
+        Urbanos e rurais em Arriondas e Cangas. Ideal para <strong>casais</strong> · pequeno-almoço incluído, receção 24h, boa relação qualidade-preço fora de agosto.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Casas rurais</h3>
+      <p class="post__essential__desc">
+        A <strong>opção mais autêntica</strong> · casas de aldeia restauradas com lareira, jardim, cozinha caseira. Para <strong>famílias</strong> ou fugas rurais.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Apartamentos turísticos</h3>
+      <p class="post__essential__desc">
+        <strong>Flexíveis e autónomos</strong> · cozinha própria, vários quartos, terraço se tiveres sorte. Para grupos de 4-6 ou estadias de 3+ noites.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Campismo · autocaravana</h3>
+      <p class="post__essential__desc">
+        Parques de campismo ao longo do Sella · pitches, bungalows e zonas para autocaravanas. Temos <strong>parque próprio de 300 lugares com acesso para autocaravanas</strong>.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="criteria">Cinco coisas a <span class="serif-italic">ter em conta</span></h2>
+
+  <ol>
+    <li><strong>Estacionamento próprio ou perto.</strong> No centro de Arriondas escasseiam lugares na época alta.</li>
+    <li><strong>Horário de check-in.</strong> Se chegas tarde após a descida, verifica que têm receção flexível.</li>
+    <li><strong>Política de animais.</strong> Se vens com cão (<a href="/pt/com-cao/">grátis na nossa canoa</a>), confirma que o alojamento também os admite.</li>
+    <li><strong>Pequeno-almoço incluído ou próximo.</strong> Se queres chegar cedo ao horário aberto Premium (10:30) e o alojamento não serve pequeno-almoço, tem plano B.</li>
+    <li><strong>Avaliações recentes.</strong> Olha para reviews dos últimos 6 meses — alojamentos mudam de gestor, serviços e preços.</li>
+  </ol>
+
+  <h2 class="post__h2" id="season">Reserva <span class="serif-italic">por época</span></h2>
+
+  <ul>
+    <li><strong>Abril-maio:</strong> quase sempre há lugar. 1-2 semanas antes chegam.</li>
+    <li><strong>Junho e setembro:</strong> equilíbrio perfeito · bom clima + disponibilidade. Reserva 2-3 semanas antes.</li>
+    <li><strong>Julho:</strong> começa a procura forte. Reserva <strong>1 mês mínimo</strong>, sobretudo aos fins de semana.</li>
+    <li><strong>Agosto:</strong> mês de pico · reserva <strong>1-2 meses antes</strong>. O <strong>sábado da <a href="/pt/descida-internacional-do-sella/">Descida Internacional</a></strong> (em 2026 · 8 de agosto) satura todo o oriente asturiano — bem mais antes.</li>
+    <li><strong>Outubro:</strong> volta a calma. Reserva 1-2 semanas antes.</li>
+  </ul>
+
+  <h2 class="post__h2" id="multi-day">Planos <span class="serif-italic">multi-dia</span></h2>
+
+  <p>
+    Se vais estar na zona 2-3 dias, vê como encaixa o alojamento conforme o plano que tens em mente.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Sella + Picos de Europa</h3>
+      <p class="post__essential__desc">
+        Dormir em <strong>Cangas de Onís</strong> ou aldeias próximas. Um dia descida, outro Lagos de Covadonga.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Sella + mar</h3>
+      <p class="post__essential__desc">
+        Dormir em <strong>Ribadesella</strong>. Descida num dia, praias de Santa Marina ou Vega no seguinte.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Fuga familiar tranquila</h3>
+      <p class="post__essential__desc">
+        Dormir numa <strong>casa rural</strong> em aldeia. Descida, caminhadas e gastronomia asturiana.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Plano intensivo de carro</h3>
+      <p class="post__essential__desc">
+        Base em <strong>Arriondas</strong>, deslocações radiais · Picos, praias, Covadonga.
+      </p>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="disclaimer">Importante · o que <span class="serif-italic">fazemos e não fazemos</span></h2>
+
+  <div class="post__callout">
+    <strong>Aviso</strong>
+    <p>Em <strong>Aventura en el Sella não tratamos reservas de alojamento</strong>. Não temos comissão, não temos acordo comercial, não temos responsabilidade sobre os serviços prestados pelos alojamentos mencionados. Recomendamos por proximidade — <strong>recomendamos como amigos, nada mais</strong>.</p>
+    <p>Para <strong>disponibilidade, preços ou reservas</strong>, contacta cada estabelecimento diretamente pelos seus próprios canais. Se a tua experiência com algum alojamento não for como esperado, é entre ti e eles — não podemos intervir.</p>
+  </div>
+
+  <p>
+    Se tens dúvidas sobre como o teu alojamento encaixa com o horário da saída ou que zona escolher, <a href="/pt/contacto/">escreve-nos</a>. E quando tiveres data clara para a descida, consulta <a href="/pt/precos/">preços</a>, <a href="/pt/quanto-tempo-dura/">quanto tempo demora</a> ou <a href="/pt/melhor-epoca/">a melhor época</a>, e depois <a href="/pt/reserva-premium/">escolhe uma data</a>. Para planos complementares vê também <a href="/pt/blog/o-que-fazer-apos-descida-do-sella-ribadesella/">o que fazer após a descida</a>.
+  </p>
+</BlogPostLayout>

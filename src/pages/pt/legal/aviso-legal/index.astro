@@ -1,0 +1,325 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'pt';
+const title = 'Aviso legal · Aventura en el Sella';
+const description = 'Informação legal de Aventura en el Sella: identificação do titular, objeto, propriedade intelectual e condições de utilização do website.';
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/legal/aviso-legal/`;
+const lastUpdated = '2026-05-12';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#page`,
+  name: 'Aviso legal',
+  description,
+  inLanguage: 'pt-PT',
+  url: canonicalUrl,
+  isPartOf: { '@type': 'WebSite', name: 'Aventura en el Sella', url: baseUrl },
+  dateModified: lastUpdated,
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/legal/aviso-legal/" translationKey="legal_aviso">
+  <Fragment slot="head">
+    <meta name="robots" content="index, follow" />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <section class="lgl">
+
+    <div class="lgl__inner">
+      <nav class="lgl__breadcrumb" aria-label="Trilho de navegação">
+        <a href={getLocalePath('home', lang)}>Início</a>
+        <span aria-hidden="true">/</span>
+        <a href={getLocalePath('legal_aviso', lang)}>Legal</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Aviso legal</span>
+      </nav>
+
+      <span class="lgl__eyebrow">— Informação legal</span>
+      <h1 class="lgl__title">Aviso legal</h1>
+      <p class="lgl__updated">Última atualização: <time datetime={lastUpdated}>12 de maio de 2026</time></p>
+
+      <nav class="lgl__toc" aria-label="Índice">
+        <h2 class="lgl__tocTitle">Índice</h2>
+        <ol>
+          <li><a href="#titular">1. Identificação do titular</a></li>
+          <li><a href="#objeto">2. Objeto</a></li>
+          <li><a href="#condicoes">3. Condições de utilização</a></li>
+          <li><a href="#propriedade">4. Propriedade intelectual e industrial</a></li>
+          <li><a href="#responsabilidade">5. Exclusão de responsabilidade</a></li>
+          <li><a href="#links">6. Ligações a terceiros</a></li>
+          <li><a href="#protecao-dados">7. Proteção de dados</a></li>
+          <li><a href="#cookies">8. Política de cookies</a></li>
+          <li><a href="#alteracoes">9. Alterações</a></li>
+          <li><a href="#legislacao">10. Legislação e jurisdição aplicável</a></li>
+        </ol>
+      </nav>
+
+      <article class="lgl__prose">
+
+        <section id="titular">
+          <h2>1. Identificação do titular</h2>
+          <p>
+            Em cumprimento da <strong>Lei espanhola 34/2002, de 11 de julho, de Serviços
+            da Sociedade da Informação e do Comércio Eletrónico</strong> (LSSI-CE),
+            informam-se os utilizadores dos seguintes dados de identificação do titular
+            do website:
+          </p>
+          <ul class="lgl__data">
+            <li><strong>Titular:</strong> David Javier Pintado Laruelo (pessoa singular · trabalhador independente)</li>
+            <li><strong>NIF (número fiscal espanhol):</strong> 09394016B</li>
+            <li><strong>Nome comercial:</strong> Aventuraenelsella.es</li>
+            <li><strong>Atividade:</strong> Desporto de aventura</li>
+            <li><strong>Autorização turística:</strong> TA-188-AS · titular Aipol Aventura (atividade desenvolvida sob a sua autorização nas instalações partilhadas de Arriondas)</li>
+            <li><strong>Sede fiscal:</strong> Bermudo I el Diácono 3 Bajo, 33012 Oviedo, Astúrias</li>
+            <li><strong>Endereço da atividade:</strong> Calle Juan Carlos I, 18, Bajo II (acesso pela Aipol), 33540 Arriondas, Astúrias</li>
+            <li><strong>Telefone:</strong> <a href="tel:+34681093673">+34 681 09 36 73</a></li>
+            <li><strong>Email:</strong> <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a></li>
+            <li><strong>Domínio:</strong> <a href="https://aventuraenelsella.es">aventuraenelsella.es</a></li>
+          </ul>
+        </section>
+
+        <section id="objeto">
+          <h2>2. Objeto</h2>
+          <p>
+            O presente Aviso Legal regula a utilização do website
+            <a href="https://aventuraenelsella.es">aventuraenelsella.es</a>
+            (doravante, "o website"), cuja titularidade corresponde à pessoa identificada
+            no ponto anterior. O acesso ao website implica a aceitação plena e sem
+            reservas das presentes condições gerais.
+          </p>
+          <p>
+            O website tem como objeto informar sobre a atividade de descida do rio Sella em
+            canoa, que realizamos a partir de Arriondas (Astúrias, Espanha), bem como
+            facilitar a reserva da atividade, a comunicação com clientes potenciais e a
+            gestão comercial associada.
+          </p>
+        </section>
+
+        <section id="condicoes">
+          <h2>3. Condições de utilização</h2>
+          <p>
+            O utilizador compromete-se a utilizar o website, os seus conteúdos e serviços
+            em conformidade com a lei, a moral, a ordem pública e as presentes condições
+            gerais. Em particular, obriga-se a:
+          </p>
+          <ul>
+            <li>Não utilizar o website para fins ou com efeitos contrários à lei, à moral ou à ordem pública.</li>
+            <li>Não introduzir dados falsos, inexatos ou incorretos ao efetuar reservas ou contactar-nos.</li>
+            <li>Não realizar qualquer ato que possa danificar, inutilizar, sobrecarregar ou deteriorar o website.</li>
+            <li>Não tentar aceder a áreas restritas dos sistemas informáticos do titular.</li>
+            <li>Não introduzir ou difundir vírus informáticos ou outros sistemas suscetíveis de provocar danos.</li>
+          </ul>
+        </section>
+
+        <section id="propriedade">
+          <h2>4. Propriedade intelectual e industrial</h2>
+          <p>
+            Todos os conteúdos do website — incluindo, a título exemplificativo e não
+            limitativo, textos, fotografias, gráficos, imagens, ícones, tecnologia,
+            software, ligações e demais conteúdos audiovisuais ou sonoros, bem como o
+            seu design gráfico e código-fonte — são
+            <strong>propriedade intelectual do titular</strong> ou de terceiros que
+            autorizaram a sua utilização, não podendo entender-se cedidos ao utilizador
+            quaisquer dos direitos de exploração reconhecidos pela normativa vigente em
+            matéria de propriedade intelectual.
+          </p>
+          <p>
+            As marcas, nomes comerciais ou sinais distintivos são titularidade do
+            titular do website, não podendo o acesso ao mesmo atribuir qualquer direito
+            sobre eles.
+          </p>
+          <p>
+            Fica proibida a reprodução total ou parcial, distribuição, comunicação
+            pública, transformação ou qualquer outra forma de exploração dos conteúdos
+            do website sem autorização expressa e por escrito do titular.
+          </p>
+        </section>
+
+        <section id="responsabilidade">
+          <h2>5. Exclusão de responsabilidade</h2>
+          <p>O titular do website não se responsabiliza por:</p>
+          <ul>
+            <li>Os danos ou prejuízos de qualquer tipo decorrentes do acesso, utilização, cópia ou descarregamento de conteúdos do website.</li>
+            <li>Os possíveis erros ou deficiências no acesso ao website, incluindo falhas técnicas ou interrupções do serviço.</li>
+            <li>A presença de vírus ou qualquer outro elemento nocivo que possa produzir alterações nos sistemas informáticos do utilizador.</li>
+            <li>A veracidade, atualidade ou completude dos conteúdos de ligações externas referenciadas no website.</li>
+          </ul>
+          <p>
+            O titular reserva-se o direito de modificar, suspender ou interromper,
+            temporária ou definitivamente, os conteúdos e serviços oferecidos, sem aviso
+            prévio.
+          </p>
+        </section>
+
+        <section id="links">
+          <h2>6. Ligações a terceiros</h2>
+          <p>
+            O website pode conter ligações a páginas web de terceiros. O titular não se
+            responsabiliza pelo conteúdo, veracidade, práticas comerciais ou políticas
+            de privacidade desses sites externos. A inclusão destas ligações tem fins
+            meramente informativos e não implica recomendação ou vinculação alguma.
+          </p>
+        </section>
+
+        <section id="protecao-dados">
+          <h2>7. Proteção de dados</h2>
+          <p>
+            O tratamento dos dados pessoais dos utilizadores do website rege-se pelo
+            <strong>Regulamento (UE) 2016/679 Geral sobre a Proteção de Dados (RGPD)</strong>
+            e pela <strong>Lei Orgânica espanhola 3/2018, de 5 de dezembro, de Proteção
+            de Dados Pessoais e Garantia dos Direitos Digitais (LOPDGDD)</strong>. Para
+            informação detalhada, consulte a nossa
+            <a href={getLocalePath('legal_privacidad', lang)}>Política de Privacidade</a>.
+          </p>
+        </section>
+
+        <section id="cookies">
+          <h2>8. Política de cookies</h2>
+          <p>
+            O website utiliza cookies próprias e de terceiros para garantir o correto
+            funcionamento e melhorar a experiência de navegação. Para informação
+            detalhada, consulte a nossa
+            <a href={getLocalePath('legal_cookies', lang)}>Política de Cookies</a>.
+          </p>
+        </section>
+
+        <section id="alteracoes">
+          <h2>9. Alterações</h2>
+          <p>
+            O titular reserva-se o direito de efetuar, sem aviso prévio, as modificações
+            que considere oportunas no website, podendo alterar, suprimir ou acrescentar
+            tanto os conteúdos e serviços prestados como a forma como estes são
+            apresentados ou localizados. A data da última atualização do presente Aviso
+            Legal consta do início deste documento.
+          </p>
+        </section>
+
+        <section id="legislacao">
+          <h2>10. Legislação e jurisdição aplicável</h2>
+          <p>
+            As presentes condições regem-se pela <strong>legislação espanhola</strong>.
+            Para a resolução de qualquer controvérsia que possa derivar do acesso ao
+            website ou da utilização dos seus conteúdos e serviços, o titular e o
+            utilizador submetem-se à jurisdição dos Tribunais do domicílio do titular,
+            salvo se a legislação vigente estabelecer um foro diferente com caráter
+            imperativo.
+          </p>
+        </section>
+
+        <div class="lgl__contact" aria-label="Contacto legal">
+          <p>
+            Para qualquer questão relacionada com este Aviso Legal, pode escrever-nos
+            para <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a>
+            ou ligar para <a href="tel:+34681093673">+34 681 09 36 73</a>.
+          </p>
+        </div>
+
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lgl {
+    position: relative;
+    background:
+      radial-gradient(ellipse 60% 45% at 10% 0%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-base);
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    min-height: 80vh;
+  }
+  .lgl__inner { max-width: 900px; margin: 0 auto; padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 3rem) 0; }
+  .lgl__breadcrumb {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(26, 31, 46, 0.4);
+    margin-bottom: 1.5rem;
+  }
+  .lgl__breadcrumb a { color: var(--color-sage, #3D4F3A); transition: color 200ms; }
+  .lgl__breadcrumb a:hover { color: var(--color-primary); }
+  .lgl__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 1rem;
+  }
+  .lgl__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 0.75rem;
+  }
+  .lgl__updated {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.9375rem;
+    color: var(--color-text-muted);
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .lgl__toc {
+    background: rgba(61, 79, 58, 0.04);
+    border: 1px solid rgba(61, 79, 58, 0.12);
+    border-radius: 0.875rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    margin-bottom: clamp(2.5rem, 5vw, 3.5rem);
+  }
+  .lgl__tocTitle {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin: 0 0 1rem;
+  }
+  .lgl__toc ol { padding-left: 1.25rem; margin: 0; columns: 1; column-gap: 2rem; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-secondary); }
+  @media (min-width: 720px) { .lgl__toc ol { columns: 2; } }
+  .lgl__toc ol li { margin-bottom: 0.5rem; }
+  .lgl__toc a { color: var(--color-text-primary); transition: color 200ms; border-bottom: 1px solid transparent; }
+  .lgl__toc a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+  .lgl__prose { font-family: var(--font-sans); font-size: 1rem; line-height: 1.75; color: var(--color-text-secondary); }
+  .lgl__prose section { padding-top: clamp(2rem, 4vw, 3rem); scroll-margin-top: 5rem; }
+  .lgl__prose section:first-child { padding-top: 0; }
+  .lgl__prose h2 {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 900; line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+  .lgl__prose p { margin: 0 0 1rem; color: var(--color-text-secondary); }
+  .lgl__prose p strong { color: var(--color-text-primary); font-weight: 700; }
+  .lgl__prose ul { padding-left: 1.25rem; margin: 0 0 1rem; }
+  .lgl__prose ul li { margin-bottom: 0.5rem; color: var(--color-text-secondary); }
+  .lgl__prose ul.lgl__data {
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem 1.25rem 2.75rem;
+    list-style: none;
+  }
+  .lgl__prose ul.lgl__data li { padding-left: 0; position: relative; margin-bottom: 0.625rem; }
+  .lgl__prose ul.lgl__data li::before { content: "·"; position: absolute; left: -1.25rem; color: var(--color-sage, #3D4F3A); font-weight: 900; }
+  .lgl__prose a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.4);
+    transition: color 200ms, border-color 200ms;
+  }
+  .lgl__prose a:hover { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+  .lgl__contact {
+    margin-top: clamp(3rem, 5vw, 4rem);
+    padding: 1.5rem 1.75rem;
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 3px solid var(--color-sage, #3D4F3A);
+    border-radius: 0 0.5rem 0.5rem 0;
+  }
+  .lgl__contact p { margin: 0; }
+</style>

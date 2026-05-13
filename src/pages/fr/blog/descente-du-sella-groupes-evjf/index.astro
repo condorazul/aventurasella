@@ -1,0 +1,244 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "À partir de combien de personnes parle-t-on de groupe ?",
+    a: "<p>En pratique, à partir de <strong>8 personnes</strong> on parle déjà de groupe, car cela implique de coordonner canoës, horaires et transfert. À partir de 15 personnes, nous le traitons comme une réservation de groupe avec un contact unique et une marge pour personnaliser le pique-nique, l'heure et les arrêts. Pas de minimum strict : en 25 ans nous avons tout organisé, des couples aux bus de 60 personnes.</p>",
+  },
+  {
+    q: "Faites-vous des descentes du Sella pour EVJF et enterrements de vie de garçon ?",
+    a: "<p>Oui. Les EVJF/EVG sont <strong>un de nos plans préférés</strong> — bonne humeur, fous rires et le Sella s'occupe du reste. Comme l'horaire est <strong>Premium · ouvert</strong>, vous arrivez aux installations <strong>entre 10h30 et 12h30</strong> · sans heure fixe. Si vous voulez un fleuve plus calme, arrivez tôt (10h30-11h) · si vous préférez une ambiance animée à midi, arrivez vers 12h. Réservez à l'avance (août se remplit vite) et rappelez-vous que <strong>l'alcool ne se consomme pas sur le fleuve</strong> — laissez-le pour le repas d'après.</p>",
+  },
+  {
+    q: "Peut-on réserver la descente exclusivement pour un groupe ?",
+    a: "<p>Le fleuve est public, donc <strong>on ne peut pas le « privatiser »</strong>. Nous pouvons réserver un créneau horaire spécifique pour que tout le groupe parte ensemble, avec <strong>cours explicatif adapté à la taille du groupe</strong>, moniteurs diplômés surveillant le fleuve pendant la journée et traitement spécial à la réception.</p>",
+  },
+  {
+    q: "Que faisons-nous si certains du groupe ne veulent pas pagayer ?",
+    a: '<p>C\'est courant. Arriondas a des <strong>cafés, une place et une promenade au bord du fleuve</strong> pour qu\'ils attendent calmement, et ils peuvent rejoindre le groupe à la buvette finale. Ceux qui pagaient paient le prix normal, ceux qui ne pagaient pas, ne paient pas.</p>',
+  },
+  {
+    q: "Y a-t-il une réduction de groupe ?",
+    a: '<p>Ça dépend du volume. À partir de <strong>15-20 personnes</strong>, nous pouvons envisager des conditions spéciales. Écris au <a href="/fr/contact/">formulaire de contact</a> avec le nombre exact, la date préférée et les âges (pour séparer enfants/adultes) et nous t\'enverrons un devis fermé.</p>',
+  },
+  {
+    q: "Quels vêtements recommandez-vous pour les groupes ?",
+    a: '<p>La même liste que pour toute descente — nous l\'avons en entier dans <a href="/fr/blog/quoi-apporter-descente-du-sella/">quoi apporter pour la descente du Sella</a>. Astuce de groupe : <strong>t-shirts couleur ou slogan assortis</strong> rendent superbe sur les photos du fleuve. Beaucoup d\'EVJF le font et les images sont spectaculaires.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="descente-du-sella-groupes-evjf" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Couverture :</strong> EVJF et enterrements de vie de garçon, anniversaires, noces d'argent, retrouvailles d'amis, entreprises avec un vrai <em>team building</em>, grandes familles, bandes de potes. Si tu pensais que la descente du Sella était seulement pour 2 personnes en canoë, voici comment ça s'organise quand vous êtes 8, 20 ou 50.
+  </p>
+
+  <p>
+    Ces 25 dernières années, nous avons tout vu sur le Sella : EVJF déguisées, mariages qui complètent le week-end avec la descente du samedi, entreprises mesurant la cohésion d'équipe sur le fleuve, bandes qui pagaient ensemble depuis leurs 18 ans. Le fleuve s'adapte bien aux groupes — il faut juste l'organiser avec un peu de tête.
+  </p>
+
+  <h2 class="post__h2" id="why-sella">Pourquoi <span class="serif-italic">le Sella fonctionne</span> pour les groupes</h2>
+
+  <p>Six raisons pour lesquelles EVJF, entreprises et grandes familles reviennent au Sella année après année.</p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <h3 class="post__essential__label">Pour tout le monde</h3>
+      <p class="post__essential__desc">
+        Sportifs et non-sportifs en profitent également · aucune forme requise pour monter dans le canoë.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Ambiance intégrée</h3>
+      <p class="post__essential__desc">
+        Buvettes, arrêts, photos · ce n'est pas que le fleuve, c'est un plan de journée complet.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Prix borné</h3>
+      <p class="post__essential__desc">
+        <strong>30 € enfants · 40 € adultes</strong>, tout inclus. Pas de surprises à la fin.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Durée gérable</h3>
+      <p class="post__essential__desc">
+        Mini Sella · 1h30-2h30. Parcours complet · 3-5h. Tu choisis selon le rythme du groupe.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Photos mémorables</h3>
+      <p class="post__essential__desc">
+        Canoës en ligne, éclaboussures au Pozo del Arco, pique-nique sur la rive. Beaucoup de contenu pour les réseaux.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <h3 class="post__essential__label">Flexibilité</h3>
+      <p class="post__essential__desc">
+        Si quelqu'un ne veut pas pagayer, il reste à Arriondas sans problème · cafés, place et promenade tout près.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-grupos-inline"
+      alt="Groupe d'amis en EVJF pagayant le Sella en canoë — le plan qui convient aux grandes bandes"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Bandes, EVJF, équipes d'entreprise, grandes familles. Le Sella s'adapte au groupe · il faut juste organiser la matinée avec tête.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="stag-hen">EVJF et <span class="serif-italic">enterrements de vie</span></h2>
+
+  <p>
+    S'il y a un type de groupe qui demande encore et encore le Sella, ce sont les EVJF/EVG. Et à juste titre : c'est un plan de journée complète en extérieur, compatible avec des âges mixtes (grand-mère, cousin, ami du travail), avec photos pour le marié(e), et une ambiance qui ne fatigue pas.
+  </p>
+
+  <h3 class="post__h3">La recette typique d'un EVJF sur le Sella</h3>
+
+  <ol class="post__timeline">
+    <li>
+      <time>10h30</time>
+      <div class="post__timeline__body"><strong>Arrivée à Arriondas.</strong> Inscription, vestiaires, costumes si vous les avez apportés (ils tiennent dans les casiers).</div>
+    </li>
+    <li>
+      <time>10h50</time>
+      <div class="post__timeline__body"><strong>Mini-cours.</strong> Dix minutes · utilisés pour les premières blagues et une photo avant de descendre au fleuve.</div>
+    </li>
+    <li>
+      <time>11h30</time>
+      <div class="post__timeline__body"><strong>Départ.</strong> Photo de groupe obligatoire depuis la rampe avant de commencer.</div>
+    </li>
+    <li>
+      <time>12h30</time>
+      <div class="post__timeline__body"><strong>Arrêt au <a href="/fr/blog/pozo-del-arco-sella/">Pozo del Arco</a>.</strong> Baignade, photo de groupe, pique-nique asturien à bonne heure si tu veux.</div>
+    </li>
+    <li>
+      <time>13h30</time>
+      <div class="post__timeline__body"><strong>Arrêt à une <a href="/fr/blog/buvettes-descente-du-sella/">buvette du parcours</a>.</strong> Boisson, musique, fous rires · généralement El Oasis ou El Bosque. <em>Pas d'alcool sur le fleuve · laisse-le pour après.</em></div>
+    </li>
+    <li>
+      <time>14h30</time>
+      <div class="post__timeline__body"><strong>Arrivée à Toraño ou Fríes.</strong> Transfert retour à Arriondas.</div>
+    </li>
+    <li>
+      <time>15h00</time>
+      <div class="post__timeline__body"><strong>Douches et change.</strong> Aux installations · eau chaude et vestiaires inclus.</div>
+    </li>
+    <li>
+      <time>16h00</time>
+      <div class="post__timeline__body"><strong>Repas après la descente.</strong> Cidrerie à Arriondas, Cangas ou Ribadesella · nous recommandons des lieux si tu demandes.</div>
+    </li>
+  </ol>
+
+  <div class="post__callout">
+    <strong>Conseils maison pour EVJF/EVG</strong>
+    <ul class="post__callout__items">
+      <li>Réservez <strong>2-3 semaines à l'avance en août</strong> · les samedis se remplissent vite.</li>
+      <li><strong>T-shirts de couleur assortie</strong> pour tout le groupe · photos mémorables depuis le fleuve.</li>
+      <li><strong>Pas d'alcool sur le fleuve.</strong> Interdit par règlement et les buvettes n'en servent pas · laissez ça pour le repas d'après.</li>
+      <li>Attention aux <strong>costumes encombrants</strong> dans le canoë · ils doivent être confortables et pouvoir se mouiller.</li>
+      <li>Prévenez-nous si quelqu'un est <strong>enceinte</strong> · elle ne peut pas pagayer, mais peut attendre à Arriondas sans problème.</li>
+    </ul>
+  </div>
+
+  <h2 class="post__h2" id="companies">Entreprises et <span class="serif-italic">team building</span></h2>
+
+  <p>
+    Le Sella fonctionne bien comme activité d'entreprise car <strong>il n'a pas de barrière physique d'entrée</strong> (personne n'est laissé de côté pour ne pas être en forme), il génère de la conversation entre collègues qui n'interagissent normalement pas, et laisse un souvenir partagé qui dure des mois.
+  </p>
+
+  <p>Pour les entreprises, nous offrons généralement :</p>
+
+  <ul>
+    <li><strong>Créneau horaire dédié</strong> — tout le groupe part ensemble.</li>
+    <li><strong>Moniteurs diplômés</strong> sur le fleuve surveillant le parcours (cours briefing avant + kayaks de sécurité pendant la journée).</li>
+    <li><strong>Pique-nique asturien</strong> renforcé si c'est un événement long — empanada, petit pain, fromage, fruits supplémentaires.</li>
+    <li><strong>Facture fiscale</strong> au numéro fiscal de l'entreprise.</li>
+    <li><strong>Coordination avec hébergement local ou traiteur</strong> si nécessaire.</li>
+  </ul>
+
+  <p>
+    Le plan d'entreprise typique est une arrivée tôt sur les horaires ouverts Premium (10h30-11h), <a href="/fr/duree/">descente du parcours complet</a>, repas après dans une cidrerie près d'Arriondas ou Cangas. Avec 30-40 personnes, ça s'organise confortablement. Si vous êtes 60+, parlons-en.
+  </p>
+
+  <h2 class="post__h2" id="families">Anniversaires, familles et <span class="serif-italic">grandes retrouvailles</span></h2>
+
+  <p>
+    Les anniversaires (surtout <strong>40, 50, 60</strong>) et les commémorations sont un autre classique. La clé ici est que dans un groupe familial, il y a des âges très mixtes — de cousins de 8 ans à grands-parents de 75 ans. La descente du Sella le gère bien parce que :
+  </p>
+
+  <ul>
+    <li><strong>Canoës jusqu'à 3 places (K3)</strong> permettent des combinaisons de couples + un enfant, trois amis, ou un grand-parent avec deux petits-enfants.</li>
+    <li><strong>Mini Sella</strong> s'adapte au niveau des aînés — 7 km suffisent pour célébrer la journée.</li>
+    <li><strong>Tout le monde voit tout le monde</strong> aux arrêts. Ce n'est pas une activité solitaire, c'est une expérience partagée.</li>
+  </ul>
+
+  <p class="post__pull">
+    Les repas de famille s'oublient. Les descentes du Sella avec trois générations se souviennent — et finissent généralement sur le mur du salon de quelqu'un, imprimées en A3.
+  </p>
+
+  <h2 class="post__h2" id="organisation">Comment nous organisons <span class="serif-italic">la réservation</span></h2>
+
+  <p>Étape par étape ce que nous demandons aux grands groupes :</p>
+
+  <ol>
+    <li><strong>Nombre exact de personnes</strong> — réparti entre adultes et enfants (jusqu'à 12).</li>
+    <li><strong>Date précise</strong> + une alternative.</li>
+    <li><strong>Heure d'arrivée préférée</strong> — horaires ouverts entre 10h30 et 12h30. Si tu as une préférence (fleuve plus vide le matin, plus d'ambiance à midi), dis-le et nous conseillons.</li>
+    <li><strong>Parcours</strong> — Mini Sella (7 km) ou parcours complet (14,5 km).</li>
+    <li><strong>Notes</strong> — grossesses (exclues), personnes ayant des besoins spéciaux, allergies au pique-nique, nom de l'anniversaire ou du marié(e).</li>
+    <li><strong>Coordonnées d'un contact unique</strong> — une personne responsable de la coordination avec nous.</li>
+  </ol>
+
+  <p>
+    Avec cela, nous t'envoyons un devis fermé, des options de paiement (Bizum, virement, carte, lien de paiement) et confirmons la réservation. Pour les groupes de 15+, nous demandons <strong>30-50 % d'acompte</strong> pour bloquer le créneau, le reste à l'arrivée.
+  </p>
+
+  <h2 class="post__h2" id="dates">Les <span class="serif-italic">meilleures dates</span> pour un groupe</h2>
+
+  <ul>
+    <li><strong>Juin et septembre :</strong> les deux meilleurs mois. Climat doux, fleuve animé, moins de monde, meilleurs prix dans les hébergements voisins.</li>
+    <li><strong>Juillet et août :</strong> les classiques. Plus d'ambiance dans les buvettes, mais il faut réserver à l'avance (2-3 semaines minimum) et les samedis se remplissent.</li>
+    <li><strong>Mai et octobre :</strong> valides si tu vas avec des adultes et vêtements techniques. Moins de service mais très calme.</li>
+    <li><strong>Samedi de la <a href="/fr/descente-internationale-du-sella/">Descente Internationale du Sella</a> :</strong> le samedi d'août fixé par la Fédération (en 2026 · <strong>8 août</strong>). Plan spectaculaire si l'événement t'intéresse · ce jour-là, nous proposons <strong>un seul départ touristique à 12h</strong> (35 € par personne, places limitées, réservation jusqu'à 2 jours avant).</li>
+  </ul>
+
+  <p>
+    Détails sur débit, fréquentation et climat par mois dans <a href="/fr/meilleure-periode/">la meilleure période pour la descente du Sella</a>.
+  </p>
+
+  <h2 class="post__h2" id="price">Prix <span class="serif-italic">de groupe</span></h2>
+
+  <p>
+    Le tarif de base est le même qu'individuel : <strong>30 € par enfant (≤12) et 40 € par adulte</strong>, tout inclus. Voir le détail complet dans <a href="/fr/tarifs/">tarifs de la descente du Sella</a>. À partir de 15-20 personnes, nous pouvons envisager des conditions spéciales — nous ne promettons pas de remises de série, mais nous étudions par date, créneau et services.
+  </p>
+
+  <p>
+    Si tu cherches le <strong>plan top de gamme</strong>, la <a href="/fr/reservation-premium/">Réservation Premium</a> renforce le pique-nique, ajoute des services et fait un détail très soigné pour les occasions spéciales — idéal pour EVJF et anniversaires en nombre rond.
+  </p>
+
+  <h2 class="post__h2" id="summary">Ce qu'il faut savoir <span class="serif-italic">en 6 points</span></h2>
+
+  <ul>
+    <li>À partir de <strong>8-10 personnes</strong>, c'est traité comme un groupe.</li>
+    <li>Tu peux réserver un <strong>créneau dédié</strong>, mais tu ne peux pas « fermer » le fleuve.</li>
+    <li>Prix de base <strong>30 € enfant / 40 € adulte</strong>, tout inclus.</li>
+    <li>Réserve <strong>2-3 semaines à l'avance</strong> en août.</li>
+    <li>Les personnes qui ne veulent pas pagayer <strong>attendent à Arriondas</strong> sans problème.</li>
+    <li>Pour les groupes <strong>15+ écris-nous</strong> avec date, nombre et créneau pour un devis fermé.</li>
+  </ul>
+
+  <p>
+    Tu as un groupe en tête et veux des idées ? <a href="/fr/contact/">Écris-nous</a> avec les bases et nous te donnerons une proposition concrète dans les 24 heures. En août, deux semaines à l'avance est le minimum raisonnable — en juin ou septembre, tu as de la marge.
+  </p>
+</BlogPostLayout>

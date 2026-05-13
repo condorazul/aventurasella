@@ -1,0 +1,228 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: '¿Cuándo se celebró el primer descenso del Sella?',
+    a: '<p>El primer <strong>Descenso Internacional del Sella se celebró en 1930</strong>, a raíz de la bajada improvisada que Dionisio de la Huerta hizo en <strong>1929</strong> con cuatro amigos desde Arriondas hasta Ribadesella. Esa bajada no reglada de 1929 se considera el origen histórico de la prueba y de todo el turismo piragüista del Sella.</p>',
+  },
+  {
+    q: '¿Quién fue Dionisio de la Huerta?',
+    a: '<p>Dionisio de la Huerta fue un <strong>piragüista y promotor asturiano</strong>, considerado padre del Descenso Internacional del Sella. Natural de Asturias, con espíritu aventurero y visión deportiva, organizó aquella bajada en piragua por el Sella de 1929 que dio origen a la prueba oficial y a la <strong>tradición popular</strong> que hoy conocemos — Fiesta de Interés Turístico Internacional.</p>',
+  },
+  {
+    q: '¿Cuándo se declaró Fiesta de Interés Turístico Internacional?',
+    a: '<p>El Descenso Internacional del Sella recibió la declaración de <strong>Fiesta de Interés Turístico Internacional en 1980</strong>. Antes había sido declarada Fiesta de Interés Turístico Nacional (1966) y Fiesta de Interés Turístico (1957). Es una de las pruebas piragüistas más antiguas y emblemáticas del mundo.</p>',
+  },
+  {
+    q: '¿Dónde empieza y termina el Descenso Internacional?',
+    a: '<p>Sale de <strong>Arriondas</strong> y termina en <strong>Ribadesella</strong>, cubriendo unos 20 km de río. La prueba se celebra cada año el <strong>primer sábado de agosto</strong> (salvo excepciones como 2026, cuando será el segundo sábado). Consulta el <a href="/descenso-internacional-del-sella/">calendario oficial</a>.</p>',
+  },
+  {
+    q: '¿Es lo mismo el descenso turístico que el Descenso Internacional?',
+    a: '<p>No. El <strong>Descenso Internacional</strong> es la <em>competición piragüista profesional</em> que se celebra un único día al año (sábado de agosto · <a href="/descenso-internacional-del-sella/">fecha exacta en el calendario oficial</a> · en 2026, el 8 de agosto). El <strong>descenso turístico del Sella</strong> —lo que hacemos con nuestros clientes durante toda la temporada— es un paseo recreativo en canoa, sin carácter competitivo, abierto a todos los públicos desde abril a octubre.</p>',
+  },
+  {
+    q: '¿Por qué es tan importante la fiesta de las piraguas?',
+    a: '<p>Porque combina <strong>deporte, cultura popular y paisaje</strong>. La jornada oficial del Descenso Internacional incluye la bajada en sí, el tren fluvial que sigue a los deportistas, verbenas populares, música en directo y una comida popular en Ribadesella. Es la mezcla única de competición piragüista con fiesta asturiana lo que le ha dado reconocimiento internacional.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="historia-descenso-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>En 5 líneas:</strong> todo empezó en 1929 cuando Dionisio de la Huerta bajó el Sella con cuatro amigos en una piragua improvisada. Un año después nacía el Descenso Internacional del Sella oficial. En 1980 fue declarada <em>Fiesta de Interés Turístico Internacional</em>. Hoy es una de las competiciones piragüistas más antiguas del mundo y la razón de que el descenso turístico del Sella sea lo que es.
+  </p>
+
+  <p>
+    Cuando bajas el Sella en canoa, probablemente no te detengas a pensar que estás siguiendo un recorrido con <strong>casi un siglo de historia</strong>. Pero merece la pena. La tradición del descenso del Sella no es una invención del turismo moderno: lleva en marcha desde <strong>1929</strong>, y entender su origen cambia cómo se mira el río.
+  </p>
+
+  <p>
+    Esta entrada es un resumen honesto de esa historia. No somos historiadores, pero llevamos 25 años en Arriondas y hemos conocido a personas que vieron bajar las primeras piraguas. Lo que cuentan aquí es un destilado de lo que sabemos y de lo que está documentado en fuentes oficiales del Descenso Internacional.
+  </p>
+
+  <h2 class="post__h2" id="origen">1929 · <span class="serif-italic">una apuesta</span> con historia</h2>
+
+  <p>
+    En agosto de 1929, cinco amigos se plantaron en Arriondas con una piragua y una idea que entonces sonaba a chifladura: <strong>bajar el río Sella hasta Ribadesella</strong>. Entre ellos iba <strong>Dionisio de la Huerta</strong>, un asturiano con espíritu aventurero que acabaría siendo considerado el padre de la prueba.
+  </p>
+
+  <p>
+    Aquella bajada no estaba reglada, no tenía premio, no la cubría ningún periódico deportivo. Era una aventura entre amigos, parecida a la que cualquier grupo puede plantearse hoy un fin de semana. Pero la idea caló. Al año siguiente, en <strong>1930</strong>, se organizó la primera edición oficial del <strong>Descenso Internacional del Sella</strong>, con reglamento, inscripciones y público en la orilla.
+  </p>
+
+  <p>
+    Los primeros años fueron modestos: unas pocas decenas de participantes, piraguas de madera pesada, una sociedad asturiana que todavía no imaginaba lo que aquello llegaría a ser. Pero la combinación resultó potente: un río precioso, un recorrido de 20 km con paisaje dramático, y una Asturias que acompañaba la prueba con música, sidra y fiesta popular.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-historia-inline"
+      alt="Descenso Internacional del Sella · piragüistas y ambiente de la fiesta declarada de Interés Turístico Internacional"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>El Descenso Internacional del Sella · Fiesta de Interés Turístico Internacional desde 1980. Lo que empezó en 1929 sigue cada año en un sábado de agosto (<a href="/descenso-internacional-del-sella/">consulta la fecha oficial</a>).</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="consolidacion">Consolidación · <span class="serif-italic">de prueba local a fiesta nacional</span></h2>
+
+  <p>
+    A lo largo de las décadas de los 40 y 50, el Descenso fue creciendo lentamente. Llegaron equipos de fuera de Asturias, se mejoraron los tiempos, las piraguas se hicieron más ligeras. En <strong>1957</strong> llegó el primer reconocimiento institucional importante: la <strong>declaración de Fiesta de Interés Turístico</strong>.
+  </p>
+
+  <p>
+    Fue el aviso de que ya no se trataba solo de una competición local, sino de un <strong>fenómeno cultural</strong>. La jornada del primer sábado de agosto dejó de ser "la carrera de piraguas" para convertirse en un día-acontecimiento con verbena, misa campera, tren fluvial, comida popular y, cómo no, miles de personas en las orillas.
+  </p>
+
+  <p>
+    En <strong>1966</strong> se elevó a <strong>Fiesta de Interés Turístico Nacional</strong>. Y finalmente, en <strong>1980</strong>, llegó la declaración que consagró el evento a nivel mundial: <strong>Fiesta de Interés Turístico Internacional</strong>. A día de hoy es una de las pocas pruebas piragüistas del mundo con esa distinción.
+  </p>
+
+  <div class="post__callout">
+    <strong>Datos rápidos del Descenso Internacional</strong>
+    <ul class="post__callout__items">
+      <li>Primera edición oficial · <strong>1930</strong></li>
+      <li>Recorrido · <strong>Arriondas → Ribadesella</strong> · ~20 km</li>
+      <li>Fecha · <strong>primer sábado de agosto</strong> (con excepciones puntuales)</li>
+      <li>Fiesta de Interés Turístico · <strong>1957</strong></li>
+      <li>Nacional · <strong>1966</strong> · Internacional · <strong>1980</strong></li>
+      <li>Participantes actuales · <strong>cientos de piragüistas</strong> de decenas de países</li>
+    </ul>
+  </div>
+
+  <h2 class="post__h2" id="dionisio">Dionisio de la Huerta · <span class="serif-italic">el padre del Sella</span></h2>
+
+  <p>
+    Sin Dionisio de la Huerta no hay Descenso. Fue promotor, piragüista, organizador y, sobre todo, <em>creyente</em> en el proyecto cuando muy pocos lo veían. Durante décadas estuvo al frente de la organización, empujando para que la prueba creciera y para que el Sella ocupara el lugar que merecía en el deporte internacional.
+  </p>
+
+  <p>
+    En Arriondas hay bustos y placas que le recuerdan, y cada edición del Descenso Internacional incluye menciones a su figura. Su apellido está tan ligado al Sella como el propio río — no hay forma de contar esta historia sin él.
+  </p>
+
+  <p class="post__pull">
+    Dionisio no inventó el río. Pero convirtió bajarlo en una idea compartida que lleva 95 años uniendo a piragüistas, familias y valles enteros de Asturias cada primer sábado de agosto.
+  </p>
+
+  <h2 class="post__h2" id="turismo">Del deporte al turismo <span class="serif-italic">piragüista</span></h2>
+
+  <p>
+    Hasta mediados de los años 80, el Sella era sobre todo territorio de piragüistas profesionales. Bajar el río "por diversión" era raro: se asociaba a la competición. Pero algo empezó a cambiar con la popularización del turismo activo en los 90: familias, grupos de amigos, empresas… cada vez más gente quería <strong>hacer el descenso sin competir</strong>, simplemente como experiencia.
+  </p>
+
+  <p>
+    Aparecieron las primeras empresas de turismo activo en Arriondas, con canoas recreativas de doble plaza (insumergibles, mucho más estables que las piraguas de competición), servicios de transfer y todo el paquete que hoy damos por normal. Nuestros padres —y en algún caso abuelos— fueron parte de esa primera generación que profesionalizó el <strong>descenso turístico del Sella</strong>.
+  </p>
+
+  <p>
+    Hoy, entre abril y octubre, miles de personas bajan el Sella como experiencia recreativa. Es literalmente <strong>otra actividad distinta</strong> del Descenso Internacional —diferente canoa, diferente ritmo, diferente espíritu— pero bebe directamente de la tradición que empezaron Dionisio y sus amigos en 1929.
+  </p>
+
+  <h2 class="post__h2" id="tradicion">Lo que hoy <span class="serif-italic">sigue vivo</span></h2>
+
+  <p>
+    El Descenso Internacional se celebra cada año y atrae a participantes de decenas de países. La jornada oficial, además de la carrera en sí, vive en cuatro rituales que hacen del primer sábado de agosto una fiesta entera.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="16" rx="2"/><path d="M4 11h16"/><path d="M12 3v8"/><circle cx="8.5" cy="15" r="1"/><circle cx="15.5" cy="15" r="1"/><path d="M7 19l-2 2"/><path d="M17 19l2 2"/></svg>
+      </span>
+      <h3 class="post__essential__label">El tren fluvial</h3>
+      <p class="post__essential__desc">
+        Un tren especial acompaña a los piragüistas por la vía paralela al río, con público cantando desde las ventanillas. Postal asturiana en movimiento.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><line x1="9" y1="18" x2="9" y2="6"/><line x1="9" y1="6" x2="21" y2="3"/><line x1="21" y1="3" x2="21" y2="16"/></svg>
+      </span>
+      <h3 class="post__essential__label">Verbenas populares</h3>
+      <p class="post__essential__desc">
+        Música tradicional y ambiente popular en Arriondas y Ribadesella. La salida y la llegada se celebran al ritmo de la noche asturiana.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Comida popular</h3>
+      <p class="post__essential__desc">
+        En la campa de Ribadesella, al final de la carrera. Familias enteras montan mesa con tortilla, empanada y sidra escanciada.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <h3 class="post__essential__label">Ambientación de orillas</h3>
+      <p class="post__essential__desc">
+        Pueblos enteros pintan casas, cuelgan carteles y salen a animar. La frontera entre carrera deportiva y fiesta colectiva se desdibuja.
+      </p>
+    </article>
+  </div>
+
+  <p>
+    Si tu viaje al Sella coincide con el sábado del Descenso Internacional (en 2026, el 8 de agosto), plantéate seriamente estar en Arriondas o Ribadesella ese día. Es una de esas experiencias que cambia cómo ves el lugar. <a href="/descenso-internacional-del-sella/">Aquí están las fechas oficiales</a> y la información práctica para quien quiera vivirlo.
+  </p>
+
+  <h2 class="post__h2" id="porque-importa">Por qué importa <span class="serif-italic">esta historia</span></h2>
+
+  <p>
+    Porque cuando bajas el Sella no solo estás haciendo una actividad turística: estás siguiendo un recorrido con memoria. Las mismas curvas, las mismas playas fluviales, el mismo Pozo del Arco, las mismas orillas que han visto pasar piragüistas de todo el mundo durante <strong>casi un siglo</strong>.
+  </p>
+
+  <p>
+    Y también porque Arriondas, Ribadesella y todos los pueblos del valle del Sella viven —en parte— de esa tradición. El Descenso Internacional no es un evento desconectado: es el nudo del que surge todo el ecosistema de turismo piragüista, gastronomía local, servicios, chiringuitos, alojamientos. Participar del descenso turístico es participar indirectamente en esa red cultural.
+  </p>
+
+  <p>
+    Por eso cuando alguien nos dice <em>"es que yo no sé remar"</em> siempre contestamos lo mismo: <strong>no hace falta saber remar</strong>. Hace falta querer estar ahí. El resto lo han ido construyendo 95 años de gente bajando el mismo río, y lo único que tienes que hacer es sumarte a esa corriente.
+  </p>
+
+  <h2 class="post__h2" id="resumen">Resumen <span class="serif-italic">de la historia</span></h2>
+
+  <p>Casi un siglo de Sella en una columna · de la primera bajada improvisada al ritual contemporáneo.</p>
+
+  <ol class="post__timeline">
+    <li>
+      <time datetime="1929">1929</time>
+      <div class="post__timeline__body"><strong>El origen simbólico.</strong> Dionisio de la Huerta baja el Sella con cuatro amigos en una piragua improvisada · sin reglamento, sin premio, sin público.</div>
+    </li>
+    <li>
+      <time datetime="1930">1930</time>
+      <div class="post__timeline__body"><strong>Primera edición oficial.</strong> Nace el Descenso Internacional del Sella con reglamento, inscripciones y público en la orilla.</div>
+    </li>
+    <li>
+      <time datetime="1957">1957</time>
+      <div class="post__timeline__body"><strong>Fiesta de Interés Turístico.</strong> Primer reconocimiento institucional · ya no es solo competición, es fenómeno cultural.</div>
+    </li>
+    <li>
+      <time datetime="1966">1966</time>
+      <div class="post__timeline__body"><strong>Fiesta de Interés Turístico Nacional.</strong> El Descenso entra en el imaginario colectivo español.</div>
+    </li>
+    <li>
+      <time datetime="1980">1980</time>
+      <div class="post__timeline__body"><strong>Fiesta de Interés Turístico Internacional.</strong> El reconocimiento mundial · una de las pocas pruebas piragüistas con esa distinción.</div>
+    </li>
+    <li>
+      <time>Años 90</time>
+      <div class="post__timeline__body"><strong>Nace el turismo piragüista recreativo.</strong> Llegan a Arriondas las primeras empresas con canoas insumergibles · cualquiera puede bajar el río sin competir.</div>
+    </li>
+    <li>
+      <time>Hoy</time>
+      <div class="post__timeline__body"><strong>Miles de personas cada temporada.</strong> Familias, parejas y grupos siguen el recorrido que empezó en 1929 · el Sella es un río compartido.</div>
+    </li>
+  </ol>
+
+  <p>
+    Si te ha enganchado la historia y quieres bajar el mismo río que bajó Dionisio, <a href="/reservar/">elige día en el calendario</a>. Y si coincides con el <a href="/descenso-internacional-del-sella/">sábado del Descenso Internacional</a>, quédate al menos a verlo — es la forma real de entender por qué este río se convirtió en lo que es.
+  </p>
+</BlogPostLayout>

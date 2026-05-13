@@ -1,0 +1,170 @@
+---
+/**
+ * /en/ · English Home
+ * ------------------------------------------------------------
+ * Phase 2 · Proof-of-concept. The i18n infrastructure is wired up but the
+ * Home components (Hero, Marquee, SplitEditorial, etc.) still have Spanish
+ * copy hardcoded inside. They will be refactored to be locale-aware in
+ * subsequent sessions — once each component is locale-aware, this page
+ * automatically renders in English.
+ *
+ * What IS already in English here:
+ *   - <title> and <meta description>
+ *   - JSON-LD schema (inLanguage, descriptions, names)
+ *   - <html lang="en-GB"> via BaseLayout
+ *   - Header language switcher highlights EN as current
+ *
+ * What is STILL in Spanish (pending component refactor):
+ *   - Visible body copy from each section component
+ */
+
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/sections/Hero.astro';
+import Marquee from '@components/sections/Marquee.astro';
+import SplitEditorial from '@components/sections/SplitEditorial.astro';
+import BentoGallery from '@components/sections/BentoGallery.astro';
+import Experiences from '@components/sections/Experiences.astro';
+import Parallax from '@components/sections/Parallax.astro';
+import HowItWorks from '@components/sections/HowItWorks.astro';
+import IncludesB from '@components/sections/IncludesB.astro';
+import Reviews from '@components/sections/Reviews.astro';
+import MapaInteractivoSella from '@components/sections/MapaInteractivoSella.astro';
+import LocationTeaser from '@components/sections/LocationTeaser.astro';
+import ReservaCTA from '@components/sections/ReservaCTA.astro';
+import FinalCTA from '@components/sections/FinalCTA.astro';
+import SeasonsGuide from '@components/sections/SeasonsGuide.astro';
+import TrustChecklist from '@components/sections/TrustChecklist.astro';
+import BlogTeaser from '@components/sections/BlogTeaser.astro';
+import FAQ from '@components/sections/FAQ.astro';
+import { localBusinessSchema } from '@data/business-schema';
+
+const lang = 'en';
+const title = 'Sella River canoe descent · From €30 · Arriondas, Asturias';
+const description = 'Sella River canoe descent in Arriondas, Asturias. All inclusive: canoe, Asturian picnic, return transfer, certified instructors. From €30. Book in 2 minutes.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'TouristAttraction',
+      '@id': `${baseUrl}/#descenso`,
+      name: 'Sella River canoe descent',
+      description: 'Touristic canoe descent along the Sella River from Arriondas to Toraño (7 km) or Fríes (14.5 km). All inclusive: unsinkable canoe, life jacket, double paddle, wetsuit on cold dates, mini-class with certified instructors, return transfer, Asturian picnic (tuna pie, traditional bun), changing rooms with showers, locked lockers, guarded parking and insurance.',
+      url: baseUrl,
+      image: `${baseUrl}/images/optimized/hero-canoa-lago.jpg`,
+      touristType: ['Families', 'Couples', 'Groups', 'Active tourism'],
+      isAccessibleForFree: false,
+      publicAccess: true,
+      provider: { '@id': `${baseUrl}/#business` },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        addressCountry: 'ES',
+      },
+      inLanguage: 'en-GB',
+    },
+    {
+      '@type': 'Product',
+      '@id': `${baseUrl}/#product`,
+      name: 'Sella River canoe descent · All inclusive',
+      description: 'Sella River canoe descent booking with everything included. Two routes (7 km Mini or 14.5 km Full), Asturian picnic (tuna pie, traditional bun), transfer, guarded parking, locked lockers, insurance and changing rooms with showers. Pets travel free.',
+      brand: { '@type': 'Brand', name: 'Aventura en el Sella' },
+      image: `${baseUrl}/images/optimized/includes-b.jpg`,
+      offers: [
+        {
+          '@type': 'Offer',
+          name: 'Children (up to 12 years)',
+          price: '30.00',
+          priceCurrency: 'EUR',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/en/book/`,
+        },
+        {
+          '@type': 'Offer',
+          name: 'Adult',
+          price: '40.00',
+          priceCurrency: 'EUR',
+          availability: 'https://schema.org/InStock',
+          url: `${baseUrl}/en/book/`,
+        },
+      ],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '147',
+        bestRating: '5',
+        worstRating: '1',
+      },
+      review: [
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Anaïs Suárez' },
+          datePublished: '2025-10-01',
+          reviewBody: 'Great service, attentive and very friendly staff. The experience was wonderful, I absolutely loved it.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Nacho A.' },
+          datePublished: '2025-08-01',
+          reviewBody: 'Punctual and very kind. An experience worth trying once in a lifetime, recommended for young and old alike.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+        {
+          '@type': 'Review',
+          author: { '@type': 'Person', name: 'Carlos S.' },
+          datePublished: '2025-05-01',
+          reviewBody: 'Worth it. Changing rooms with showers after the activity. They give fun instructions, a barrel to keep many things in, and the rest the river gives you.',
+          reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+        },
+      ],
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${baseUrl}/en/#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: `${baseUrl}/en/` },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${baseUrl}/#website`,
+      url: baseUrl,
+      name: 'Aventura en el Sella',
+      inLanguage: 'en-GB',
+      publisher: { '@id': `${baseUrl}/#business` },
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/en/" translationKey="home">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-lg.avif" type="image/avif" media="(min-width: 1024px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago.avif" type="image/avif" media="(min-width: 640px) and (max-width: 1023px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-sm.avif" type="image/avif" media="(max-width: 639px)" fetchpriority="high" />
+  </Fragment>
+
+  <Hero />
+  <Marquee />
+  <SplitEditorial />
+  <BentoGallery />
+  <Experiences />
+  <IncludesB />
+  <HowItWorks />
+  <MapaInteractivoSella />
+  <LocationTeaser />
+  <ReservaCTA />
+  <SeasonsGuide />
+  <Parallax />
+  <Reviews />
+  <TrustChecklist />
+  <BlogTeaser />
+  <FAQ />
+  <FinalCTA />
+</BaseLayout>

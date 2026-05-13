@@ -1,0 +1,2204 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+
+const lang = 'fr';
+const title = 'Combien de temps dure la descente du Sella ? Durées par parcours';
+const description = 'Combien de temps dure la descente du Sella : 2-3 h le Mini (7 km) et 4-5 h le Complet (14,5 km). Facteurs, conseils et réservation sans payer maintenant — animaux gratuits.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/fr/duree/`;
+
+// 5 facteurs qui influencent la durée
+const factores = [
+  { num: '01', title: 'Le parcours que vous choisissez', text: 'Le <strong>Mini Sella</strong> (7 km) ne prend pas le même temps que le <strong>Parcours complet</strong> (14,5 km). C\'est la différence la plus importante dans la durée totale.' },
+  { num: '02', title: 'Votre rythme de pagaie',           text: 'Certains groupes pagaient en continu et d\'autres descendent très tranquillement. <strong>Plus le rythme est tranquille, plus la durée est longue</strong>.' },
+  { num: '03', title: 'Les arrêts en chemin',             text: 'Beaucoup de personnes en profitent pour s\'arrêter, se baigner, se reposer ou manger le pique-nique. C\'est l\'une des meilleures parties — mais cela ajoute du temps total.' },
+  { num: '04', title: 'Le débit et la journée',           text: 'Le <strong>débit du fleuve</strong>, le courant et l\'affluence en haute saison peuvent rendre la descente un peu plus rapide ou un peu plus lente.' },
+  { num: '05', title: 'Si vous y allez avec des enfants', text: 'Avec les petits, le <strong>rythme est plus tranquille</strong> et les arrêts plus fréquents. Le temps total est plus flexible et s\'adapte à eux.' },
+];
+
+// 6 conseils pratiques
+const consejos = [
+  { t: 'Réservez à l\'avance',           s: 'Surtout en haute saison. Choisissez l\'horaire de départ qui s\'adapte à votre journée. <strong>Sans payer maintenant</strong> — payez par carte avant ou à l\'arrivée.' },
+  { t: 'Calculez avec une marge',        s: 'Ajoutez au moins <strong>1 heure supplémentaire</strong> au temps du parcours : réception, vestiaires, transfert retour et arrêts s\'ajoutent au total.' },
+  { t: 'Horaire ouvert · 10h30–12h30',   s: 'Comme votre réservation est <strong>Premium</strong>, l\'horaire est ouvert : vous arrivez à nos installations <strong>quand cela vous arrange entre 10h30 et 12h30</strong>, sans choisir d\'heure précise. La Confederación Hidrográfica indique que la permanence sur le fleuve est <strong>jusqu\'à 18h00</strong> · c\'est pourquoi nous fermons les arrivées à 12h30 (marge de sécurité).' },
+  { t: 'Avec des enfants, plus de souplesse', s: 'Les petits peuvent vouloir s\'arrêter davantage, et cela fait partie du plan. Si vous y allez avec des enfants, <strong>prévoyez plus de marge</strong> et un rythme tranquille.' },
+  { t: 'Apportez de l\'eau et un en-cas', s: 'Le <strong>pique-nique asturien</strong> est inclus dans la réservation. Pour les arrêts intermédiaires, un petit extra aide toujours — surtout en été.' },
+  { t: 'Sans hâte',                       s: 'La descente n\'est pas une compétition. La savourer à votre rythme — en s\'arrêtant, en se baignant, en observant — fait partie de son charme.' },
+];
+
+// Questions réelles (accordéon)
+const faqs = [
+  { q: 'Combien de temps dure la descente complète du Sella ?',
+    a: 'Normalement entre <strong>4 et 5 heures</strong>, avec un parcours de <strong>14,5 km</strong> depuis Arriondas jusqu\'à Fríes. Le temps peut varier selon les arrêts que vous faites, le débit du fleuve et le rythme du groupe. Si vous pagayez sans hâte et vous arrêtez pour vous baigner ou manger, cela approche les 5 heures.' },
+  { q: 'Combien de temps dure le Mini Sella ?',
+    a: 'Le <strong>Mini Sella</strong> (Arriondas → Toraño, <strong>7 km</strong>) dure habituellement entre <strong>2 et 3 heures</strong>. C\'est l\'option idéale si vous avez une demi-journée, si vous y allez avec des petits enfants ou si vous voulez combiner la descente avec d\'autres plans du jour à Arriondas ou Ribadesella.' },
+  { q: 'Combien de temps cela prend avec des enfants ?',
+    a: 'Avec des enfants, l\'habituel est que le <strong>rythme soit plus tranquille et les arrêts plus fréquents</strong>. Beaucoup de familles choisissent le Mini Sella (2-3 h) pour que le petit profite sans se fatiguer. Si vous faites le Complet avec des enfants, comptez plutôt 5 h que 4. Vous pouvez <a href="/fr/avec-enfants/">lire notre guide complet de la descente avec enfants</a>.' },
+  { q: 'Faut-il le faire d\'un seul trait ?',
+    a: 'Non. L\'une des meilleures choses de la descente du Sella, c\'est que <strong>vous pouvez vous arrêter quand vous voulez</strong> : il y a des plages fluviales tranquilles le long du fleuve où se baigner, se reposer ou manger le pique-nique. C\'est vous qui marquez le rythme, il n\'y a pas d\'horaires sur l\'eau.' },
+  { q: 'La durée change-t-elle s\'il pleut ?',
+    a: 'Avec une pluie légère, l\'activité se fait pareil et le temps ne change presque pas. Si le <strong>débit monte beaucoup</strong>, la descente peut être un peu plus rapide (plus de courant) ; s\'il est très bas, un peu plus lente. Nous suspendons seulement pour des raisons objectives de sécurité (crue forte ou orage électrique), auquel cas nous proposons <strong>un changement de date gratuit ou un remboursement intégral</strong>. Si vous payez à l\'avance et devez annuler, vous pouvez le faire <strong>jusqu\'à 24 h avant</strong> sans frais.' },
+  { q: 'Quelle est la durée moyenne la plus habituelle ?',
+    a: 'La référence la plus commune de <strong>combien de temps dure la descente du Sella</strong> se situe <strong>entre 3 et 5 heures</strong>. En parlant du parcours complet, le normal tourne autour de 4-4,5 h. En Mini Sella, autour de 2,5 h. Ce sont des chiffres indicatifs — chaque groupe va à son rythme.' },
+  { q: 'Peut-on choisir la distance ?',
+    a: 'Oui. Vous avez <strong>deux parcours</strong> : le <strong>Mini Sella</strong> (7 km, 2-3 h) et le <strong>Parcours complet</strong> (14,5 km, 4-5 h). De plus, si vous choisissez le Complet et décidez sur l\'eau de terminer plus tôt, vous pouvez le faire à <strong>Toraño</strong> (km 7) sans coût supplémentaire — il suffit de prévenir notre équipe à l\'arrivée.' },
+  { q: 'La descente du Sella dure-t-elle toute la journée ?',
+    a: 'Pas nécessairement. Le <strong>Mini Sella</strong> se fait en une demi-journée et laisse l\'après-midi libre. Le <strong>Parcours complet</strong> occupe une grande partie de la journée si vous incluez arrêts, pique-nique et transfert retour. Ajoutez au moins <strong>1 heure supplémentaire</strong> au temps du parcours pour la réception, l\'équipement et le retour — ainsi vous calculez de façon réaliste.' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Combien de temps dure la descente du Sella ? Durées par parcours',
+      description: 'Guide complet sur combien de temps dure la descente du Sella : Mini Sella (7 km, 2-3 h), Parcours complet (14,5 km, 4-5 h), facteurs qui influencent, recommandations et FAQ.',
+      inLanguage: 'fr-FR',
+      mainEntityOfPage: canonicalUrl,
+      image: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/optimized/sella-atardecer-lg.jpg`,
+        width: 1920,
+        height: 1280,
+      },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-20',
+      dateModified: '2026-05-12',
+      about: 'Durée de la descente du Sella en canoë, temps par parcours',
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      inLanguage: 'fr-FR',
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question', name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${baseUrl}/fr/` },
+        { '@type': 'ListItem', position: 2, name: 'Durée',   item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/fr/duree/" translationKey="cuanto_dura">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO · Foto full-bleed con Ken Burns + overlay editorial ============== -->
+  <section class="cdh" aria-labelledby="cdh-title">
+
+    <div class="cdh__photo" aria-hidden="true">
+      <Picture src="cuanto-dura-hero" alt="" sizes="100vw" bare />
+    </div>
+    <div class="cdh__scrim" aria-hidden="true"></div>
+    <div class="cdh__grain" aria-hidden="true"></div>
+
+    <div class="cdh__inner">
+      <nav class="cdh__breadcrumb" aria-label="Breadcrumb">
+        <a href="/fr/">Accueil</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Durée</span>
+      </nav>
+
+      <span class="cdh__eyebrow">
+        <span class="cdh__eyebrowDot" aria-hidden="true"></span>
+        Durée de la descente
+      </span>
+
+      <h1 id="cdh-title" class="cdh__title">
+        Combien de temps<br/>
+        <span class="serif-italic">dure le Sella ?</span>
+      </h1>
+
+      <p class="cdh__lead">
+        Entre <strong>3 et 5 heures</strong>, selon le parcours que vous choisissez. Voici
+        le guide clair pour calculer votre journée de façon réaliste.
+      </p>
+
+      <div class="cdh__ctas">
+        <a href="/fr/tarifs/" class="cdh__cta cdh__cta--primary">Voir les tarifs</a>
+        <a href="/fr/reserver/" class="cdh__cta cdh__cta--link">
+          Réserver maintenant
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== TABS · Elige tu recorrido (Mini / Completo) ============== -->
+  <section class="cdt" aria-labelledby="cdt-title">
+    <div class="container container--xl">
+      <header class="cdt__head" data-reveal>
+        <div class="cdt__headL">
+          <span class="cdt__kicker">— Parcours disponibles</span>
+          <h2 id="cdt-title" class="cdt__title">
+            Lequel vous convient ?<br/>
+            <span class="serif-italic">Choisissez votre parcours.</span>
+          </h2>
+        </div>
+        <div class="cdt__tabs" role="tablist" aria-label="Choisir entre Mini Sella ou Parcours complet">
+          <button
+            type="button"
+            role="tab"
+            id="cdt-tab-mini"
+            aria-selected="true"
+            aria-controls="cdt-panel-mini"
+            class="cdt__tab is-active"
+            data-tab="mini"
+          >
+            Mini Sella
+            <span class="cdt__tabKm" aria-hidden="true">· 7 km</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="cdt-tab-comp"
+            aria-selected="false"
+            aria-controls="cdt-panel-comp"
+            class="cdt__tab"
+            data-tab="comp"
+            tabindex="-1"
+          >
+            Parcours complet
+            <span class="cdt__tabKm" aria-hidden="true">· 14,5 km</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="cdt__card" data-reveal data-reveal-delay="1">
+        <!-- Panel MINI -->
+        <div
+          class="cdt__panel is-active"
+          id="cdt-panel-mini"
+          role="tabpanel"
+          aria-labelledby="cdt-tab-mini"
+          data-panel="mini"
+        >
+          <div class="cdt__content">
+            <span class="cdt__eyebrow">Mini Sella</span>
+            <h3 class="cdt__route">
+              Arriondas
+              <span class="cdt__arrow" aria-hidden="true">→</span>
+              Toraño
+            </h3>
+            <div class="cdt__stats">
+              <div class="cdt__stat">
+                <strong>7<small>km</small></strong>
+                <span>distance</span>
+              </div>
+              <div class="cdt__stat">
+                <strong>2 – 3<small>h</small></strong>
+                <span>durée</span>
+              </div>
+              <div class="cdt__stat">
+                <strong>Demi<small>journée</small></strong>
+                <span>plan du jour</span>
+              </div>
+            </div>
+            <p class="cdt__desc">
+              Le <strong>tronçon court de la descente du Sella</strong>, idéal pour les familles avec
+              de petits enfants, première fois en canoë ou si vous voulez combiner la journée avec d'autres
+              plans à Arriondas ou Ribadesella. Sans difficulté technique, avec
+              <strong>plages fluviales</strong> et aires de pique-nique pour s'arrêter et
+              manger le pique-nique à votre rythme.
+            </p>
+            <ul class="cdt__features">
+              <li>Sans rapides techniques</li>
+              <li>Plages fluviales</li>
+              <li>Adapté enfants 5+</li>
+              <li>Chiens gratuits</li>
+              <li>Pique-nique inclus</li>
+              <li>Transfert et parking</li>
+            </ul>
+            <a href="/fr/reserver/" class="cdt__cta">
+              Réserver le Mini Sella
+              <span class="cdt__ctaIcon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </a>
+          </div>
+          <div class="cdt__photo">
+            <Picture src="cuanto-dura-mini" alt="Famille descendant le Mini Sella · tronçon Arriondas à Toraño" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="cdt__badges" aria-hidden="true">
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="3"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+                Familles
+              </span>
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c2-4 5-5 8-5s6 1 8 5"/></svg>
+                Enfants
+              </span>
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="4" r="1.5"/><circle cx="6" cy="7" r="1.5"/><circle cx="16" cy="7" r="1.5"/><path d="M11 11c-4 0-6 4-6 6 0 1.66 1.34 3 3 3h6c1.66 0 3-1.34 3-3 0-2-2-6-6-6z"/></svg>
+                Animaux
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel COMPLETO -->
+        <div
+          class="cdt__panel"
+          id="cdt-panel-comp"
+          role="tabpanel"
+          aria-labelledby="cdt-tab-comp"
+          data-panel="comp"
+          hidden
+        >
+          <div class="cdt__content">
+            <span class="cdt__eyebrow cdt__eyebrow--coral">Parcours complet</span>
+            <h3 class="cdt__route">
+              Arriondas
+              <span class="cdt__arrow" aria-hidden="true">→</span>
+              Fríes
+            </h3>
+            <div class="cdt__stats">
+              <div class="cdt__stat">
+                <strong>14,5<small>km</small></strong>
+                <span>distance</span>
+              </div>
+              <div class="cdt__stat">
+                <strong>4 – 5<small>h</small></strong>
+                <span>durée</span>
+              </div>
+              <div class="cdt__stat">
+                <strong>Journée<small>entière</small></strong>
+                <span>plan du jour</span>
+              </div>
+            </div>
+            <p class="cdt__desc">
+              La <strong>route classique de la descente du Sella en canoë</strong>. Plus de kilomètres, plus de paysage ouvert et une journée complète sur le fleuve avec <strong>moniteurs diplômés</strong> au début. Plusieurs <strong>plages fluviales et aires de pique-nique</strong> tout au long du parcours pour s'arrêter, se baigner, se reposer et profiter du pique-nique asturien sans hâte.
+            </p>
+            <ul class="cdt__features">
+              <li>Expérience classique complète</li>
+              <li>Paysage ouvert</li>
+              <li>Plages et pique-niques</li>
+              <li>Chiens gratuits</li>
+              <li>Pique-nique inclus</li>
+              <li>Transfert et parking</li>
+            </ul>
+            <a href="/fr/reserver/" class="cdt__cta">
+              Réserver le Complet
+              <span class="cdt__ctaIcon" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </a>
+          </div>
+          <div class="cdt__photo">
+            <Picture src="cuanto-dura-completo" alt="Famille et adultes sur le Parcours complet du Sella · Arriondas à Fríes" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="cdt__badges" aria-hidden="true">
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/></svg>
+                Paysage
+              </span>
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><path d="M3 18c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/></svg>
+                Fleuve long
+              </span>
+              <span class="cdt__badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Journée entière
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============== 5 FACTORES · qué influye en la duración ============== -->
+  <section class="cns">
+    <div class="container container--xl">
+      <header class="cns__header" data-reveal>
+        <span class="cns__eyebrow">— Ce qui influence le temps</span>
+        <h2 class="cns__title">
+          5 facteurs qui changent<br/>
+          <span class="serif-italic">la durée totale</span>
+        </h2>
+        <p class="cns__lead">
+          Le <strong>temps de la descente du Sella</strong> n'est pas le même pour tous. Voici les
+          facteurs qui font que le même parcours peut durer 3 h ou presque 5 h selon le groupe
+          et la façon dont vous voulez vivre l'expérience.
+        </p>
+      </header>
+
+      <ol class="cns__grid">
+        {factores.map((f, i) => (
+          <li class="cns__item" data-reveal data-reveal-delay={i + 1}>
+            <svg class="cns__trace" aria-hidden="true">
+              <rect pathLength="100" />
+            </svg>
+            <span class="cns__num" aria-hidden="true">{f.num}</span>
+            <h3 class="cns__itemTitle">{f.title}</h3>
+            <p class="cns__itemText" set:html={f.text} />
+          </li>
+        ))}
+      </ol>
+
+    </div>
+  </section>
+
+  <!-- ============== CTA INTERMEDIO · Quote + hairlines + pill sage (D) ============== -->
+  <section class="cdm">
+    <div class="container container--md">
+      <div class="cdm__wrap" data-reveal>
+        <p class="cdm__quote">
+          Nous travaillons <em>uniquement sur réservation</em>. Sans hâte :
+          <strong>payez par carte à la réservation, ou le jour où vous récupérez votre canoë.</strong>
+        </p>
+        <div class="cdm__rule" aria-hidden="false">
+          <span class="cdm__ruleLine" aria-hidden="true"></span>
+          <a href="/fr/reserver/" class="cdm__pill">
+            <span class="cdm__pillDot" aria-hidden="true"></span>
+            <span>Réserver ma place</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <span class="cdm__ruleLine" aria-hidden="true"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== COMPARATIVA · Barras horizontales editorial ============== -->
+  <section class="cdc">
+    <div class="container container--xl">
+      <header class="cdc__header" data-reveal>
+        <span class="cdc__eyebrow">— Temps comparé</span>
+        <h2 class="cdc__title">
+          Visualisez la<br/>
+          <span class="serif-italic">différence de temps.</span>
+        </h2>
+        <p class="cdc__lead">
+          Mini Sella face au Parcours complet, <strong>côte à côte</strong>. Ainsi vous voyez d'un coup d'œil
+          quel parcours s'adapte aux heures dont vous disposez.
+        </p>
+      </header>
+
+      <div class="cdc__bars" data-reveal>
+        <div class="cdc__bar">
+          <div class="cdc__barTop">
+            <span class="cdc__barName">Mini Sella</span>
+            <span class="cdc__barTime">2 – 3 h · 7 km · Arriondas → Toraño</span>
+          </div>
+          <div class="cdc__track">
+            <div class="cdc__fill cdc__fill--mini">
+              <span class="cdc__fillLabel">2 – 3 h</span>
+            </div>
+          </div>
+        </div>
+        <div class="cdc__bar">
+          <div class="cdc__barTop">
+            <span class="cdc__barName">Parcours complet</span>
+            <span class="cdc__barTime">4 – 5 h · 14,5 km · Arriondas → Fríes</span>
+          </div>
+          <div class="cdc__track">
+            <div class="cdc__fill cdc__fill--comp">
+              <span class="cdc__fillLabel">4 – 5 h</span>
+            </div>
+          </div>
+        </div>
+        <div class="cdc__axis" aria-hidden="true">
+          <span>0h</span>
+          <span>1h</span>
+          <span>2h</span>
+          <span>3h</span>
+          <span>4h</span>
+          <span>5h</span>
+        </div>
+      </div>
+
+      <p class="cdc__foot" data-reveal data-reveal-delay="1">
+        Inclut <strong>pagayer, arrêts et pique-nique</strong>. Ajoutez ~1 h extra pour la réception, l'équipement et le transfert retour.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== QUÉ LLEVAR ============== -->
+  <section class="cnq">
+    <div class="container container--xl">
+      <header class="cnq__header" data-reveal>
+        <span class="cnq__eyebrow">— Calculer de façon réaliste</span>
+        <h2 class="cnq__title">
+          Conseils pour calculer<br/>
+          <span class="serif-italic">au mieux le temps</span>
+        </h2>
+        <p class="cnq__lead">
+          Si vous organisez la journée et voulez prévoir la durée de façon réaliste,
+          ces conseils vous aident à ce que <strong>les heures ne vous manquent pas</strong>.
+        </p>
+      </header>
+
+      <ol class="cnqL" role="list">
+        {consejos.map((c, i) => (
+          <li class="cnqItem" data-reveal data-reveal-delay={(i % 2) + 1}>
+            <span class="cnqItem__kicker">
+              <span class="cnqItem__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="cnqItem__label">Conseil</span>
+            </span>
+            <h3 class="cnqItem__t">{c.t}</h3>
+            <p class="cnqItem__s" set:html={c.s} />
+          </li>
+        ))}
+      </ol>
+
+    </div>
+  </section>
+
+
+  <!-- ============== INTERLINKING · Photo + cards expandibles ============== -->
+  <section class="cdx">
+    <div class="container container--xl">
+      <header class="cdx__header" data-reveal>
+        <span class="cdx__eyebrow">— Avant de réserver</span>
+        <h2 class="cdx__title">
+          Organisez bien<br/>
+          <span class="serif-italic">votre descente du Sella.</span>
+        </h2>
+        <p class="cdx__lead">
+          Avant de réserver votre journée en canoë, voici les pages qui vous aident à
+          <strong>préparer le plan</strong>. Cliquez sur chacune pour voir le résumé.
+        </p>
+      </header>
+
+      <div class="cdx__grid">
+        <!-- Panel RESERVA · 4 canales directos -->
+        <aside class="cdx__reserva" data-reveal aria-labelledby="cdx-reserva-title">
+          <div class="cdx__reservaBg" aria-hidden="true">
+            <Picture src="rio-sella-hermoso" alt="" sizes="(min-width: 960px) 45vw, 100vw" bare />
+            <div class="cdx__reservaScrim" aria-hidden="true"></div>
+          </div>
+          <div class="cdx__reservaInner">
+            <span class="cdx__reservaKicker">
+              <span class="cdx__reservaDot" aria-hidden="true"></span>
+              Réservation préalable obligatoire
+            </span>
+            <h3 id="cdx-reserva-title" class="cdx__reservaT">
+              Réservez votre journée<br/>
+              <span class="serif-italic">comme vous préférez.</span>
+            </h3>
+            <p class="cdx__reservaS">
+              N'importe quel canal fonctionne — nous répondons en minutes. Paiement par carte à la
+              réservation ou <strong>le jour où vous récupérez votre canoë</strong>.
+            </p>
+
+            <ul class="cdx__channels">
+              <li>
+                <a href="tel:+34681093673" class="cdx__ch cdx__ch--phone">
+                  <span class="cdx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                  </span>
+                  <span class="cdx__chBody">
+                    <span class="cdx__chLabel">Appelez-nous</span>
+                    <span class="cdx__chValue">+34 681 093 673</span>
+                  </span>
+                  <span class="cdx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://wa.me/34681093673?text=Bonjour%2C+je+voudrais+r%C3%A9server+la+descente+du+Sella." target="_blank" rel="noopener noreferrer" class="cdx__ch cdx__ch--wa">
+                  <span class="cdx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                  </span>
+                  <span class="cdx__chBody">
+                    <span class="cdx__chLabel">WhatsApp</span>
+                    <span class="cdx__chValue">Réponse en minutes</span>
+                  </span>
+                  <span class="cdx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/fr/reserver/" class="cdx__ch cdx__ch--web">
+                  <span class="cdx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  </span>
+                  <span class="cdx__chBody">
+                    <span class="cdx__chLabel">Réserver en ligne</span>
+                    <span class="cdx__chValue">Moteur de réservation</span>
+                  </span>
+                  <span class="cdx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="/fr/contact/" class="cdx__ch cdx__ch--mail">
+                  <span class="cdx__chIcon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </span>
+                  <span class="cdx__chBody">
+                    <span class="cdx__chLabel">Écrivez-nous</span>
+                    <span class="cdx__chValue">Formulaire de contact</span>
+                  </span>
+                  <span class="cdx__chArrow" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+
+        <nav class="cdx__list" aria-label="Pages liées de la descente du Sella">
+          <details class="cdx__item" name="cdx-links" open>
+            <summary class="cdx__sum">
+              <span class="cdx__eyerow">
+                <span class="cdx__num" aria-hidden="true">01</span>
+                <span class="cdx__smallE">Tarifs</span>
+              </span>
+              <h3 class="cdx__t">Tarifs de la descente</h3>
+              <span class="cdx__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="cdx__body">
+              <p>30 € enfants (5-12 ans), 40 € adultes. <strong>Animaux gratuits</strong>. Tout inclus sans extras : canoë insubmersible, gilet, pagaie double, néoprène les jours froids, bidon étanche, moniteur diplômé, pique-nique asturien, transfert, parking surveillé, vestiaires avec douches, casiers avec clé et assurances.</p>
+              <a href="/fr/tarifs/" class="cdx__link">
+                Voir le détail complet
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="cdx__item" name="cdx-links">
+            <summary class="cdx__sum">
+              <span class="cdx__eyerow">
+                <span class="cdx__num" aria-hidden="true">02</span>
+                <span class="cdx__smallE">En famille</span>
+              </span>
+              <h3 class="cdx__t">Descente du Sella avec enfants</h3>
+              <span class="cdx__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="cdx__body">
+              <p>Âge minimum <strong>5 ans et 1,15 m</strong>, sécurité enfants, que mettre dans le sac et comment organiser la journée en famille pour que les petits profitent sans se fatiguer.</p>
+              <a href="/fr/avec-enfants/" class="cdx__link">
+                Guide de la descente avec enfants
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="cdx__item" name="cdx-links">
+            <summary class="cdx__sum">
+              <span class="cdx__eyerow">
+                <span class="cdx__num" aria-hidden="true">03</span>
+                <span class="cdx__smallE">Animaux</span>
+              </span>
+              <h3 class="cdx__t">Descente du Sella avec chien</h3>
+              <span class="cdx__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="cdx__body">
+              <p>Oui, votre chien descend sans coût supplémentaire. Comment s'organise la journée avec animaux, quoi apporter, exigences et points à prendre en compte pour que ce soit une expérience tranquille pour tous.</p>
+              <a href="/fr/avec-chien/" class="cdx__link">
+                Guide de la descente avec chien
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+
+          <details class="cdx__item" name="cdx-links">
+            <summary class="cdx__sum">
+              <span class="cdx__eyerow">
+                <span class="cdx__num" aria-hidden="true">04</span>
+                <span class="cdx__smallE">Accueil</span>
+              </span>
+              <h3 class="cdx__t">Descente du Sella en canoë</h3>
+              <span class="cdx__chev" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </span>
+            </summary>
+            <div class="cdx__body">
+              <p>Informations générales sur la descente : parcours, tout l'inclus, avis réels, galerie photos et pourquoi nos clients nous choisissent saison après saison.</p>
+              <a href="/fr/" class="cdx__link">
+                Retour à l'accueil
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </details>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FAQ ============== -->
+  <section class="cnf">
+    <div class="container container--xl">
+      <div class="cnf__grid">
+        <aside class="cnf__aside" data-reveal>
+          <span class="cnf__eyebrow">— Questions fréquentes</span>
+          <h2 class="cnf__title">
+            Questions sur<br/>
+            <span class="serif-italic">la durée du Sella</span>
+          </h2>
+          <p class="cnf__lead">
+            Les <strong>questions les plus répétées</strong> sur la durée de la descente —
+            réponses claires et sans détours. S'il vous en manque une,
+            <a href="/fr/contact/">nous sommes à un message près</a>.
+          </p>
+        </aside>
+
+        <div class="cnf__list" data-reveal data-reveal-delay="2">
+          {faqs.map((f, i) => (
+            <details class="cnfI" name="cnf-faq" open={i === 0}>
+              <summary class="cnfI__q">
+                {f.q}
+                <svg class="cnfI__chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </summary>
+              <p class="cnfI__a" set:html={f.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== CTA FINAL ============== -->
+  <section class="cncta" aria-labelledby="cncta-title">
+    <div class="cncta__bg" aria-hidden="true">
+      <Picture src="cuanto-dura-cta" alt="" sizes="100vw" bare />
+    </div>
+    <div class="cncta__inner">
+      <span class="cncta__eyebrow">— Planifiez votre journée</span>
+      <h2 id="cncta-title" class="cncta__title">
+        Maintenant vous savez<br/>
+        <span class="serif-italic">combien de temps.</span>
+      </h2>
+      <p class="cncta__lead">
+        Choisissez le parcours qui s'adapte à votre journée, organisez avec une marge et
+        préparez-vous à profiter. <strong>Réservez sans payer maintenant</strong> — payez par carte
+        ou le jour où vous récupérez le canoë.
+      </p>
+      <div class="cncta__ctas">
+        <a href="/fr/reserver/" class="cncta__primary">
+          Réserver ma descente
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="/fr/tarifs/" class="cncta__ghost">Consulter les tarifs</a>
+      </div>
+      <p class="cncta__refuerzo">Places limitées les jours de plus forte demande.</p>
+    </div>
+  </section>
+  <!-- JS · tabs Mini/Completo -->
+  <script>
+    (function () {
+      const tabs = document.querySelectorAll<HTMLButtonElement>('.cdt__tab');
+      const panels = document.querySelectorAll<HTMLElement>('.cdt__panel');
+      if (!tabs.length) return;
+
+      const activate = (key: string) => {
+        tabs.forEach((t) => {
+          const isActive = t.dataset.tab === key;
+          t.classList.toggle('is-active', isActive);
+          t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+          t.setAttribute('tabindex', isActive ? '0' : '-1');
+        });
+        panels.forEach((p) => {
+          const isActive = p.dataset.panel === key;
+          p.classList.toggle('is-active', isActive);
+          if (isActive) {
+            p.removeAttribute('hidden');
+          } else {
+            p.setAttribute('hidden', '');
+          }
+        });
+      };
+
+      tabs.forEach((t) => {
+        t.addEventListener('click', () => {
+          const key = t.dataset.tab;
+          if (key) activate(key);
+        });
+        t.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          const arr = Array.from(tabs);
+          const idx = arr.indexOf(t);
+          const nextIdx = e.key === 'ArrowRight' ? (idx + 1) % arr.length : (idx - 1 + arr.length) % arr.length;
+          const next = arr[nextIdx];
+          const key = next.dataset.tab;
+          if (key) {
+            activate(key);
+            next.focus();
+          }
+        });
+      });
+    })();
+  </script>
+</BaseLayout>
+
+<style>
+  /* ============== HERO · Foto full-bleed con Ken Burns + overlay editorial ============== */
+  .cdh {
+    position: relative;
+    min-height: clamp(540px, 78vh, 760px);
+    color: #FBF8F1;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .cdh__photo { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+  .cdh__photo :global(picture),
+  .cdh__photo :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transform-origin: 50% 55%;
+    animation: cdhKenBurns 26s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+  @keyframes cdhKenBurns {
+    0%   { transform: scale(1.04) translate(0%, 0%); }
+    100% { transform: scale(1.18) translate(-2%, -3%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cdh__photo :global(img) { animation: none; transform: scale(1.04); }
+  }
+  .cdh__scrim {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.55) 0%, rgba(15, 20, 30, 0.3) 38%, rgba(15, 20, 30, 0.82) 100%),
+      linear-gradient(95deg, rgba(15, 20, 30, 0.7) 0%, rgba(15, 20, 30, 0.15) 60%, transparent 100%),
+      radial-gradient(ellipse 55% 45% at 20% 70%, rgba(61, 79, 58, 0.35) 0%, transparent 65%);
+  }
+  .cdh__grain {
+    position: absolute; inset: 0; z-index: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .cdh__inner {
+    position: relative; z-index: 1;
+    max-width: 1100px; margin: 0 auto;
+    padding: clamp(8rem, 16vw, 12rem) clamp(1.5rem, 4vw, 4rem) clamp(3.5rem, 6vw, 5rem);
+    display: flex; flex-direction: column;
+    animation: cdhFadeUp 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  @keyframes cdhFadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cdh__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.55);
+    margin-bottom: 1.75rem;
+  }
+  .cdh__breadcrumb a { color: rgba(251, 248, 241, 0.8); transition: color 200ms; }
+  .cdh__breadcrumb a:hover { color: var(--color-primary-soft, #F4B5A3); }
+
+  .cdh__eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.08);
+    border: 1px solid rgba(251, 248, 241, 0.25);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: 1.75rem;
+    align-self: flex-start;
+  }
+  .cdh__eyebrowDot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-primary-soft, #F4B5A3);
+    animation: cdhDotPulse 2.4s ease-in-out infinite;
+  }
+  @keyframes cdhDotPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(244, 181, 163, 0.55); }
+    50%      { box-shadow: 0 0 0 7px rgba(244, 181, 163, 0); }
+  }
+
+  .cdh__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 8vw, 5.5rem);
+    font-weight: 900; line-height: 0.96;
+    letter-spacing: -0.03em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.5rem;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.25);
+  }
+  .cdh__title .serif-italic {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    letter-spacing: -0.01em; text-transform: none;
+    color: var(--color-primary-soft, #F4B5A3);
+  }
+
+  .cdh__lead {
+    font-family: var(--font-sans); font-size: clamp(1.0625rem, 1.6vw, 1.1875rem); line-height: 1.7;
+    color: rgba(251, 248, 241, 0.9); max-width: 580px;
+    margin: 0 0 2.5rem;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.25);
+  }
+  .cdh__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .cdh__ctas { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+  .cdh__cta { font-family: var(--font-sans); font-weight: 700; transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1); display: inline-flex; align-items: center; gap: 0.5rem; }
+  .cdh__cta--primary {
+    padding: 1rem 1.75rem;
+    background: #FBF8F1; color: var(--color-text-primary, #1A1F2E);
+    border-radius: 999px;
+    font-size: 0.8125rem; letter-spacing: 1.2px; text-transform: uppercase;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+  }
+  .cdh__cta--primary:hover { transform: translateY(-3px); box-shadow: 0 16px 38px rgba(0, 0, 0, 0.4); background: var(--color-primary-soft, #F4B5A3); }
+  .cdh__cta--link {
+    color: #FBF8F1; font-size: 0.9375rem;
+    border-bottom: 2px solid var(--color-primary-soft, #F4B5A3);
+    padding-bottom: 3px;
+  }
+  .cdh__cta--link:hover { color: var(--color-primary-soft, #F4B5A3); }
+  .cdh__cta--link svg { transition: transform 200ms; }
+  .cdh__cta--link:hover svg { transform: translateX(4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cdh__photo :global(img),
+    .cdh__photo :global(picture),
+    .cdh__inner,
+    .cdh__eyebrowDot { animation: none; }
+  }
+  /* ============== TABS · Elige tu recorrido (Mini / Completo) ============== */
+  .cdt { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .cns__eyebrow,
+  .cnr__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cns__title,
+  .cnr__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cns__title .serif-italic,
+  .cnr__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  /* Header: left (kicker + title) · right (tabs pill) */
+  .cdt__head {
+    display: flex; flex-direction: column; gap: clamp(1.5rem, 3vw, 2rem);
+    align-items: flex-start; justify-content: space-between;
+    max-width: 1200px; margin: 0 auto clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 820px) {
+    .cdt__head { flex-direction: row; align-items: flex-end; gap: 2rem; }
+  }
+  .cdt__headL { min-width: 0; }
+  .cdt__kicker {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: 0.875rem;
+  }
+  .cdt__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .cdt__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  /* Tab switch */
+  .cdt__tabs {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.1);
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(26, 31, 46, 0.05);
+    flex-wrap: wrap;
+  }
+  .cdt__tab {
+    display: inline-flex; align-items: baseline; gap: 0.375rem;
+    padding: 0.7rem 1.1rem;
+    background: transparent;
+    border: 0;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.3px;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    white-space: nowrap;
+  }
+  .cdt__tab:hover:not(.is-active) { color: var(--color-text-primary); }
+  .cdt__tab.is-active {
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    box-shadow: 0 6px 16px rgba(26, 31, 46, 0.25);
+  }
+  .cdt__tabKm {
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 500;
+    opacity: 0.7;
+  }
+  .cdt__tab.is-active .cdt__tabKm { opacity: 0.85; }
+  .cdt__tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+
+  /* Card panel container */
+  .cdt__card {
+    position: relative;
+    max-width: 1200px; margin: 0 auto;
+    background: #fff;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+    box-shadow: 0 30px 60px rgba(26, 31, 46, 0.08);
+    overflow: hidden;
+  }
+
+  /* Panel — crossfade + subtle translate */
+  .cdt__panel {
+    display: grid; grid-template-columns: 1fr;
+    gap: 0;
+  }
+  @media (min-width: 900px) { .cdt__panel { grid-template-columns: 1.1fr 1fr; } }
+  .cdt__panel[hidden] { display: none; }
+  .cdt__panel.is-active { animation: cdtPanelIn 500ms cubic-bezier(0.22, 1, 0.36, 1); }
+  @keyframes cdtPanelIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cdt__content {
+    padding: clamp(2rem, 4vw, 3.25rem);
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cdt__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 2px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+  }
+  .cdt__eyebrow--coral { color: var(--color-primary); }
+
+  .cdt__route {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  .cdt__arrow {
+    display: inline-block;
+    color: var(--color-primary);
+    font-family: var(--font-serif); font-style: italic;
+    margin: 0 0.2em;
+    font-weight: 400;
+  }
+
+  .cdt__stats {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+    width: 100%;
+    padding: 1rem 0 0.5rem;
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .cdt__stat {
+    display: flex; flex-direction: column; gap: 0.25rem;
+    padding: 0.75rem 0.5rem 0.75rem 0;
+  }
+  .cdt__stat strong {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--color-text-primary);
+    display: flex; align-items: baseline; gap: 0.15em;
+    white-space: nowrap;
+  }
+  .cdt__stat strong small {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+  .cdt__stat span:last-child {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cdt__desc {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cdt__desc strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .cdt__features {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+    width: 100%;
+  }
+  @media (min-width: 500px) { .cdt__features { grid-template-columns: repeat(3, 1fr); } }
+  .cdt__features li {
+    padding: 0.55rem 0.9rem;
+    background: rgba(61, 79, 58, 0.06);
+    border: 1px solid rgba(61, 79, 58, 0.15);
+    border-radius: 8px;
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 600;
+    color: var(--color-text-primary);
+    letter-spacing: 0.2px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+  }
+  .cdt__features li:hover {
+    background: rgba(61, 79, 58, 0.12);
+    border-color: rgba(61, 79, 58, 0.3);
+    transform: translateY(-2px);
+  }
+  /* Stagger de entrada cuando el panel se activa */
+  .cdt__panel.is-active .cdt__features li {
+    animation: cdtFeatureIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .cdt__panel.is-active .cdt__features li:nth-child(1) { animation-delay: 180ms; }
+  .cdt__panel.is-active .cdt__features li:nth-child(2) { animation-delay: 240ms; }
+  .cdt__panel.is-active .cdt__features li:nth-child(3) { animation-delay: 300ms; }
+  .cdt__panel.is-active .cdt__features li:nth-child(4) { animation-delay: 360ms; }
+  .cdt__panel.is-active .cdt__features li:nth-child(5) { animation-delay: 420ms; }
+  .cdt__panel.is-active .cdt__features li:nth-child(6) { animation-delay: 480ms; }
+  @keyframes cdtFeatureIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cdt__cta {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    margin-top: 0.5rem;
+    transition: all 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 10px 24px rgba(26, 31, 46, 0.2);
+  }
+  .cdt__cta:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(26, 31, 46, 0.32); }
+  .cdt__ctaIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: #FBF8F1; color: var(--color-text-primary, #1A1F2E);
+    transition: transform 240ms ease;
+  }
+  .cdt__cta:hover .cdt__ctaIcon { transform: rotate(-12deg) translateX(2px); }
+
+  /* Photo + vertical badges + slide-from-left + diagonal glass shine */
+  .cdt__photo {
+    position: relative;
+    min-height: 360px;
+    overflow: hidden;
+    border-radius: clamp(0.5rem, 1.5vw, 1rem);
+    isolation: isolate;
+    /* Slide entry: empieza desplazada y oculta */
+    transform: translateX(-80px);
+    opacity: 0;
+    transition:
+      transform 1100ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 900ms ease-out,
+      box-shadow 380ms ease;
+  }
+  /* Cuando el panel está activo, las fotos entran desde la izquierda */
+  .cdt__panel.is-active .cdt__photo {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  .cdt__photo:hover {
+    box-shadow: 0 24px 56px -22px rgba(26, 31, 46, 0.28);
+  }
+  .cdt__photo :global(picture),
+  .cdt__photo :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    position: absolute; inset: 0;
+    transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cdt__photo:hover :global(img) { transform: scale(1.05); }
+
+  /* Reflejo glass diagonal en hover · estilo premium */
+  .cdt__photo::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      115deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0.4) 50%,
+      rgba(255, 255, 255, 0) 60%,
+      transparent 70%
+    );
+    transform: translateX(-110%);
+    pointer-events: none;
+    z-index: 2;
+  }
+  .cdt__photo:hover::after {
+    animation: cdtGlass 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes cdtGlass {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(110%); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cdt__photo,
+    .cdt__photo :global(img),
+    .cdt__photo::after { transition: none !important; animation: none !important; }
+    .cdt__photo:hover :global(img) { transform: none; }
+    .cdt__photo:hover { box-shadow: none; }
+  }
+  .cdt__badges {
+    position: absolute;
+    top: clamp(1rem, 2vw, 1.5rem);
+    left: clamp(1rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; gap: 0.5rem;
+    z-index: 1;
+  }
+  .cdt__badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    background: rgba(26, 31, 46, 0.75);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #FBF8F1;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    transition: background 200ms ease, transform 200ms ease;
+  }
+  .cdt__badge svg { opacity: 0.85; flex-shrink: 0; }
+  .cdt__badge:hover { background: var(--color-primary); transform: translateX(3px); }
+  /* Stagger entrada badges cuando panel activo */
+  .cdt__panel.is-active .cdt__badge {
+    animation: cdtBadgeIn 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .cdt__panel.is-active .cdt__badge:nth-child(1) { animation-delay: 240ms; }
+  .cdt__panel.is-active .cdt__badge:nth-child(2) { animation-delay: 340ms; }
+  .cdt__panel.is-active .cdt__badge:nth-child(3) { animation-delay: 440ms; }
+  @keyframes cdtBadgeIn {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* Stats con count-up sutil via scale pop */
+  .cdt__panel.is-active .cdt__stat {
+    animation: cdtStatIn 600ms cubic-bezier(0.34, 1.25, 0.64, 1) both;
+  }
+  .cdt__panel.is-active .cdt__stat:nth-child(1) { animation-delay: 120ms; }
+  .cdt__panel.is-active .cdt__stat:nth-child(2) { animation-delay: 200ms; }
+  .cdt__panel.is-active .cdt__stat:nth-child(3) { animation-delay: 280ms; }
+  @keyframes cdtStatIn {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  @media (max-width: 899.98px) {
+    .cdt__photo { min-height: 280px; aspect-ratio: 4 / 3; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cdt__panel.is-active { animation: none; }
+    .cdt__cta:hover { transform: none; }
+  }
+
+  /* ============== SEGURIDAD ============== */
+  .cns { padding-block: clamp(5rem, 9vw, 7rem); background: var(--color-bg-base); }
+  .cns__header {
+    max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center;
+  }
+  .cns__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cns__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cns__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cns__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0 auto;
+    max-width: 640px;
+  }
+  .cns__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* Grid 3×2 con número watermark sage muy tenue detrás del contenido */
+  .cns__grid {
+    list-style: none; padding: 0; margin: 0 auto clamp(3rem, 5vw, 4rem);
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 3vw, 2.5rem);
+    max-width: 1200px;
+  }
+  @media (min-width: 720px)  { .cns__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .cns__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .cns__item {
+    position: relative;
+    padding: clamp(3rem, 5vw, 4rem) clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.25rem, 2.5vw, 1.75rem);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    transition: background 320ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cns__item:hover {
+    background: rgba(233, 133, 111, 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* Trace animado del perímetro · coral · esquinas redondeadas como toda la web */
+  .cns__trace {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: visible;
+  }
+  .cns__trace rect {
+    /* CSS sizing del rect interno (soporte SVG2 en navegadores modernos) */
+    x: 0.75px;
+    y: 0.75px;
+    width: calc(100% - 1.5px);
+    height: calc(100% - 1.5px);
+    rx: clamp(1rem, 2vw, 1.5rem);
+    ry: clamp(1rem, 2vw, 1.5rem);
+    fill: none;
+    stroke: var(--color-primary, #E9856F);
+    stroke-width: 1.5;
+    stroke-dasharray: 100;
+    stroke-dashoffset: 100;
+    transition: stroke-dashoffset 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cns__item:hover .cns__trace rect {
+    stroke-dashoffset: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cns__item, .cns__item:hover { transition: none; transform: none; }
+    .cns__trace rect { transition: none; }
+  }
+
+  .cns__num {
+    position: absolute;
+    top: 0.6rem;
+    left: 0.5rem;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(5rem, 8vw, 7.5rem);
+    line-height: 0.85;
+    color: rgba(61, 79, 58, 0.12);
+    letter-spacing: -0.04em;
+    z-index: 0;
+    pointer-events: none;
+    user-select: none;
+    transition: color 420ms cubic-bezier(0.22, 1, 0.36, 1),
+                transform 520ms cubic-bezier(0.34, 1.25, 0.64, 1);
+  }
+  .cns__item:hover .cns__num {
+    color: rgba(61, 79, 58, 0.24);
+    transform: translate(-4px, -6px) scale(1.04);
+  }
+
+  .cns__itemTitle {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.2vw, 1.625rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    margin: 0 0 0.875rem;
+  }
+  .cns__itemText {
+    position: relative;
+    z-index: 1;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cns__itemText strong { color: var(--color-text-primary); font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cns__item,
+    .cns__trace rect,
+    .cns__num { transition: none; }
+    .cns__item:hover .cns__num { transform: none; }
+  }
+
+  /* CTA oscuro con pill pattern (como el mock de referencia) */
+  .cns__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cns__ctaBtn {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.75rem;
+    background: var(--color-text-primary, #1A1F2E);
+    color: #fff;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    transition: transform 260ms cubic-bezier(0.34, 1.2, 0.64, 1),
+                box-shadow 260ms ease;
+  }
+  .cns__ctaBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 36px rgba(26, 31, 46, 0.35);
+  }
+  .cns__ctaBtnIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-text-primary, #1A1F2E);
+    transition: transform 260ms ease;
+  }
+  .cns__ctaBtn:hover .cns__ctaBtnIcon { transform: rotate(-12deg); }
+
+  /* ============== COMPARATIVA · Barras horizontales editorial ============== */
+  .cdc {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 100% 0%, rgba(244, 181, 163, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 45% at 0% 100%, rgba(61, 79, 58, 0.05) 0%, transparent 60%),
+      var(--color-bg-warm, #F5F1E8);
+    position: relative;
+  }
+  .cdc__header { max-width: 760px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+  .cdc__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 1.75rem);
+  }
+  .cdc__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cdc__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cdc__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .cdc__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  .cdc__bars {
+    max-width: 960px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 1.5rem;
+  }
+  .cdc__bar { display: flex; flex-direction: column; gap: 0.625rem; }
+  .cdc__barTop {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 0.125rem;
+    font-family: var(--font-sans);
+  }
+  @media (min-width: 560px) {
+    .cdc__barTop { flex-direction: row; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  }
+  .cdc__barName { font-weight: 800; font-size: 1.0625rem; color: var(--color-text-primary); }
+  .cdc__barTime { font-size: 0.8125rem; color: var(--color-text-muted); letter-spacing: 0.3px; }
+
+  .cdc__track {
+    background: rgba(26, 31, 46, 0.07);
+    border-radius: 999px;
+    height: 44px;
+    overflow: hidden;
+    position: relative;
+  }
+  .cdc__fill {
+    height: 100%;
+    width: 0;
+    border-radius: 999px;
+    display: flex; align-items: center; justify-content: flex-end;
+    padding-right: 1.25rem;
+    transition: width 1500ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: width;
+  }
+  .cdc__bars.is-visible .cdc__fill--mini { width: 50%;  transition-delay: 150ms; }
+  .cdc__bars.is-visible .cdc__fill--comp { width: 100%; transition-delay: 450ms; }
+  .cdc__fill--mini { background: linear-gradient(90deg, #4A5E47, #3D4F3A); }
+  .cdc__fill--comp { background: linear-gradient(90deg, #F4B5A3, var(--color-primary)); }
+  .cdc__fillLabel {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1.0625rem; color: #FBF8F1; letter-spacing: 0.3px;
+    opacity: 0;
+    transition: opacity 500ms ease;
+  }
+  .cdc__bars.is-visible .cdc__fill--mini .cdc__fillLabel { opacity: 1; transition-delay: 1400ms; }
+  .cdc__bars.is-visible .cdc__fill--comp .cdc__fillLabel { opacity: 1; transition-delay: 1800ms; }
+
+  .cdc__axis {
+    display: flex; justify-content: space-between;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding: 0.5rem 0 0;
+    border-top: 1px dashed rgba(26, 31, 46, 0.2);
+    margin-top: 0.5rem;
+  }
+  .cdc__foot {
+    text-align: center; max-width: 640px; margin: 2rem auto 0;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+  .cdc__foot strong { color: var(--color-text-primary); font-weight: 700; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cdc__fill { transition: none; }
+    .cdc__fill--mini { width: 50%; }
+    .cdc__fill--comp { width: 100%; }
+    .cdc__fillLabel { opacity: 1; transition: none; }
+  }
+
+  /* ============== QUÉ LLEVAR ============== */
+  .cnq {
+    padding-block: clamp(5rem, 9vw, 7rem);
+    /* bg-base · diferente del bg-warm de la sección anterior (cdc) */
+    background: var(--color-bg-base, #FBF8F1);
+    position: relative;
+  }
+  /* Hairline sutil sage entre cdc y cnq · marca el cambio de sección */
+  .cnq::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(61, 79, 58, 0.18) 50%, transparent 100%);
+  }
+  .cnq__header { max-width: 760px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+  .cnq__eyebrow,
+  .cnf__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .cnq__title,
+  .cnf__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .cnq__title .serif-italic,
+  .cnf__title .serif-italic {
+    color: var(--color-sage, #3D4F3A); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cnq__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .cnq__lead strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ==============================================================
+     Consejos · 2 columnas editoriales · sin cards · sin flechas
+     Hairlines top + kicker coral italic + display + body amplio
+     Distinto visualmente de los factores (.cns) que ya son numerados
+     ============================================================== */
+  .cnqL {
+    list-style: none;
+    padding: 0;
+    margin: clamp(3rem, 5vw, 4rem) auto 0;
+    max-width: 1080px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 800px) {
+    .cnqL {
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(3rem, 5vw, 5rem);
+      row-gap: clamp(2.5rem, 4.5vw, 3.75rem);
+    }
+  }
+
+  .cnqItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    border-top: 1px solid rgba(26, 31, 46, 0.12);
+    transition: border-color 320ms ease;
+  }
+  .cnqItem:hover {
+    border-top-color: var(--color-primary, #E9856F);
+  }
+
+  /* Kicker · coral italic 01 + uppercase "Consejo" */
+  .cnqItem__kicker {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    margin-bottom: 0.125rem;
+  }
+  .cnqItem__num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: -0.025em;
+    color: var(--color-primary, #E9856F);
+  }
+  .cnqItem__label {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    align-self: center;
+  }
+
+  .cnqItem__t {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.7vw, 1.375rem);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    color: var(--color-text-primary);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .cnqItem__s {
+    font-family: var(--font-sans);
+    font-size: clamp(0.9375rem, 1.05vw, 1.0625rem);
+    line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+    max-width: 50ch;
+  }
+  .cnqItem__s strong {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+  .cnqItem__s a {
+    color: var(--color-sage, #3D4F3A);
+    border-bottom: 1px solid rgba(61, 79, 58, 0.35);
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .cnqItem__s a:hover {
+    color: var(--color-primary, #E9856F);
+    border-bottom-color: var(--color-primary, #E9856F);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cnqItem { transition: none; }
+  }
+  .cnq__note {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    padding: var(--s-3) var(--s-4);
+    background: rgba(61, 79, 58, 0.06);
+    border-left: 2px solid var(--color-sage, #3D4F3A);
+    border-radius: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+  .cnq__note svg { color: var(--color-sage, #3D4F3A); flex-shrink: 0; margin-top: 3px; }
+  .cnq__note strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ============== INTERLINKING · Photo + cards expandibles (image 30) ============== */
+  .cdx {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: linear-gradient(180deg, #1A1F2E 0%, #243040 100%);
+    color: #FBF8F1;
+    overflow: hidden;
+  }
+  .cdx__header {
+    max-width: 900px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
+    text-align: center;
+  }
+  .cdx__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: 1rem;
+  }
+  .cdx__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 1.25rem;
+  }
+  .cdx__title .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    text-transform: none; letter-spacing: -0.01em;
+  }
+  .cdx__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: rgba(251, 248, 241, 0.78);
+    margin: 0;
+  }
+  .cdx__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .cdx__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    max-width: 1200px; margin: 0 auto;
+    align-items: stretch;
+  }
+  @media (min-width: 900px) {
+    .cdx__grid { grid-template-columns: 1fr 1.05fr; gap: clamp(2.5rem, 4vw, 3.5rem); }
+  }
+
+  /* Panel Reserva (reemplaza a la foto · mismo alto que cards derechas) */
+  .cdx__reserva {
+    position: relative;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 24px 56px rgba(0, 0, 0, 0.4);
+    align-self: stretch;
+    min-height: 100%;
+  }
+  .cdx__reservaBg {
+    position: absolute; inset: 0;
+    overflow: hidden;
+  }
+  .cdx__reservaBg :global(picture),
+  .cdx__reservaBg :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    transform-origin: 50% 60%;
+    animation: cdxReservaKen 24s ease-in-out infinite alternate;
+  }
+  @keyframes cdxReservaKen {
+    0%   { transform: scale(1.02); }
+    100% { transform: scale(1.12) translate(-1%, 1%); }
+  }
+  .cdx__reservaScrim {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(180deg, rgba(15, 20, 30, 0.65) 0%, rgba(15, 20, 30, 0.55) 35%, rgba(15, 20, 30, 0.9) 100%),
+      radial-gradient(ellipse 60% 45% at 15% 80%, rgba(61, 79, 58, 0.4) 0%, transparent 70%);
+  }
+  .cdx__reservaInner {
+    position: relative;
+    height: 100%;
+    padding: clamp(1.75rem, 3vw, 2.25rem);
+    display: flex; flex-direction: column; gap: clamp(1rem, 2vw, 1.25rem);
+    justify-content: flex-start;
+  }
+  .cdx__reservaKicker {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 0.875rem 0.4rem 0.625rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.25);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    align-self: flex-start;
+  }
+  .cdx__reservaDot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: cdxResPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes cdxResPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(233, 133, 111, 0); }
+  }
+  .cdx__reservaT {
+    font-family: var(--font-display);
+    font-size: clamp(1.625rem, 3.2vw, 2.125rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.025em; text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0;
+  }
+  .cdx__reservaT .serif-italic {
+    color: var(--color-primary-soft, #F4B5A3);
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    text-transform: none; letter-spacing: -0.01em;
+  }
+  .cdx__reservaS {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.65;
+    color: rgba(251, 248, 241, 0.8);
+    margin: 0 0 0.25rem;
+  }
+  .cdx__reservaS strong { color: #FBF8F1; font-weight: 700; }
+
+  .cdx__channels {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.625rem;
+    margin-top: auto;
+  }
+  .cdx__ch {
+    display: grid;
+    grid-template-columns: auto 1fr auto; gap: 0.875rem;
+    align-items: center;
+    padding: 0.875rem 1rem;
+    background: rgba(251, 248, 241, 0.08);
+    border: 1px solid rgba(251, 248, 241, 0.14);
+    border-radius: 0.75rem;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .cdx__ch:hover {
+    background: rgba(251, 248, 241, 0.14);
+    border-color: rgba(244, 181, 163, 0.5);
+    transform: translateX(3px);
+  }
+  .cdx__chIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(251, 248, 241, 0.12);
+    color: var(--color-primary-soft, #F4B5A3);
+    transition: background 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .cdx__ch--wa .cdx__chIcon { color: #25D366; }
+  .cdx__ch:hover .cdx__chIcon {
+    background: var(--color-primary);
+    color: #FBF8F1;
+  }
+  .cdx__ch--wa:hover .cdx__chIcon {
+    background: #25D366;
+    color: #FBF8F1;
+  }
+  .cdx__chBody { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .cdx__chLabel {
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    color: #FBF8F1;
+    letter-spacing: 0.3px;
+  }
+  .cdx__chValue {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600;
+    color: rgba(251, 248, 241, 0.65);
+    letter-spacing: 0.3px;
+  }
+  .cdx__chArrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: rgba(251, 248, 241, 0.5);
+    transition: transform 260ms ease, color 260ms ease;
+    flex-shrink: 0;
+  }
+  .cdx__ch:hover .cdx__chArrow {
+    color: var(--color-primary-soft, #F4B5A3);
+    transform: translateX(4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cdx__reservaBg :global(img),
+    .cdx__reservaBg :global(picture),
+    .cdx__reservaDot { animation: none; }
+    .cdx__ch:hover, .cdx__ch:hover .cdx__chArrow { transform: none; }
+  }
+
+  /* Stacked cards list */
+  .cdx__list {
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .cdx__item {
+    background: rgba(251, 248, 241, 0.05);
+    border: 1px solid rgba(251, 248, 241, 0.12);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: background 300ms ease, border-color 300ms ease;
+  }
+  .cdx__item[open] {
+    background: rgba(251, 248, 241, 0.09);
+    border-color: rgba(244, 181, 163, 0.4);
+  }
+  .cdx__item:hover:not([open]) {
+    background: rgba(251, 248, 241, 0.07);
+    border-color: rgba(251, 248, 241, 0.2);
+  }
+
+  /* Summary (header del card) */
+  .cdx__sum {
+    list-style: none;
+    display: grid; grid-template-columns: 1fr auto; gap: 1rem;
+    align-items: center;
+    padding: 1.125rem 1.25rem;
+    cursor: pointer;
+    position: relative;
+    transition: padding 300ms ease;
+  }
+  .cdx__sum::-webkit-details-marker { display: none; }
+  .cdx__item[open] .cdx__sum { padding-bottom: 0.625rem; }
+
+  .cdx__eyerow {
+    display: flex; align-items: center; gap: 0.75rem;
+    grid-row: 1; grid-column: 1;
+    margin-bottom: 0.375rem;
+  }
+  .cdx__num {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.875rem; color: var(--color-primary-soft, #F4B5A3);
+    letter-spacing: 0.02em;
+  }
+  .cdx__smallE {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.55);
+  }
+  .cdx__t {
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+    font-weight: 800; line-height: 1.2; letter-spacing: -0.005em;
+    color: #FBF8F1;
+    margin: 0;
+    grid-row: 2; grid-column: 1;
+  }
+
+  /* Chevron (flecha circular sage/coral en summary) */
+  .cdx__chev {
+    grid-row: 1 / span 2; grid-column: 2;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px;
+    background: var(--color-primary);
+    color: #FBF8F1;
+    border-radius: 50%;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1),
+                background-color 300ms ease;
+    flex-shrink: 0;
+  }
+  .cdx__item[open] .cdx__chev {
+    transform: rotate(90deg);
+    background: var(--color-primary-soft, #F4B5A3);
+    color: var(--color-text-primary, #1A1F2E);
+  }
+  .cdx__item:hover .cdx__chev {
+    transform: translateX(3px);
+  }
+  .cdx__item[open]:hover .cdx__chev {
+    transform: rotate(90deg) translateX(0);
+  }
+
+  /* Body expandible — animación CSS */
+  .cdx__body {
+    padding: 0 1.25rem 1.25rem;
+    display: grid; grid-template-rows: 1fr;
+    animation: cdxBodyIn 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes cdxBodyIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .cdx__body p {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: rgba(251, 248, 241, 0.8);
+    margin: 0.375rem 0 1rem;
+  }
+  .cdx__body p strong { color: #FBF8F1; font-weight: 700; }
+  .cdx__link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-primary-soft, #F4B5A3);
+    border-bottom: 1px solid rgba(244, 181, 163, 0.4);
+    padding-bottom: 2px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .cdx__link:hover {
+    color: #FBF8F1;
+    border-color: #FBF8F1;
+  }
+  .cdx__link svg { transition: transform 200ms ease; }
+  .cdx__link:hover svg { transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cdx__body { animation: none; }
+    .cdx__chev { transition: background-color 200ms ease; }
+    .cdx__item[open] .cdx__chev { transform: rotate(90deg); }
+    .cdx__item:hover .cdx__chev { transform: none; }
+    .cdx__item[open]:hover .cdx__chev { transform: rotate(90deg); }
+  }
+
+  /* ============== FAQ ============== */
+  .cnf { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .cnf__grid {
+    display: grid; grid-template-columns: 1fr; gap: clamp(2rem, 5vw, 4rem);
+    max-width: 1200px; margin: 0 auto;
+  }
+  @media (min-width: 960px) { .cnf__grid { grid-template-columns: 1fr 1.3fr; } }
+
+  .cnf__aside { position: sticky; top: 6rem; align-self: start; }
+  @media (max-width: 959.98px) { .cnf__aside { position: static; } }
+
+  .cnf__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnf__lead strong { color: var(--color-text-primary); font-weight: 700; }
+  .cnf__lead a {
+    color: var(--color-sage, #3D4F3A);
+    font-weight: 600;
+    border-bottom: 1px dashed var(--color-sage, #3D4F3A);
+  }
+
+  .cnf__list { display: flex; flex-direction: column; gap: var(--s-2); }
+
+  .cnfI {
+    background: #fff;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 0.875rem;
+    overflow: hidden;
+    transition: border-color 240ms;
+  }
+  .cnfI[open] { border-color: rgba(61, 79, 58, 0.35); }
+
+  .cnfI__q {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: var(--s-3);
+    padding: 1.125rem 1.25rem;
+    cursor: pointer;
+    font-family: var(--font-sans); font-size: 0.9375rem; font-weight: 700;
+    line-height: 1.4;
+    color: var(--color-text-primary);
+    list-style: none;
+  }
+  .cnfI__q::-webkit-details-marker { display: none; }
+  .cnfI__chev {
+    flex-shrink: 0; margin-top: 2px;
+    color: var(--color-sage, #3D4F3A);
+    transition: transform 240ms;
+  }
+  .cnfI[open] .cnfI__chev { transform: rotate(180deg); }
+
+  .cnfI__a {
+    padding: 0 1.25rem 1.25rem;
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .cnfI__a strong { color: var(--color-text-primary); font-weight: 700; }
+  .cnfI__a a {
+    color: var(--color-sage, #3D4F3A); font-weight: 600;
+    border-bottom: 1px dashed var(--color-sage, #3D4F3A);
+  }
+
+  /* ============== CTA FINAL ============== */
+  .cncta {
+    position: relative;
+    isolation: isolate;
+    min-height: clamp(480px, 60vh, 620px);
+    display: flex; align-items: center;
+    overflow: hidden;
+    color: #fff;
+  }
+  .cncta__bg {
+    position: absolute; inset: 0; z-index: 0;
+  }
+  .cncta__bg :global(picture),
+  .cncta__bg :global(img) {
+    display: block; width: 100%; height: 100%; object-fit: cover;
+    object-position: center;
+  }
+  .cncta__bg::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,31,46,0.85) 0%, rgba(26,31,46,0.55) 100%);
+    z-index: 1;
+  }
+  .cncta__inner {
+    position: relative; z-index: 2;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 6rem) clamp(1.5rem, 4vw, 4rem);
+    text-align: center;
+  }
+  .cncta__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .cncta__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: #fff;
+    margin: 0 0 var(--s-5);
+  }
+  .cncta__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .cncta__lead {
+    font-family: var(--font-sans); font-size: 1.0625rem; line-height: 1.65;
+    color: rgba(255, 255, 255, 0.88);
+    margin: 0 0 var(--s-6);
+  }
+  .cncta__lead strong { color: #fff; font-weight: 700; }
+  .cncta__ctas {
+    display: flex; flex-wrap: wrap; gap: var(--s-3);
+    justify-content: center;
+    margin-bottom: var(--s-5);
+  }
+  .cncta__primary,
+  .cncta__ghost {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+  }
+  .cncta__primary {
+    background: var(--color-primary); color: #fff;
+    box-shadow: 0 10px 28px rgba(233, 133, 111, 0.45);
+  }
+  .cncta__primary:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-2px);
+  }
+  .cncta__ghost {
+    background: transparent; color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+  }
+  .cncta__ghost:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
+  .cncta__primary svg { transition: transform 200ms; }
+  .cncta__primary:hover svg { transform: translateX(3px); }
+  .cncta__refuerzo {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    letter-spacing: 0.3px;
+    color: rgba(255, 255, 255, 0.62);
+    margin: 0;
+  }
+
+  /* ============== CTA INTERMEDIO · Banda SAGE OSCURA (corte visual) ============== */
+  .cdm {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background:
+      radial-gradient(ellipse 70% 55% at 15% 20%, rgba(244, 181, 163, 0.14) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 50% at 100% 100%, rgba(251, 248, 241, 0.06) 0%, transparent 60%),
+      linear-gradient(180deg, #3D4F3A 0%, #2C3B2A 100%);
+    color: #FBF8F1;
+    position: relative;
+    isolation: isolate;
+  }
+  .cdm::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.035) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 75%);
+  }
+  .cdm__wrap { max-width: 780px; margin: 0 auto; text-align: center; position: relative; z-index: 1; }
+  .cdm__quote {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem); line-height: 1.45;
+    color: #FBF8F1;
+    margin: 0 0 clamp(2.25rem, 4vw, 2.75rem);
+    letter-spacing: -0.005em;
+  }
+  .cdm__quote em { color: var(--color-primary-soft, #F4B5A3); font-style: italic; }
+  .cdm__quote strong { font-style: normal; font-weight: 700; color: #FBF8F1; }
+  .cdm__rule { display: flex; align-items: center; gap: 1rem; }
+  .cdm__ruleLine {
+    flex: 1; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(251, 248, 241, 0.3), transparent);
+  }
+  .cdm__pill {
+    display: inline-flex; align-items: center; gap: 0.625rem;
+    padding: 0.9rem 1.6rem 0.9rem 1.35rem;
+    background: #FBF8F1;
+    color: var(--color-sage, #3D4F3A);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    flex-shrink: 0;
+    transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  }
+  .cdm__pill:hover {
+    transform: translateY(-3px);
+    background: var(--color-primary-soft, #F4B5A3);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.42);
+  }
+  .cdm__pillDot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: cdmPillPulse 2s ease-in-out infinite;
+  }
+  @keyframes cdmPillPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.6); }
+    50%      { box-shadow: 0 0 0 6px rgba(233, 133, 111, 0); }
+  }
+  .cdm__pill svg { transition: transform 220ms; }
+  .cdm__pill:hover svg { transform: translateX(3px); }
+  @media (prefers-reduced-motion: reduce) { .cdm__pillDot { animation: none; } }
+</style>

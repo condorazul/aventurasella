@@ -1,0 +1,260 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: "Dois-je choisir une heure de départ ?",
+    a: '<p>Non. Ta réservation est <strong>Premium · horaires ouverts</strong> : tu arrives à nos installations à Arriondas <strong>quand tu veux entre 10h30 et 12h30</strong>, sans choisir une heure précise. C\'est l\'un des <strong>avantages Premium</strong> · nous t\'équipons à l\'arrivée et tu te lances sur le fleuve quand tu es prêt(e). La Confédération Hydrographique fixe la permanence sur le fleuve jusqu\'à 18h (raison pour laquelle nous fermons les arrivées à 12h30 · marge de sécurité). <strong>Exceptions</strong> : le samedi de la <a href="/fr/descente-internationale-du-sella/">Descente Internationale du Sella</a> (départ unique) et les jours où les conditions du fleuve exigent l\'entrée avec moniteur (nous te prévenons à l\'avance).</p>',
+  },
+  {
+    q: "Quel créneau entre 10h30-12h30 me convient le mieux ?",
+    a: "<p>Ça dépend de ce que tu cherches. Arriver <strong>tôt (10h30)</strong> : belle lumière pour les photos, fleuve plus calme, moins de monde · tu finis avec un après-midi libre. Arriver <strong>au milieu (11h30-12h)</strong> : ambiance animée, plus de vie dans les buvettes et les plages fluviales. Arriver <strong>à la fermeture (12h30)</strong> : la dernière portion attrape la lumière d'après-midi, parfait si tu aimes finir avec une lumière dorée et moins de monde sur le fleuve.</p>",
+  },
+  {
+    q: "Quelle est la meilleure heure pour la descente avec des enfants ?",
+    a: '<p>Arriver tôt, sans hésiter. <strong>10h30</strong> est idéal car les petits sont plus performants avec une énergie fraîche, ils mangent sur le fleuve à bonne heure et tu rentres à Arriondas avec de la marge pour la douche et le repos sans précipitation. Nous l\'expliquons en détail dans <a href="/fr/blog/descente-du-sella-avec-petits-enfants/">descente du Sella avec petits enfants</a>.</p>',
+  },
+  {
+    q: "Y a-t-il des bouchons ou des files sur le fleuve à certaines heures ?",
+    a: "<p>En juillet et août, les <strong>samedis entre 12h et 14h</strong> concentrent le plus de trafic autour du Pozo del Arco et des premières buvettes. Ce n'est pas un vrai bouchon, mais on remarque plus de canoës. Si tu cherches le calme, choisis un jour de semaine ou arrive au premier créneau des horaires ouverts (10h30).</p>",
+  },
+  {
+    q: "Peut-on faire la descente du Sella au coucher du soleil ?",
+    a: '<p>Pas en activité nocturne. La Confédération Hydrographique <strong>n\'autorise la permanence sur le fleuve que jusqu\'à 18h</strong>, raison pour laquelle nous fermons les arrivées à <strong>12h30</strong> (12h30 + jusqu\'à 5h pour le parcours complet = 17h30 · marge sûre). Si tu arrives à la fermeture, tu finis avec la lumière d\'après-midi sur la deuxième moitié du parcours — particulièrement beau en juin, juillet et septembre.</p>',
+  },
+  {
+    q: "Y a-t-il des exceptions aux horaires ouverts Premium ?",
+    a: '<p>Oui, deux. Le <strong>samedi de la <a href="/fr/descente-internationale-du-sella/">Descente Internationale du Sella</a></strong> (samedi d\'août fixé chaque année par la Fédération · en 2026 c\'est le <strong>8 août</strong>) a un départ unique à une heure précise — communiquée lors de la réservation. Et si un <strong>orage ou les conditions du fleuve</strong> (crue, pluie forte) exigent un départ à une heure précise ou avec moniteur, <strong>nous te prévenons à l\'avance</strong>. Le reste de l\'année, les horaires sont totalement ouverts entre 10h30 et 12h30.</p>',
+  },
+  {
+    q: "L'heure de la journée affecte-t-elle le débit du fleuve ?",
+    a: "<p>Le débit du Sella est stable tout au long de la journée — ce n'est pas un fleuve avec des variations horaires significatives, contrairement aux rivières alpines alimentées par la fonte des neiges. Ce qui change, c'est la <strong>température de l'eau</strong> (un peu plus tiède en milieu d'après-midi) et la <strong>lumière</strong>, qui affecte les photos et la température perçue.</p>",
+  },
+];
+---
+
+<BlogPostLayout slug="meilleure-heure-descente-du-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>D'abord, important :</strong> ta réservation est <strong>Premium · horaires ouverts</strong>. Tu ne choisis pas une heure précise de départ — tu arrives à nos installations <strong>quand tu veux entre 10h30 et 12h30</strong>. La question, donc, n'est pas « quelle heure choisir », mais <strong>« quel créneau dans cet intervalle me convient le mieux ? »</strong>. Cela change beaucoup l'expérience · voici l'analyse.
+  </p>
+
+  <p>
+    La question revient chaque semaine à l'accueil, et elle a plus de profondeur qu'il n'y paraît. Arriver à 10h30 en juin n'a rien à voir avec 12h30 en août. Nous partageons ce que nous observons chaque saison — lumière, monde, température, rythme — pour que tu puisses décider quel moment dans la plage ouverte fonctionne pour toi.
+  </p>
+
+  <h2 class="post__h2" id="open-hours">Comment fonctionnent <br/><span class="serif-italic">les horaires ouverts Premium</span></h2>
+
+  <p>
+    Chez <strong>Aventura en el Sella, toute réservation est Premium</strong>, et cela inclut un avantage que peu d'opérateurs offrent : <strong>l'horaire est ouvert</strong>. Tu n'as pas à respecter une heure de départ fixe · tu arrives à nos installations à Arriondas <strong>quand cela t'arrange entre 10h30 et 12h30</strong>. Nous t'équipons à l'arrivée (paperasse rapide, vestiaires, mini-cours avec moniteur diplômé) et tu pars sur le fleuve quand tu es prêt(e).
+  </p>
+
+  <p>
+    Par <strong>règlement de la Confédération Hydrographique Cantabrique</strong>, la permanence sur le fleuve est autorisée <strong>jusqu'à 18h</strong>. C'est pourquoi nous fermons les arrivées à 12h30 (12h30 + jusqu'à 5h pour le parcours complet = 17h30, marge sûre). Exceptions : le <strong>samedi de la Descente Internationale du Sella</strong> a un départ unique à une heure précise · et si des orages ou les conditions du fleuve exigent une entrée avec moniteur, nous te prévenons à l'avance.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-mejorhora-inline"
+      alt="Le Sella en juillet · ambiance de la descente touristique en haute saison"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Premier créneau d'arrivée des horaires ouverts · fleuve calme, lumière propre, et sensation d'avoir le Sella presque pour soi.</figcaption>
+  </figure>
+
+  <p>Les trois créneaux d'arrivée les plus populaires dans les horaires ouverts.</p>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">10h30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Tôt <span class="serif-italic">· jusqu'à 11h</span></h3>
+        <p class="post__zone__desc">Familles avec enfants · couples photo · matinaux. <strong>Lumière propre · fleuve calme · moins de monde.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">11h30</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Milieu de matinée <span class="serif-italic">· jusqu'à 12h</span></h3>
+        <p class="post__zone__desc">Groupes d'amis · visiteurs d'Oviedo ou Gijón. <strong>Plus d'ambiance · arrêts animés · température agréable.</strong></p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">12h</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">Créneau de fermeture <span class="serif-italic">· jusqu'à 12h30</span></h3>
+        <p class="post__zone__desc">Couples · amateurs de lumière d'après-midi · ceux sans pressé. <strong>Tu finis avec une lumière dorée · fleuve plus vide sur la deuxième moitié.</strong></p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="early">Arriver tôt<br/><span class="serif-italic">(10h30 – 11h)</span></h2>
+
+  <p>
+    C'est notre créneau préféré, et nous ne le disons pas à la légère : c'est celui que nous choisissons quand nous invitons des amis. Le fleuve se réveille avec ce calme plat qu'il n'a qu'avant l'arrivée des premiers canoës, et la lumière tombe latéralement sur la vallée, parfaite pour les photos.
+  </p>
+
+  <p><strong>Pourquoi ça marche :</strong></p>
+
+  <ul>
+    <li><strong>Lumière optimale</strong> — surtout de mai à septembre, soleil bas, ombres longues, tons dorés sur l'eau.</li>
+    <li><strong>Moins de monde</strong> — les canoës s'étalent, ils ne sont pas entassés sur les plages fluviales.</li>
+    <li><strong>Température plus fraîche</strong> — idéal en plein août quand la chaleur de midi tape fort.</li>
+    <li><strong>Tu manges sur le fleuve à bonne heure</strong> — tu arrives au pique-nique vraiment affamé(e).</li>
+    <li><strong>Tu finis avec de la marge</strong> — si ça dure 4 heures, tu finis vers 14h30 : le temps de te doucher, de manger encore si tu veux et de continuer ta journée.</li>
+  </ul>
+
+  <p class="post__pull">
+    Si tu es avec de petits enfants, arriver tôt n'est pas une option : c'est <em>l'</em>option. À 10h30 ils sont frais, à 13h ils ont vraiment faim, à 15h ils s'endorment dans la voiture comme des anges.
+  </p>
+
+  <h2 class="post__h2" id="mid-morning">Arriver en milieu de matinée<br/><span class="serif-italic">(11h30 – 12h)</span></h2>
+
+  <p>
+    Le créneau le plus populaire en juillet et août. Si tu veux l'ambiance estivale — buvettes avec musique, canoës partageant un arrêt, le classique « regarde ces gars là-bas ! » — c'est le moment. En revanche, c'est aussi le plus fréquenté.
+  </p>
+
+  <p><strong>Avantages :</strong></p>
+
+  <ul>
+    <li>Eau tiède, confortable pour nager dans les fosses du Sella.</li>
+    <li><a href="/fr/blog/buvettes-descente-du-sella/">Les buvettes</a> sont à leur plus animé.</li>
+    <li>Température stable — pas froid à l'aube, pas brûlant en milieu d'après-midi.</li>
+  </ul>
+
+  <p><strong>Choses à garder en tête :</strong></p>
+
+  <ul>
+    <li>Les week-ends d'août, il peut y avoir une petite file à <strong>la rampe de mise à l'eau</strong>.</li>
+    <li>Les plages fluviales (surtout le Pozo del Arco) sont très fréquentées entre 12h30 et 13h30.</li>
+    <li>Si tu es du genre « je veux le fleuve pour moi », ce n'est pas ton créneau.</li>
+  </ul>
+
+  <div class="post__callout">
+    <strong>Astuce pour le créneau de midi</strong>
+    <p>Si tu arrives à 12h et prévois un rythme calme, tu atteindras le <a href="/fr/blog/pozo-del-arco-sella/">Pozo del Arco</a> vers 13h30 — quand la plupart des canoës matinaux sont déjà passés. Tu manges le pique-nique un peu plus tard (vers 14h15) et finis entre 16h et 17h avec la lumière de mi-après-midi. Un plan très confortable si dîner tôt ne te dérange pas.</p>
+  </div>
+
+  <h2 class="post__h2" id="closing">Arriver à la fermeture<br/><span class="serif-italic">(12h – 12h30)</span></h2>
+
+  <p>
+    Le créneau le plus calme. Beaucoup de gens sont déjà sur le fleuve ou près de finir, l'affluence sur la deuxième moitié baisse et, si tu fais le parcours complet, tu finis avec <strong>la lumière d'après-midi</strong>. De nombreuses des plus belles photos du Sella sont prises ainsi, surtout entre <strong>juin et septembre</strong>.
+  </p>
+
+  <p><strong>Pourquoi ça marche si bien :</strong></p>
+
+  <ul>
+    <li><strong>Lumière d'après-midi</strong> sur les dernières heures du parcours — les falaises du Sella passent du vert foncé au cuivré.</li>
+    <li><strong>Moins de canoës</strong> — surtout sur les plages fluviales, qui retrouvent leur aspect naturel.</li>
+    <li><strong>Température parfaite</strong> en juillet/août — plus de soleil de midi qui frappe.</li>
+    <li><strong>Arrêts plus tranquilles</strong> — moins d'agitation dans les buvettes du parcours.</li>
+  </ul>
+
+  <p><strong>Deux précautions :</strong> (1) si tu fais le parcours complet en arrivant à 12h30, tu rentres à Arriondas en fin d'après-midi — prévois le temps pour les douches et le transfert (tu atteins la rivière vers 17h30). (2) Au printemps et début d'automne, arriver tard peut signifier un peu de frais à la fin — le soleil se couche plus tôt. Si tu voyages alors, consulte aussi <a href="/fr/meilleure-periode/">la meilleure période pour la descente du Sella</a>.</p>
+
+  <h2 class="post__h2" id="by-month">La meilleure heure <span class="serif-italic">par mois</span></h2>
+
+  <p>Puisque le soleil et l'affluence changent chaque mois, voici notre recommandation basée sur des années d'observation du fleuve.</p>
+
+  <div class="post__zones post__zones--wide">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Mai</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11h30 <span class="serif-italic">– 12h</span></h3>
+        <p class="post__zone__desc">Évite la fraîcheur du matin · attrape le soleil de midi.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Juin</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10h30 <span class="serif-italic">ou 12h30</span></h3>
+        <p class="post__zone__desc">N'importe quel créneau fonctionne · longues heures de lumière.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Juillet</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10h30 <span class="serif-italic">ou 12h30</span></h3>
+        <p class="post__zone__desc">Évite la chaleur de pointe et l'affluence de midi.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Août</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">10h30 <span class="serif-italic">· réserve tôt</span></h3>
+        <p class="post__zone__desc">Mois le plus fréquenté · arrivée tôt = plus de calme.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Septembre</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11h30 <span class="serif-italic">ou 12h30</span></h3>
+        <p class="post__zone__desc">N'importe quel créneau est bon · peu d'affluence.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">Octobre</span>
+      </p>
+      <div class="post__zone__body">
+        <h3 class="post__zone__name">11h <span class="serif-italic">– 12h</span></h3>
+        <p class="post__zone__desc">Utilise le créneau central pour soleil et température.</p>
+      </div>
+    </article>
+  </div>
+
+  <h2 class="post__h2" id="duration">Et combien de temps <span class="serif-italic">cela durera-t-il vraiment ?</span></h2>
+
+  <p>
+    L'heure d'arrivée façonne l'expérience, mais la <strong>durée</strong> compte aussi. Nous proposons deux parcours :
+  </p>
+
+  <ul>
+    <li><strong>Mini Sella (7 km · Arriondas → Toraño)</strong> — entre 1h30 et 2h30.</li>
+    <li><strong>Parcours complet (14,5 km · Arriondas → Fríes)</strong> — entre 3 et 5 heures avec arrêts.</li>
+  </ul>
+
+  <p>
+    Nous avons un guide dédié aux temps réels : <a href="/fr/duree/">combien de temps dure la descente du Sella</a>. Utilise-le pour ajuster l'heure d'arrivée à tout ce que tu as prévu après.
+  </p>
+
+  <h2 class="post__h2" id="decision">Comment décider <span class="serif-italic">en 30 secondes</span></h2>
+
+  <p>La méthode maison, affinée par des années de questions :</p>
+
+  <ol>
+    <li>Si tu viens avec de <strong>petits enfants</strong> → arrive tôt (10h30).</li>
+    <li>Si tu veux de l'<strong>ambiance</strong> aux arrêts → milieu de matinée (11h30-12h).</li>
+    <li>Si tu aimes les <strong>photos et le calme</strong> → arrive à la fermeture (12h-12h30).</li>
+    <li>Si tu viens un <strong>samedi d'août</strong> → tôt ou en semaine, pas de débat.</li>
+    <li>Si tu viens d'<strong>Oviedo ou Gijón</strong> et ne veux pas te lever tôt → 11h30 donne de la marge pour un bon petit-déjeuner d'abord.</li>
+  </ol>
+
+  <p>
+    Toujours pas sûr(e) ? Consulte le <a href="/fr/reservation-premium/">calendrier de réservation</a> — tu verras quels créneaux sont disponibles chaque jour, et la décision se prend toute seule. Et si tu préfères <a href="/fr/contact/">nous demander directement</a>, dis-nous combien vous êtes, vos âges et ce que tu attends de la journée. Nous recommandons le créneau spécifique sans tourner autour du pot.
+  </p>
+</BlogPostLayout>

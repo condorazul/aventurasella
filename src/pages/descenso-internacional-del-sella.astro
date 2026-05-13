@@ -1,0 +1,1408 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import FinalCTA from '@components/sections/FinalCTA.astro';
+
+const title = 'Descenso Internacional del Sella 2026 · Fecha y guía';
+const description = 'Descenso Internacional del Sella 2026: fecha, recorrido, horarios, palmarés y cómo vivirlo. Reserva tu canoa turística el mismo día del evento.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/descenso-internacional-del-sella/`;
+
+// ============== Datos estructurados ==============
+const datosClave = [
+  { label: 'Nombre oficial',    valueLines: ['Descenso Internacional', 'del Sella'], sub: '“Les Piragües”' },
+  { label: 'Fundado',           valueLines: ['1930'],                                 sub: 'casi un siglo de historia' },
+  { label: 'Recorrido',         valueLines: ['20 km'],                                sub: 'Arriondas → Ribadesella' },
+  { label: 'Participantes',     valueLines: ['+1.200'],                               sub: 'élite + amateurs' },
+  { label: 'Espectadores',      valueLines: ['~200.000'],                             sub: 'a orillas del río' },
+  { label: 'Reconocimiento',    valueLines: ['F. I. Turístico', 'Internacional'],     sub: 'declarada en 1981' },
+];
+
+const fechas2026 = [
+  { day: 'Jueves 6 ago',               hour: 'Todo el día',      title: 'Llegada de las peñas',           text: 'Concentración en Arriondas. Empieza el ambiente festivo.' },
+  { day: 'Viernes 7 ago',              hour: 'Todo el día',      title: 'Verbena oficial',                 text: 'Fiestas populares, encendido de fogatas y música en Arriondas.' },
+  { day: 'Sábado 8 ago',               hour: '11:30 h',          title: 'Salida oficial',                  text: 'Arranca la competición desde el Puente de los Piragüistas.',  highlight: true },
+  { day: 'Sábado 8 ago',               hour: '12:00 h',          title: 'Salida turística · nosotros',     text: 'Única salida del día tras la élite. Reserva especial con cupo limitado.',  highlight: true },
+  { day: 'Sábado 8 ago',               hour: '14:30–17:00 h',    title: 'Llegada a Ribadesella',           text: 'Festival de meta y entrega de trofeos junto al mar.' },
+  { day: 'Domingo 9 ago',              hour: 'Mañana',           title: 'Entrega de premios',              text: 'Ceremonia oficial y Misa del Piragüista. Cierre del fin de semana.' },
+];
+
+const recorrido = [
+  { km: '0 km',    place: 'Arriondas',            note: 'Salida oficial · Puente de los Piragüistas',  us: false },
+  { km: '3 km',    place: 'Puente de Santianes',  note: 'Primer punto de cronometraje',                us: false },
+  { km: '7 km',    place: 'Puente de Toraño',     note: 'Final de nuestra ruta Mini Sella',            us: true  },
+  { km: '14,5 km', place: 'Fríes',                note: 'Final de nuestro descenso Completo',          us: true  },
+  { km: '17 km',   place: 'Llovio',               note: 'Últimos rápidos del trazado',                 us: false },
+  { km: '20 km',   place: 'Ribadesella',          note: 'Meta · orilla del mar Cantábrico',            us: false },
+];
+
+const palmares = [
+  { year: '2025', winners: 'Rodrigo Germade / Diego Romero', flag: 'ESP' },
+  { year: '2024', winners: 'Javier Reja / Adrián Sieiro',     flag: 'ESP' },
+  { year: '2023', winners: 'Walter Bouzán / Manuel Vargas',   flag: 'ESP' },
+  { year: '2022', winners: 'Walter Bouzán / Manuel Vargas',   flag: 'ESP' },
+  { year: '2021', winners: 'Íñigo Peña / Pedro Vázquez',       flag: 'ESP' },
+];
+
+const faqs = [
+  { q: '¿Cuándo es el Descenso Internacional del Sella 2026?',
+    a: 'La edición 2026 se celebra el <strong>sábado 8 de agosto</strong>. La salida oficial de la élite está fijada para las <strong>11:30 h</strong> en Arriondas y la llegada a Ribadesella es entre las 14:30 y las 17:00 h. Nuestra salida turística es a las <strong>12:00 h</strong>, justo después de los profesionales.' },
+  { q: '¿Puedo bajar el Sella el mismo día del Descenso Internacional?',
+    a: 'Sí — pero con reserva especial. Ofrecemos una <strong>única salida turística a las 12:00 h</strong>, justo después de la salida de la élite profesional. El río se abre al tráfico turístico tras el paso del pelotón. <strong>Precio único de 35 €</strong> por persona (sin picnic incluido, porque la logística ese día es distinta). Pago anticipado online. Reserva hasta <strong>2 días antes</strong> del evento — las plazas se agotan con semanas de antelación.' },
+  { q: '¿Por qué el check-in ese día es tan temprano?',
+    a: 'El <strong>tráfico de entrada a Arriondas se cierra a las 10:00 h</strong> — las calles se peatonalizan y no se permite el paso de vehículos al pueblo. Por eso pedimos que llegues a Arriondas <strong>antes de las 9:30 h</strong> para hacer el check-in y dejar el coche en nuestro parking privado. Si llegas tarde, no podrás acceder y perderías la actividad.' },
+  { q: '¿Puedo llevar a mi perro el día del Descenso Internacional?',
+    a: '<strong>No lo recomendamos</strong>. Aunque las mascotas son bienvenidas <a href="/">el resto del año</a>, ese día hay una afluencia extraordinaria (~200.000 espectadores), mucho ruido, fuegos artificiales, tráfico y tensión. Los perros se asustan mucho y la experiencia no será placentera para ellos ni para ti. Mejor reserva cualquier otro día de la temporada.' },
+  { q: '¿Cuánto cuesta participar en el Descenso Internacional como atleta?',
+    a: 'La inscripción como deportista federado ronda los <strong>35–45 €</strong> según categoría. Requiere licencia de piragüismo vigente y acreditación federativa. No se admiten canoas turísticas en la prueba oficial.' },
+  { q: '¿Dónde puedo ver el Descenso Internacional gratis?',
+    a: 'Toda la ribera del Sella es de acceso libre. Los mejores puntos son <strong>Arriondas</strong> (salida), el <strong>Puente de Llovio</strong> (últimos rápidos espectaculares) y la llegada en <strong>Ribadesella</strong>.' },
+  { q: '¿Cuál es el palmarés del Descenso Internacional del Sella?',
+    a: 'Puedes consultar el listado completo de ganadores desde 1930 en la web oficial de la <a href="https://www.rfep.es" target="_blank" rel="nofollow noopener external">Federación Española de Piragüismo</a> o en <a href="https://es.wikipedia.org/wiki/Descenso_Internacional_del_Sella" target="_blank" rel="noopener external">Wikipedia</a>. Aquí arriba tienes la tabla de ediciones recientes, que actualizamos cada septiembre.' },
+  { q: '¿Hay alojamiento disponible el fin de semana del Descenso Internacional?',
+    a: 'Difícil. Reserva con <strong>meses de antelación</strong> en Arriondas, Cangas de Onís, Ribadesella o Llanes. La ocupación esa semana supera el 95 % en todo el entorno.' },
+  { q: '¿Se puede asistir con niños?',
+    a: 'Sí, es un <strong>evento familiar por excelencia</strong>. El ambiente es festivo y la organización prepara zonas de orilla seguras. Cuidado con el sol: recomendamos sombrero y crema alta.' },
+  { q: '¿Qué más se puede hacer ese fin de semana en Asturias?',
+    a: 'Visitar los <strong>Lagos de Covadonga</strong>, bajar el <a href="/">Sella turísticamente</a> los días previos, hacer una ruta en bici por la Senda del Oso, conocer Ribadesella y la cueva de Tito Bustillo, o probar la sidra y la gastronomía asturiana en los chigres locales.' },
+];
+
+// ============== Schema.org JSON-LD ==============
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Article',
+      '@id': `${canonicalUrl}#article`,
+      headline: 'Descenso Internacional del Sella 2026 · Fecha, recorrido y guía completa',
+      description,
+      inLanguage: 'es-ES',
+      mainEntityOfPage: canonicalUrl,
+      image: { '@type': 'ImageObject', url: `${baseUrl}/images/og/og-internacional-es.jpg`, width: 1200, height: 630 },
+      author:    { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl },
+      publisher: { '@type': 'Organization', name: 'Aventura en el Sella', url: baseUrl, logo: { '@type': 'ImageObject', url: `${baseUrl}/images/logo/logo.svg` } },
+      datePublished: '2026-04-22',
+      dateModified:  '2026-05-11',
+      articleSection: 'Eventos · Descenso Internacional del Sella',
+      keywords: [
+        'Descenso Internacional del Sella',
+        'Descenso del Sella 2026',
+        'Les Piragües',
+        'Fiesta del Sella',
+        'piragüismo Asturias',
+        'Arriondas Ribadesella canoa',
+      ],
+      about: 'Competición internacional de piragüismo en el río Sella, Asturias',
+    },
+    {
+      '@type': 'Event',
+      '@id': `${canonicalUrl}#event-2026`,
+      name: 'Descenso Internacional del Sella 2026 · Les Piragües',
+      alternateName: 'Les Piragües',
+      description: 'Competición de piragüismo de 20 km por el río Sella, declarada Fiesta de Interés Turístico Internacional. Atrae a más de 1.200 piragüistas y 200.000 espectadores.',
+      startDate: '2026-08-08T11:30:00+02:00',
+      endDate:   '2026-08-08T17:00:00+02:00',
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      inLanguage: 'es-ES',
+      isAccessibleForFree: true,
+      audience: { '@type': 'Audience', audienceType: 'General public · piragüismo · turismo deportivo' },
+      maximumAttendeeCapacity: 200000,
+      location: {
+        '@type': 'Place',
+        name: 'Río Sella · Arriondas — Ribadesella',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Puente de los Piragüistas',
+          addressLocality: 'Arriondas',
+          addressRegion: 'Asturias',
+          postalCode: '33540',
+          addressCountry: 'ES',
+        },
+        geo: { '@type': 'GeoCoordinates', latitude: 43.3874223, longitude: -5.1866022 },
+      },
+      organizer: {
+        '@type': 'Organization',
+        name: 'Federación Española de Piragüismo',
+        url: 'https://www.rfep.es',
+      },
+      image: `${baseUrl}/images/og/og-internacional-es.jpg`,
+      url: canonicalUrl,
+      offers: {
+        '@type': 'Offer',
+        name: 'Salida turística del Descenso Internacional · 12:00 h',
+        description: 'Única salida turística del día tras el paso de la élite profesional. Cupo limitado.',
+        price: '35',
+        priceCurrency: 'EUR',
+        availability: 'https://schema.org/LimitedAvailability',
+        validFrom: '2026-01-15T00:00:00+02:00',
+        url: `${baseUrl}/reservar/?dia=2026-08-08`,
+      },
+      subEvent: [
+        { '@type': 'Event', name: 'Llegada de las peñas',     startDate: '2026-08-06', endDate: '2026-08-06', eventStatus: 'https://schema.org/EventScheduled' },
+        { '@type': 'Event', name: 'Verbena oficial',          startDate: '2026-08-07', endDate: '2026-08-07', eventStatus: 'https://schema.org/EventScheduled' },
+        { '@type': 'Event', name: 'Salida turística (12:00)', startDate: '2026-08-08T12:00:00+02:00', endDate: '2026-08-08T17:00:00+02:00', eventStatus: 'https://schema.org/EventScheduled' },
+        { '@type': 'Event', name: 'Entrega de premios y Misa del Piragüista', startDate: '2026-08-09', endDate: '2026-08-09', eventStatus: 'https://schema.org/EventScheduled' },
+      ],
+    },
+    {
+      '@type': 'LocalBusiness',
+      additionalType: ['https://schema.org/TouristAttraction', 'https://schema.org/SportsActivityLocation'],
+      '@id': `${baseUrl}/#business`,
+      name: 'Aventura en el Sella',
+      alternateName: 'El Descenso del Sella Asturias · Aventura en el Sella · Alquiler de Canoas',
+      url: baseUrl,
+      telephone: '+34681093673',
+      email: 'info@aventuraenelsella.es',
+      image: `${baseUrl}/images/logo/logo-schema.png`,
+      priceRange: '€€',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Calle Juan Carlos I, 18, BAJO II (acceso por Aipol)',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        postalCode: '33540',
+        addressCountry: 'ES',
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: 43.3874223, longitude: -5.1866022 },
+      hasMap: 'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+      openingHoursSpecification: [{
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens: '09:00',
+        closes: '20:00',
+      }],
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: '4.5',
+        reviewCount: '147',
+        bestRating: '5',
+        worstRating: '1',
+      },
+      sameAs: [
+        'https://www.google.com/maps/place/Aventura+en+el+Sella/@43.3874223,-5.1866022,17z/data=!4m6!3m5!1s0xd36195b04532889:0x9b2face87069ecfc!16s%2Fg%2F11s4chj1vp',
+        'https://share.google/huLLaIz31FiYohuTV',
+        'https://www.tripadvisor.es/Attraction_Review-g608995-d12635919-Reviews-Aventura_en_el_Sella-Arriondas_Parres_Municipality_Asturias.html',
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',                          item: baseUrl },
+        { '@type': 'ListItem', position: 2, name: 'Descenso Internacional del Sella', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage="/images/og/og-internacional-es.jpg"
+  currentPath="/descenso-internacional-del-sella/"
+>
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== HERO ============== -->
+  <section class="dih" aria-labelledby="dih-title">
+
+    <div class="dih__inner">
+      <nav class="dih__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Descenso Internacional del Sella</span>
+      </nav>
+
+      <span class="dih__eyebrow">
+        <span class="dih__eyebrow-dot" aria-hidden="true"></span>
+        1930 · Fiesta de Interés Turístico Internacional
+      </span>
+
+      <h1 id="dih-title" class="dih__title">
+        Descenso Internacional<br/>
+        <span class="serif-italic">del Sella</span>
+      </h1>
+
+      <p class="dih__lead">
+        Una de las <strong>competiciones de piragüismo más emblemáticas del mundo</strong>
+        y la prueba deportiva más antigua de Asturias. Cada año, en un sábado de agosto,
+        miles de atletas bajan los <strong>20 km</strong> que separan Arriondas de Ribadesella,
+        acompañados por más de <strong>200.000 espectadores</strong> a orillas del río Sella.
+      </p>
+
+      <div class="dih__event">
+        <div class="dih__event-col">
+          <span class="dih__event-label">Edición 2026</span>
+          <span class="dih__event-value">Sábado 8 de agosto</span>
+        </div>
+        <div class="dih__event-col">
+          <span class="dih__event-label">Salida oficial</span>
+          <span class="dih__event-value">11:30 h · Arriondas</span>
+        </div>
+        <div class="dih__event-col">
+          <span class="dih__event-label">Meta</span>
+          <span class="dih__event-value">14:30–17:00 h · Ribadesella</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== QUÉ ES + DATOS CLAVE ============== -->
+  <section class="dis">
+    <div class="container container--xl">
+      <header class="dis__header">
+        <span class="dis__eyebrow">— Qué es</span>
+        <h2 class="dis__title">La fiesta de las piraguas <span class="serif-italic">más antigua de España</span></h2>
+        <p class="dis__lead">
+          Nacido en <strong>1930</strong> de la mano de Dionisio de la Huerta, el
+          Descenso Internacional del Sella es la <strong>competición de piragüismo
+          en aguas tranquilas más longeva</strong> del piragüismo español. Atrae
+          cada año a los mejores kayakistas y canoístas del mundo — desde campeones
+          olímpicos hasta deportistas amateurs — junto a una multitud que convierte
+          las orillas en un festival continuo de 20 km.
+        </p>
+      </header>
+
+      <div class="dis__grid">
+        {datosClave.map((d, i) => (
+          <div class="disData" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <span class="disData__label">{d.label}</span>
+            <span class="disData__value">
+              {d.valueLines.map((line, idx) => (
+                <>
+                  {idx > 0 && <br/>}
+                  {line}
+                </>
+              ))}
+            </span>
+            <span class="disData__sub">{d.sub}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FECHA 2026 ============== -->
+  <section class="dif">
+    <div class="container container--lg">
+      <header class="dif__header">
+        <span class="dif__eyebrow">— Fechas 2026</span>
+        <h2 class="dif__title">
+          Cuatro días de fiesta.<br/>
+          <span class="serif-italic">Un sábado inolvidable.</span>
+        </h2>
+        <p class="dif__lead">
+          Las actividades paralelas empiezan el jueves previo con la llegada de las
+          peñas a Arriondas y culminan el sábado con la <strong>salida oficial de la
+          competición a las 11:30 h</strong>.
+        </p>
+      </header>
+
+      <ol class="dif__timeline">
+        {fechas2026.map((f, i) => (
+          <li class:list={['difStep', f.highlight && 'difStep--top']} data-reveal data-reveal-delay={(i % 4) + 1}>
+            <div class="difStep__date">
+              <span class="difStep__day">{f.day}</span>
+              <span class="difStep__hour">{f.hour}</span>
+            </div>
+            <div class="difStep__bullet" aria-hidden="true"></div>
+            <div class="difStep__body">
+              <h3 class="difStep__title">{f.title}</h3>
+              <p class="difStep__text">{f.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+
+      <p class="dif__note">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>La fecha oficial depende del calendario de la Federación Española de Piragüismo. Confirmamos cada enero la edición del año en curso.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== RECORRIDO 20 KM ============== -->
+  <section class="dir">
+    <div class="container container--xl">
+      <header class="dir__header">
+        <span class="dir__eyebrow">— Recorrido</span>
+        <h2 class="dir__title">20 kilómetros entre <span class="serif-italic">Arriondas y Ribadesella</span></h2>
+        <p class="dir__lead">
+          El trazado del Descenso Internacional del Sella reproduce el mismo río que
+          recorres tú en tu <a href="/" class="dir__link">descenso turístico</a> — pero
+          en versión competitiva y multitudinaria.
+        </p>
+      </header>
+
+      <ol class="dir__track">
+        {recorrido.map((r, i) => (
+          <li class:list={['dirPoint', r.us && 'dirPoint--us']} data-reveal data-reveal-delay={(i % 4) + 1}>
+            <span class="dirPoint__km">{r.km}</span>
+            <span class="dirPoint__dot" aria-hidden="true"></span>
+            <div class="dirPoint__body">
+              <span class="dirPoint__place">{r.place}</span>
+              <span class="dirPoint__note">{r.note}</span>
+              {r.us && <span class="dirPoint__tag">Nuestro</span>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============== CÓMO VERLO ============== -->
+  <section class="div">
+    <div class="container container--xl">
+      <header class="div__header">
+        <span class="div__eyebrow">— Guía práctica</span>
+        <h2 class="div__title">Cómo ver el Descenso Internacional <span class="serif-italic">sin líos</span></h2>
+        <p class="div__lead">
+          Los <strong>mejores puntos</strong> para ver el Descenso Internacional del Sella
+          son <strong>Arriondas</strong> (salida), el <strong>Puente de Llovio</strong>
+          (últimos rápidos espectaculares) y la llegada en <strong>Ribadesella</strong>.
+        </p>
+      </header>
+
+      <div class="div__grid">
+        <article class="divCard" data-reveal data-reveal-delay="1">
+          <h3 class="divCard__title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/></svg>
+            Aparcamiento recomendado
+          </h3>
+          <ul class="divCard__list">
+            <li><strong>Arriondas</strong> · parkings habilitados por el ayuntamiento desde el jueves. Llegar antes de las <strong>10:00 h el sábado</strong>.</li>
+            <li><strong>Toraño / Fríes</strong> · parking más tranquilo si no te importa ver parte intermedia. Buena opción para familias con niños.</li>
+            <li><strong>Ribadesella</strong> · atasco severo desde las 11 h. Alternativa: aparcar en <strong>Llovio</strong> y subir caminando.</li>
+          </ul>
+        </article>
+
+        <article class="divCard" data-reveal data-reveal-delay="2">
+          <h3 class="divCard__title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+            Qué llevar
+          </h3>
+          <ul class="divCard__list">
+            <li><strong>Ropa cómoda</strong> y <strong>crema solar</strong> (muchas horas al sol de agosto).</li>
+            <li><strong>Agua y picnic</strong> si no quieres hacer cola en los bares.</li>
+            <li><strong>Cámara con buen zoom</strong> — el río está a 10–20 m de la orilla en algunos tramos.</li>
+            <li>Prepárate para <strong>calor</strong> y <strong>muchísima gente</strong>. Es uno de los grandes eventos del verano asturiano.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== PALMARÉS ============== -->
+  <section class="dip">
+    <div class="container container--lg">
+      <header class="dip__header">
+        <span class="dip__eyebrow">— Palmarés reciente</span>
+        <h2 class="dip__title">Ganadores del Descenso del Sella <span class="serif-italic">K2 senior absoluto</span></h2>
+        <p class="dip__lead">
+          Ediciones recientes de la categoría estrella del Descenso Internacional
+          del Sella. Actualizamos la tabla cada septiembre tras la ceremonia oficial.
+        </p>
+      </header>
+
+      <div class="dip__table-wrap">
+        <table class="dip__table">
+          <thead>
+            <tr>
+              <th scope="col">Año</th>
+              <th scope="col">Ganador absoluto (K2 senior)</th>
+              <th scope="col">Nacionalidad</th>
+            </tr>
+          </thead>
+          <tbody>
+            {palmares.map((p, i) => (
+              <tr class={i === 0 ? 'is-current' : ''}>
+                <td class="dip__year">{p.year}</td>
+                <td class="dip__winners">{p.winners}</td>
+                <td class="dip__flag">🇪🇸 {p.flag}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="dip__source">
+        Fuente: <a href="https://www.rfep.es" target="_blank" rel="nofollow noopener external">Federación Española de Piragüismo</a> ·
+        Para el histórico completo desde 1930, consulta la <a href="https://es.wikipedia.org/wiki/Descenso_Internacional_del_Sella" target="_blank" rel="noopener external">ficha en Wikipedia</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== RESERVA ESPECIAL · DÍA DEL INTERNACIONAL ============== -->
+  <section class="did">
+    <div class="container container--xl">
+      <header class="did__header">
+        <span class="did__eyebrow">— Reserva especial · 8 de agosto</span>
+        <h2 class="did__title">
+          Vive el río el mismo día<br/>
+          <span class="serif-italic">del Descenso Internacional</span>
+        </h2>
+        <p class="did__lead">
+          Después de la salida de la élite profesional, el río se abre al descenso
+          turístico. Una <strong>única salida del día a las 12:00 h</strong>, con
+          cupo limitado y condiciones especiales — una experiencia irrepetible
+          viviendo el ambiente del gran día de Asturias.
+        </p>
+      </header>
+
+      <div class="did__main">
+        <!-- Pricing + CTA -->
+        <aside class="did__price" data-reveal>
+          <span class="did__price-tag">Reserva el día grande del Sella</span>
+          <div class="did__price-block">
+            <span class="did__price-value">35&nbsp;€</span>
+            <span class="did__price-sub">por persona · precio único</span>
+          </div>
+          <ul class="did__price-list">
+            <li>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Canoa, chaleco y equipo</span>
+            </li>
+            <li>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Transfer de regreso</span>
+            </li>
+            <li>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Parking privado vigilado <em>todo el día</em></span>
+            </li>
+            <li>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Vestuarios, ducha y taquillas</span>
+            </li>
+            <li>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              <span>Logística resuelta <em>entre la multitud</em></span>
+            </li>
+          </ul>
+          <a href="/reservar/?dia=2026-08-08" class="did__cta">
+            Reservar mi plaza del 8 ago
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <p class="did__price-note">
+            <em>No incluye picnic asturiano</em> — la logística del día no lo permite.
+          </p>
+        </aside>
+
+        <!-- Reglas esenciales del día -->
+        <div class="did__rules">
+          <h3 class="did__rules-title">Cómo funciona ese día</h3>
+
+          <div class="didRule" data-reveal>
+            <span class="didRule__num">01</span>
+            <div class="didRule__body">
+              <h4>Reserva anticipada obligatoria</h4>
+              <p>Solo con <strong>pago online por adelantado</strong>. La reserva se abre con semanas de antelación y cierra <strong>2 días antes</strong> del evento. Las plazas suelen agotarse <strong>antes de esa semana</strong>.</p>
+            </div>
+          </div>
+
+          <div class="didRule" data-reveal>
+            <span class="didRule__num">02</span>
+            <div class="didRule__body">
+              <h4>Llegada a Arriondas antes de las 9:30 h</h4>
+              <p>El <strong>tráfico de entrada al pueblo se cierra a las 10:00 h</strong>. Las calles se peatonalizan y los vehículos particulares no pueden acceder. Si llegas tarde, no podrás pasar con tu coche y perderías la actividad.</p>
+            </div>
+          </div>
+
+          <div class="didRule" data-reveal>
+            <span class="didRule__num">03</span>
+            <div class="didRule__body">
+              <h4>Check-in a primera hora</h4>
+              <p>Te recibimos en nuestras instalaciones, te entregamos el equipo y dejas el coche en el <strong>parking privado vigilado</strong> hasta el final de la actividad por la tarde. Todo organizado, sin buscar aparcamiento entre la multitud.</p>
+            </div>
+          </div>
+
+          <div class="didRule" data-reveal>
+            <span class="didRule__num">04</span>
+            <div class="didRule__body">
+              <h4>Salida única a las 12:00 h</h4>
+              <p>Solo se hace <strong>una salida el día del Internacional</strong>, justo después del paso de la élite profesional. Ese día no hay más turnos posibles — por eso el cupo es limitado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning mascotas · banner full-width -->
+      <aside class="did__warn" data-reveal>
+        <span class="did__warn-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="4.5" r="1.5"/>
+            <circle cx="6.5" cy="7.5" r="1.5"/>
+            <circle cx="15.5" cy="7.5" r="1.5"/>
+            <circle cx="3" cy="13" r="1.5"/>
+            <circle cx="19" cy="13" r="1.5"/>
+            <path d="M11 11c-4 0-6 4-6 6 0 1.66 1.34 3 3 3h6c1.66 0 3-1.34 3-3 0-2-2-6-6-6z"/>
+          </svg>
+        </span>
+        <div class="did__warn-body">
+          <span class="did__warn-kicker">Recomendación importante</span>
+          <h3 class="did__warn-title">
+            Ese día <span class="did__warn-no">no</span> recomendamos ir <em>con mascotas</em>
+          </h3>
+          <p class="did__warn-text">
+            Hay <strong>~200.000 espectadores</strong>, música, petardos y muchísimo
+            movimiento alrededor del río. Los perros se asustan y la experiencia no
+            será buena para ellos. <strong>El resto del año son bienvenidos</strong>
+            sin coste adicional y <a href="/">van gratis en la canoa</a>.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============== FAQ EVENTO ============== -->
+  <section class="dig">
+    <div class="container container--lg">
+      <header class="dig__header">
+        <span class="dig__eyebrow">— Preguntas frecuentes</span>
+        <h2 class="dig__title">
+          Todo sobre el<br/>
+          <span class="serif-italic">Descenso Internacional</span>
+        </h2>
+      </header>
+
+      <div class="dig__list">
+        {faqs.map((f, i) => (
+          <details class="digRow" name="faq-internacional" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="digRow__sign" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="digRow__a" set:html={f.a}></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FINAL CTA (reutilizando el de Home) ============== -->
+  <FinalCTA />
+</BaseLayout>
+
+<style>
+  /* ============== HERO ============== */
+  .dih {
+    position: relative;
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+    background: linear-gradient(180deg, #1A1F2E 0%, #243040 100%);
+    color: var(--color-text-on-dark, #FBF8F1);
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .dih::before {
+    content: "";
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(251, 248, 241, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(251, 248, 241, 0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at 30% 20%, black 10%, transparent 70%);
+  }
+  .dih__inner {
+    position: relative; z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(7rem, 14vw, 10rem) clamp(1.5rem, 4vw, 4rem) clamp(2rem, 4vw, 3rem);
+  }
+
+  .dih__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.45);
+    margin-bottom: var(--s-8);
+  }
+  .dih__breadcrumb a { color: rgba(251, 248, 241, 0.7); transition: color 200ms; }
+  .dih__breadcrumb a:hover { color: var(--color-primary); }
+
+  .dih__eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.1);
+    border: 1px solid rgba(251, 248, 241, 0.22);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: var(--s-6);
+  }
+  .dih__eyebrow-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: pulseDot 2.2s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+
+  .dih__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7.5vw, 6rem);
+    font-weight: 900; line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 var(--s-6);
+  }
+  .dih__title .serif-italic {
+    color: var(--color-primary);
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .dih__lead {
+    font-family: var(--font-sans); font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+    line-height: 1.65;
+    color: rgba(251, 248, 241, 0.8);
+    max-width: 68ch;
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .dih__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .dih__event {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--s-4);
+    padding: var(--s-5) clamp(1.25rem, 2vw, 1.75rem);
+    background: rgba(251, 248, 241, 0.06);
+    border: 1px solid rgba(251, 248, 241, 0.16);
+    border-radius: var(--radius-2xl);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  @media (min-width: 720px) {
+    .dih__event { grid-template-columns: repeat(3, 1fr); gap: var(--s-6); }
+  }
+  .dih__event-col { display: flex; flex-direction: column; gap: 4px; }
+  .dih__event-label {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .dih__event-value {
+    font-family: var(--font-display); font-size: clamp(0.9375rem, 1.4vw, 1.125rem);
+    font-weight: 800; letter-spacing: -0.005em;
+    color: #FBF8F1;
+  }
+
+  /* ============== QUÉ ES / DATOS ============== */
+  .dis { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .dis__header {
+    max-width: 760px;
+    margin: 0 auto clamp(2.5rem, 5vw, 4rem);
+    text-align: center;
+  }
+  .dis__eyebrow,
+  .dif__eyebrow,
+  .dir__eyebrow,
+  .div__eyebrow,
+  .dip__eyebrow,
+  .dig__eyebrow,
+  .dic__eyebrow,
+  .did__eyebrow {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.8px; text-transform: uppercase;
+    color: var(--color-primary); margin-bottom: var(--s-4);
+  }
+  .dis__title,
+  .dif__title,
+  .dir__title,
+  .div__title,
+  .dip__title,
+  .dig__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: 900; line-height: 0.98;
+    letter-spacing: -0.015em; text-transform: uppercase;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-5);
+  }
+  .dis__title .serif-italic,
+  .dif__title .serif-italic,
+  .dir__title .serif-italic,
+  .div__title .serif-italic,
+  .dip__title .serif-italic,
+  .dig__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+  }
+  .dis__lead,
+  .dif__lead,
+  .dir__lead,
+  .div__lead,
+  .dip__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.65;
+    color: var(--color-text-secondary); margin: 0;
+  }
+  .dis__lead strong,
+  .dif__lead strong,
+  .dir__lead strong,
+  .div__lead strong,
+  .dip__lead strong {
+    color: var(--color-text-primary); font-weight: 700;
+  }
+
+  .dis__grid {
+    display: grid; grid-template-columns: 1fr;
+    gap: var(--s-3);
+    max-width: 1100px; margin: 0 auto;
+  }
+  @media (min-width: 640px)  { .dis__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px)  { .dis__grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .disData {
+    display: flex; flex-direction: column; gap: 4px;
+    padding: var(--s-5) 0;
+    border-top: 1px solid var(--color-border-subtle);
+    transition: border-color 260ms var(--ease-out);
+  }
+  .disData:hover {
+    border-top-color: var(--color-primary);
+  }
+  .disData__label {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .disData__value {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    font-weight: 900; line-height: 1.1;
+    color: var(--color-text-primary);
+    margin: 4px 0;
+  }
+  .disData__sub {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  /* ============== FECHAS ============== */
+  .dif {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-warm, #F5F1E8);
+  }
+  .dif__header { max-width: 720px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+
+  .dif__timeline {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 760px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .dif__timeline::before {
+    content: ""; position: absolute;
+    left: calc(100px + 0.5rem);
+    top: 10px; bottom: 10px;
+    width: 2px;
+    background: var(--color-border-subtle);
+    z-index: 0;
+  }
+  @media (max-width: 640px) {
+    .dif__timeline::before { left: 8px; }
+  }
+
+  .difStep {
+    display: grid;
+    grid-template-columns: 100px auto 1fr;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    position: relative;
+    align-items: start;
+  }
+  @media (max-width: 640px) {
+    .difStep {
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "bullet date"
+        "bullet body";
+    }
+    .difStep__date { grid-area: date; }
+    .difStep__bullet { grid-area: bullet; }
+    .difStep__body { grid-area: body; }
+  }
+
+  .difStep__date {
+    display: flex; flex-direction: column; gap: 2px;
+    text-align: right;
+  }
+  @media (max-width: 640px) {
+    .difStep__date { text-align: left; }
+  }
+  .difStep__day {
+    font-family: var(--font-display); font-size: 0.875rem; font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.005em;
+  }
+  .difStep__hour {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .difStep__bullet {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--color-bg-elevated);
+    border: 2px solid var(--color-border-subtle);
+    margin-top: 2px;
+    z-index: 1;
+    transition: all 220ms;
+  }
+  .difStep--top .difStep__bullet {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(233, 133, 111, 0.22);
+    transform: scale(1.2);
+  }
+
+  .difStep__body {
+    padding: 2px 0 var(--s-4) var(--s-2);
+    border-left: 2px solid transparent;
+    margin-left: -2px;
+    transition: all 220ms;
+  }
+  .difStep--top .difStep__body {
+    border-left-color: var(--color-primary);
+    padding-left: var(--s-4);
+  }
+  .difStep__title {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    line-height: 1.2; color: var(--color-text-primary);
+    margin: 0 0 4px;
+  }
+  .difStep__text {
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.5;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .dif__note {
+    display: flex; align-items: flex-start; gap: var(--s-2);
+    max-width: 720px; margin: var(--s-8) auto 0;
+    padding: var(--s-4) var(--s-5);
+    background: rgba(233, 133, 111, 0.08);
+    border-left: 3px solid var(--color-primary);
+    border-radius: 0.5rem;
+    font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.55;
+    color: var(--color-text-secondary);
+  }
+  .dif__note svg { color: var(--color-primary); margin-top: 3px; flex-shrink: 0; }
+
+  /* ============== RECORRIDO ============== */
+  .dir { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .dir__header { max-width: 720px; margin: 0 auto clamp(3rem, 5vw, 4rem); text-align: center; }
+  .dir__link { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+  .dir__link:hover { color: var(--color-primary-hover, #D66F59); }
+
+  .dir__track {
+    list-style: none; padding: 0; margin: 0 auto;
+    max-width: 840px;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .dir__track::before {
+    content: ""; position: absolute;
+    left: calc(78px + 0.5rem);
+    top: 16px; bottom: 16px;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, var(--color-primary) 15%, var(--color-sage, #3D4F3A) 85%, transparent 100%);
+    z-index: 0;
+  }
+  @media (max-width: 640px) { .dir__track::before { left: 8px; } }
+
+  .dirPoint {
+    display: grid; grid-template-columns: 78px auto 1fr; gap: var(--s-4);
+    padding: var(--s-4) 0;
+    align-items: center;
+  }
+  @media (max-width: 640px) {
+    .dirPoint {
+      grid-template-columns: auto 1fr;
+      grid-template-areas: "dot body";
+    }
+    .dirPoint__km { display: none; }
+    .dirPoint__dot { grid-area: dot; }
+    .dirPoint__body { grid-area: body; }
+  }
+
+  .dirPoint__km {
+    font-family: var(--font-display); font-size: 0.9375rem; font-weight: 800;
+    color: var(--color-text-muted); text-align: right;
+    letter-spacing: -0.005em;
+  }
+  .dirPoint__dot {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: var(--color-bg-elevated);
+    border: 2px solid var(--color-border-subtle);
+    z-index: 1;
+  }
+  .dirPoint--us .dirPoint__dot {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(233, 133, 111, 0.2);
+  }
+
+  .dirPoint__body {
+    display: flex; align-items: center; gap: var(--s-3);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--color-border-subtle);
+    flex-wrap: wrap;
+    transition: border-color 220ms;
+  }
+  .dirPoint:last-child .dirPoint__body { border-bottom: 0; }
+  .dirPoint--us .dirPoint__body {
+    border-bottom-color: var(--color-primary);
+  }
+  .dirPoint__place {
+    font-family: var(--font-display); font-size: 0.9375rem; font-weight: 800;
+    color: var(--color-text-primary);
+  }
+  .dirPoint__note {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: var(--color-text-secondary);
+    flex: 1;
+  }
+  .dirPoint__tag {
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    padding: 4px 10px;
+    background: var(--color-primary); color: #fff;
+    border-radius: 999px;
+  }
+
+  /* ============== CÓMO VERLO ============== */
+  .div { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .div__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .div__grid {
+    display: grid; grid-template-columns: 1fr; gap: var(--s-5);
+    max-width: 1000px; margin: 0 auto;
+  }
+  @media (min-width: 720px) { .div__grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .divCard {
+    padding: 0;
+    background: transparent;
+    border-top: 2px solid var(--color-primary);
+    padding-top: var(--s-5);
+  }
+  .divCard__title {
+    display: flex; align-items: center; gap: var(--s-3);
+    font-family: var(--font-display); font-size: 1.125rem; font-weight: 800;
+    color: var(--color-text-primary);
+    margin: 0 0 var(--s-4);
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+  .divCard__title svg {
+    color: var(--color-primary);
+    background: rgba(233, 133, 111, 0.14);
+    border-radius: 50%;
+    padding: 8px;
+    box-sizing: content-box;
+  }
+  .divCard__list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: var(--s-5);
+  }
+  .divCard__list li {
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.7;
+    color: var(--color-text-secondary);
+    padding-left: var(--s-5);
+    position: relative;
+  }
+  .divCard__list li::before {
+    content: ""; position: absolute;
+    left: 0; top: 0.7rem;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+  .divCard__list strong { color: var(--color-text-primary); font-weight: 700; }
+
+  /* ============== PALMARÉS ============== */
+  .dip { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base); }
+  .dip__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .dip__table-wrap {
+    max-width: 760px; margin: 0 auto;
+    overflow-x: auto;
+  }
+  .dip__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-sans);
+  }
+  .dip__table th,
+  .dip__table td {
+    padding: var(--s-4) var(--s-5);
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+  .dip__table tr:last-child td { border-bottom: 0; }
+  .dip__table th {
+    font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-text-muted);
+    border-bottom: 2px solid var(--color-text-primary);
+  }
+  .dip__table tr.is-current {
+    background: rgba(233, 133, 111, 0.06);
+  }
+  .dip__year {
+    font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+    color: var(--color-text-primary);
+    width: 90px;
+  }
+  .dip__winners {
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+  }
+  .dip__flag {
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+    width: 110px;
+    white-space: nowrap;
+  }
+
+  .dip__source {
+    max-width: 760px; margin: var(--s-5) auto 0;
+    font-family: var(--font-sans); font-size: 0.75rem; line-height: 1.55;
+    color: var(--color-text-muted);
+    text-align: center;
+  }
+  .dip__source a { color: var(--color-primary); border-bottom: 1px dashed var(--color-primary); }
+
+  /* ============== DID · RESERVA ESPECIAL DÍA D ============== */
+  .did {
+    padding-block: clamp(4rem, 9vw, 7rem);
+    background: var(--color-sage, #3D4F3A);
+    color: var(--color-text-on-dark);
+  }
+  .did__header {
+    max-width: 760px; margin: 0 auto clamp(3rem, 6vw, 4.5rem);
+    text-align: center;
+  }
+  .did__eyebrow {
+    color: var(--color-primary-soft, #F4B5A3);
+    margin-bottom: clamp(1.25rem, 2.5vw, 2rem);
+  }
+  .did__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900; line-height: 0.95;
+    letter-spacing: -0.02em; text-transform: uppercase;
+    color: var(--color-text-on-dark);
+    margin: 0 0 clamp(2.25rem, 4.5vw, 3.25rem);
+  }
+  .did__title .serif-italic {
+    color: var(--color-primary); font-family: var(--font-serif);
+    font-weight: 400; font-style: italic; text-transform: none;
+    letter-spacing: -0.01em;
+  }
+  .did__lead {
+    font-family: var(--font-sans); font-size: 1rem; line-height: 1.65;
+    color: rgba(251, 248, 241, 0.82);
+    max-width: 60ch; margin: 0 auto;
+  }
+  .did__lead strong { color: var(--color-text-on-dark); font-weight: 700; }
+
+  /* Main: 2 cols (price | rules) */
+  .did__main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3rem);
+    align-items: start;
+    max-width: 1100px; margin: 0 auto;
+  }
+  @media (min-width: 900px) {
+    .did__main { grid-template-columns: 1fr 1.3fr; gap: clamp(2.5rem, 4vw, 4rem); }
+  }
+
+  /* Price card — sola card, destacada, sin doble fondo */
+  .did__price {
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    background: rgba(251, 248, 241, 0.06);
+    border: 1px solid rgba(251, 248, 241, 0.14);
+    border-radius: var(--radius-3xl);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .did__price-tag {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-sage, #3D4F3A);
+    padding: 7px 16px;
+    background: var(--color-bg-warm, #F5F1E8);
+    border-radius: 999px;
+    margin-bottom: var(--s-5);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+    animation: didTagFloat 3.5s ease-in-out infinite;
+  }
+  @keyframes didTagFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .did__price-tag { animation: none; }
+  }
+  .did__price-block {
+    display: flex; align-items: baseline; gap: var(--s-2);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid rgba(251, 248, 241, 0.12);
+    margin-bottom: var(--s-4);
+  }
+  .did__price-value {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--color-primary);
+  }
+  .did__price-sub {
+    font-family: var(--font-sans); font-size: 0.8125rem;
+    color: rgba(251, 248, 241, 0.7);
+  }
+  .did__price-list {
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: var(--s-2);
+    margin: 0 0 var(--s-5);
+  }
+  .did__price-list li {
+    display: flex; align-items: center; gap: var(--s-2);
+    font-family: var(--font-sans); font-size: 0.875rem;
+    color: rgba(251, 248, 241, 0.88);
+  }
+  .did__price-list li em {
+    font-family: var(--font-serif); font-style: italic;
+    color: rgba(251, 248, 241, 0.65);
+  }
+  .did__price-list svg {
+    color: var(--color-primary); flex-shrink: 0;
+    background: rgba(233, 133, 111, 0.2);
+    border-radius: 50%;
+    padding: 4px;
+    box-sizing: content-box;
+  }
+
+  .did__cta {
+    display: flex; align-items: center; justify-content: center;
+    gap: var(--s-2);
+    padding: 1.125rem 1.5rem;
+    background: var(--color-primary); color: #fff;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    box-shadow: 0 10px 28px rgba(233, 133, 111, 0.38);
+    transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
+    margin-bottom: var(--s-3);
+  }
+  .did__cta:hover {
+    background: var(--color-primary-hover, #D66F59);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 32px rgba(233, 133, 111, 0.5);
+  }
+  .did__cta svg { transition: transform 200ms; }
+  .did__cta:hover svg { transform: translateX(3px); }
+
+  .did__price-note {
+    font-family: var(--font-sans); font-size: 0.75rem;
+    color: rgba(251, 248, 241, 0.55);
+    text-align: center;
+    margin: 0;
+  }
+  .did__price-note em {
+    font-family: var(--font-serif); font-style: italic;
+    color: rgba(251, 248, 241, 0.72);
+  }
+
+  /* Rules — lista numerada sin recuadros */
+  .did__rules { min-width: 0; }
+  .did__rules-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1.8vw, 1.375rem);
+    font-weight: 800; line-height: 1.2;
+    color: var(--color-text-on-dark);
+    margin: 0 0 var(--s-5);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid rgba(251, 248, 241, 0.12);
+  }
+
+  .didRule {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s-4);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid rgba(251, 248, 241, 0.08);
+  }
+  .didRule:last-of-type { border-bottom: 0; padding-bottom: var(--s-5); }
+  .didRule__num {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 900; line-height: 0.9;
+    color: var(--color-primary);
+    opacity: 0.8;
+  }
+  .didRule__body h4 {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 800;
+    line-height: 1.2;
+    color: var(--color-text-on-dark);
+    margin: 0 0 4px;
+    letter-spacing: -0.005em;
+  }
+  .didRule__body p {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.55;
+    color: rgba(251, 248, 241, 0.78);
+    margin: 0;
+  }
+  .didRule__body strong { color: var(--color-text-on-dark); font-weight: 700; }
+
+  /* Warning mascotas — banner sobrio, cream sobre sage (tono del tag) */
+  .did__warn {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-4);
+    max-width: 1100px;
+    margin: clamp(3rem, 6vw, 4.5rem) auto 0;
+    padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.5rem, 3vw, 2.5rem);
+    background: rgba(245, 241, 232, 0.08);
+    border: 1px solid rgba(245, 241, 232, 0.2);
+    border-radius: var(--radius-3xl);
+    align-items: center;
+  }
+  @media (min-width: 720px) {
+    .did__warn { grid-template-columns: auto 1fr; gap: clamp(1.25rem, 2.5vw, 1.75rem); }
+  }
+
+  .did__warn-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    color: var(--color-bg-warm, #F5F1E8);
+    background: rgba(245, 241, 232, 0.12);
+    border: 1px solid rgba(245, 241, 232, 0.22);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .did__warn-icon svg { width: 22px; height: 22px; }
+
+  .did__warn-body { min-width: 0; }
+
+  .did__warn-kicker {
+    display: inline-block;
+    font-family: var(--font-sans); font-size: 0.625rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(245, 241, 232, 0.55);
+    margin-bottom: var(--s-2);
+  }
+
+  .did__warn-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 1.8vw, 1.25rem);
+    font-weight: 700; line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--color-text-on-dark);
+    margin: 0 0 var(--s-2);
+    text-transform: none;
+  }
+  .did__warn-title .did__warn-no {
+    color: var(--color-primary);
+    text-transform: lowercase;
+    font-style: normal;
+    font-weight: 800;
+  }
+  .did__warn-title em {
+    font-family: var(--font-serif); font-style: italic; font-weight: 400;
+    color: rgba(245, 241, 232, 0.8);
+  }
+
+  .did__warn-text {
+    font-family: var(--font-sans); font-size: 0.875rem; line-height: 1.6;
+    color: rgba(251, 248, 241, 0.72);
+    margin: 0;
+    max-width: 72ch;
+  }
+  .did__warn-text strong { color: var(--color-text-on-dark); font-weight: 700; }
+  .did__warn-text a {
+    color: var(--color-primary-soft, #F4B5A3);
+    border-bottom: 1px dashed rgba(244, 181, 163, 0.5);
+    font-weight: 600;
+  }
+  .did__warn-text a:hover { color: var(--color-primary); }
+
+  /* ============== FAQ ============== */
+  .dig {
+    padding-block: clamp(4rem, 8vw, 6rem);
+    background: var(--color-bg-elevated, #FFFFFF);
+  }
+  .dig__header { max-width: 720px; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); text-align: center; }
+
+  .dig__list {
+    max-width: 820px; margin: 0 auto;
+    display: flex; flex-direction: column;
+  }
+
+  .digRow {
+    border-bottom: 1px solid var(--color-border-subtle);
+    transition: border-color 200ms;
+  }
+  .digRow[open] { border-color: rgba(233, 133, 111, 0.35); }
+  .digRow > summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-5) 0;
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 1.3vw, 1.0625rem);
+    font-weight: 700; line-height: 1.35;
+    color: var(--color-text-primary);
+    transition: color 200ms;
+  }
+  .digRow > summary::-webkit-details-marker { display: none; }
+  .digRow > summary:hover { color: var(--color-primary); }
+
+  .digRow__sign {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+    transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms;
+  }
+  .digRow:hover .digRow__sign { color: var(--color-primary); }
+  .digRow[open] .digRow__sign { transform: rotate(45deg); color: var(--color-primary); }
+
+  .digRow__a {
+    padding: 0 0 var(--s-5);
+    font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 65ch;
+  }
+  .digRow__a :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .digRow__a :global(a) {
+    color: var(--color-primary); font-weight: 600;
+    border-bottom: 1px dashed var(--color-primary);
+  }
+</style>

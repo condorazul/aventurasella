@@ -1,0 +1,254 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: 'Do I have to be in good shape to paddle the Sella?',
+    a: '<p>No. The Sella is a calm river (class I–II) where the <strong>current does most of the work</strong>. You need to be able to paddle intermittently and last 2-4 hours in a canoe — that is something practically any adult without special medical conditions can do. <strong>It is not a sport</strong>: it is a stroll with a paddle.</p>',
+  },
+  {
+    q: 'Is the Sella descent very tiring physically?',
+    a: '<p>Hardly. Most people who arrive in Arriondas afraid of "not being able to do it" finish the day surprised at how <strong>manageable</strong> it was. Arms feel something the next day, similar to a gentle hiking day, but you do not have to be an athlete.</p>',
+  },
+  {
+    q: 'Is the Mini Sella or the Full route more tiring?',
+    a: '<p>Proportionally. The <strong>Mini Sella (7 km)</strong> anyone finishes without trouble — 1h 30 to 2h 30 of river. The <strong>Full route (14.5 km)</strong> takes 3-5 hours and, although still calm, can be long if you are very sedentary or over 70. For first experience, we recommend the Mini.</p>',
+  },
+  {
+    q: 'Can people with back problems paddle the Sella?',
+    a: '<p>It depends on the specific condition. The descent requires sitting in a canoe with a low-backed seat for 2-4 hours and doing gentle paddle movements. <strong>If you have active hernias, chronic lower-back pain or severe neck problems</strong>, consult your doctor and write to us before booking to assess the case.</p>',
+  },
+  {
+    q: 'Is there a maximum age for the Sella descent?',
+    a: '<p>No official limit. We have taken <strong>people in their 70s and 80s</strong> who enjoyed it without trouble, especially on the Mini Sella. What matters is general fitness and not having severe illnesses. If in doubt, call or <a href="/en/contact/">write to us</a>: we ask four things and tell you honestly whether we think it will go well.</p>',
+  },
+  {
+    q: 'What if I get tired halfway through the route?',
+    a: '<p>It is planned for. We make a <strong>longer stop</strong> on a river beach, you rest half an hour, eat the picnic, swim. The fitter adult paddles more in the second half. In exceptional cases the descent is abandoned at a snack bar and <a href="/en/contact/">the transfer picks you up</a>. You do not get "stranded" on the river — there is always a way to resolve it.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="is-sella-descent-tiring" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Short answer:</strong> no, it is not very tiring. The Sella is a calm river that flows toward the sea without you having to push. You paddle to steer and not to drift — not to advance. If you can climb four flights of stairs without fainting, you can paddle the Sella.
+  </p>
+
+  <p>
+    It is probably the question we hear most at the desk, on WhatsApp and by email. Each time it comes with a variant: <em>"is it very tiring?"</em>, <em>"do I need to be in shape?"</em>, <em>"will I make it to the end?"</em>. And it makes sense: when you see photos of paddlers in the International Descent, it looks like a sport. <strong>That is not what you and I are going to do.</strong>
+  </p>
+
+  <p>
+    This guide is the honest answer from a team with 25 years watching thousands of people paddle the Sella. No hype, no minimising risks — just what is there.
+  </p>
+
+  <h2 class="post__h2" id="why-not-tiring">Why <span class="serif-italic">it is not so tiring</span></h2>
+
+  <p>
+    Three objective reasons why the tourist descent of the Sella is gentler than people imagine.
+  </p>
+
+  <div class="post__essentials post__essentials--three">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/><path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0 4 2 6 0"/></svg>
+      </span>
+      <h3 class="post__essential__label">The current does the work</h3>
+      <p class="post__essential__desc">
+        The Sella has a <strong>gentle, constant gradient</strong>. The canoe advances on its own · paddling serves to correct course, not to push. Nothing like paddling on a lake or sea.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16c4 0 4 2 8 2s4-2 8-2 4 2 4 2"/><path d="M3 12l1-7h16l1 7"/><line x1="12" y1="5" x2="12" y2="12"/></svg>
+      </span>
+      <h3 class="post__essential__label">The canoe is stable</h3>
+      <p class="post__essential__desc">
+        Unsinkable, <strong>1 to 3 seats</strong>, wide hull and ergonomic double paddle. No trunk rotation or forced postures · it is a different activity from a competition canoe.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </span>
+      <h3 class="post__essential__label">Constant stops</h3>
+      <p class="post__essential__desc">
+        Every 1-2 km there is a <strong>river beach or snack bar</strong>. Normal is 3-5 stops on the Full route · the effort is split, it is not a crossing but a <em>stroll with stages</em>.
+      </p>
+    </article>
+  </div>
+
+  <figure class="post__figure">
+    <Picture
+      src="frias-final"
+      alt="End of the Sella descent at Fríes — the smile of having finished the Full route"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Fríes · end of the Full route. After 14.5 km, the canoe's face says it all: tires just enough, smiles enough.</figcaption>
+  </figure>
+
+  <p class="post__pull">
+    People who live in lifts, grandmothers with iffy knees, teens who hate sport, office workers who never set foot in a gym: all paddle the Sella and all finish smiling. The secret is that it is not an effort — it is an afternoon.
+  </p>
+
+  <h2 class="post__h2" id="should-think">Who <span class="serif-italic">should</span> think it over</h2>
+
+  <p>
+    That said, it is not a suitable activity for everyone. There are conditions worth evaluating:
+  </p>
+
+  <ul>
+    <li><strong>Pregnancy.</strong> By safety protocol, we do not allow the descent during pregnancy. It is not the physical side — that would be manageable — but the minimal risk of falling in the water.</li>
+    <li><strong>Severe ongoing illnesses.</strong> Cardiac, severe respiratory, recent post-surgery. Check with your doctor first.</li>
+    <li><strong>Not knowing how to swim.</strong> Knowing how to swim is mandatory, even with a life jacket. It is a safety rule.</li>
+    <li><strong>Severe back problems.</strong> Active hernias, neck pain with reduced mobility. If you can drive 3 hours without pain, you can probably paddle the Sella.</li>
+    <li><strong>Panic at deep water.</strong> If water above the waist paralyses you, the Sella will not be relaxing, and it is better to acknowledge it beforehand.</li>
+    <li><strong>Under 5 years old.</strong> A matter of certified life jacket, not of effort. More context in <a href="/en/with-kids/">Sella descent with kids</a> and <a href="/en/blog/sella-descent-with-small-kids/">guide with small children</a>.</li>
+  </ul>
+
+  <p>
+    These details are also in <a href="/en/legal/terms/">terms of service</a> and are reconfirmed before launching.
+  </p>
+
+  <h2 class="post__h2" id="by-age">What to expect <span class="serif-italic">by age</span></h2>
+
+  <div class="post__zones">
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">5–12</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> ideal · maximum enjoyment. <strong>Full route ·</strong> only if active and ≥ 9 years.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">13–17</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> too short. <strong>Full route ·</strong> perfect · they usually want more.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">18–50</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> easy · relaxed. <strong>Full route ·</strong> easy · choose your pace.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">50–65</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> easy. <strong>Full route ·</strong> manageable with calm pace and stops.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">65–75</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> manageable · good option. <strong>Full route ·</strong> assess fitness.</p>
+      </div>
+    </article>
+
+    <article class="post__zone">
+      <p class="post__zone__distance">
+        <span class="post__zone__num">75+</span>
+        <span class="post__zone__unit">years</span>
+      </p>
+      <div class="post__zone__body">
+        <p class="post__zone__desc"><strong>Mini Sella ·</strong> possible with good general health. <strong>Full route ·</strong> consult · depends a lot on the case.</p>
+      </div>
+    </article>
+  </div>
+
+  <p>
+    As you can see, even at advanced ages the Mini Sella is perfectly manageable. Many retired people paddle the Sella with us each season without incidents — with the Mini and a relaxed pace it is gentler than a 3 km walk.
+  </p>
+
+  <h2 class="post__h2" id="soreness">Will there be <span class="serif-italic">soreness the next day?</span></h2>
+
+  <p>
+    Very little. People report:
+  </p>
+
+  <ul>
+    <li><strong>Minor shoulder pulls</strong> — especially first-timers. They disappear in 24-48h.</li>
+    <li><strong>Some general tiredness</strong> — more from sun and fresh air than from effort. You sleep beautifully that night.</li>
+    <li><strong>Sunburn if you do not use cream</strong> — this is the real enemy. Sun reflected on water is intense. More than physical tiredness, what really bothers you the next day is not having put on enough cream. More detail in <a href="/en/blog/what-to-bring-sella-descent/">what to bring for the Sella descent</a>.</li>
+  </ul>
+
+  <p>
+    If you are worried about muscle soreness, <strong>drink plenty of water during the day and stretch your shoulders back at the car</strong>. With that, the next day you are perfect to keep travelling.
+  </p>
+
+  <h2 class="post__h2" id="reduce">How to reduce the effort<br/><span class="serif-italic">(if you are worried)</span></h2>
+
+  <p>Five tips we give to those who arrive fearful:</p>
+
+  <ol>
+    <li><strong>Choose the <a href="/en/how-long-does-it-take/">Mini Sella</a> if it is your first time.</strong> 7 km · 1h 30-2h 30. Enough for a complete experience and you finish wanting more. See detail in <a href="/en/route-and-map/">route and map</a>.</li>
+    <li><strong>Arrive early on open hours (10:30).</strong> Less midday sun, fresh temperature, you get back fed and showered before siesta. Remember · your Premium booking has <strong>open hours between 10:30 and 12:30</strong>, so you choose when to arrive without specific-time pressure. Slot comparison in <a href="/en/blog/best-time-of-day-sella-descent/">best time of day for the Sella descent</a>.</li>
+    <li><strong>Go in a 3-seater canoe (K3) if there are 3 of you.</strong> Spreads the effort between more paddles and makes the descent more manageable.</li>
+    <li><strong>Paddle gently and constantly.</strong> More efficient than 5 strong strokes and stop. Gentle wins.</li>
+    <li><strong>Drink water and snack every hour.</strong> Dehydration knocks you out before effort does.</li>
+  </ol>
+
+  <h2 class="post__h2" id="vs-others">Compared to <span class="serif-italic">other activities</span></h2>
+
+  <p>To get a real sense of the effort:</p>
+
+  <div class="post__table">
+    <table>
+      <thead>
+        <tr>
+          <th>Activity</th>
+          <th>Relative effort</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Sella descent (Mini)</strong></td><td>Low · similar to a 5 km flat walk</td></tr>
+        <tr><td><strong>Sella descent (Full route)</strong></td><td>Medium-low · similar to a 10 km country walk</td></tr>
+        <tr><td>Lakes of Covadonga loop walk</td><td>Medium</td></tr>
+        <tr><td>2h sea kayak</td><td>Medium-high</td></tr>
+        <tr><td>Ruta del Cares hike (full)</td><td>High</td></tr>
+        <tr><td>50 km road cycling</td><td>High</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    The Sella descent is at the gentle end of the range of Asturian outdoor activities. If you would like to do the Lakes but do not have the legs for it, the Sella is a plan with <strong>similar satisfaction and half the demand</strong>.
+  </p>
+
+  <h2 class="post__h2" id="summary">In summary<br/><span class="serif-italic">(no spin)</span></h2>
+
+  <ul>
+    <li>It is a <strong>canoe stroll</strong>, not a sport.</li>
+    <li>The <strong>current does the work</strong> — you paddle to steer, not to advance.</li>
+    <li><strong>Mini Sella</strong> practically anyone does it · <strong>Full route</strong> is manageable at a calm pace.</li>
+    <li><strong>Next-day soreness</strong> is minimal.</li>
+    <li><strong>Real exceptions</strong>: pregnancy, not knowing how to swim, severe ongoing illness.</li>
+    <li>If you have doubts about your specific case, <a href="/en/contact/">call us</a> — we assess with you whether it will go well.</li>
+  </ul>
+
+  <p>
+    Doubt resolved — if you want to move to the next step, check <a href="/en/prices/">prices and options</a> or <a href="/en/premium-booking/">pick a date</a> and book. Most customers come back to the desk with the same phrase: <em>"I had no idea it was this easy"</em>. It is the most common confirmation we get.
+  </p>
+</BlogPostLayout>

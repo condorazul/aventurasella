@@ -1,0 +1,226 @@
+---
+import BlogPostLayout from '@layouts/BlogPostLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+
+const faqs = [
+  {
+    q: '¿Hace falta llevar bañador al descenso del Sella?',
+    a: '<p>Sí, es lo más cómodo. El bañador (o un pantalón corto técnico que se seque rápido) es la prenda base. Encima va el chaleco salvavidas que te proporcionamos nosotras. <strong>Evita vaqueros o algodón</strong>: se empapan, pesan y tardan horas en secar.</p>',
+  },
+  {
+    q: '¿Puedo llevar el móvil en la canoa?',
+    a: '<p>Sí, en el <strong>bidón estanco</strong> que te damos al empezar. Tiene capacidad para móvil, llaves, cartera y alguna prenda pequeña. Aun así, recomendamos llevar una funda acuática para sacar fotos durante el recorrido sin tener que abrir el bidón cada vez.</p>',
+  },
+  {
+    q: '¿Necesito traer protección solar y gafas?',
+    a: '<p>Totalmente recomendable. El reflejo del agua <strong>multiplica la exposición solar</strong> aunque esté nublado. Crema SPF 50 resistente al agua, gorra o visera, y gafas de sol con cordón (para que no se caigan al río). Si vas con niños, insiste en la crema cada 2 horas.</p>',
+  },
+  {
+    q: '¿Hay taquillas para dejar las cosas?',
+    a: '<p>Sí. Incluimos <strong>taquillas con llave</strong> en nuestras instalaciones de Arriondas, así que puedes dejar mochila grande, ropa de cambio, toallas y lo que no necesites en el río. Durante el descenso solo llevas lo imprescindible en el bidón estanco.</p>',
+  },
+  {
+    q: '¿Hay que llevar comida?',
+    a: '<p>No hace falta: el <strong>picnic asturiano va incluido</strong> — empanada de bonito, bollín preñao y agua de 500 ml. <strong>El picnic es fijo y el mismo para todos los clientes</strong> — no tenemos opción vegana ni vegetariana. Si tienes una alergia concreta (gluten, frutos secos…), <a href="/contacto/">avísanos al reservar</a> y te confirmamos los ingredientes. Y sobre el recorrido hay <a href="/blog/chiringuitos-descenso-sella/">6 chiringuitos</a> donde parar a por un refresco, zumo, helado o agua si te apetece algo extra.</p>',
+  },
+  {
+    q: '¿Qué pasa si llevo ropa de más y se moja?',
+    a: '<p>Nada grave, pero es incómodo. El agua salpica constantemente en la canoa y el bidón estanco solo protege lo que metes dentro. Por eso recomendamos <strong>llegar con bañador puesto, chanclas o escarpines y una toalla en la taquilla</strong> para cambiarte al volver. Las duchas con agua caliente están incluidas.</p>',
+  },
+];
+---
+
+<BlogPostLayout slug="que-llevar-al-descenso-del-sella" faqs={faqs}>
+  <p class="post__intro">
+    <strong>Resumen en una frase:</strong> bañador puesto, calzado que puedas mojar, una toalla en la taquilla y el móvil en el bidón que te damos. El resto —canoa, pala doble, chaleco, bidón, neopreno si hace falta, picnic— lo pone la casa. Lo demás que leas por ahí suele ser relleno.
+  </p>
+
+  <p>
+    Llevamos 25 años preparando el descenso del Sella para miles de personas en Arriondas. Y seguimos recibiendo la misma pregunta cada mañana en el mostrador: <em>"oye, ¿y esto hay que traerlo?"</em>. Esta guía es el resumen honesto de lo que sí necesitas, lo que no, y los detalles que nadie te cuenta hasta que ya estás con la pala en la mano.
+  </p>
+
+  <p>
+    Si vienes con el plan cerrado y solo quieres la lista, <a href="#checklist">salta al checklist final</a>. Si quieres entender por qué cada cosa, sigue leyendo — te ahorrará tres mensajes de WhatsApp antes del día D.
+  </p>
+
+  <figure class="post__figure">
+    <Picture
+      src="blog-quellevar"
+      alt="Material necesario para el descenso del Sella — preparación previa al embarque"
+      sizes="(min-width: 1024px) 680px, 92vw"
+      aspectRatio="16 / 10"
+    />
+    <figcaption>Pala doble, chaleco homologado y bidón estanco — el equipo va incluido. Tú solo te ocupas del bañador, las chanclas y la toalla.</figcaption>
+  </figure>
+
+  <h2 class="post__h2" id="esencial">Lo <span class="serif-italic">esencial</span></h2>
+
+  <p>
+    Cuatro cosas son <strong>personales</strong> y no las incluimos. Todo lo demás (canoa, pala doble, chaleco salvavidas, bidón estanco, picnic asturiano) lo ponemos nosotras.
+  </p>
+
+  <div class="post__essentials">
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Ropa de baño o técnica</h3>
+      <p class="post__essential__desc">
+        Bañador o pantalón corto de secado rápido. <strong>Evita el algodón</strong> — empapado pesa, roza y no seca hasta la cena.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a2 2 0 0 1 2-2h2v3l3 1V6h2a2 2 0 0 1 2 2v6"/><path d="M2 14h20v6H2z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Calzado que se moje</h3>
+      <p class="post__essential__desc">Ni zapatillas de running, ni chanclas de dedo simple. Por orden:</p>
+      <ol class="post__essential__options">
+        <li><strong>Escarpines de neopreno</strong> — ajuste, agarre y aislamiento.</li>
+        <li><strong>Sandalias deportivas</strong> con cierre trasero (Teva, Chiruca).</li>
+        <li><strong>Chanclas con sujeción</strong> si no piensas andar por el río.</li>
+      </ol>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+      </span>
+      <h3 class="post__essential__label">Toalla y ropa seca</h3>
+      <p class="post__essential__desc">
+        Para después. Se queda en la <strong>taquilla con llave</strong> durante el descenso. Incluimos duchas calientes y vestuarios · sales hacia Arriondas duchada en una hora.
+      </p>
+    </article>
+
+    <article class="post__essential">
+      <span class="post__essential__icon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.07" y2="4.93"/></svg>
+      </span>
+      <h3 class="post__essential__label">Protección solar</h3>
+      <p class="post__essential__desc">
+        <strong>SPF 50 resistente al agua</strong>, gorra con cordón, gafas con cordón. El reflejo del agua multiplica la exposición incluso nublado.
+      </p>
+    </article>
+  </div>
+
+  <p class="post__pull">
+    Si tuviéramos que elegir un solo consejo de los últimos 25 años, sería este: <strong>ven con el bañador puesto y llega tranquilo entre las 10:30 y las 12:30</strong> (horario abierto · ventaja Premium). El 80% de los pequeños problemas del día empiezan por vestuarios apurados y papeleo de última hora.
+  </p>
+
+  <h2 class="post__h2" id="no-necesitas">Lo que <span class="serif-italic">no necesitas</span> llevar</h2>
+
+  <p>
+    En internet encontrarás checklists interminables copiadas de descensos en aguas bravas o de expediciones de kayak. El Sella no es eso. Este es el equipamiento que te <strong>damos nosotras</strong> y que no tienes que traer:
+  </p>
+
+  <ul>
+    <li><strong>Canoa insumergible</strong> — individual, biplaza o K3 (hasta 3 plazas), según reserva.</li>
+    <li><strong>Pala doble</strong> ergonómica, ajustada a tu altura.</li>
+    <li><strong>Chaleco salvavidas</strong> homologado (talla adulto y talla niño).</li>
+    <li><strong>Bidón estanco</strong> para meter móvil, llaves y algún extra personal.</li>
+    <li><strong>Neopreno</strong> si la temperatura lo pide (primavera y principios de otoño).</li>
+    <li><strong>Picnic asturiano</strong> — empanada de bonito, bollín preñao y agua.</li>
+    <li><strong>Transfer</strong> de vuelta al punto de salida.</li>
+    <li><strong>Seguros</strong> obligatorios de actividad.</li>
+    <li><strong>Vestuarios, duchas calientes y taquillas con llave</strong>.</li>
+  </ul>
+
+  <p>
+    Por eso cuando veas listas que te piden traer "casco", "silbato", "cuerda de rescate" o "neopreno propio", <strong>no es por el Sella</strong>: es por otro tipo de descenso más técnico. Este río es tranquilo (clase I – II) y está pensado para todos los públicos.
+  </p>
+
+  <h2 class="post__h2" id="movil-dinero">Móvil, dinero, llaves<br/><span class="serif-italic">y el bidón estanco</span></h2>
+
+  <p>
+    La pregunta del millón: <em>"¿dónde meto el móvil?"</em>. Dentro del <strong>bidón estanco</strong> que te damos al salir. Es un cilindro de plástico con cierre hermético que va atado a la canoa. Cabe:
+  </p>
+
+  <ul>
+    <li>Móvil (incluso en fundas grandes tipo booklet).</li>
+    <li>Llaves del coche — también puedes dejarlas en taquilla.</li>
+    <li>Cartera con DNI, tarjeta y algo de dinero suelto.</li>
+    <li>Una prenda pequeña o gafas de repuesto.</li>
+  </ul>
+
+  <p>
+    Si quieres sacar fotos durante el descenso sin abrir el bidón cada vez, <strong>una funda acuática con cordón</strong> es la mejor inversión del día. Por 5–10€ en cualquier bazar tienes una que te sirve, y convierte la bajada en un carrete continuo sin miedo a empapar el móvil.
+  </p>
+
+  <div class="post__callout">
+    <strong>Truco de la casa</strong>
+    <p>Llévate <strong>tarjeta y algo de dinero suelto</strong> en el bidón. En los <a href="/blog/chiringuitos-descenso-sella/">chiringuitos del río</a> podrás tomarte un refresco, un zumo o un helado (no se sirve alcohol en el recorrido), pero no todos tienen datáfono con buena cobertura. Con <strong>10–15 € por persona</strong> vas sobrado.</p>
+  </div>
+
+  <h2 class="post__h2" id="con-ninos">Si vas <span class="serif-italic">con niños</span></h2>
+
+  <p>
+    Con peques la lista se alarga poco, pero vale la pena revisarla. <a href="/con-ninos/">La edad mínima es 5 años y 1,15 m de altura</a> por seguridad; si dudas, pregúntanos antes de reservar. Extras que sí recomendamos para un día con niños:
+  </p>
+
+  <ul>
+    <li><strong>Gorra con cordón</strong> — no la que se caiga al primer viento.</li>
+    <li><strong>Camiseta técnica</strong> o licra manga larga — proteges hombros y espalda de 3 horas de sol directo.</li>
+    <li><strong>Crema solar pediátrica</strong> SPF 50+ — se aplica antes de salir del coche y se repite en la parada del picnic.</li>
+    <li><strong>Snack extra</strong> — galletas, fruta fácil o barritas. El picnic incluido es generoso, pero los peques pican.</li>
+    <li><strong>Muda completa seca</strong> en la taquilla — ropa interior incluida. Es el detalle que diferencia un viaje de vuelta cómodo de uno con aire acondicionado sobre un peque mojado.</li>
+  </ul>
+
+  <p>
+    Hay mucho más que decir sobre bajar el Sella con niños pequeños — edad real, miedos típicos de madre, cómo organizar el día. Lo hemos desarrollado en una guía aparte: <a href="/blog/descenso-sella-con-ninos-pequenos/">Descenso del Sella con niños pequeños</a>.
+  </p>
+
+  <h2 class="post__h2" id="con-perro">Si vas <span class="serif-italic">con perro</span></h2>
+
+  <p>
+    Las <a href="/con-perro/">mascotas van gratis</a> en nuestras canoas. Si es la primera vez de tu perro en una actividad acuática, lleva:
+  </p>
+
+  <ul>
+    <li><strong>Bebedero plegable</strong> y botella extra de agua — se deshidratan más de lo que parece.</li>
+    <li><strong>Correa corta</strong> (la larga se enreda en la pala).</li>
+    <li><strong>Toalla exclusiva para él</strong> en la taquilla — no la tuya, créenos.</li>
+    <li><strong>Chaleco salvavidas canino</strong> — nosotras ponemos <em>hasta agotar existencias</em>, pero si traes el tuyo te aseguras la talla exacta y ahorras tiempo en el mostrador.</li>
+    <li><strong>Su snack habitual</strong>. No le des el bollín preñao aunque ponga carita.</li>
+  </ul>
+
+  <h2 class="post__h2" id="checklist">Checklist final <span class="serif-italic">imprimible</span></h2>
+
+  <p>La lista corta. Lo que debe salir de casa ya preparado:</p>
+
+  <div class="post__callout">
+    <strong>Lo que traes tú</strong>
+    <p>✓ Bañador o pantalón técnico (<em>puesto de casa</em>)<br/>
+    ✓ Camiseta técnica / rashguard<br/>
+    ✓ Escarpines o sandalias con cierre<br/>
+    ✓ Gorra con cordón<br/>
+    ✓ Gafas de sol con cordón<br/>
+    ✓ Crema solar SPF 50 resistente al agua<br/>
+    ✓ Toalla + muda completa seca (para la taquilla)<br/>
+    ✓ Cargador y funda acuática para el móvil (opcional pero recomendado)<br/>
+    ✓ Tarjeta o algo suelto para los chiringuitos<br/>
+    ✓ Snack extra si vas con niños<br/>
+    ✓ Kit canino si vas con perro (bebedero, correa, toalla, chaleco)</p>
+  </div>
+
+  <div class="post__callout">
+    <strong>Lo que te damos nosotras</strong>
+    <p>✓ Canoa insumergible · pala doble · chaleco salvavidas<br/>
+    ✓ Bidón estanco · neopreno (si procede)<br/>
+    ✓ Mini clase práctica antes de salir<br/>
+    ✓ Transfer de regreso desde el punto final<br/>
+    ✓ Picnic asturiano (empanada de bonito + bollín preñao + agua)<br/>
+    ✓ Vestuarios, duchas calientes, taquillas con llave<br/>
+    ✓ Parking vigilado en Arriondas<br/>
+    ✓ Seguros de actividad<br/>
+    ✓ Monitores titulados en el río</p>
+  </div>
+
+  <p>
+    Con eso cubierto, lo único que te queda es <a href="/reservar/">elegir día en el calendario</a> y llegar con tiempo. Lo demás lo resolvemos nosotras en el mostrador.
+  </p>
+
+  <p>
+    Y si tienes una duda concreta que no está en la lista —alergias, movilidad reducida, una talla de calzado complicada, un perro enorme, abuelas con miedo al agua— <a href="/contacto/">escríbenos</a> y lo miramos. En 25 años hemos visto casi todo, pero lo importante es que tú vengas tranquila.
+  </p>
+</BlogPostLayout>

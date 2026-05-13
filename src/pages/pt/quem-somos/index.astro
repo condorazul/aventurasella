@@ -1,0 +1,931 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import FinalCTA from '@components/sections/FinalCTA.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const lang = 'pt';
+const title = 'Quem somos · Aventura en el Sella · mais de 25 anos em Arriondas';
+const description = 'Uma equipa de mulheres e homens com mais de 25 anos a organizar a descida do Sella a partir de Arriondas. Natureza, desporto ativo e atendimento próximo. 4,5★ · 147 avaliações reais.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/quem-somos/`;
+const dateModified = '2026-05-12';
+
+// 4 contadores · números reais
+const counters = [
+  { num: '+25',  unit: 'anos',         label: 'Em Arriondas' },
+  { num: '4,5',  unit: '★',            label: 'Avaliação média' },
+  { num: '+147', unit: 'avaliações',   label: 'Google + TripAdvisor' },
+  { num: '300',  unit: 'lugares',      label: 'Estacionamento próprio · vigiado' },
+];
+
+// 4 princípios · "Quatro coisas que não mudam"
+const principios = [
+  {
+    n: '01',
+    title: 'Tarifa clara · sem surpresas',
+    text: 'A tarifa que vês online é a que pagas. <strong>30 € crianças até 12 anos · 40 € adultos · animais grátis</strong>. Mesmo preço Mini Sella ou Completo. Sem recargos ao fim de semana, sem cauções escondidas.',
+  },
+  {
+    n: '02',
+    title: 'Tudo incluído · sem extras',
+    text: 'Canoa insubmersível, pagaia dupla, colete homologado, bidão estanque, fato isotérmico se a data o exigir, mini aula, picnic asturiano, transfer, vestiários com duches, cacifos com chave e seguros. <strong>Tudo no preço.</strong>',
+  },
+  {
+    n: '03',
+    title: 'Estacionamento próprio · 300 lugares',
+    text: '<strong>Estacionamento privado e vigiado</strong> nas nossas instalações de Arriondas — capacidade para até <strong>300 carros e autocaravanas</strong>. Sem recargo, sem bilhetes, sem procurar lugar quando chega a época alta.',
+  },
+  {
+    n: '04',
+    title: 'Reserva flexível',
+    text: 'Escolhes o que te for mais cómodo: <strong>pagamento com cartão antecipado</strong> ou <strong>pagamento no dia ao levantar a canoa</strong>. Se pagaste antecipadamente e precisas de cancelar, basta avisar <strong>24 h antes</strong>.',
+  },
+];
+
+// "O que fazemos todos os dias" · 3 funções da equipa
+const funciones = [
+  {
+    title: 'Atendimento ao balcão',
+    text: 'Recebemos-te, registamos a tua reserva, damos-te as chaves do cacifo e explicamos-te o dia. <strong>Cara a cara</strong>, sem ecrãs táteis nem filas longas — porque é assim que gostamos de ser atendidas.',
+  },
+  {
+    title: 'No rio em direto',
+    text: '<strong>Monitores qualificados</strong> que dão a mini aula de remo antes de sair e patrulham a descida a partir de caiaques de segurança. Conhecem cada curva do Sella de cor, depois de descer o rio centenas de vezes em cada época.',
+  },
+  {
+    title: 'Manutenção e logística',
+    text: 'Revisão diária das canoas, pagaias e coletes. Picnic asturiano fresco todas as manhãs (empanada de bonito, bollín preñao e água). Coordenação do transfer no final do percurso. O invisível que faz o dia funcionar.',
+  },
+];
+
+// 4 info boxes · instalações
+const instalaciones = [
+  {
+    title: 'Morada',
+    text: 'Calle Juan Carlos I, 18 — Bajo II<br/><small>(acesso pelas instalações de Aipol)</small><br/>33540 Arriondas · Asturias',
+  },
+  {
+    title: 'Estacionamento próprio',
+    text: '<strong>300 lugares</strong> · privado · vigiado<br/>Carros + autocaravanas<br/><small>Gratuito · incluído na reserva</small>',
+  },
+  {
+    title: 'Vestiários e duches',
+    text: 'Vestiários separados com <strong>duches quentes</strong> e <strong>cacifos com chave</strong> · mudança cómoda antes e depois da descida',
+  },
+  {
+    title: 'Balcão e mini aula',
+    text: 'Receção · entrega de equipamento · <strong>mini aula prática</strong> de remo e segurança antes de sair · monitores qualificados',
+  },
+];
+
+// Testemunho em destaque · avaliação real
+const testimonio = {
+  text: 'Bom serviço, trabalhadores atentos e muito simpáticos. A experiência genial, adorei.',
+  author: 'Anaïs Suárez Blanco',
+  source: 'Google · outubro 2025',
+};
+
+// JSON-LD
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, lang),
+    {
+      '@type': 'AboutPage',
+      '@id': `${canonicalUrl}#aboutpage`,
+      url: canonicalUrl,
+      name: 'Quem somos · Aventura en el Sella',
+      description,
+      inLanguage: 'pt-PT',
+      dateModified,
+      mainEntity: { '@id': `${baseUrl}/#business` },
+    },
+    {
+      '@type': 'Organization',
+      '@id': `${baseUrl}/#business`,
+      name: 'Aventura en el Sella',
+      url: baseUrl,
+      telephone: '+34681093673',
+      email: 'info@aventuraenelsella.es',
+      logo: `${baseUrl}/images/logo/logo.svg`,
+      image: `${baseUrl}/images/optimized/aventureros-montana-lg.jpg`,
+      foundingLocation: 'Arriondas, Asturias, Espanha',
+      slogan: 'Mais de 25 anos a organizar a descida do Sella em canoa',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Calle Juan Carlos I, 18, BAJO II',
+        addressLocality: 'Arriondas',
+        addressRegion: 'Asturias',
+        postalCode: '33540',
+        addressCountry: 'ES',
+      },
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: 4.5,
+        reviewCount: 147,
+        bestRating: 5,
+        worstRating: 1,
+      },
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início',     item: `${baseUrl}/pt/` },
+        { '@type': 'ListItem', position: 2, name: 'Quem somos', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/quem-somos/" translationKey="quienes_somos">
+  <Fragment slot="head">
+    <link rel="canonical" href={canonicalUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
+
+  <!-- ============== 1 · HERO ============== -->
+  <section class="qsHero" aria-labelledby="qsHero-title">
+    <div class="qsHero__inner">
+      <nav class="qsHero__breadcrumb" aria-label="Trilho de navegação">
+        <a href={getLocalePath('home', lang)}>Início</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">Quem somos</span>
+      </nav>
+
+      <span class="qsHero__eyebrow">— Mais de 25 anos em Arriondas</span>
+
+      <h1 id="qsHero-title" class="qsHero__title">
+        Uma equipa, um rio,<br/>
+        <span class="serif-italic">milhares de descidas.</span>
+      </h1>
+
+      <p class="qsHero__lead">
+        Somos um grupo de <strong>mulheres e homens</strong> de várias idades, capacidades e especialidades — unidos pela paixão pela <strong>natureza, pelo desporto ativo e pelo oriente asturiano</strong>. Há mais de 25 anos que estamos em Arriondas a ver descer o Sella: famílias, casais, grupos de amigos, avós com netos e turmas que voltam todos os verões.
+      </p>
+
+      <div class="qsHero__media" data-reveal data-reveal-type="slide-right">
+        <Picture
+          src="quienes-somos-hero"
+          alt="Equipa de Aventura en el Sella · grupo em Arriondas · 25 anos no rio Sella"
+          sizes="(min-width: 960px) 1100px, 92vw"
+          aspectRatio="16 / 9"
+          priority="high"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 2 · VALOR + 4 CONTADORES ============== -->
+  <section class="qsValue" aria-labelledby="qsValue-title">
+    <div class="qsValue__inner">
+      <div class="qsValue__copy">
+        <span class="qsValue__eyebrow">— O que somos</span>
+        <h2 id="qsValue-title" class="qsValue__title">
+          Mesmo sítio,<br/>
+          <span class="serif-italic">mesma forma de trabalhar.</span>
+        </h2>
+        <p class="qsValue__lead">
+          Estamos no centro de Arriondas, junto ao início da descida do Sella. <strong>Mesmas pessoas, mesmo sítio, mesma forma de trabalhar</strong> desde que abrimos. Transparência com os preços, equipa própria no rio e tudo o necessário para o dia incluído na tarifa — porque é assim que gostamos de ser tratadas quando viajamos.
+        </p>
+      </div>
+
+      <ul class="qsValue__counters" role="list">
+        {counters.map(c => (
+          <li class="qsValue__counter">
+            <span class="qsValue__counterNum">{c.num}<span class="qsValue__counterUnit">{c.unit}</span></span>
+            <span class="qsValue__counterLabel">{c.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== 3 · COMO TRABALHAMOS · 4 PRINCÍPIOS ============== -->
+  <section class="qsPrin" aria-labelledby="qsPrin-title">
+    <div class="qsPrin__inner">
+      <header class="qsPrin__header">
+        <span class="qsPrin__eyebrow">— Como trabalhamos</span>
+        <h2 id="qsPrin-title" class="qsPrin__title">
+          Quatro coisas<br/>
+          <span class="serif-italic">que não mudam.</span>
+        </h2>
+        <p class="qsPrin__lead">
+          Há mais de 25 anos que fazemos o mesmo porque funciona. <strong>Não mudamos as regras por causa da época alta</strong> nem apertamos as condições quando há mais procura — faz parte do acordo desde o primeiro dia.
+        </p>
+      </header>
+
+      <ul class="qsPrin__grid" role="list">
+        {principios.map(p => (
+          <li class="qsPrin__card">
+            <span class="qsPrin__num">{p.n}</span>
+            <h3 class="qsPrin__cardTitle">{p.title}</h3>
+            <p class="qsPrin__cardText" set:html={p.text}></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== 4 · A EQUIPA ============== -->
+  <section class="qsTeam" aria-labelledby="qsTeam-title">
+    <div class="qsTeam__inner">
+      <div class="qsTeam__intro">
+        <span class="qsTeam__eyebrow">— A nossa equipa</span>
+        <h2 id="qsTeam-title" class="qsTeam__title">
+          Mulheres e homens,<br/>
+          <span class="serif-italic">várias idades, uma paixão.</span>
+        </h2>
+        <p class="qsTeam__lead">
+          Não somos uma multinacional com uniformes. Somos um <strong>pequeno grupo de pessoas reais</strong> — mulheres e homens de várias idades, especialidades e formas de trabalhar, com uma coisa em comum: adoramos este rio e queremos que tu o desfrutes tanto como nós.
+        </p>
+        <p class="qsTeam__text">
+          Todos os dias há alguém a receber ao balcão, alguém a rever canoas na oficina, monitores qualificados a dar a aula explicativa antes de sair e a vigiar o rio a partir de caiaques de segurança, e outra pessoa a conduzir o transfer de regresso. Se ligares e atender alguém diferente, é porque <strong>rodamos para que haja sempre alguém que te possa responder</strong> — não porque somos um call-center.
+        </p>
+      </div>
+
+      <div class="qsTeam__media" data-reveal data-reveal-type="slide-right">
+        <Picture
+          src="quienes-somos-equipo"
+          alt="Equipa de Aventura en el Sella na água · monitores qualificados da descida do Sella"
+          sizes="(min-width: 900px) 50vw, 92vw"
+          aspectRatio="4 / 5"
+        />
+      </div>
+    </div>
+
+    <div class="qsTeam__functions">
+      <h3 class="qsTeam__functionsTitle">O que fazemos todos os dias</h3>
+      <ul class="qsTeam__functionsGrid" role="list">
+        {funciones.map(f => (
+          <li class="qsTeam__function">
+            <h4 class="qsTeam__functionTitle">{f.title}</h4>
+            <p class="qsTeam__functionText" set:html={f.text}></p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== 5 · INSTALAÇÕES ============== -->
+  <section class="qsInst" aria-labelledby="qsInst-title">
+    <div class="qsInst__inner">
+      <header class="qsInst__header">
+        <span class="qsInst__eyebrow">— As nossas instalações</span>
+        <h2 id="qsInst-title" class="qsInst__title">
+          No centro<br/>
+          <span class="serif-italic">de Arriondas.</span>
+        </h2>
+        <p class="qsInst__lead">
+          Tudo num único ponto: <strong>loja, vestiários, balcão e estacionamento próprio</strong>. Chegas, estacionas, registas, equipas-te e sais — sem deslocações entre locais. O acesso é pelas instalações de Aipol, em pleno centro de Arriondas.
+        </p>
+      </header>
+
+      <ul class="qsInst__grid" role="list">
+        {instalaciones.map(i => (
+          <li class="qsInst__card">
+            <h3 class="qsInst__cardTitle">{i.title}</h3>
+            <p class="qsInst__cardText" set:html={i.text}></p>
+          </li>
+        ))}
+      </ul>
+
+      <a href={getLocalePath('como_llegar', lang)} class="qsInst__cta">
+        Como chegar
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============== 6 · O QUE DIZEM · TESTEMUNHO ============== -->
+  <section class="qsVoice" aria-labelledby="qsVoice-title">
+    <div class="qsVoice__inner">
+      <span class="qsVoice__eyebrow">— O que dizem</span>
+      <h2 id="qsVoice-title" class="qsVoice__title">
+        +25 anos<br/>
+        <span class="serif-italic">de atendimento que deixa marca.</span>
+      </h2>
+
+      <blockquote class="qsVoice__quote" cite="https://share.google/huLLaIz31FiYohuTV">
+        <p>"{testimonio.text}"</p>
+        <footer class="qsVoice__cite">
+          <cite>— {testimonio.author}</cite>
+          <span>{testimonio.source}</span>
+        </footer>
+      </blockquote>
+
+      <ul class="qsVoice__metrics" role="list">
+        <li class="qsVoice__metric">
+          <span class="qsVoice__metricNum">4,5<span class="qsVoice__metricUnit">★</span></span>
+          <span class="qsVoice__metricLabel">Avaliação média</span>
+        </li>
+        <li class="qsVoice__metric">
+          <span class="qsVoice__metricNum">+147</span>
+          <span class="qsVoice__metricLabel">Avaliações verificadas</span>
+        </li>
+        <li class="qsVoice__metric">
+          <span class="qsVoice__metricNum">+25</span>
+          <span class="qsVoice__metricLabel">Anos em Arriondas</span>
+        </li>
+      </ul>
+
+      <a href={getLocalePath('opiniones', lang)} class="qsVoice__cta">
+        Ver todas as avaliações
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============== 7 · FINAL CTA ============== -->
+  <FinalCTA />
+</BaseLayout>
+
+<style>
+  /* ====================== TOKENS LOCAIS ====================== */
+  .qsHero, .qsValue, .qsPrin, .qsTeam, .qsInst, .qsVoice {
+    --section-pad: clamp(4rem, 8vw, 7rem);
+    --container-max: 1200px;
+    --container-pad: clamp(1.25rem, 4vw, 2rem);
+  }
+
+  /* ====================== 1 · HERO ====================== */
+  .qsHero {
+    background: var(--color-bg-warm, #F6F1E3);
+    padding-block: clamp(5rem, 9vw, 8rem) clamp(3rem, 6vw, 5rem);
+    position: relative;
+    overflow: hidden;
+  }
+  .qsHero::before {
+    content: '';
+    position: absolute;
+    inset: auto -15% -40% auto;
+    width: 60%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(233, 133, 111, 0.08) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .qsHero__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    position: relative;
+  }
+  .qsHero__breadcrumb {
+    display: flex; align-items: center; gap: var(--s-2);
+    font-size: var(--fs-caption);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--s-8);
+  }
+  .qsHero__breadcrumb a { color: var(--color-text-secondary); transition: color var(--duration-base) var(--ease-out); }
+  .qsHero__breadcrumb a:hover { color: var(--color-primary); }
+  .qsHero__breadcrumb span[aria-current] { color: var(--color-text-primary); font-weight: var(--fw-medium); }
+  .qsHero__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-5);
+  }
+  .qsHero__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-6);
+    text-wrap: balance;
+    max-width: 18ch;
+  }
+  .qsHero__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsHero__lead {
+    font-size: clamp(1.075rem, 1.6vw, 1.3rem);
+    line-height: var(--lh-body, 1.65);
+    color: var(--color-text-secondary);
+    max-width: 60ch;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .qsHero__lead strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+  .qsHero__media {
+    border-radius: clamp(1.25rem, 2.5vw, 2rem);
+    overflow: hidden;
+    box-shadow: 0 24px 56px -32px rgba(26, 31, 46, 0.18);
+  }
+
+  /* ====================== 2 · VALOR + CONTADORES ====================== */
+  .qsValue {
+    background: var(--color-bg-base);
+    padding-block: var(--section-pad);
+  }
+  .qsValue__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 5vw, 4rem);
+    align-items: center;
+  }
+  @media (min-width: 960px) {
+    .qsValue__inner { grid-template-columns: 1.1fr 1fr; gap: clamp(3rem, 6vw, 5rem); }
+  }
+  .qsValue__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+  .qsValue__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+  .qsValue__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsValue__lead {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: var(--lh-body, 1.65);
+    color: var(--color-text-secondary);
+  }
+  .qsValue__lead strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+
+  .qsValue__counters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 2vw, 1.5rem);
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .qsValue__counter {
+    padding: clamp(1.5rem, 3vw, 2rem) clamp(1rem, 2vw, 1.5rem);
+    background: var(--color-bg-warm, #F6F1E3);
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; gap: var(--s-2);
+    transition: transform 320ms var(--ease-out), border-color 320ms var(--ease-out);
+  }
+  .qsValue__counter:hover {
+    transform: translateY(-3px);
+    border-color: rgba(233, 133, 111, 0.3);
+  }
+  .qsValue__counterNum {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: var(--fw-black);
+    line-height: 1;
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    display: inline-flex; align-items: baseline; gap: 0.25rem;
+  }
+  .qsValue__counterUnit {
+    font-size: 0.45em;
+    font-weight: var(--fw-bold);
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsValue__counterLabel {
+    font-size: var(--fs-caption);
+    font-weight: var(--fw-medium);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-wide);
+  }
+
+  /* ====================== 3 · PRINCÍPIOS ====================== */
+  .qsPrin {
+    background: var(--color-bg-warm, #F6F1E3);
+    padding-block: var(--section-pad);
+  }
+  .qsPrin__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+  .qsPrin__header {
+    max-width: 720px;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+  .qsPrin__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+  .qsPrin__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+  .qsPrin__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsPrin__lead {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: var(--lh-body, 1.65);
+    color: var(--color-text-secondary);
+  }
+  .qsPrin__lead strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+
+  .qsPrin__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  @media (min-width: 720px) {
+    .qsPrin__grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .qsPrin__card {
+    padding: clamp(1.75rem, 3vw, 2.5rem);
+    background: var(--color-bg-elevated, #FFFFFF);
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    display: flex; flex-direction: column; gap: var(--s-3);
+    transition: transform 380ms var(--ease-out), box-shadow 380ms var(--ease-out), border-color 380ms var(--ease-out);
+  }
+  .qsPrin__card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px -28px rgba(26, 31, 46, 0.16);
+    border-color: rgba(233, 133, 111, 0.25);
+  }
+  .qsPrin__num {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: var(--fw-black);
+    color: var(--color-primary);
+    letter-spacing: var(--ls-wide);
+  }
+  .qsPrin__cardTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1.8vw, 1.4rem);
+    font-weight: var(--fw-bold);
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    text-wrap: balance;
+  }
+  .qsPrin__cardText {
+    font-size: var(--fs-body-sm);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+  .qsPrin__cardText strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+
+  /* ====================== 4 · TEAM ====================== */
+  .qsTeam {
+    background: var(--color-bg-base);
+    padding-block: var(--section-pad);
+  }
+  .qsTeam__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 4vw, 3.5rem);
+    align-items: center;
+    margin-bottom: clamp(3rem, 6vw, 5rem);
+  }
+  @media (min-width: 960px) {
+    .qsTeam__inner { grid-template-columns: 1.2fr 0.9fr; }
+  }
+  .qsTeam__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+  .qsTeam__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+  .qsTeam__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsTeam__lead, .qsTeam__text {
+    font-size: clamp(1rem, 1.4vw, 1.1rem);
+    line-height: var(--lh-body, 1.65);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--s-4);
+  }
+  .qsTeam__lead strong, .qsTeam__text strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+  .qsTeam__media {
+    border-radius: clamp(1rem, 2vw, 1.5rem);
+    overflow: hidden;
+    box-shadow: 0 24px 56px -32px rgba(26, 31, 46, 0.18);
+  }
+  .qsTeam__functions {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+  .qsTeam__functionsTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    font-weight: var(--fw-bold);
+    color: var(--color-text-primary);
+    margin-bottom: clamp(1.5rem, 3vw, 2rem);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid rgba(26, 31, 46, 0.08);
+  }
+  .qsTeam__functionsGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  @media (min-width: 720px) {
+    .qsTeam__functionsGrid { grid-template-columns: repeat(3, 1fr); }
+  }
+  .qsTeam__function { display: flex; flex-direction: column; gap: var(--s-3); }
+  .qsTeam__functionTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+    font-weight: var(--fw-semibold);
+    color: var(--color-text-primary);
+    line-height: 1.25;
+  }
+  .qsTeam__functionText {
+    font-size: var(--fs-body-sm);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+  }
+  .qsTeam__functionText strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+
+  /* ====================== 5 · INSTALAÇÕES ====================== */
+  .qsInst {
+    background: var(--color-bg-warm, #F6F1E3);
+    padding-block: var(--section-pad);
+  }
+  .qsInst__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+  }
+  .qsInst__header { max-width: 720px; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .qsInst__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-4);
+  }
+  .qsInst__title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: var(--color-text-primary);
+    margin-bottom: var(--s-5);
+    text-wrap: balance;
+  }
+  .qsInst__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary);
+    letter-spacing: 0;
+  }
+  .qsInst__lead {
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: var(--lh-body, 1.65);
+    color: var(--color-text-secondary);
+  }
+  .qsInst__lead strong { color: var(--color-text-primary); font-weight: var(--fw-semibold); }
+
+  .qsInst__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    list-style: none;
+    padding: 0; margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 720px) { .qsInst__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1080px) { .qsInst__grid { grid-template-columns: repeat(4, 1fr); } }
+
+  .qsInst__card {
+    padding: clamp(1.5rem, 2.5vw, 2rem);
+    background: var(--color-bg-elevated, #FFFFFF);
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: clamp(0.875rem, 1.5vw, 1.25rem);
+    display: flex; flex-direction: column; gap: var(--s-2);
+    transition: transform 320ms var(--ease-out), border-color 320ms var(--ease-out);
+  }
+  .qsInst__card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(233, 133, 111, 0.25);
+  }
+  .qsInst__cardTitle {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: var(--fw-bold);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: var(--s-1);
+  }
+  .qsInst__cardText {
+    font-size: var(--fs-body-sm);
+    line-height: 1.55;
+    color: var(--color-text-primary);
+  }
+  .qsInst__cardText strong { font-weight: var(--fw-semibold); color: var(--color-text-primary); }
+  .qsInst__cardText small { font-size: 0.75rem; color: var(--color-text-secondary); font-style: italic; }
+
+  .qsInst__cta {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: var(--s-3) var(--s-5);
+    background: var(--color-text-primary);
+    color: #FFF;
+    border-radius: var(--radius-pill, 999px);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    transition: background var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+  }
+  .qsInst__cta:hover {
+    background: var(--color-primary);
+    transform: translateY(-1px);
+  }
+  .qsInst__cta svg { transition: transform var(--duration-base) var(--ease-out); }
+  .qsInst__cta:hover svg { transform: translateX(3px); }
+
+  /* ====================== 6 · VOZ / TESTEMUNHO ====================== */
+  .qsVoice {
+    background: var(--color-sage, #3D4F3A);
+    color: var(--color-text-on-dark, #F4F0E8);
+    padding-block: var(--section-pad);
+    position: relative;
+    overflow: hidden;
+  }
+  .qsVoice::before {
+    content: '';
+    position: absolute;
+    inset: -20% auto auto -10%;
+    width: 50%;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(244, 240, 232, 0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .qsVoice__inner {
+    max-width: 880px;
+    margin-inline: auto;
+    padding-inline: var(--container-pad);
+    text-align: center;
+    position: relative;
+  }
+  .qsVoice__eyebrow {
+    display: block;
+    font-size: var(--fs-label-sm);
+    font-weight: var(--fw-semibold);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    color: rgba(244, 240, 232, 0.7);
+    margin-bottom: var(--s-4);
+  }
+  .qsVoice__title {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 4vw, 2.75rem);
+    font-weight: var(--fw-black);
+    line-height: var(--lh-tight, 1.05);
+    letter-spacing: var(--ls-tightest);
+    color: #FFF;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+    text-wrap: balance;
+  }
+  .qsVoice__title .serif-italic {
+    font-family: var(--font-serif);
+    font-weight: var(--fw-regular);
+    font-style: italic;
+    color: var(--color-primary-soft, #fcebe4);
+    letter-spacing: 0;
+  }
+  .qsVoice__quote {
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    background: rgba(244, 240, 232, 0.06);
+    border-left: 3px solid var(--color-primary, #E9856F);
+    border-radius: clamp(0.75rem, 1.5vw, 1.25rem);
+    text-align: left;
+  }
+  .qsVoice__quote p {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.5;
+    color: rgba(244, 240, 232, 0.95);
+    margin-bottom: var(--s-4);
+    text-wrap: balance;
+  }
+  .qsVoice__cite {
+    display: flex; flex-direction: column; gap: 2px;
+    font-style: normal;
+  }
+  .qsVoice__cite cite {
+    font-style: normal;
+    font-weight: var(--fw-bold);
+    color: #FFF;
+    font-size: var(--fs-body-sm);
+  }
+  .qsVoice__cite span {
+    font-size: var(--fs-caption);
+    color: rgba(244, 240, 232, 0.55);
+    font-family: var(--font-sans);
+  }
+  .qsVoice__metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2vw, 2rem);
+    list-style: none;
+    padding: 0; margin: 0 0 clamp(2rem, 4vw, 3rem);
+  }
+  .qsVoice__metric { display: flex; flex-direction: column; gap: var(--s-1); }
+  .qsVoice__metricNum {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: var(--fw-black);
+    line-height: 1;
+    color: #FFF;
+    display: inline-flex; align-items: baseline; gap: 0.2rem; justify-content: center;
+  }
+  .qsVoice__metricUnit {
+    font-size: 0.6em;
+    color: var(--color-primary-soft, #fcebe4);
+  }
+  .qsVoice__metricLabel {
+    font-size: var(--fs-caption);
+    color: rgba(244, 240, 232, 0.7);
+    text-transform: uppercase;
+    letter-spacing: var(--ls-wide);
+  }
+
+  .qsVoice__cta {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: var(--s-3) var(--s-6);
+    background: var(--color-primary, #E9856F);
+    color: #FFF;
+    border-radius: var(--radius-pill, 999px);
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-body-sm);
+    transition: background var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out);
+  }
+  .qsVoice__cta:hover {
+    background: var(--color-primary-hover, #dd7359);
+    transform: translateY(-1px);
+  }
+  .qsVoice__cta svg { transition: transform var(--duration-base) var(--ease-out); }
+  .qsVoice__cta:hover svg { transform: translateX(3px); }
+</style>
