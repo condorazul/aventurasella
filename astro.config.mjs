@@ -96,5 +96,12 @@ export default defineConfig({
         interval: 300,
       },
     },
+    // `astro preview` (modo producción) usa Vite. Vite bloquea hosts desconocidos
+    // como medida anti-DNS rebinding. En Coolify/Docker el reverse proxy llega
+    // con un host arbitrario, por eso permitimos todos · la seguridad real está
+    // en el reverse proxy (Traefik/Caddy) delante.
+    preview: {
+      allowedHosts: true,
+    },
   },
 });
