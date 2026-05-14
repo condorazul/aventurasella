@@ -1,0 +1,651 @@
+---
+/**
+ * /pt/reservar/ · Página oficial de reserva · Português (tu)
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const title = 'Reservar descida do Sella · Alteração ou cancelamento flexível · Desde 30€';
+const description = 'Reserva online a tua descida do Sella em canoa desde Arriondas. Sem pagar agora, alteração ou cancelamento flexível antes do dia, confirmação imediata por WhatsApp e email. 4,5★ · 147 opiniões reais.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/pt/reservar/`;
+
+const tarifas = [
+  {
+    img: 'reservar-tarifa-adultos',
+    imgAlt: 'Grupo de adultos a descer o Sella de canoa desde Arriondas · tarifa adulto da descida',
+    badge: 'Mais reservado',
+    title: 'Adultos',
+    age: 'A partir dos 13 anos',
+    price: '40',
+    note: 'Canoa, remo, colete, piquenique asturiano e transfer · tudo incluído',
+  },
+  {
+    img: 'precios-ninos',
+    imgAlt: 'Crianças a remar no Sella · tarifa infantil da descida',
+    badge: 'Crianças',
+    title: 'Crianças',
+    age: 'Até aos 12 anos',
+    price: '30',
+    note: 'Idade mínima 5 anos · 1,15 m de altura',
+  },
+  {
+    img: 'con-perro-cta',
+    imgAlt: 'Cão com colete salva-vidas em canoa · descida do Sella com animais grátis',
+    badge: 'Animais · grátis',
+    title: 'Com cão',
+    age: 'Até 25 kg',
+    price: '0',
+    note: 'Colete canino incluído até esgotar stock',
+  },
+];
+
+const pasos = [
+  { num: '01', title: 'Reserva o teu dia',         text: 'Escolhe data, percurso e número de pessoas no calendário. <strong>Sem pagar nada agora</strong>: bloqueamos o teu lugar de imediato.' },
+  { num: '02', title: 'Chega a Arriondas',          text: 'Esperamos-te na C/ Juan Carlos I, 18. Estacionamento privado vigiado, balneários, duches quentes e cacifos com chave.' },
+  { num: '03', title: 'Sais de canoa',              text: 'Mini aula com monitor titulado, remo, colete, bidão estanque e piquenique asturiano. Horário Premium aberto 10:30 – 12:30.' },
+  { num: '04', title: 'Vamos buscar-te',            text: 'Transfer de regresso desde Toraño (percurso mini) ou Fríes (percurso completo). Regresso confortável · sem carro extra, sem esperas.' },
+];
+
+const faqs = [
+  {
+    q: 'Tenho de pagar agora para reservar?',
+    a: 'Não. Podes <strong>reservar sem pagar nada agora</strong>. Bloqueamos o teu lugar e escolhes entre pagar online antecipadamente (cartão ou transferência) ou no próprio dia ao levantar a canoa (cartão, Bizum, dinheiro ou transferência instantânea).',
+  },
+  {
+    q: 'Qual é a política de cancelamento?',
+    a: 'Podes <strong>alterar ou cancelar a tua reserva a qualquer momento antes do dia da atividade</strong>, sem custo. Se pagaste com <strong>cartão antecipadamente</strong>, para tramitar o reembolso precisamos que nos avises com pelo menos <strong>24 h de antecedência</strong>. Avisa-nos por WhatsApp ou email e ajudamos-te a mudar a data ou devolver o valor. Se nós reprogramarmos por mau tempo ou condições do rio, alteração sem custo ou reembolso integral.',
+  },
+  {
+    q: 'Quando recebo a confirmação?',
+    a: 'No momento, automaticamente por email. Recebes: data confirmada, percurso escolhido, horário Premium aberto (chegada flexível 10:30 – 12:30), instruções de chegada e um WhatsApp direto para o que precisares.',
+  },
+  {
+    q: 'Com quanta antecedência devo reservar?',
+    a: 'Em época baixa, o dia anterior costuma ser suficiente. Em <strong>julho-agosto, fins de semana e feriados</strong> recomendamos 3-7 dias de antecedência. O calendário mostra em tempo real os dias com lugares disponíveis.',
+  },
+  {
+    q: 'E se chover no dia da minha reserva?',
+    a: 'No Sella reme-se em muitos dias com céu encoberto sem problema · faz parte do encanto verde das Astúrias. Se houver <strong>aviso meteorológico ou cheia do rio</strong>, reagendamos sem custo ou devolvemos o valor integral. Decidimos sempre do lado da segurança.',
+  },
+  {
+    q: 'Há desconto para grupos?',
+    a: 'A partir de <strong>15 pessoas</strong> avaliamos condições especiais (horário dedicado, piquenique reforçado, fatura empresa). Escreve-nos para <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a> com data, número de pessoas e idades · enviamos-te um orçamento fechado.',
+  },
+];
+
+const resources = [
+  { img: 'reservar-resource-precios',   imgAlt: 'Canoa laranja na margem do Sella · tarifas detalhadas da descida',           title: 'Tarifas detalhadas', text: 'Preços por idade, o que incluem e comparativo por percurso.',     href: getLocalePath('precios', 'pt'),        cta: 'Ver preços' },
+  { img: 'reservar-resource-recorrido', imgAlt: 'Vista do rio Sella nas Astúrias · percurso e mapa da descida',                title: 'Percurso e mapa',    text: 'Percurso mini (7 km · 2-3 h) ou completo (14,5 km · 4-5 h).',       href: getLocalePath('recorrido_mapa', 'pt'), cta: 'Ver percurso' },
+  { img: 'reservar-resource-premium',   imgAlt: 'Famílias e adultos a remar no Sella · Reserva Premium tudo incluído',         title: 'Reserva Premium',    text: 'Cacifos, piquenique reforçado e horário aberto 10:30 – 12:30.',   href: getLocalePath('reserva_premium', 'pt'), cta: 'Ver Premium' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, 'pt'),
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: 'pt-PT',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+      about: { '@id': `${baseUrl}/#business` },
+      mainEntityOfPage: canonicalUrl,
+      datePublished: '2026-05-14',
+      dateModified: '2026-05-14',
+    },
+    {
+      '@type': 'Service',
+      '@id': `${canonicalUrl}#service`,
+      name: 'Reserva online da descida do Sella em canoa',
+      description: 'Serviço de reserva online da descida turística do Sella desde Arriondas (Astúrias). Alteração ou cancelamento flexível antes do dia (24 h se pagaste com cartão). Sem pagar agora.',
+      provider: { '@id': `${baseUrl}/#business` },
+      serviceType: 'Canoe rental and guided river descent',
+      areaServed: { '@type': 'Place', name: 'Arriondas, Astúrias, Espanha' },
+      offers: [
+        { '@type': 'Offer', name: 'Crianças até aos 12 anos', price: '30', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: canonicalUrl },
+        { '@type': 'Offer', name: 'Adultos',                  price: '40', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') } })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Início',   item: `${baseUrl}/pt/` },
+        { '@type': 'ListItem', position: 2, name: 'Reservar', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/pt/reservar/" translationKey="reservar">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-lg.avif" type="image/avif" media="(min-width: 1024px)" fetchpriority="high" />
+  </Fragment>
+
+  <section class="rsvH" aria-labelledby="rsvH-title">
+    <div class="rsvH__media" aria-hidden="true">
+      <Picture src="hero-canoa-lago" alt="Canoa no rio Sella ao pôr do sol · descida do Sella desde Arriondas" priority="high" sizes="100vw" aspectRatio="16 / 10" />
+      <div class="rsvH__overlay"></div>
+    </div>
+
+    <div class="rsvH__inner">
+      <nav class="rsvH__breadcrumb" aria-label="Migalhas">
+        <a href="/pt/">Início</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Reservar</span>
+      </nav>
+
+      <span class="rsvH__eyebrow">
+        <span class="rsvH__eyebrow-dot" aria-hidden="true"></span>
+        Reserva em 2 minutos · sem pagar agora
+      </span>
+
+      <h1 id="rsvH-title" class="rsvH__title">
+        Reserva a tua<br/>
+        <span class="serif-italic">descida do Sella</span>
+      </h1>
+
+      <p class="rsvH__lead">
+        Escolhe dia, percurso e número de pessoas. A canoa, o equipamento, o piquenique, o transfer e tudo o resto · já vem incluído. <strong>Sem pagar nada agora</strong> · pagas online ou no dia em que recolhes a canoa em Arriondas.
+      </p>
+
+      <div class="rsvH__ctas">
+        <a class="rsvH__cta rsvH__cta--primary" href="#booking-widget">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Ir ao calendário</span>
+        </a>
+        <a class="rsvH__cta rsvH__cta--ghost" href="https://wa.me/34681093673?text=Ol%C3%A1%2C%20gostaria%20de%20reservar%20a%20descida%20do%20Sella" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.87 11.87 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.56 4.18 1.62 6L0 24l6.18-1.6A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="rsvH__cta rsvH__cta--ghost" href="tel:+34681093673" aria-label="Ligar para +34 681 09 36 73">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          <span>+34 681 09 36 73</span>
+        </a>
+      </div>
+
+      <ul class="rsvH__trust" role="list">
+        <li><span class="rsvH__trustNum">4,5★</span><span class="rsvH__trustLabel">147 opiniões reais</span></li>
+        <li><span class="rsvH__trustNum">Flexível</span><span class="rsvH__trustLabel">alteração antes do dia</span></li>
+        <li><span class="rsvH__trustNum">25 anos</span><span class="rsvH__trustLabel">em Arriondas</span></li>
+        <li><span class="rsvH__trustNum">0 €</span><span class="rsvH__trustLabel">para reservar</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="rsvB" aria-labelledby="rsvB-title">
+    <div class="rsvB__inner">
+      <header class="rsvB__header">
+        <span class="rsvB__eyebrow">— Calendário em direto</span>
+        <h2 id="rsvB-title" class="rsvB__title">
+          Escolhe o teu dia<br/>
+          <span class="serif-italic">em menos de 2 minutos</span>
+        </h2>
+        <p class="rsvB__lead">
+          Disponibilidade em tempo real · dias com lugares a verde · sem surpresas. <strong>Confirmação imediata por WhatsApp e email</strong> · rápido, fácil e sem formulários intermináveis.
+        </p>
+      </header>
+
+      <div id="booking-widget" class="rsvB__slot" aria-live="polite">
+        <div class="rsvB__placeholder">
+          <span class="rsvB__placeholderIcon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <p class="rsvB__placeholderTitle">Calendário de reservas</p>
+          <p class="rsvB__placeholderText">
+            Estamos a carregar o calendário em tempo real. Se não aparecer em alguns segundos, escreve-nos por <a href="https://wa.me/34681093673" target="_blank" rel="noopener noreferrer">WhatsApp</a> ou liga para <a href="tel:+34681093673">+34 681 09 36 73</a> · reservamos-te de imediato.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rsvT" aria-labelledby="rsvT-title">
+    <div class="rsvT__inner">
+      <header class="rsvT__header">
+        <span class="rsvT__eyebrow">— Reservar com tranquilidade</span>
+        <h2 id="rsvT-title" class="rsvT__title">
+          Sem pagar agora,<br/>
+          <span class="serif-italic">sem letras pequenas.</span>
+        </h2>
+      </header>
+
+      <div class="rsvT__grid">
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-pago" alt="Margem do rio Sella em Arriondas · pagamento flexível para reservar a descida" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag">Pagamento flexível</span>
+            <h3 class="rsvT__cardTitle">Pagas online ou à chegada</h3>
+            <ul class="rsvT__cardList">
+              <li>Cartão online ao reservar</li>
+              <li>Ou no dia: cartão, Bizum, dinheiro ou transferência</li>
+              <li>Sem sinal · sem extras escondidos</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-cambios" alt="Grupo de raparigas a remar juntas na descida do Sella · alteração ou cancelamento flexível" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag rsvT__cardTag--sage">Alterações e cancelamentos flexíveis</span>
+            <h3 class="rsvT__cardTitle">Altera ou cancela antes do dia · sem custo</h3>
+            <ul class="rsvT__cardList">
+              <li>Altera ou cancela a qualquer momento antes do dia da atividade</li>
+              <li>Se pagaste com cartão, o reembolso requer 24 h de antecedência</li>
+              <li>Se chover forte ou o rio subir, reagendamos ou devolvemos</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-equipo" alt="Equipa da Aventura en el Sella em Arriondas · pessoas reais que te atendem" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag rsvT__cardTag--coral">Confirmação humana</span>
+            <h3 class="rsvT__cardTitle">Pessoas reais, não bots</h3>
+            <ul class="rsvT__cardList">
+              <li>Confirmamos por email + WhatsApp</li>
+              <li>Atendemos das 9:30 às 19:00 todos os dias em época</li>
+              <li>25 anos a receber aventureiros em Arriondas</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="rsvP" aria-labelledby="rsvP-title">
+    <div class="rsvP__inner">
+      <header class="rsvP__header">
+        <span class="rsvP__eyebrow">— Tarifas habituais</span>
+        <h2 id="rsvP-title" class="rsvP__title">
+          Preço por pessoa e dia,<br/>
+          <span class="serif-italic">tudo incluído.</span>
+        </h2>
+        <p class="rsvP__lead">
+          Mesmo preço para o percurso mini (7 km · 2-3 h) e o percurso completo (14,5 km · 4-5 h). <strong>Reserva Premium incluída sem custo extra</strong> · animais sempre grátis.
+        </p>
+      </header>
+
+      <p class="rsvP__premiumBadge">
+        <span class="rsvP__premiumStar" aria-hidden="true">✦</span>
+        <span><strong>Reserva Premium · Tudo incluído</strong> em qualquer tarifa · cacifos, balneários, duches quentes, piquenique asturiano, transfer e estacionamento privado vigiado</span>
+      </p>
+
+      <div class="rsvP__grid">
+        {tarifas.map(t => (
+          <article class="rsvP__card">
+            <div class="rsvP__cardMedia">
+              <Picture src={t.img} alt={t.imgAlt} sizes="(min-width: 960px) 25vw, 50vw" aspectRatio="4 / 5" />
+              <span class="rsvP__cardBadge">{t.badge}</span>
+            </div>
+            <div class="rsvP__cardBody">
+              <h3 class="rsvP__cardTitle">{t.title}</h3>
+              <p class="rsvP__cardAge">{t.age}</p>
+              <p class="rsvP__cardPrice">
+                {t.price === '0' ? (
+                  <span class="rsvP__cardFree">Grátis</span>
+                ) : (
+                  <>
+                    <span class="rsvP__cardCurrency">€</span>
+                    <span class="rsvP__cardAmount">{t.price}</span>
+                    <span class="rsvP__cardUnit">/dia</span>
+                  </>
+                )}
+              </p>
+              <p class="rsvP__cardNote">{t.note}</p>
+              <a class="rsvP__cardLink" href="#booking-widget">
+                Reservar
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="rsvP__foot">
+        Procuras tarifa família, grupo escolar ou despedida? <a href={getLocalePath('precios', 'pt')}>Ver todas as tarifas em detalhe</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="rsvS" aria-labelledby="rsvS-title">
+    <div class="rsvS__inner">
+      <header class="rsvS__header">
+        <span class="rsvS__eyebrow">— Como funciona</span>
+        <h2 id="rsvS-title" class="rsvS__title">
+          Reservar a tua descida<br/>
+          <span class="serif-italic">em 4 passos.</span>
+        </h2>
+        <div class="rsvS__times">
+          <div><strong>Horário aberto</strong><span>Chegada flexível 10:30 – 12:30</span></div>
+          <div><strong>Recolhas</strong><span>Das 13:00 às 18:00 desde Toraño / Fríes</span></div>
+        </div>
+      </header>
+
+      <ol class="rsvS__list" role="list">
+        {pasos.map(p => (
+          <li class="rsvS__step">
+            <span class="rsvS__stepNum">{p.num}</span>
+            <h3 class="rsvS__stepTitle">{p.title}</h3>
+            <p class="rsvS__stepText" set:html={p.text}></p>
+          </li>
+        ))}
+      </ol>
+
+      <p class="rsvS__foot">
+        <a href={getLocalePath('cuanto_dura', 'pt')}>Ver como funciona a descida em detalhe</a> · tempos reais por percurso e franja do dia.
+      </p>
+    </div>
+  </section>
+
+  <section class="rsvO" aria-labelledby="rsvO-title">
+    <div class="rsvO__inner">
+      <header class="rsvO__header">
+        <span class="rsvO__eyebrow">— Preferes falar com alguém?</span>
+        <h2 id="rsvO-title" class="rsvO__title">
+          Outras formas<br/>
+          <span class="serif-italic">de reservar.</span>
+        </h2>
+        <p class="rsvO__lead">
+          Reserva sempre com antecedência · confirmamos no momento em horário de atendimento. Pessoa real da equipa, nunca um bot.
+        </p>
+      </header>
+
+      <div class="rsvO__row" role="list">
+        <a class="rsvO__item" href="https://wa.me/34681093673?text=Ol%C3%A1%2C%20gostaria%20de%20reservar%20a%20descida%20do%20Sella" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          </span>
+          <span class="rsvO__itemTag">Resposta imediata</span>
+          <h3 class="rsvO__itemTitle">WhatsApp</h3>
+          <p class="rsvO__itemText">Respondemos em minutos em horário de atendimento. Sem formulários, sem esperas.</p>
+          <span class="rsvO__itemValue">Abrir chat</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="rsvO__item" href="tel:+34681093673" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          </span>
+          <span class="rsvO__itemTag">9:30 – 19:00 em época</span>
+          <h3 class="rsvO__itemTitle">Telefone</h3>
+          <p class="rsvO__itemText">Sem menus automáticos. Marcas e atende-te alguém da equipa, não um call-center.</p>
+          <span class="rsvO__itemValue">+34 681 09 36 73</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="rsvO__item" href="mailto:reservas@aventuraenelsella.es?subject=Reserva%20descida%20do%20Sella" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <span class="rsvO__itemTag">Para grupos ou consultas longas</span>
+          <h3 class="rsvO__itemTitle">Email</h3>
+          <p class="rsvO__itemText">Ideal para reservar grupos, despedidas ou orçamentos à medida. Resposta em menos de 24 h.</p>
+          <span class="rsvO__itemValue">reservas@aventuraenelsella.es</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="rsvF" aria-labelledby="rsvF-title">
+    <div class="rsvF__inner">
+      <header class="rsvF__header">
+        <span class="rsvF__eyebrow">— Antes de reservar</span>
+        <h2 id="rsvF-title" class="rsvF__title">
+          As perguntas mais<br/>
+          <span class="serif-italic">comuns no momento.</span>
+        </h2>
+      </header>
+
+      <div class="rsvF__list">
+        {faqs.map((f, i) => (
+          <details class="rsvF__row" name="reservar-faq" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="rsvF__sign" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="rsvF__a" set:html={f.a}></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="rsvR" aria-labelledby="rsvR-title">
+    <div class="rsvR__inner">
+      <header class="rsvR__header">
+        <span class="rsvR__eyebrow">— Vê antes de decidir</span>
+        <h2 id="rsvR-title" class="rsvR__title">
+          Toda a informação<br/>
+          <span class="serif-italic">para reservar tranquilo.</span>
+        </h2>
+      </header>
+
+      <div class="rsvR__grid">
+        {resources.map(r => (
+          <a class="rsvR__card" href={r.href}>
+            <div class="rsvR__cardMedia">
+              <Picture src={r.img} alt={r.imgAlt} sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" />
+            </div>
+            <div class="rsvR__cardBody">
+              <h3 class="rsvR__cardTitle">{r.title}</h3>
+              <p class="rsvR__cardText">{r.text}</p>
+              <span class="rsvR__cardCta">{r.cta}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .rsvH { position: relative; min-height: clamp(560px, 78vh, 760px); display: flex; align-items: flex-end; color: #FBF8F1; isolation: isolate; overflow: hidden; padding-block: clamp(6.5rem, 12vw, 9rem) clamp(2rem, 5vw, 3.75rem); }
+  .rsvH__media { position: absolute; inset: 0; z-index: -2; }
+  .rsvH__media :global(.picture), .rsvH__media :global(picture), .rsvH__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .rsvH__overlay { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(26,31,46,0.20) 0%, rgba(26,31,46,0.55) 35%, rgba(26,31,46,0.86) 70%, rgba(26,31,46,0.96) 100%), linear-gradient(90deg, rgba(26,31,46,0.55) 0%, rgba(26,31,46,0.15) 65%, transparent 100%); pointer-events: none; }
+  .rsvH__inner { position: relative; width: 100%; max-width: 1180px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvH__breadcrumb { display: flex; align-items: center; gap: 8px; font-family: var(--font-sans); font-size: 0.6875rem; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(251, 248, 241, 0.7); margin-bottom: clamp(1.25rem, 3vw, 2rem); }
+  .rsvH__breadcrumb a { color: rgba(251, 248, 241, 0.85); transition: color 200ms; }
+  .rsvH__breadcrumb a:hover { color: var(--color-primary-soft, #F0AC97); }
+  .rsvH__eyebrow { display: inline-flex; align-items: center; gap: var(--s-2); padding: 0.5rem 1rem 0.5rem 0.75rem; background: rgba(251, 248, 241, 0.12); border: 1px solid rgba(251, 248, 241, 0.25); backdrop-filter: blur(8px); border-radius: 999px; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; color: #FBF8F1; margin-bottom: clamp(1rem, 2vw, 1.5rem); }
+  .rsvH__eyebrow-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-primary); animation: rsvPulse 2.2s ease-in-out infinite; }
+  @keyframes rsvPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); } 50% { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); } }
+  .rsvH__title { font-family: var(--font-display); font-size: clamp(2.5rem, 6.5vw, 5rem); font-weight: 900; line-height: 0.96; letter-spacing: -0.025em; text-transform: uppercase; color: #FBF8F1; margin: 0 0 var(--s-5); text-wrap: balance; text-shadow: 0 2px 4px rgba(0,0,0,0.55), 0 8px 24px rgba(0,0,0,0.45); }
+  .rsvH__title .serif-italic { color: #FBF8F1; font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; letter-spacing: -0.005em; }
+  .rsvH__lead { font-family: var(--font-sans); font-size: clamp(1rem, 1.4vw, 1.1875rem); line-height: 1.65; color: #FBF8F1; max-width: 60ch; margin: 0 0 clamp(2rem, 4vw, 3rem); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+  .rsvH__lead strong { color: #FBF8F1; font-weight: 700; }
+  .rsvH__ctas { display: flex; flex-wrap: wrap; gap: var(--s-3); margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .rsvH__cta { display: inline-flex; align-items: center; gap: var(--s-2); padding: 0.95rem 1.5rem; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800; letter-spacing: -0.005em; text-decoration: none; transition: all 220ms var(--ease-out); }
+  .rsvH__cta--primary { background: var(--color-primary); color: #fff; box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.55); }
+  .rsvH__cta--primary:hover { background: #d96f57; transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(233, 133, 111, 0.65); }
+  .rsvH__cta--ghost { background: rgba(251, 248, 241, 0.12); color: #FBF8F1; border: 1.5px solid rgba(251, 248, 241, 0.4); backdrop-filter: blur(8px); }
+  .rsvH__cta--ghost:hover { background: rgba(251, 248, 241, 0.22); border-color: #FBF8F1; }
+  .rsvH__trust { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2.5vw, 2rem); border-top: 1px solid rgba(251, 248, 241, 0.18); padding-top: clamp(1.25rem, 3vw, 2rem); }
+  @media (min-width: 720px) { .rsvH__trust { grid-template-columns: repeat(4, 1fr); } }
+  .rsvH__trust li { display: flex; flex-direction: column; gap: 4px; }
+  .rsvH__trustNum { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.125rem); font-weight: 900; line-height: 1; color: #FBF8F1; letter-spacing: -0.02em; }
+  .rsvH__trustLabel { font-family: var(--font-sans); font-size: 0.75rem; color: rgba(251, 248, 241, 0.7); letter-spacing: 0.5px; }
+
+  .rsvB { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvB__inner { max-width: 1100px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvB__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2rem, 4vw, 3rem); }
+  .rsvB__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvB__title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-5); text-wrap: balance; }
+  .rsvB__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvB__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+  .rsvB__slot { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); border-radius: var(--radius-3xl, 1.5rem); box-shadow: 0 24px 56px -28px rgba(26, 31, 46, 0.18); overflow: hidden; min-height: clamp(460px, 60vh, 680px); display: flex; align-items: center; justify-content: center; scroll-margin-top: 120px; transition: box-shadow 280ms var(--ease-out); }
+  .rsvB__slot:hover { box-shadow: 0 32px 72px -32px rgba(26, 31, 46, 0.25); }
+  .rsvB__placeholder { text-align: center; padding: clamp(2rem, 5vw, 4rem); max-width: 460px; }
+  .rsvB__placeholderIcon { display: inline-flex; width: 72px; height: 72px; align-items: center; justify-content: center; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); border-radius: 50%; margin-bottom: var(--s-5); }
+  .rsvB__placeholderTitle { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.5rem); font-weight: 800; color: var(--color-text-primary); margin: 0 0 var(--s-3); }
+  .rsvB__placeholderText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
+  .rsvB__placeholderText a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  .rsvT { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvT__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvT__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 4rem); }
+  .rsvT__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvT__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvT__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvT__grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); grid-template-columns: 1fr; }
+  @media (min-width: 720px)  { .rsvT__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvT__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvT__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvT__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvT__cardMedia { aspect-ratio: 4 / 3; overflow: hidden; }
+  .rsvT__cardBody { padding: clamp(1.25rem, 2.5vw, 1.75rem); display: flex; flex-direction: column; gap: var(--s-3); flex: 1; }
+  .rsvT__cardTag { align-self: flex-start; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
+  .rsvT__cardTag--sage { background: rgba(61, 79, 58, 0.12); color: var(--color-sage, #3D4F3A); }
+  .rsvT__cardTag--coral { background: rgba(233, 133, 111, 0.12); color: var(--color-primary); }
+  .rsvT__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.2; }
+  .rsvT__cardList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rsvT__cardList li { position: relative; padding-left: 1.25rem; font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.55; color: var(--color-text-secondary); }
+  .rsvT__cardList li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 8px; height: 1.5px; background: var(--color-primary); }
+
+  .rsvP { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvP__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvP__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvP__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvP__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-4); text-wrap: balance; }
+  .rsvP__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvP__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+  .rsvP__grid { display: grid; gap: clamp(1rem, 2vw, 1.5rem); grid-template-columns: 1fr; max-width: 1020px; margin-inline: auto; }
+  @media (min-width: 540px)  { .rsvP__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px)  { .rsvP__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvP__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvP__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvP__cardMedia { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+  .rsvP__cardBadge { position: absolute; top: 0.875rem; left: 0.875rem; padding: 0.3rem 0.7rem; background: #1A1F2E; color: #FBF8F1; font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; border-radius: 999px; }
+  .rsvP__cardBody { padding: clamp(1rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .rsvP__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.5vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.15; }
+  .rsvP__cardAge { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-text-muted); margin: 0; letter-spacing: 0.3px; }
+  .rsvP__cardPrice { display: inline-flex; align-items: baseline; gap: 2px; font-family: var(--font-display); margin: var(--s-2) 0 0; color: var(--color-text-primary); }
+  .rsvP__cardCurrency { font-size: 1.125rem; font-weight: 700; }
+  .rsvP__cardAmount { font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+  .rsvP__cardUnit { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600; color: var(--color-text-muted); margin-left: 4px; }
+  .rsvP__cardFree { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 900; color: var(--color-sage, #3D4F3A); letter-spacing: -0.01em; }
+  .rsvP__cardNote { font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.5; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .rsvP__cardLink { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--s-3); padding: 0.75rem 1.125rem; background: var(--color-text-primary); color: #fff; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.5px; text-decoration: none; align-self: flex-start; transition: background 200ms ease, transform 200ms ease; }
+  .rsvP__cardLink:hover { background: var(--color-primary); transform: translateY(-1px); }
+  .rsvP__foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; text-align: center; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-muted); }
+  .rsvP__foot a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+  .rsvP__premiumBadge { display: flex; align-items: flex-start; gap: var(--s-3); max-width: 880px; margin: 0 auto clamp(2rem, 3.5vw, 2.75rem); padding: clamp(0.875rem, 1.6vw, 1.125rem) clamp(1rem, 2vw, 1.5rem); background: rgba(233, 133, 111, 0.08); border: 1px solid rgba(233, 133, 111, 0.28); border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: clamp(0.8125rem, 1.05vw, 0.9375rem); line-height: 1.5; color: var(--color-text-primary); text-align: left; }
+  .rsvP__premiumBadge strong { font-weight: 800; color: var(--color-primary); letter-spacing: -0.005em; }
+  .rsvP__premiumStar { flex-shrink: 0; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: var(--color-primary); color: #fff; border-radius: 50%; font-size: 1rem; font-weight: 700; line-height: 1; }
+  @media (max-width: 560px) { .rsvP__premiumBadge { border-radius: var(--radius-2xl, 1.25rem); } }
+
+  .rsvS { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvS__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvS__header { max-width: 820px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvS__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvS__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-5); text-wrap: balance; }
+  .rsvS__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvS__times { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1rem, 2.5vw, 2.5rem); margin: var(--s-5) 0 0; padding-top: var(--s-5); border-top: 1px solid rgba(26,31,46,0.08); }
+  .rsvS__times div { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-sans); }
+  .rsvS__times strong { font-size: 0.75rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--color-primary); }
+  .rsvS__times span { font-size: 0.9375rem; color: var(--color-text-secondary); }
+  .rsvS__list { list-style: none; padding: 0; margin: 0; display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); grid-template-columns: 1fr; counter-reset: step; }
+  @media (min-width: 720px)  { .rsvS__list { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvS__list { grid-template-columns: repeat(4, 1fr); } }
+  .rsvS__step { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); padding: clamp(1.25rem, 2.5vw, 1.75rem); position: relative; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvS__step:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -20px rgba(26,31,46,0.2); }
+  .rsvS__stepNum { display: inline-block; font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; color: var(--color-primary); letter-spacing: -0.02em; margin-bottom: var(--s-3); }
+  .rsvS__stepTitle { font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.1875rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0 0 var(--s-2); text-transform: uppercase; }
+  .rsvS__stepText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.55; color: var(--color-text-secondary); margin: 0; }
+  .rsvS__stepText :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .rsvS__foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; text-align: center; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-muted); }
+  .rsvS__foot a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  .rsvO { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvO__inner { max-width: 1180px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvO__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvO__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvO__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-4); text-wrap: balance; }
+  .rsvO__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvO__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+  .rsvO__row { display: grid; grid-template-columns: 1fr; }
+  .rsvO__item { position: relative; display: flex; flex-direction: column; gap: var(--s-3); padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1rem, 2vw, 1.5rem); text-decoration: none; color: inherit; border-top: 1px solid var(--color-border-subtle, rgba(26,31,46,0.1)); transition: background 220ms var(--ease-out); }
+  .rsvO__item:first-child { border-top: 0; }
+  .rsvO__item:hover { background: rgba(26, 31, 46, 0.025); }
+  @media (min-width: 760px) {
+    .rsvO__row { grid-template-columns: repeat(3, 1fr); }
+    .rsvO__item { border-top: 0; border-left: 1px solid var(--color-border-subtle, rgba(26,31,46,0.1)); padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem); }
+    .rsvO__item:first-child { border-left: 0; }
+  }
+  .rsvO__itemIcon { display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 52px; border-radius: 50%; color: var(--color-primary); background: rgba(233, 133, 111, 0.10); margin-bottom: var(--s-1); transition: background 220ms ease, transform 220ms ease; }
+  .rsvO__item:hover .rsvO__itemIcon { background: rgba(233, 133, 111, 0.18); transform: scale(1.04); }
+  .rsvO__itemTag { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--color-primary); }
+  .rsvO__itemTitle { font-family: var(--font-display); font-size: clamp(1.125rem, 1.7vw, 1.375rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.15; text-transform: uppercase; }
+  .rsvO__itemText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .rsvO__itemValue { font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700; color: var(--color-text-primary); letter-spacing: -0.005em; margin-top: var(--s-1); word-break: break-word; }
+  .rsvO__itemCta { position: absolute; right: clamp(1.25rem, 2.5vw, 2rem); bottom: clamp(1.5rem, 2.5vw, 2rem); display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; color: var(--color-text-primary); border: 1.5px solid var(--color-border-subtle, rgba(26,31,46,0.12)); transition: all 220ms var(--ease-out); }
+  .rsvO__item:hover .rsvO__itemCta { background: var(--color-primary); border-color: var(--color-primary); color: #fff; transform: translateX(3px); }
+
+  .rsvF { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvF__inner { max-width: 820px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvF__header { max-width: 640px; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .rsvF__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvF__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvF__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvF__list { display: flex; flex-direction: column; border-top: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); }
+  .rsvF__row { border-bottom: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); transition: border-color 200ms; }
+  .rsvF__row[open] { border-color: rgba(233, 133, 111, 0.35); }
+  .rsvF__row > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-5) 0; font-family: var(--font-display); font-size: clamp(0.9375rem, 1.3vw, 1.0625rem); font-weight: 700; line-height: 1.35; color: var(--color-text-primary); transition: color 200ms; }
+  .rsvF__row > summary::-webkit-details-marker { display: none; }
+  .rsvF__row > summary:hover { color: var(--color-primary); }
+  .rsvF__sign { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; color: var(--color-text-primary); flex-shrink: 0; transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms; }
+  .rsvF__row[open] .rsvF__sign { transform: rotate(45deg); color: var(--color-primary); }
+  .rsvF__a { padding: 0 0 var(--s-5); font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 65ch; }
+  .rsvF__a :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .rsvF__a :global(a) { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  .rsvR { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvR__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvR__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvR__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvR__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvR__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvR__grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); grid-template-columns: 1fr; }
+  @media (min-width: 720px)  { .rsvR__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvR__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvR__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvR__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvR__cardMedia { aspect-ratio: 4 / 3; overflow: hidden; }
+  .rsvR__cardMedia :global(img) { transition: transform 600ms var(--ease-out); }
+  .rsvR__card:hover .rsvR__cardMedia :global(img) { transform: scale(1.04); }
+  .rsvR__cardBody { padding: clamp(1.25rem, 2.5vw, 1.75rem); display: flex; flex-direction: column; gap: var(--s-3); flex: 1; }
+  .rsvR__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.2; }
+  .rsvR__cardText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .rsvR__cardCta { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--s-2); font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.5px; color: var(--color-primary); text-transform: uppercase; }
+  .rsvR__cardCta svg { transition: transform 200ms ease; }
+  .rsvR__card:hover .rsvR__cardCta svg { transform: translateX(4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rsvH__eyebrow-dot { animation: none; }
+    .rsvT__card, .rsvP__card, .rsvS__step, .rsvO__item, .rsvR__card, .rsvH__cta, .rsvR__cardMedia :global(img), .rsvR__cardCta svg { transition: none !important; transform: none !important; }
+  }
+</style>

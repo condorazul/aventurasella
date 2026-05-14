@@ -90,7 +90,7 @@ export const pageAvailableLocales: Partial<Record<TranslationKey, ('es' | 'en' |
   mejor_epoca:             ['es', 'en', 'fr', 'pt'],
   como_llegar:             ['es', 'en', 'fr', 'pt'],
   contacto:                ['es', 'en', 'fr', 'pt'],
-  reservar:                ['es'],
+  reservar:                ['es', 'en', 'fr', 'pt'],
   blog:                    ['es', 'en', 'fr', 'pt'],
   legal_aviso:             ['es', 'en', 'fr', 'pt'],
   legal_privacidad:        ['es', 'en', 'fr', 'pt'],

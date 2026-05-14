@@ -254,22 +254,33 @@ const cols = [
     position: relative;
     overflow: hidden;
   }
+  /* Más respiro horizontal en mobile para que los enlaces no toquen el borde */
+  .site-footer .container { padding-inline: clamp(1.5rem, 5vw, 2.5rem); }
 
   .site-footer__wordmark {
     display: flex;
     align-items: baseline;
     justify-content: center;
+    flex-wrap: wrap;
     gap: clamp(0.5rem, 1.5vw, 1.25rem);
     font-family: var(--font-display);
-    font-size: clamp(3rem, 10vw, 10rem);
+    /* En mobile bajamos el techo del clamp y permitimos wrap si hace falta
+     * para que "Aventura en el Sella" no se salga por la derecha. */
+    font-size: clamp(2.25rem, 9.5vw, 10rem);
     font-weight: var(--fw-black);
-    line-height: 0.9;
+    line-height: 0.95;
     letter-spacing: var(--ls-tightest);
     text-transform: uppercase;
     color: var(--color-text-on-dark);
     margin-bottom: clamp(3rem, 6vw, 5rem);
-    white-space: nowrap;
+    text-align: center;
     opacity: 0.98;
+  }
+  @media (min-width: 640px) {
+    .site-footer__wordmark {
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
   }
 
   .site-footer__wordmark .serif-italic {
@@ -281,11 +292,23 @@ const cols = [
 
   .site-footer__grid {
     display: grid;
-    gap: var(--s-12);
+    gap: var(--s-10);
     grid-template-columns: 1fr;
     margin-bottom: var(--s-16);
     padding-top: var(--s-10);
     border-top: 1px solid var(--color-border-on-dark);
+  }
+
+  /* Mobile · brand arriba ocupa todo el ancho, 3 cols de links en 2 columnas */
+  @media (min-width: 480px) and (max-width: 767.98px) {
+    .site-footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: var(--s-6);
+      row-gap: var(--s-10);
+    }
+    .site-footer__brand {
+      grid-column: 1 / -1;
+    }
   }
 
   @media (min-width: 768px) {
@@ -397,7 +420,8 @@ const cols = [
 
   .site-footer__legal {
     display: flex;
-    gap: var(--s-6);
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-6);
   }
 
   .site-footer__legal a {

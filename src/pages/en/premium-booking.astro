@@ -61,7 +61,7 @@ const faqs = [
   { q: 'Can I book on the same day?',
     a: 'Yes — <strong>as long as the booking calendar shows availability</strong> for that day. Our honest recommendation is <strong>to book in advance</strong>, especially in high season (July-August) and weekends, when slots fill up fast. The <a href="' + getLocalePath('reservar', lang) + '">online calendar</a> shows free days in real time. Booking takes 2 minutes and <strong>you do not have to pay anything at that moment</strong>.' },
   { q: 'Can I cancel the Premium booking?',
-    a: 'Yes. You can cancel or reschedule up to 48 hours before at no cost. If the weather is bad or the Hydrographic Confederation closes the river, we reschedule or refund the full amount.' },
+    a: 'Yes. You can <strong>change or cancel your booking at any time before the day of the activity</strong>, at no cost. If you paid by <strong>card in advance</strong>, to process the refund we need you to let us know at least <strong>24 h before</strong>. If the weather is bad or the Hydrographic Confederation closes the river, we reschedule or refund the full amount.' },
   { q: 'Is there an option higher than Premium?',
     a: 'There are no more categories. <strong>All our bookings are Premium</strong> — it is our standard way of doing things: all inclusive, picnic as a gift, no misleading plans with different "tiers". What you see is what you get.' },
   { q: 'Can I gift a Premium descent?',
@@ -374,7 +374,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
       <div class="rpT__notes" data-reveal>
         <ul class="rpT__notesList">
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>No payment now</strong> — pay by card when booking or on the day of the descent.</li>
-          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Flexible cancellation</strong> up to 48 h before · reschedulable if the river closes.</li>
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Flexible changes and cancellations</strong> before the day · if you paid by card, refund needs 24 h notice.</li>
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>All inclusive in the price</strong> · no extras at the end of the day.</li>
         </ul>
       </div>
@@ -539,7 +539,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
         <span class="serif-italic">with everything included.</span>
       </h2>
       <p class="rpCta__lead">
-        Book without paying now. <strong>Pay by card when booking or on the day you pick up the canoe</strong>. Flexible cancellation up to 48 hours before.
+        Book without paying now. <strong>Pay by card when booking or on the day you pick up the canoe</strong>. Flexible changes and cancellations before the day (24 h if you paid by card).
       </p>
       <div class="rpCta__ctas">
         <a href={getLocalePath('reservar', lang)} class="rpCta__primary">

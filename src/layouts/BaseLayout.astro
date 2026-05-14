@@ -165,8 +165,15 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
         els.forEach((el) => el.classList.add('is-visible'));
       }
 
-      // Universal drag-to-scroll · funciona en mouse, touch y pen via Pointer Events
-      // Se aplica a cualquier track con atributo [data-drag-scroll]
+      // Universal drag-to-scroll
+      // -----------------------------------------------------------------
+      // Mobile (touch / pen): nativo · `overflow-x: auto` + `touch-action: pan-x pan-y pinch-zoom`
+      // permiten que el navegador haga el scroll horizontal de manera fluida sin que el JS
+      // interfiera. Esto evita el bug en el que el dedo no movía la fila en móvil porque el
+      // anterior `touch-action: pan-y pinch-zoom` bloqueaba el pan horizontal.
+      //
+      // Desktop (mouse): JS · Pointer Events permiten click-and-drag con inercia + bloquea
+      // navegación accidental cuando el usuario arrastra sobre un link.
       (function () {
         const tracks = document.querySelectorAll<HTMLElement>('[data-drag-scroll]');
         tracks.forEach((track) => {
@@ -187,8 +194,10 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
           });
 
           const onDown = (e: PointerEvent) => {
-            // Solo click izquierdo de ratón o touch/pen
-            if (e.pointerType === 'mouse' && e.button !== 0) return;
+            // Solo gestionamos drag con RATÓN. Touch y pen usan el scroll nativo del navegador
+            // (más fluido, gestiona inercia y momentum naturalmente en iOS/Android).
+            if (e.pointerType !== 'mouse') return;
+            if (e.button !== 0) return;
             isDown = true;
             hasMoved = false;
             startX = e.clientX;
@@ -281,7 +290,11 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-        touch-action: pan-y pinch-zoom;  /* permite scroll vertical + zoom, drag horizontal manejado por JS */
+        /* Permite scroll horizontal Y vertical Y pinch-zoom · el JS solo intercepta
+         * eventos de RATÓN; touch/pen usan el scroll nativo del navegador (inercia
+         * fluida en iOS/Android sin que pelee con la lógica del setPointerCapture). */
+        touch-action: pan-x pan-y pinch-zoom;
+        -webkit-overflow-scrolling: touch;
       }
       [data-drag-scroll].is-dragging {
         cursor: grabbing;

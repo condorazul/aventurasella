@@ -974,18 +974,24 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
   }
 
   /* ============== MOBILE DRAWER ============== */
+  /* IMPORTANTE · `.hdr` tiene `pointer-events: none` para que solo el pill
+   * capture clicks en desktop. El drawer mobile NECESITA re-activar pointer-events
+   * cuando está abierto, si no los links no navegan (clicks no llegan al <a>). */
   .hdr__drawer {
     position: fixed; inset: 0;
     background: var(--color-bg-base, #FBF8F1);
     padding: 6rem clamp(1.25rem, 4vw, 2.5rem) 2rem;
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     opacity: 0; visibility: hidden;
+    pointer-events: none;
     transform: translateY(-8px);
     transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out), visibility 300ms;
     z-index: 90;
   }
   .hdr--drawerOpen .hdr__drawer {
     opacity: 1; visibility: visible; transform: translateY(0);
+    pointer-events: auto;
   }
   .hdr__drawerInner {
     max-width: 680px; margin: 0 auto;

@@ -61,7 +61,7 @@ const faqs = [
   { q: 'Puis-je réserver le jour même ?',
     a: 'Oui — <strong>tant que le calendrier de réservation affiche des disponibilités</strong> pour ce jour. Notre recommandation honnête est de <strong>réserver à l\u2019avance</strong>, surtout en haute saison (juillet-août) et les week-ends, quand les places partent vite. Le <a href="' + getLocalePath('reservar', lang) + '">calendrier en ligne</a> t\u2019affiche les jours libres en temps réel. Réserver prend 2 minutes et <strong>tu n\u2019as rien à payer à ce moment-là</strong>.' },
   { q: 'Peut-on annuler la réservation Premium ?',
-    a: 'Oui. Tu peux annuler ou changer de date jusqu\u2019à 48 heures avant sans frais. Si le temps ne permet pas ou si la Confédération Hydrographique ferme la rivière, nous reprogrammons ou remboursons l\u2019intégralité du montant.' },
+    a: 'Oui. Tu peux <strong>changer ou annuler ta réservation à tout moment avant le jour de l\u2019activité</strong>, sans frais. Si tu as payé par <strong>carte à l\u2019avance</strong>, pour traiter le remboursement nous avons besoin que tu nous préviennes au moins <strong>24 h avant</strong>. Si le temps ne permet pas ou si la Confédération Hydrographique ferme la rivière, nous reprogrammons ou remboursons l\u2019intégralité du montant.' },
   { q: 'Y a-t-il une option supérieure à Premium ?',
     a: 'Il n\u2019y a pas d\u2019autres catégories. <strong>Toutes nos réservations sont Premium</strong> — c\u2019est notre façon standard de faire : tout inclus, pique-nique en cadeau, sans plans trompeurs à plusieurs « niveaux ». Ce que tu vois, c\u2019est ce que tu obtiens.' },
   { q: 'Puis-je offrir une descente Premium ?',
@@ -367,7 +367,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
       <div class="rpT__notes" data-reveal>
         <ul class="rpT__notesList">
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Sans payer maintenant</strong> — paie par carte à la réservation ou le jour de la descente.</li>
-          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Annulation flexible</strong> jusqu\u2019à 48 h avant · reprogrammable si la rivière ferme.</li>
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Changements et annulations flexibles</strong> avant le jour · si tu as payé par carte, remboursement avec 24 h de préavis.</li>
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Tout inclus dans le prix</strong> · pas d\u2019extras à la fin de la journée.</li>
         </ul>
       </div>
@@ -528,7 +528,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
         <span class="serif-italic">avec tout inclus.</span>
       </h2>
       <p class="rpCta__lead">
-        Réserve sans payer maintenant. <strong>Paie par carte à la réservation ou le jour où tu récupères le canoë</strong>. Annulation flexible jusqu\u2019à 48 heures avant.
+        Réserve sans payer maintenant. <strong>Paie par carte à la réservation ou le jour où tu récupères le canoë</strong>. Changements et annulations flexibles avant le jour (24 h si tu as payé par carte).
       </p>
       <div class="rpCta__ctas">
         <a href={getLocalePath('reservar', lang)} class="rpCta__primary">

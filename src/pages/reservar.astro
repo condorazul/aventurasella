@@ -1,0 +1,956 @@
+---
+/**
+ * /reservar/ · Página oficial de reserva del descenso del Sella
+ * -----------------------------------------------------------------
+ * Cierre del embudo · CTA #1 desde toda la web. Diseño minimalista
+ * Premium inspirado en bicisendadeloso.es/reservas/ — adaptado a
+ * nuestros colores (cream/sage/coral/navy), tipografías (Fraunces +
+ * Inter) y fotografía propia. Sección #booking-widget reservada
+ * para el motor externo (sustituir el contenido del div cuando el
+ * cliente entregue el código).
+ *
+ * SEO: meta optimizado · Schema.org completo · ranking #1
+ * "reservar descenso del sella".
+ */
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Picture from '@components/ui/Picture.astro';
+import { localBusinessSchema } from '@data/business-schema';
+import { getLocalePath } from '@utils/i18n';
+
+const title = 'Reservar descenso del Sella · Cambio y cancelación flexible · Desde 30€';
+const description = 'Reserva online tu descenso del Sella en canoa desde Arriondas. Sin pagar ahora, cambio o cancelación flexible antes del día, confirmación inmediata por WhatsApp y email. 4,5★ con 147 reseñas reales.';
+
+const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
+const canonicalUrl = `${baseUrl}/reservar/`;
+
+// Tarifas reales (canónicas) · 40€ adulto · 30€ niño · mascotas gratis
+// El servicio "Reserva Premium" ya está incluido SIN COSTE EXTRA: mismo precio,
+// con todo (taquillas, vestuarios, picnic asturiano, transfer, parking). Por eso
+// NO existe una tarifa "Premium" superior · son los mismos 40/30 €.
+const tarifas = [
+  {
+    img: 'reservar-tarifa-adultos',
+    imgAlt: 'Grupo de adultos descendiendo el Sella en canoa desde Arriondas · tarifa adulto del descenso',
+    badge: 'Más reservado',
+    title: 'Adultos',
+    age: 'Desde 13 años',
+    price: '40',
+    note: 'Canoa, pala, chaleco, picnic asturiano y transfer · todo incluido',
+  },
+  {
+    img: 'precios-ninos',
+    imgAlt: 'Niños remando en canoa por el Sella · tarifa infantil del descenso',
+    badge: 'Niños',
+    title: 'Niños',
+    age: 'Hasta 12 años',
+    price: '30',
+    note: 'Edad mínima 5 años · 1,15 m de altura',
+  },
+  {
+    img: 'con-perro-cta',
+    imgAlt: 'Perro con chaleco salvavidas en canoa · descenso del Sella con mascotas gratis',
+    badge: 'Mascotas · gratis',
+    title: 'Con perro',
+    age: 'Hasta 25 kg',
+    price: '0',
+    note: 'Chaleco canino incluido hasta agotar existencias',
+  },
+];
+
+// Pasos del proceso (tipo "4 pasos" bicisenda)
+const pasos = [
+  {
+    num: '01',
+    title: 'Reserva tu día',
+    text: 'Elige fecha, ruta y nº de personas en el calendario. <strong>No pagas nada ahora</strong>: bloqueamos tu plaza al instante.',
+  },
+  {
+    num: '02',
+    title: 'Llega a Arriondas',
+    text: 'Te esperamos en C/ Juan Carlos I, 18. Parking privado vigilado, vestuarios, duchas calientes y taquillas con llave.',
+  },
+  {
+    num: '03',
+    title: 'Sales en canoa',
+    text: 'Mini clase con monitor titulado, pala, chaleco, bidón estanco y picnic asturiano. Horario abierto Premium 10:30–12:30.',
+  },
+  {
+    num: '04',
+    title: 'Te recogemos al final',
+    text: 'Transfer de regreso desde Toraño (ruta mini) o Fríes (ruta completa). Vuelta cómoda, sin coche extra, sin esperas.',
+  },
+];
+
+// FAQ específicas del proceso de reserva
+const faqs = [
+  {
+    q: '¿Tengo que pagar ahora para reservar?',
+    a: 'No. Puedes <strong>reservar sin pagar nada</strong>. Bloqueamos tu plaza y eliges entre pagar online por adelantado (tarjeta o transferencia) o el día de la actividad al recoger la canoa (tarjeta, Bizum, efectivo o transferencia inmediata).',
+  },
+  {
+    q: '¿Cuál es la política de cancelación?',
+    a: 'Puedes <strong>cambiar o cancelar tu reserva en cualquier momento antes del día de la actividad</strong>, sin coste. Si pagaste con <strong>tarjeta por adelantado</strong>, para tramitar el reembolso necesitamos que nos avises con un mínimo de <strong>24 h de antelación</strong>. Avísanos por WhatsApp o email y te ayudamos a mover la fecha o devolverte el importe. Si reprogramamos nosotras por tiempo o condiciones del río, cambio sin coste o devolución íntegra.',
+  },
+  {
+    q: '¿Cuándo recibo la confirmación?',
+    a: 'En el momento, automáticamente por email. Te llega: fecha confirmada, ruta elegida, horario abierto Premium (llegada flexible 10:30–12:30), instrucciones de llegada y un WhatsApp directo por si surge algo.',
+  },
+  {
+    q: '¿Con cuánta antelación debo reservar?',
+    a: 'En temporada baja, el día anterior suele ser suficiente. En <strong>julio-agosto, fines de semana y festivos</strong> recomendamos 3-7 días de antelación. El calendario muestra en tiempo real qué días tienen plazas.',
+  },
+  {
+    q: '¿Qué pasa si llueve el día de mi reserva?',
+    a: 'En el Sella se reman muchos días con cielo cubierto sin problema · es parte del encanto verde de Asturias. Si hay <strong>aviso meteorológico o crecida del río</strong>, reprogramamos sin coste o devolvemos íntegro. Decidimos siempre del lado de la seguridad.',
+  },
+  {
+    q: '¿Grupos y descuentos por volumen?',
+    a: 'A partir de <strong>15 personas</strong> valoramos condiciones especiales (franja horaria dedicada, picnic reforzado, factura empresa). Escríbenos a <a href="mailto:info@aventuraenelsella.es">info@aventuraenelsella.es</a> con fecha, número de personas y edades · te pasamos presupuesto cerrado.',
+  },
+];
+
+// Resources cards ("Mira antes de decidir")
+const resources = [
+  { img: 'reservar-resource-precios',   imgAlt: 'Canoa naranja preparada en la orilla del Sella · tarifas detalladas del descenso', title: 'Tarifas detalladas', text: 'Precios por edad, qué incluyen y comparativa por ruta.',         href: getLocalePath('precios', 'es'),        cta: 'Ver precios' },
+  { img: 'reservar-resource-recorrido', imgAlt: 'Vista del río Sella en Asturias · recorrido y mapa del descenso',                  title: 'Recorrido y mapa',   text: 'Ruta mini (7 km · 2-3 h) o completa (14,5 km · 4-5 h).',           href: getLocalePath('recorrido_mapa', 'es'), cta: 'Ver recorrido' },
+  { img: 'reservar-resource-premium',   imgAlt: 'Familias y adultos remando en el Sella · Reserva Premium todo incluido',           title: 'Reserva Premium',    text: 'Taquillas, picnic reforzado y horario abierto 10:30–12:30.',     href: getLocalePath('reserva_premium', 'es'), cta: 'Ver Premium' },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    localBusinessSchema(baseUrl, 'es'),
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: 'es-ES',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+      about: { '@id': `${baseUrl}/#business` },
+      mainEntityOfPage: canonicalUrl,
+      datePublished: '2026-05-14',
+      dateModified: '2026-05-14',
+    },
+    {
+      '@type': 'Service',
+      '@id': `${canonicalUrl}#service`,
+      name: 'Reserva del descenso del Sella en canoa',
+      description: 'Servicio de reserva online del descenso turístico del Sella desde Arriondas (Asturias). Cambio o cancelación flexible antes del día (24 h si pagaste con tarjeta). Sin pagar ahora.',
+      provider: { '@id': `${baseUrl}/#business` },
+      serviceType: 'Canoe rental and guided river descent',
+      areaServed: { '@type': 'Place', name: 'Arriondas, Asturias, España' },
+      offers: [
+        { '@type': 'Offer', name: 'Niños hasta 12 años', price: '30', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: canonicalUrl },
+        { '@type': 'Offer', name: 'Adultos',              price: '40', priceCurrency: 'EUR', availability: 'https://schema.org/InStock', url: canonicalUrl },
+      ],
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': `${canonicalUrl}#faq`,
+      mainEntity: faqs.map(f => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, '') },
+      })),
+    },
+    {
+      '@type': 'BreadcrumbList',
+      '@id': `${canonicalUrl}#breadcrumb`,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Inicio',   item: baseUrl },
+        { '@type': 'ListItem', position: 2, name: 'Reservar', item: canonicalUrl },
+      ],
+    },
+  ],
+};
+---
+
+<BaseLayout title={title} description={description} currentPath="/reservar/" translationKey="reservar">
+  <Fragment slot="head">
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-lg.avif" type="image/avif" media="(min-width: 1024px)" fetchpriority="high" />
+  </Fragment>
+
+  <!-- ============== HERO COVER ============== -->
+  <section class="rsvH" aria-labelledby="rsvH-title">
+    <div class="rsvH__media" aria-hidden="true">
+      <Picture src="hero-canoa-lago" alt="Canoa en el río Sella al atardecer · descenso del Sella desde Arriondas" priority="high" sizes="100vw" aspectRatio="16 / 10" />
+      <div class="rsvH__overlay"></div>
+    </div>
+
+    <div class="rsvH__inner">
+      <nav class="rsvH__breadcrumb" aria-label="Breadcrumb">
+        <a href="/">Inicio</a>
+        <span aria-hidden="true">›</span>
+        <span aria-current="page">Reservar</span>
+      </nav>
+
+      <span class="rsvH__eyebrow">
+        <span class="rsvH__eyebrow-dot" aria-hidden="true"></span>
+        Reserva en 2 minutos · sin pagar ahora
+      </span>
+
+      <h1 id="rsvH-title" class="rsvH__title">
+        Reserva tu<br/>
+        <span class="serif-italic">descenso del Sella</span>
+      </h1>
+
+      <p class="rsvH__lead">
+        Elige día, ruta y personas. La canoa, el equipo, el picnic, el transfer y todo lo demás · ya viene incluido. <strong>Sin pagar nada ahora</strong>: pagas online o el día que recojas la canoa en Arriondas.
+      </p>
+
+      <div class="rsvH__ctas">
+        <a class="rsvH__cta rsvH__cta--primary" href="#booking-widget">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span>Ir al calendario</span>
+        </a>
+        <a class="rsvH__cta rsvH__cta--ghost" href="https://wa.me/34681093673?text=Hola%2C%20me%20gustar%C3%ADa%20reservar%20el%20descenso%20del%20Sella" target="_blank" rel="noopener noreferrer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.52 3.48A11.87 11.87 0 0 0 12 0C5.37 0 0 5.37 0 12c0 2.12.56 4.18 1.62 6L0 24l6.18-1.6A11.9 11.9 0 0 0 12 24c6.63 0 12-5.37 12-12 0-3.2-1.25-6.21-3.48-8.52z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a class="rsvH__cta rsvH__cta--ghost" href="tel:+34681093673" aria-label="Llamar al +34 681 09 36 73">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          <span>+34 681 09 36 73</span>
+        </a>
+      </div>
+
+      <ul class="rsvH__trust" role="list">
+        <li><span class="rsvH__trustNum">4,5★</span><span class="rsvH__trustLabel">147 reseñas reales</span></li>
+        <li><span class="rsvH__trustNum">Flexible</span><span class="rsvH__trustLabel">cambio antes del día</span></li>
+        <li><span class="rsvH__trustNum">25 años</span><span class="rsvH__trustLabel">en Arriondas</span></li>
+        <li><span class="rsvH__trustNum">0 €</span><span class="rsvH__trustLabel">por reservar</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============== BOOKING WIDGET ============== -->
+  <section class="rsvB" aria-labelledby="rsvB-title">
+    <div class="rsvB__inner">
+      <header class="rsvB__header">
+        <span class="rsvB__eyebrow">— Calendario en vivo</span>
+        <h2 id="rsvB-title" class="rsvB__title">
+          Elige tu día<br/>
+          <span class="serif-italic">en menos de 2 minutos</span>
+        </h2>
+        <p class="rsvB__lead">
+          Disponibilidad en tiempo real · días con plazas en verde · sin sorpresas. <strong>Confirmación al instante por WhatsApp y email</strong> · rápido, fácil y sin formularios eternos.
+        </p>
+      </header>
+
+      <!--
+        ╔════════════════════════════════════════════════════════════════════════╗
+        ║  ESPACIO RESERVADO PARA EL MOTOR DE RESERVAS                          ║
+        ║                                                                        ║
+        ║  Sustituir el siguiente bloque #booking-widget por el código (iframe, ║
+        ║  script o embed) que entregue el proveedor del motor de reservas.     ║
+        ║  El contenedor tiene altura mínima y borde elegante para que mientras ║
+        ║  no haya código se vea profesional · cuando llegue el código,         ║
+        ║  reemplazar el contenido interno del div manteniendo el contenedor.   ║
+        ╚════════════════════════════════════════════════════════════════════════╝
+      -->
+      <div id="booking-widget" class="rsvB__slot" aria-live="polite">
+        <div class="rsvB__placeholder">
+          <span class="rsvB__placeholderIcon" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </span>
+          <p class="rsvB__placeholderTitle">Calendario de reservas</p>
+          <p class="rsvB__placeholderText">
+            Estamos cargando el calendario en tiempo real. Si no aparece en unos segundos, escríbenos por <a href="https://wa.me/34681093673" target="_blank" rel="noopener noreferrer">WhatsApp</a> o al <a href="tel:+34681093673">+34 681 09 36 73</a> · te reservamos al momento.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== 3 COL · TRUST (Pago · Cancelación · Confirmación) ============== -->
+  <section class="rsvT" aria-labelledby="rsvT-title">
+    <div class="rsvT__inner">
+      <header class="rsvT__header">
+        <span class="rsvT__eyebrow">— Reservar con tranquilidad</span>
+        <h2 id="rsvT-title" class="rsvT__title">
+          Sin pagar ahora,<br/>
+          <span class="serif-italic">sin letra pequeña.</span>
+        </h2>
+      </header>
+
+      <div class="rsvT__grid">
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-pago" alt="Orilla del río Sella en Arriondas · pago flexible para reservar el descenso" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag">Pago flexible</span>
+            <h3 class="rsvT__cardTitle">Pagas online o al llegar</h3>
+            <ul class="rsvT__cardList">
+              <li>Tarjeta online al reservar</li>
+              <li>El día de la actividad: tarjeta, Bizum, efectivo o transferencia</li>
+              <li>Sin fianza · sin extras escondidos</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-cambios" alt="Grupo de chicas remando juntas en el descenso del Sella · cambio o cancelación flexible" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag rsvT__cardTag--sage">Cambios y cancelaciones flexibles</span>
+            <h3 class="rsvT__cardTitle">Cambia o cancela antes del día · sin coste</h3>
+            <ul class="rsvT__cardList">
+              <li>Cambia o cancela en cualquier momento antes del día de la actividad</li>
+              <li>Si pagaste con tarjeta, el reembolso requiere 24 h de antelación</li>
+              <li>Si llueve fuerte o sube el río, reprogramamos o devolvemos</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="rsvT__card">
+          <div class="rsvT__cardMedia"><Picture src="reservar-trust-equipo" alt="Equipo de Aventura en el Sella en Arriondas · personas reales que te atienden" sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" /></div>
+          <div class="rsvT__cardBody">
+            <span class="rsvT__cardTag rsvT__cardTag--coral">Confirmación humana</span>
+            <h3 class="rsvT__cardTitle">Personas reales, no bots</h3>
+            <ul class="rsvT__cardList">
+              <li>Te confirmamos por email + WhatsApp</li>
+              <li>Atendemos de 9:30 a 19:00 todos los días en temporada</li>
+              <li>25 años recibiendo aventureros en Arriondas</li>
+            </ul>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== TARIFAS · PRODUCT CARDS ============== -->
+  <section class="rsvP" aria-labelledby="rsvP-title">
+    <div class="rsvP__inner">
+      <header class="rsvP__header">
+        <span class="rsvP__eyebrow">— Tarifas habituales</span>
+        <h2 id="rsvP-title" class="rsvP__title">
+          Precio por persona y día,<br/>
+          <span class="serif-italic">todo incluido.</span>
+        </h2>
+        <p class="rsvP__lead">
+          Mismo precio para la ruta mini (7 km · 2-3 h) y la ruta completa (14,5 km · 4-5 h). <strong>Reserva Premium incluida sin coste extra</strong> · mascotas siempre gratis.
+        </p>
+      </header>
+
+      <p class="rsvP__premiumBadge">
+        <span class="rsvP__premiumStar" aria-hidden="true">✦</span>
+        <span><strong>Reserva Premium · Todo incluido</strong> en cualquier tarifa · taquillas, vestuarios, duchas calientes, picnic asturiano, transfer y parking privado vigilado</span>
+      </p>
+
+      <div class="rsvP__grid">
+        {tarifas.map(t => (
+          <article class="rsvP__card">
+            <div class="rsvP__cardMedia">
+              <Picture src={t.img} alt={t.imgAlt} sizes="(min-width: 960px) 25vw, 50vw" aspectRatio="4 / 5" />
+              <span class="rsvP__cardBadge">{t.badge}</span>
+            </div>
+            <div class="rsvP__cardBody">
+              <h3 class="rsvP__cardTitle">{t.title}</h3>
+              <p class="rsvP__cardAge">{t.age}</p>
+              <p class="rsvP__cardPrice">
+                {t.price === '0' ? (
+                  <span class="rsvP__cardFree">Gratis</span>
+                ) : (
+                  <>
+                    <span class="rsvP__cardCurrency">€</span>
+                    <span class="rsvP__cardAmount">{t.price}</span>
+                    <span class="rsvP__cardUnit">/día</span>
+                  </>
+                )}
+              </p>
+              <p class="rsvP__cardNote">{t.note}</p>
+              <a class="rsvP__cardLink" href={t.href ?? '#booking-widget'}>
+                Reservar
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <p class="rsvP__foot">
+        ¿Buscas tarifa familiar, grupo escolar o despedida? <a href={getLocalePath('precios', 'es')}>Ver todas las tarifas al detalle</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== 4 PASOS ============== -->
+  <section class="rsvS" aria-labelledby="rsvS-title">
+    <div class="rsvS__inner">
+      <header class="rsvS__header">
+        <span class="rsvS__eyebrow">— Cómo funciona</span>
+        <h2 id="rsvS-title" class="rsvS__title">
+          Reservar tu descenso<br/>
+          <span class="serif-italic">en 4 pasos.</span>
+        </h2>
+        <div class="rsvS__times">
+          <div><strong>Horario abierto</strong><span>Llegada flexible 10:30 – 12:30</span></div>
+          <div><strong>Recogidas</strong><span>De 13:00 a 18:00 desde Toraño / Fríes</span></div>
+        </div>
+      </header>
+
+      <ol class="rsvS__list" role="list">
+        {pasos.map(p => (
+          <li class="rsvS__step">
+            <span class="rsvS__stepNum">{p.num}</span>
+            <h3 class="rsvS__stepTitle">{p.title}</h3>
+            <p class="rsvS__stepText" set:html={p.text}></p>
+          </li>
+        ))}
+      </ol>
+
+      <p class="rsvS__foot">
+        <a href={getLocalePath('cuanto_dura', 'es')}>Ver cómo funciona el descenso en detalle</a> · tiempos reales por ruta y franja del día.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============== OTRAS FORMAS DE RESERVAR ============== -->
+  <section class="rsvO" aria-labelledby="rsvO-title">
+    <div class="rsvO__inner">
+      <header class="rsvO__header">
+        <span class="rsvO__eyebrow">— ¿Prefieres hablar con alguien?</span>
+        <h2 id="rsvO-title" class="rsvO__title">
+          Otras formas<br/>
+          <span class="serif-italic">de reservar.</span>
+        </h2>
+        <p class="rsvO__lead">
+          Reserva siempre con antelación · te confirmamos al momento en horario de atención. Persona real del equipo, nunca un bot.
+        </p>
+      </header>
+
+      <div class="rsvO__row" role="list">
+        <a class="rsvO__item" href="https://wa.me/34681093673?text=Hola%2C%20me%20gustar%C3%ADa%20reservar%20el%20descenso%20del%20Sella" target="_blank" rel="noopener noreferrer" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8z"/></svg>
+          </span>
+          <span class="rsvO__itemTag">Respuesta inmediata</span>
+          <h3 class="rsvO__itemTitle">WhatsApp</h3>
+          <p class="rsvO__itemText">Te respondemos en minutos en horario de atención. Sin formularios, sin esperas.</p>
+          <span class="rsvO__itemValue">Abrir chat</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="rsvO__item" href="tel:+34681093673" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/></svg>
+          </span>
+          <span class="rsvO__itemTag">9:30 – 19:00 en temporada</span>
+          <h3 class="rsvO__itemTitle">Teléfono</h3>
+          <p class="rsvO__itemText">Sin menús automáticos. Marcas y te contesta alguien del equipo, no un call-center.</p>
+          <span class="rsvO__itemValue">+34 681 09 36 73</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+
+        <a class="rsvO__item" href="mailto:reservas@aventuraenelsella.es?subject=Reserva%20descenso%20del%20Sella" role="listitem">
+          <span class="rsvO__itemIcon" aria-hidden="true">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+          <span class="rsvO__itemTag">Para grupos o consultas largas</span>
+          <h3 class="rsvO__itemTitle">Email</h3>
+          <p class="rsvO__itemText">Ideal para reservar grupos, despedidas o presupuestos a medida. Respuesta en menos de 24 h.</p>
+          <span class="rsvO__itemValue">reservas@aventuraenelsella.es</span>
+          <span class="rsvO__itemCta" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== FAQ ============== -->
+  <section class="rsvF" aria-labelledby="rsvF-title">
+    <div class="rsvF__inner">
+      <header class="rsvF__header">
+        <span class="rsvF__eyebrow">— Antes de reservar</span>
+        <h2 id="rsvF-title" class="rsvF__title">
+          Las preguntas más<br/>
+          <span class="serif-italic">habituales en el momento.</span>
+        </h2>
+      </header>
+
+      <div class="rsvF__list">
+        {faqs.map((f, i) => (
+          <details class="rsvF__row" name="reservar-faq" open={i === 0}>
+            <summary>
+              <span>{f.q}</span>
+              <span class="rsvF__sign" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </span>
+            </summary>
+            <div class="rsvF__a" set:html={f.a}></div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== MIRA ANTES DE DECIDIR (resources) ============== -->
+  <section class="rsvR" aria-labelledby="rsvR-title">
+    <div class="rsvR__inner">
+      <header class="rsvR__header">
+        <span class="rsvR__eyebrow">— Mira antes de decidir</span>
+        <h2 id="rsvR-title" class="rsvR__title">
+          Toda la información<br/>
+          <span class="serif-italic">para reservar tranquilo.</span>
+        </h2>
+      </header>
+
+      <div class="rsvR__grid">
+        {resources.map(r => (
+          <a class="rsvR__card" href={r.href}>
+            <div class="rsvR__cardMedia">
+              <Picture src={r.img} alt={r.imgAlt} sizes="(min-width: 960px) 33vw, 100vw" aspectRatio="4 / 3" />
+            </div>
+            <div class="rsvR__cardBody">
+              <h3 class="rsvR__cardTitle">{r.title}</h3>
+              <p class="rsvR__cardText">{r.text}</p>
+              <span class="rsvR__cardCta">{r.cta}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ============== HERO COVER ============== */
+  .rsvH {
+    position: relative;
+    /* Más compacto que un full-bleed · proporción similar a bicisenda. */
+    min-height: clamp(560px, 78vh, 760px);
+    display: flex; align-items: flex-end;
+    color: #FBF8F1;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: clamp(6.5rem, 12vw, 9rem) clamp(2rem, 5vw, 3.75rem);
+  }
+  .rsvH__media {
+    position: absolute; inset: 0; z-index: -2;
+  }
+  .rsvH__media :global(.picture),
+  .rsvH__media :global(picture),
+  .rsvH__media :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  /* Overlay más oscuro en la parte baja para garantizar contraste del título y lead.
+   * Pasamos el negro de 0.88 → 0.96 al pie y bajamos el gradiente principal para que
+   * el área ocupada por copy quede en torno al 0.7-0.85 de oscuridad. */
+  .rsvH__overlay {
+    position: absolute; inset: 0; z-index: -1;
+    background:
+      linear-gradient(180deg, rgba(26,31,46,0.20) 0%, rgba(26,31,46,0.55) 35%, rgba(26,31,46,0.86) 70%, rgba(26,31,46,0.96) 100%),
+      linear-gradient(90deg, rgba(26,31,46,0.55) 0%, rgba(26,31,46,0.15) 65%, transparent 100%);
+    pointer-events: none;
+  }
+  .rsvH__inner {
+    position: relative;
+    width: 100%;
+    max-width: 1180px;
+    margin: 0 auto;
+    padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  }
+  .rsvH__breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-sans); font-size: 0.6875rem;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: rgba(251, 248, 241, 0.7);
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+  .rsvH__breadcrumb a { color: rgba(251, 248, 241, 0.85); transition: color 200ms; }
+  .rsvH__breadcrumb a:hover { color: var(--color-primary-soft, #F0AC97); }
+
+  .rsvH__eyebrow {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.5rem 1rem 0.5rem 0.75rem;
+    background: rgba(251, 248, 241, 0.12);
+    border: 1px solid rgba(251, 248, 241, 0.25);
+    backdrop-filter: blur(8px);
+    border-radius: 999px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #FBF8F1;
+    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+  }
+  .rsvH__eyebrow-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--color-primary);
+    animation: rsvPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes rsvPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(233, 133, 111, 0.55); }
+    50%      { box-shadow: 0 0 0 8px rgba(233, 133, 111, 0); }
+  }
+
+  .rsvH__title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6.5vw, 5rem);
+    font-weight: 900; line-height: 0.96;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+    color: #FBF8F1;
+    margin: 0 0 var(--s-5);
+    text-wrap: balance;
+    /* Text shadow más marcada para garantizar legibilidad sobre el cielo de la foto */
+    text-shadow:
+      0 2px 4px rgba(0,0,0,0.55),
+      0 8px 24px rgba(0,0,0,0.45);
+  }
+  .rsvH__title .serif-italic {
+    /* Cream cálido en vez del coral soft · contraste mucho mayor sobre la foto */
+    color: #FBF8F1;
+    font-family: var(--font-serif);
+    font-weight: 400; font-style: italic;
+    text-transform: none;
+    letter-spacing: -0.005em;
+  }
+  .rsvH__lead {
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 1.4vw, 1.1875rem);
+    line-height: 1.65;
+    color: #FBF8F1;
+    max-width: 60ch;
+    margin: 0 0 clamp(2rem, 4vw, 3rem);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .rsvH__lead strong { color: #FBF8F1; font-weight: 700; }
+
+  .rsvH__ctas {
+    display: flex; flex-wrap: wrap; gap: var(--s-3);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+  .rsvH__cta {
+    display: inline-flex; align-items: center; gap: var(--s-2);
+    padding: 0.95rem 1.5rem;
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    transition: all 220ms var(--ease-out);
+  }
+  .rsvH__cta--primary {
+    background: var(--color-primary);
+    color: #fff;
+    box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.55);
+  }
+  .rsvH__cta--primary:hover { background: #d96f57; transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(233, 133, 111, 0.65); }
+  .rsvH__cta--ghost {
+    background: rgba(251, 248, 241, 0.12);
+    color: #FBF8F1;
+    border: 1.5px solid rgba(251, 248, 241, 0.4);
+    backdrop-filter: blur(8px);
+  }
+  .rsvH__cta--ghost:hover { background: rgba(251, 248, 241, 0.22); border-color: #FBF8F1; }
+
+  .rsvH__trust {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 2.5vw, 2rem);
+    border-top: 1px solid rgba(251, 248, 241, 0.18);
+    padding-top: clamp(1.25rem, 3vw, 2rem);
+  }
+  @media (min-width: 720px) { .rsvH__trust { grid-template-columns: repeat(4, 1fr); } }
+  .rsvH__trust li { display: flex; flex-direction: column; gap: 4px; }
+  .rsvH__trustNum {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 2.6vw, 2.125rem);
+    font-weight: 900; line-height: 1;
+    color: #FBF8F1; letter-spacing: -0.02em;
+  }
+  .rsvH__trustLabel {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: rgba(251, 248, 241, 0.7);
+    letter-spacing: 0.5px;
+  }
+
+  /* ============== BOOKING WIDGET ============== */
+  .rsvB { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvB__inner { max-width: 1100px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvB__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2rem, 4vw, 3rem); }
+  .rsvB__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvB__title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-5); text-wrap: balance; }
+  .rsvB__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvB__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+
+  .rsvB__slot {
+    background: #fff;
+    border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08));
+    border-radius: var(--radius-3xl, 1.5rem);
+    box-shadow: 0 24px 56px -28px rgba(26, 31, 46, 0.18);
+    overflow: hidden;
+    min-height: clamp(460px, 60vh, 680px);
+    display: flex; align-items: center; justify-content: center;
+    scroll-margin-top: 120px;
+    transition: box-shadow 280ms var(--ease-out);
+  }
+  .rsvB__slot:hover { box-shadow: 0 32px 72px -32px rgba(26, 31, 46, 0.25); }
+  .rsvB__placeholder { text-align: center; padding: clamp(2rem, 5vw, 4rem); max-width: 460px; }
+  .rsvB__placeholderIcon { display: inline-flex; width: 72px; height: 72px; align-items: center; justify-content: center; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); border-radius: 50%; margin-bottom: var(--s-5); }
+  .rsvB__placeholderTitle { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.5rem); font-weight: 800; color: var(--color-text-primary); margin: 0 0 var(--s-3); }
+  .rsvB__placeholderText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
+  .rsvB__placeholderText a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  /* ============== 3 COL TRUST ============== */
+  .rsvT { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvT__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvT__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 4rem); }
+  .rsvT__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvT__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvT__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+
+  .rsvT__grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); grid-template-columns: 1fr; }
+  @media (min-width: 720px)  { .rsvT__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvT__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvT__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvT__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvT__cardMedia { aspect-ratio: 4 / 3; overflow: hidden; }
+  .rsvT__cardBody { padding: clamp(1.25rem, 2.5vw, 1.75rem); display: flex; flex-direction: column; gap: var(--s-3); flex: 1; }
+  .rsvT__cardTag { align-self: flex-start; padding: 0.25rem 0.6rem; border-radius: 999px; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
+  .rsvT__cardTag--sage { background: rgba(61, 79, 58, 0.12); color: var(--color-sage, #3D4F3A); }
+  .rsvT__cardTag--coral { background: rgba(233, 133, 111, 0.12); color: var(--color-primary); }
+  .rsvT__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.2; }
+  .rsvT__cardList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rsvT__cardList li { position: relative; padding-left: 1.25rem; font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.55; color: var(--color-text-secondary); }
+  .rsvT__cardList li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 8px; height: 1.5px; background: var(--color-primary); }
+
+  /* ============== TARIFAS · PRODUCT CARDS ============== */
+  .rsvP { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvP__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvP__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvP__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvP__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-4); text-wrap: balance; }
+  .rsvP__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvP__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+
+  /* 3 cards centradas · max-width contenida para que se vean equilibradas */
+  .rsvP__grid {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.5rem);
+    grid-template-columns: 1fr;
+    max-width: 1020px;
+    margin-inline: auto;
+  }
+  @media (min-width: 540px)  { .rsvP__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px)  { .rsvP__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvP__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvP__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvP__cardMedia { position: relative; aspect-ratio: 4 / 5; overflow: hidden; }
+  .rsvP__cardBadge { position: absolute; top: 0.875rem; left: 0.875rem; padding: 0.3rem 0.7rem; background: #1A1F2E; color: #FBF8F1; font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; border-radius: 999px; }
+  .rsvP__cardBody { padding: clamp(1rem, 2vw, 1.5rem); display: flex; flex-direction: column; gap: 0.5rem; flex: 1; }
+  .rsvP__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.5vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.15; }
+  .rsvP__cardAge { font-family: var(--font-sans); font-size: 0.8125rem; color: var(--color-text-muted); margin: 0; letter-spacing: 0.3px; }
+  .rsvP__cardPrice { display: inline-flex; align-items: baseline; gap: 2px; font-family: var(--font-display); margin: var(--s-2) 0 0; color: var(--color-text-primary); }
+  .rsvP__cardCurrency { font-size: 1.125rem; font-weight: 700; }
+  .rsvP__cardAmount { font-size: clamp(2rem, 3vw, 2.5rem); font-weight: 900; line-height: 1; letter-spacing: -0.02em; }
+  .rsvP__cardUnit { font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 600; color: var(--color-text-muted); margin-left: 4px; }
+  .rsvP__cardFree { font-size: clamp(1.5rem, 2.4vw, 2rem); font-weight: 900; color: var(--color-sage, #3D4F3A); letter-spacing: -0.01em; }
+  .rsvP__cardNote { font-family: var(--font-sans); font-size: 0.8125rem; line-height: 1.5; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .rsvP__cardLink { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--s-3); padding: 0.75rem 1.125rem; background: var(--color-text-primary); color: #fff; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.5px; text-decoration: none; align-self: flex-start; transition: background 200ms ease, transform 200ms ease; }
+  .rsvP__cardLink:hover { background: var(--color-primary); transform: translateY(-1px); }
+  .rsvP__foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; text-align: center; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-muted); }
+  .rsvP__foot a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  /* Premium banner · una sola línea elegante por encima del grid de tarifas */
+  .rsvP__premiumBadge {
+    display: flex; align-items: flex-start;
+    gap: var(--s-3);
+    max-width: 880px;
+    margin: 0 auto clamp(2rem, 3.5vw, 2.75rem);
+    padding: clamp(0.875rem, 1.6vw, 1.125rem) clamp(1rem, 2vw, 1.5rem);
+    background: rgba(233, 133, 111, 0.08);
+    border: 1px solid rgba(233, 133, 111, 0.28);
+    border-radius: var(--radius-pill, 999px);
+    font-family: var(--font-sans);
+    font-size: clamp(0.8125rem, 1.05vw, 0.9375rem);
+    line-height: 1.5;
+    color: var(--color-text-primary);
+    text-align: left;
+  }
+  .rsvP__premiumBadge strong { font-weight: 800; color: var(--color-primary); letter-spacing: -0.005em; }
+  .rsvP__premiumStar {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--color-primary); color: #fff;
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  @media (max-width: 560px) {
+    .rsvP__premiumBadge { border-radius: var(--radius-2xl, 1.25rem); }
+  }
+
+  /* ============== 4 PASOS ============== */
+  .rsvS { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvS__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvS__header { max-width: 820px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvS__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvS__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-5); text-wrap: balance; }
+  .rsvS__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvS__times { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(1rem, 2.5vw, 2.5rem); margin: var(--s-5) 0 0; padding-top: var(--s-5); border-top: 1px solid rgba(26,31,46,0.08); }
+  .rsvS__times div { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-sans); }
+  .rsvS__times strong { font-size: 0.75rem; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; color: var(--color-primary); }
+  .rsvS__times span { font-size: 0.9375rem; color: var(--color-text-secondary); }
+
+  .rsvS__list { list-style: none; padding: 0; margin: 0; display: grid; gap: clamp(1.25rem, 2.5vw, 2rem); grid-template-columns: 1fr; counter-reset: step; }
+  @media (min-width: 720px)  { .rsvS__list { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvS__list { grid-template-columns: repeat(4, 1fr); } }
+  .rsvS__step { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); padding: clamp(1.25rem, 2.5vw, 1.75rem); position: relative; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvS__step:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -20px rgba(26,31,46,0.2); }
+  .rsvS__stepNum { display: inline-block; font-family: var(--font-display); font-weight: 900; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; color: var(--color-primary); letter-spacing: -0.02em; margin-bottom: var(--s-3); }
+  .rsvS__stepTitle { font-family: var(--font-display); font-size: clamp(1rem, 1.5vw, 1.1875rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0 0 var(--s-2); text-transform: uppercase; }
+  .rsvS__stepText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.55; color: var(--color-text-secondary); margin: 0; }
+  .rsvS__stepText :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .rsvS__foot { margin: clamp(1.5rem, 3vw, 2.5rem) 0 0; text-align: center; font-family: var(--font-sans); font-size: 0.9375rem; color: var(--color-text-muted); }
+  .rsvS__foot a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  /* ============== OTRAS FORMAS · sin tarjetas · hairlines verticales ============== */
+  .rsvO { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvO__inner { max-width: 1180px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvO__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvO__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvO__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-4); text-wrap: balance; }
+  .rsvO__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvO__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
+
+  /* Fila horizontal con hairlines verticales sutiles entre items · sin tarjetas */
+  .rsvO__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* En mobile las opciones se apilan y se separan por hairlines horizontales */
+  }
+  .rsvO__item {
+    position: relative;
+    display: flex; flex-direction: column;
+    gap: var(--s-3);
+    padding: clamp(1.75rem, 3vw, 2.25rem) clamp(1rem, 2vw, 1.5rem);
+    text-decoration: none;
+    color: inherit;
+    border-top: 1px solid var(--color-border-subtle, rgba(26,31,46,0.1));
+    transition: background 220ms var(--ease-out);
+  }
+  .rsvO__item:first-child { border-top: 0; }
+  .rsvO__item:hover { background: rgba(26, 31, 46, 0.025); }
+
+  @media (min-width: 760px) {
+    .rsvO__row { grid-template-columns: repeat(3, 1fr); }
+    .rsvO__item {
+      border-top: 0;
+      border-left: 1px solid var(--color-border-subtle, rgba(26,31,46,0.1));
+      padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.25rem, 2.5vw, 2rem);
+    }
+    .rsvO__item:first-child { border-left: 0; }
+  }
+
+  .rsvO__itemIcon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    color: var(--color-primary);
+    background: rgba(233, 133, 111, 0.10);
+    margin-bottom: var(--s-1);
+    transition: background 220ms ease, transform 220ms ease;
+  }
+  .rsvO__item:hover .rsvO__itemIcon {
+    background: rgba(233, 133, 111, 0.18);
+    transform: scale(1.04);
+  }
+  .rsvO__itemTag {
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
+    letter-spacing: 1.4px; text-transform: uppercase;
+    color: var(--color-primary);
+  }
+  .rsvO__itemTitle {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1.7vw, 1.375rem);
+    font-weight: 900; letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: 0; line-height: 1.15;
+    text-transform: uppercase;
+  }
+  .rsvO__itemText {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem; line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin: 0;
+    flex: 1;
+  }
+  .rsvO__itemValue {
+    font-family: var(--font-sans);
+    font-size: 0.875rem; font-weight: 700;
+    color: var(--color-text-primary);
+    letter-spacing: -0.005em;
+    margin-top: var(--s-1);
+    word-break: break-word;
+  }
+  .rsvO__itemCta {
+    position: absolute;
+    right: clamp(1.25rem, 2.5vw, 2rem);
+    bottom: clamp(1.5rem, 2.5vw, 2rem);
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    color: var(--color-text-primary);
+    border: 1.5px solid var(--color-border-subtle, rgba(26,31,46,0.12));
+    transition: all 220ms var(--ease-out);
+  }
+  .rsvO__item:hover .rsvO__itemCta {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+    transform: translateX(3px);
+  }
+
+  /* ============== FAQ ============== */
+  .rsvF { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
+  .rsvF__inner { max-width: 820px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvF__header { max-width: 640px; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .rsvF__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvF__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvF__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvF__list { display: flex; flex-direction: column; border-top: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); }
+  .rsvF__row { border-bottom: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); transition: border-color 200ms; }
+  .rsvF__row[open] { border-color: rgba(233, 133, 111, 0.35); }
+  .rsvF__row > summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: var(--s-4); padding: var(--s-5) 0; font-family: var(--font-display); font-size: clamp(0.9375rem, 1.3vw, 1.0625rem); font-weight: 700; line-height: 1.35; color: var(--color-text-primary); transition: color 200ms; }
+  .rsvF__row > summary::-webkit-details-marker { display: none; }
+  .rsvF__row > summary:hover { color: var(--color-primary); }
+  .rsvF__sign { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; color: var(--color-text-primary); flex-shrink: 0; transition: transform 300ms cubic-bezier(0.34, 1.2, 0.64, 1), color 200ms; }
+  .rsvF__row[open] .rsvF__sign { transform: rotate(45deg); color: var(--color-primary); }
+  .rsvF__a { padding: 0 0 var(--s-5); font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); max-width: 65ch; }
+  .rsvF__a :global(strong) { color: var(--color-text-primary); font-weight: 700; }
+  .rsvF__a :global(a) { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+
+  /* ============== RESOURCES ============== */
+  .rsvR { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-base, #FBF8F1); }
+  .rsvR__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
+  .rsvR__header { max-width: 720px; text-align: center; margin: 0 auto clamp(2.5rem, 5vw, 3.5rem); }
+  .rsvR__eyebrow { display: inline-block; font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800; letter-spacing: 1.8px; text-transform: uppercase; color: var(--color-primary); margin-bottom: var(--s-4); }
+  .rsvR__title { font-family: var(--font-display); font-size: clamp(1.875rem, 4vw, 2.75rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0; text-wrap: balance; }
+  .rsvR__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
+  .rsvR__grid { display: grid; gap: clamp(1.25rem, 2.5vw, 1.75rem); grid-template-columns: 1fr; }
+  @media (min-width: 720px)  { .rsvR__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1024px) { .rsvR__grid { grid-template-columns: repeat(3, 1fr); } }
+  .rsvR__card { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.06)); border-radius: var(--radius-2xl, 1.25rem); overflow: hidden; display: flex; flex-direction: column; text-decoration: none; transition: transform 280ms var(--ease-out), box-shadow 280ms var(--ease-out); }
+  .rsvR__card:hover { transform: translateY(-4px); box-shadow: 0 20px 48px -24px rgba(26, 31, 46, 0.22); }
+  .rsvR__cardMedia { aspect-ratio: 4 / 3; overflow: hidden; }
+  .rsvR__cardMedia :global(img) { transition: transform 600ms var(--ease-out); }
+  .rsvR__card:hover .rsvR__cardMedia :global(img) { transform: scale(1.04); }
+  .rsvR__cardBody { padding: clamp(1.25rem, 2.5vw, 1.75rem); display: flex; flex-direction: column; gap: var(--s-3); flex: 1; }
+  .rsvR__cardTitle { font-family: var(--font-display); font-size: clamp(1.0625rem, 1.6vw, 1.25rem); font-weight: 900; letter-spacing: -0.015em; color: var(--color-text-primary); margin: 0; line-height: 1.2; }
+  .rsvR__cardText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.6; color: var(--color-text-secondary); margin: 0; flex: 1; }
+  .rsvR__cardCta { display: inline-flex; align-items: center; gap: 6px; margin-top: var(--s-2); font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 800; letter-spacing: 0.5px; color: var(--color-primary); text-transform: uppercase; }
+  .rsvR__cardCta svg { transition: transform 200ms ease; }
+  .rsvR__card:hover .rsvR__cardCta svg { transform: translateX(4px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rsvH__eyebrow-dot { animation: none; }
+    .rsvT__card, .rsvP__card, .rsvS__step, .rsvO__item, .rsvR__card,
+    .rsvH__cta, .rsvR__cardMedia :global(img), .rsvR__cardCta svg { transition: none !important; transform: none !important; }
+  }
+</style>

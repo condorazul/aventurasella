@@ -61,7 +61,7 @@ const faqs = [
   { q: 'Posso reservar no próprio dia?',
     a: 'Sim — <strong>desde que o calendário de reserva mostre disponibilidade</strong> para esse dia. A nossa recomendação sincera é <strong>reservar com antecedência</strong>, sobretudo na época alta (julho-agosto) e fins de semana, quando os lugares se esgotam depressa. O <a href="' + getLocalePath('reservar', lang) + '">calendário online</a> mostra-te em tempo real os dias livres. Reservar demora 2 minutos e <strong>não tens de pagar nada nesse momento</strong>.' },
   { q: 'Pode-se cancelar a reserva Premium?',
-    a: 'Sim. Podes cancelar ou mudar a data até 48 horas antes sem custo. Se o tempo não acompanhar ou a Confederação Hidrográfica fechar o rio, reagendamos ou devolvemos o valor integral.' },
+    a: 'Sim. Podes <strong>alterar ou cancelar a tua reserva a qualquer momento antes do dia da atividade</strong>, sem custo. Se pagaste com <strong>cartão antecipadamente</strong>, para tramitar o reembolso precisamos que nos avises com pelo menos <strong>24 h de antecedência</strong>. Se o tempo não acompanhar ou a Confederação Hidrográfica fechar o rio, reagendamos ou devolvemos o valor integral.' },
   { q: 'Existe alguma opção superior à Premium?',
     a: 'Não há mais categorias. <strong>Todas as nossas reservas são Premium</strong> — é a nossa forma padrão de fazer as coisas: tudo incluído, piquenique de oferta, sem planos enganosos com "níveis" diferentes. O que vês é o que há.' },
   { q: 'Posso oferecer uma descida Premium?',
@@ -367,7 +367,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
       <div class="rpT__notes" data-reveal>
         <ul class="rpT__notesList">
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Sem pagar agora</strong> — paga com cartão na reserva ou no dia da descida.</li>
-          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Cancelamento flexível</strong> até 48 h antes · reagendável se o rio fechar.</li>
+          <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Alterações e cancelamentos flexíveis</strong> antes do dia · se pagaste com cartão, reembolso com 24 h de antecedência.</li>
           <li><span class="rpT__noteDot" aria-hidden="true"></span><strong>Tudo incluído no preço</strong> · sem extras no fim do dia.</li>
         </ul>
       </div>
@@ -528,7 +528,7 @@ const starSvg = '<svg width="13" height="13" viewBox="0 0 24 24" fill="currentCo
         <span class="serif-italic">com tudo incluído.</span>
       </h2>
       <p class="rpCta__lead">
-        Reserva sem pagar agora. <strong>Paga com cartão na reserva ou no dia em que recolhes a canoa</strong>. Cancelamento flexível até 48 horas antes.
+        Reserva sem pagar agora. <strong>Paga com cartão na reserva ou no dia em que recolhes a canoa</strong>. Alterações e cancelamentos flexíveis antes do dia (24 h se pagaste com cartão).
       </p>
       <div class="rpCta__ctas">
         <a href={getLocalePath('reservar', lang)} class="rpCta__primary">
