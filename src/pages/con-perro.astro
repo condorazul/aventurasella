@@ -1332,7 +1332,10 @@ const jsonLd = {
   }
 
   @media (max-width: 767.98px) {
-    .cnjT::before { left: 28px; }
+    /* En mobile la timeline se alinea a la izquierda · ambas líneas (base sage + progress coral)
+     * deben coincidir con el centro del círculo del nodo (left: 28px = 56px node / 2). */
+    .cnjT::before,
+    .cnjT::after { left: 28px; }
     .cnjT__step,
     .cnjT__step--left,
     .cnjT__step--right {

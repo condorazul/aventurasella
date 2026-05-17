@@ -1059,25 +1059,41 @@ const jsonLd = {
     letter-spacing: -0.01em;
   }
 
+  /* Tabs season · mobile 2x2 grid full-width · desktop pill inline */
   .met__tabs {
-    display: inline-flex; align-items: center;
-    padding: 0.25rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+    padding: 0.3rem;
     background: #fff;
     border: 1px solid rgba(26, 31, 46, 0.1);
-    border-radius: 999px;
+    border-radius: 1.25rem;
     box-shadow: 0 6px 16px rgba(26, 31, 46, 0.05);
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+  }
+  @media (min-width: 720px) {
+    .met__tabs {
+      display: inline-flex; align-items: center; flex-wrap: wrap;
+      width: auto; gap: 0; border-radius: 999px;
+    }
   }
   .met__tab {
-    display: inline-flex; align-items: baseline; gap: 0.375rem;
-    padding: 0.65rem 1rem;
+    display: inline-flex; align-items: baseline; justify-content: center;
+    gap: 0.375rem;
+    padding: 0.75rem 0.75rem;
     background: transparent; border: 0; border-radius: 999px;
-    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
     letter-spacing: 0.3px;
     color: var(--color-text-secondary);
     cursor: pointer;
     transition: all 260ms cubic-bezier(0.22, 1, 0.36, 1);
     white-space: nowrap;
+    min-width: 0;
+    text-align: center;
+  }
+  @media (min-width: 720px) {
+    .met__tab { padding: 0.65rem 1rem; font-size: 0.75rem; }
   }
   .met__tab:hover:not(.is-active) { color: var(--color-text-primary); }
   .met__tab.is-active {
@@ -1086,6 +1102,7 @@ const jsonLd = {
     box-shadow: 0 6px 16px rgba(26, 31, 46, 0.25);
   }
   .met__tabMeses { font-weight: 500; opacity: 0.7; }
+  @media (max-width: 419.98px) { .met__tabMeses { display: none; } }
   .met__tab.is-active .met__tabMeses { opacity: 0.85; }
   .met__tab:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
 

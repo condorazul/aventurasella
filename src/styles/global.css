@@ -108,6 +108,31 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .section--dark { background: var(--color-bg-dark); color: var(--color-text-on-dark); }
 
 /* ============================================================
+   FIX GLOBAL · sticky asides de FAQ solo en desktop
+   ------------------------------------------------------------
+   Las secciones FAQ usan un patrón "aside con título + lista de
+   preguntas" en 2 columnas a partir de 960px. El aside lleva
+   `position: sticky` para que el título acompañe el scroll en
+   desktop. En MÓVIL/TABLET, sticky causa que el título se
+   superponga visualmente sobre las preguntas mientras se scrolea
+   (bug reportado 2026-05-17). Aquí lo neutralizamos para <960px.
+   ============================================================ */
+@media (max-width: 959.98px) {
+  .rrf__aside,
+  .cnf__aside,
+  .clf__aside,
+  .mef__aside,
+  .rpF__aside,
+  .opF__aside,
+  .desf__aside,
+  .precf__aside,
+  .quif__aside {
+    position: static !important;
+    top: auto !important;
+  }
+}
+
+/* ============================================================
    TYPOGRAPHY CLASSES
    ============================================================ */
 

@@ -337,7 +337,7 @@ const t = i18n[lang] ?? i18n.es;
   /* Botón primario destacado */
   .finalB__primary-wrap { margin-bottom: var(--s-7); }
   .finalB__primary {
-    display: inline-flex; align-items: center; gap: var(--s-3);
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s-3);
     padding: 1.125rem 2rem;
     background: var(--color-primary);
     color: var(--color-text-on-primary, #fff);
@@ -347,6 +347,19 @@ const t = i18n[lang] ?? i18n.es;
     box-shadow: 0 10px 24px rgba(233, 133, 111, 0.38);
     transition: all 240ms cubic-bezier(0.34, 1.2, 0.64, 1);
     white-space: nowrap;
+    text-align: center;
+  }
+  /* En mobile ocupa todo el ancho disponible para que el CTA sea grande, claro y elegante */
+  @media (max-width: 600px) {
+    .finalB__primary {
+      display: flex;
+      width: 100%;
+      padding: 1.125rem 1.25rem;
+      letter-spacing: 1px;
+      font-size: 0.8125rem;
+      white-space: normal;
+      line-height: 1.2;
+    }
   }
   .finalB__primary:hover {
     background: var(--color-primary-hover, #D66F59);
@@ -369,21 +382,28 @@ const t = i18n[lang] ?? i18n.es;
   .finalB__alt-divider::after {
     content: ""; flex: 1; height: 1px; background: var(--color-border-subtle);
   }
-  /* Botones WhatsApp + Email side-by-side (sin tarjeta) */
+  /* Botones WhatsApp + Email + Phone · en mobile en columna full-width para CTAs grandes y centradas */
   .finalB__alt-actions {
-    display: flex; flex-direction: row; gap: var(--s-3);
+    display: flex; flex-direction: column; gap: var(--s-3);
     flex-wrap: wrap;
+  }
+  @media (min-width: 600px) {
+    .finalB__alt-actions { flex-direction: row; }
   }
 
   .finalB__btn {
-    display: inline-flex; align-items: center; gap: var(--s-2);
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--s-2);
     padding: 0.875rem 1.5rem;
     background: transparent;
     border-radius: var(--radius-pill);
     font-family: var(--font-sans); font-size: 0.8125rem; font-weight: 700;
-    letter-spacing: 1.5px; text-transform: uppercase;
+    letter-spacing: 1.2px; text-transform: uppercase;
     text-decoration: none;
+    text-align: center;
     transition: all 220ms var(--ease-out);
+  }
+  @media (max-width: 599.98px) {
+    .finalB__btn { width: 100%; letter-spacing: 0.8px; }
   }
   .finalB__btn--wa {
     color: #128C7E;

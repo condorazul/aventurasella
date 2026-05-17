@@ -474,12 +474,32 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
         </ul>
       </div>
 
-      <!-- Principal nav resto -->
+      <!-- Principal nav resto · ahora con Inicio arriba para que el usuario pueda volver desde el drawer -->
       <div class="hdr__drawerGroup">
         <ul class="hdr__drawerPrimary">
+          <li><a href={urlHome} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlHome && 'is-active']}>{t('nav_home', currentLocale)}</a></li>
           <li><a href={urlPrecios} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlPrecios && 'is-active']}>{t('nav_precios', currentLocale)}</a></li>
           <li><a href={urlQuienes} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlQuienes && 'is-active']}>{t('nav_quienes', currentLocale)}</a></li>
           <li><a href={urlContacto} class:list={['hdr__drawerLink hdr__drawerLink--primary', currentPath === urlContacto && 'is-active']}>{t('nav_contact', currentLocale)}</a></li>
+        </ul>
+      </div>
+
+      <!-- Selector de idioma · mismo patrón i18n que el switcher desktop -->
+      <div class="hdr__drawerGroup">
+        <span class="hdr__drawerEyebrow">{t('nav_lang_eyebrow', currentLocale)}</span>
+        <h3 class="hdr__drawerTitle">{t('nav_lang_change', currentLocale)}</h3>
+        <ul class="hdr__drawerLangs">
+          {langs.map(l => {
+            const isCurrent = l.code === currentLocale;
+            const isReady = translationKey ? isLocaleReady(translationKey, l.code) : l.code === DEFAULT_LOCALE;
+            if (isCurrent) {
+              return <li><a href={buildLangUrl(l.code)} class="hdr__drawerLang is-active" hreflang={l.code} aria-current="true"><span class="hdr__drawerLangCode">{l.label}</span><span class="hdr__drawerLangName">{l.name}</span></a></li>;
+            }
+            if (isReady) {
+              return <li><a href={buildLangUrl(l.code)} class="hdr__drawerLang" hreflang={l.code}><span class="hdr__drawerLangCode">{l.label}</span><span class="hdr__drawerLangName">{l.name}</span></a></li>;
+            }
+            return <li><span class="hdr__drawerLang is-pending" aria-disabled="true"><span class="hdr__drawerLangCode">{l.label}</span><span class="hdr__drawerLangName">{l.name} · {t('lang_coming_soon', l.code)}</span></span></li>;
+          })}
         </ul>
       </div>
 
@@ -1055,6 +1075,49 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     font-size: 0.625rem; font-weight: 700;
     letter-spacing: 1.2px; text-transform: uppercase;
   }
+
+  /* Selector de idioma en el drawer · grid 2x2 elegante, mismo lenguaje que el resto */
+  .hdr__drawerLangs {
+    list-style: none; padding: 0; margin: 0;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;
+  }
+  .hdr__drawerLang {
+    display: flex; align-items: center; gap: 0.625rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid rgba(26, 31, 46, 0.08);
+    border-radius: var(--radius-md, 0.75rem);
+    background: #fff;
+    text-decoration: none;
+    transition: background 200ms ease, border-color 200ms ease;
+  }
+  .hdr__drawerLang:hover {
+    background: rgba(233, 133, 111, 0.06);
+    border-color: rgba(233, 133, 111, 0.3);
+  }
+  .hdr__drawerLang.is-active {
+    background: rgba(233, 133, 111, 0.1);
+    border-color: rgba(233, 133, 111, 0.4);
+  }
+  .hdr__drawerLang.is-pending {
+    opacity: 0.5; cursor: not-allowed;
+  }
+  .hdr__drawerLangCode {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px;
+    background: rgba(26, 31, 46, 0.06);
+    border-radius: 6px;
+    font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 900;
+    letter-spacing: 0.5px;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .hdr__drawerLang.is-active .hdr__drawerLangCode { background: var(--color-primary); color: #fff; }
+  .hdr__drawerLangName {
+    font-family: var(--font-sans); font-size: 0.875rem; font-weight: 700;
+    color: var(--color-text-primary);
+    line-height: 1.2;
+  }
+  .hdr__drawerLang.is-active .hdr__drawerLangName { color: var(--color-primary); }
 
   .hdr__drawerCtas { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 1rem; }
   .hdr__drawerPhone {

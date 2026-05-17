@@ -292,30 +292,26 @@ const cols = [
 
   .site-footer__grid {
     display: grid;
-    gap: var(--s-10);
-    grid-template-columns: 1fr;
-    margin-bottom: var(--s-16);
+    gap: var(--s-8);
+    /* Por defecto (móvil) 2 columnas para reducir scroll · el bloque brand ocupa todo el ancho */
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: var(--s-5);
+    row-gap: var(--s-8);
+    margin-bottom: var(--s-12);
     padding-top: var(--s-10);
     border-top: 1px solid var(--color-border-on-dark);
   }
-
-  /* Mobile · brand arriba ocupa todo el ancho, 3 cols de links en 2 columnas */
-  @media (min-width: 480px) and (max-width: 767.98px) {
-    .site-footer__grid {
-      grid-template-columns: repeat(2, 1fr);
-      column-gap: var(--s-6);
-      row-gap: var(--s-10);
-    }
-    .site-footer__brand {
-      grid-column: 1 / -1;
-    }
+  .site-footer__brand {
+    grid-column: 1 / -1;
   }
 
   @media (min-width: 768px) {
     .site-footer__grid {
       grid-template-columns: 1.8fr repeat(3, 1fr);
       gap: var(--s-10);
+      margin-bottom: var(--s-16);
     }
+    .site-footer__brand { grid-column: auto; }
   }
 
   .site-footer__brand img {
