@@ -21,6 +21,11 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
   background: var(--color-bg-base);
+  /* Bloquea scroll horizontal a nivel raíz: si algún elemento se sale 1-2px no
+   * arrastra el viewport. `clip` (vs hidden) NO crea contexto de scroll, así que
+   * `position: sticky` y los carruseles internos con `overflow-x: auto` siguen
+   * funcionando con normalidad. */
+  overflow-x: clip;
 }
 
 body {
@@ -39,6 +44,12 @@ body {
 
   font-feature-settings: 'liga' 1, 'kern' 1;
   font-optical-sizing: auto;
+
+  /* Por si algún navegador antiguo ignora overflow:clip en html · refuerzo seguro */
+  overflow-x: clip;
+  /* Anchor de overscroll: que el navegador no arrastre la página horizontalmente
+   * cuando el toque empieza en un carrusel drag-scroll. */
+  overscroll-behavior-x: none;
 }
 
 h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote, dl, dd {
@@ -129,6 +140,34 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   .quif__aside {
     position: static !important;
     top: auto !important;
+  }
+}
+
+/* ============================================================
+   FIX GLOBAL · Hero H1 mobile breathing room (todas las páginas)
+   ------------------------------------------------------------
+   En móvil estrecho (<480px) algunos H1 de hero llegan al borde
+   por su `clamp(min, vw, max)` con `min` alto (ej. 2.75rem) y
+   texto largo en EN/FR/PT (ej. "Sella River descent",
+   "Descente du Sella avec chien"). Reducimos el mínimo para que
+   el título respire lateralmente igual que ES.
+   ============================================================ */
+@media (max-width: 480px) {
+  .rrh__title,
+  .cnh__title,
+  .cdh__title,
+  .meh__title,
+  .clh__title,
+  .dih__title,
+  .opH__title,
+  .qsHero__title,
+  .prh__title,
+  .ctoh__title,
+  .rpH__title,
+  .blogH__title,
+  .rsvH__title {
+    font-size: clamp(1.875rem, 8.5vw, 2.625rem);
+    letter-spacing: -0.02em;
   }
 }
 
