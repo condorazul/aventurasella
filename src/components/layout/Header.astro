@@ -11,9 +11,12 @@ interface Props {
   currentPath?: string;
   theme?: 'light' | 'dark';
   translationKey?: TranslationKey;
+  /** Override hreflang URLs por idioma · usado por blog posts (slugs dinámicos)
+   *  para que el switcher salte al post equivalente y no al hub del blog. */
+  customAlternates?: Record<Locale, string>;
 }
 
-const { currentPath = '/', theme = 'dark', translationKey } = Astro.props;
+const { currentPath = '/', theme = 'dark', translationKey, customAlternates } = Astro.props;
 
 // ==================== i18n · locale actual ====================
 // El BaseLayout pasa el locale actual + translationKey vía Astro.locals,
@@ -159,8 +162,9 @@ const isBlogActive = currentPath.startsWith('/blog') || currentPath.startsWith(u
 // ==================== i18n · selector de idioma ====================
 
 // Si la página declaró translationKey (vía BaseLayout), usamos getAlternates
-// para resolver URLs correctas por idioma. Si no, fallback a localizeUrl genérico.
-const alternates = translationKey ? getAlternates(translationKey) : null;
+// para resolver URLs correctas por idioma. customAlternates tiene prioridad para
+// casos dinámicos como blog posts (slugs distintos por idioma).
+const alternates = customAlternates ?? (translationKey ? getAlternates(translationKey) : null);
 
 const buildLangUrl = (locale: Locale): string => {
   if (alternates) return alternates[locale];

@@ -140,7 +140,7 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
   <body>
     <a href="#main" class="skip-link">{t('a11y_skip_link', lang)}</a>
 
-    <Header currentPath={currentPath} translationKey={translationKey} />
+    <Header currentPath={currentPath} translationKey={translationKey} customAlternates={customAlternates} />
 
     <main id="main">
       <slot />
