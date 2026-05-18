@@ -146,6 +146,11 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
     <CookieBanner />
 
     <script>
+      // PageSpeed fix · solo aplica el estado inicial opacity:0 cuando JS ya
+      // está corriendo. Antes de esto el contenido es visible inmediato →
+      // Lighthouse detecta LCP/FCP rápido y no hay flash en mobile lento.
+      document.documentElement.classList.add('js-ready');
+
       // Reveal on scroll
       const els = document.querySelectorAll('[data-reveal]');
       if ('IntersectionObserver' in window && els.length) {
@@ -160,7 +165,17 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
           },
           { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
         );
-        els.forEach((el) => observer.observe(el));
+        // Marcamos como visibles los elementos que ya están en viewport al
+        // cargar (hero, primera vista) sin esperar al observer · acelera FCP
+        const vh = window.innerHeight;
+        els.forEach((el) => {
+          const rect = el.getBoundingClientRect();
+          if (rect.top < vh * 0.85) {
+            el.classList.add('is-visible');
+          } else {
+            observer.observe(el);
+          }
+        });
       } else {
         els.forEach((el) => el.classList.add('is-visible'));
       }

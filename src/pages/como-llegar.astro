@@ -261,6 +261,13 @@ const jsonLd = {
       <ol class="cld__grid">
         {ciudades.map((c, i) => (
           <li class="cld__item" data-reveal data-reveal-delay={(i % 3) + 1}>
+            <a
+              class="cld__link"
+              href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(c.c)}&destination=${encodeURIComponent('Aventura en el Sella, Calle Juan Carlos I 18, Arriondas, Asturias')}&travelmode=driving`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Abrir Google Maps con ruta en coche desde ${c.c} a Aventura en el Sella en Arriondas`}
+            >
             <span class="cld__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
             <span class="cld__city">{c.c}</span>
             <div class="cld__stats">

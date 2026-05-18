@@ -305,7 +305,14 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
    REVEAL ANIMATIONS
    ============================================================ */
 
-[data-reveal] {
+/* CRITICAL FIX · 2026-05-18 · LCP/PageSpeed
+ * El estado inicial `opacity:0` se aplica SOLO cuando JS está activo (clase
+ * `js-ready` en <html>). Sin JS o antes de hidrate, el contenido es visible
+ * inmediatamente → LCP detectable por Lighthouse + sin flash en mobile lento.
+ *
+ * El JS añade `js-ready` al <html> al inicio del script de reveal (en
+ * BaseLayout), y desde ahí el observer activa `is-visible` por elemento. */
+.js-ready [data-reveal] {
   opacity: 0;
   transform: translateY(32px);
   transition:
@@ -314,7 +321,7 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   will-change: opacity, transform;
 }
 
-[data-reveal].is-visible {
+.js-ready [data-reveal].is-visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -331,22 +338,22 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 [data-reveal-delay="10"].is-visible { transition-delay: 800ms; }
 
 /* Variantes de reveal por tipo */
-[data-reveal-type="scale"] { transform: scale(0.94); }
-[data-reveal-type="scale"].is-visible { transform: scale(1); }
+.js-ready [data-reveal-type="scale"] { transform: scale(0.94); }
+.js-ready [data-reveal-type="scale"].is-visible { transform: scale(1); }
 
-[data-reveal-type="slide-left"] { transform: translateX(32px); }
-[data-reveal-type="slide-left"].is-visible { transform: translateX(0); }
+.js-ready [data-reveal-type="slide-left"] { transform: translateX(32px); }
+.js-ready [data-reveal-type="slide-left"].is-visible { transform: translateX(0); }
 
 /* slide-right · entra desde la izquierda y se asienta · sutil y elegante */
-[data-reveal-type="slide-right"] {
+.js-ready [data-reveal-type="slide-right"] {
   transform: translateX(-32px);
   transition:
     opacity 1100ms var(--ease-out),
     transform 1100ms var(--ease-out);
 }
-[data-reveal-type="slide-right"].is-visible { transform: translateX(0); }
+.js-ready [data-reveal-type="slide-right"].is-visible { transform: translateX(0); }
 
-[data-reveal-type="fade"] { transform: none; }
+.js-ready [data-reveal-type="fade"] { transform: none; }
 
 /* ============================================================
    HOVERS GLOBALES (sutiles, aplicados por defecto a elementos clave)
