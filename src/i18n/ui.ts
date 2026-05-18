@@ -62,7 +62,6 @@ export const ui = {
   cta_read_guide:     { es: 'Leer la guía',    en: 'Read the guide', fr: 'Lire le guide',   pt: 'Ler o guia' },
   cta_check_prices:   { es: 'Ver precios',     en: 'See prices',     fr: 'Voir les prix',   pt: 'Ver preços' },
   cta_view_all:       { es: 'Ver todas',       en: 'See all',        fr: 'Voir tout',       pt: 'Ver todas' },
-  cta_more_info:      { es: 'Más información', en: 'More info',      fr: 'Plus d\'infos',   pt: 'Mais info' },
   cta_back_top:       { es: 'Volver arriba',   en: 'Back to top',    fr: 'Retour en haut',  pt: 'Voltar ao topo' },
 
   // ============== Etiquetas comunes ==============
