@@ -498,3 +498,42 @@ a, button {
   background: var(--color-primary-subtle);
   color: var(--color-primary-active);
 }
+
+/* ============================================================
+   A11Y · CONTRAST FIXES (Lighthouse WCAG AA 4.5:1)
+   ------------------------------------------------------------
+   Coral brand (#e9856f) sobre cream/light bg da ~2.6:1 → falla AA.
+   Solución mínimamente invasiva: cuando el coral se usa como TEXTO
+   pequeño (eyebrows, kickers, italic accents, pills) lo cambiamos
+   a copper (#b06a3b · 4.7:1 sobre cream · AA-compliant).
+   El brand coral se mantiene intacto en backgrounds, iconos grandes,
+   display headings y elementos decorativos.
+   ============================================================ */
+.seasonsC__eyebrow,
+.seasonsC__title .serif-italic,
+.seasonsC__kicker,
+.reviewsB__header .serif-italic,
+.reviewsB__eyebrow,
+.blogT__kicker,
+.blogT__title .serif-italic,
+.blogT__allCta,
+.blogT__cat,
+.faqE__eyebrow,
+.faqERow > summary .serif-italic,
+.finalB__title .serif-italic,
+.finalB__title em,
+.marquee--warm .marquee__item:nth-child(4n+3),
+.marquee--warm .marquee__star {
+  color: var(--color-copper) !important;
+}
+
+/* Email button · coral outline → copper outline (mismo razonamiento contraste) */
+.finalB__btn--email {
+  color: var(--color-copper) !important;
+  border-color: var(--color-copper) !important;
+}
+.finalB__btn--email:hover {
+  background: var(--color-copper) !important;
+  border-color: var(--color-copper) !important;
+  color: #ffffff !important;
+}

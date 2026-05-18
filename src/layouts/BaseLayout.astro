@@ -318,11 +318,15 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
         position: absolute;
         top: -40px;
         left: 0;
-        background: var(--color-primary);
-        color: white;
+        /* A11y: navy en lugar de coral · white sobre navy = 16:1 (passes AA fácil)
+         * vs white sobre coral primary = 2.7:1 (falla). Skip-links suelen ser
+         * dark sólido por convención. */
+        background: var(--color-text-primary);
+        color: #ffffff;
         padding: 0.5rem 1rem;
         z-index: var(--z-tooltip);
         border-radius: 0 0 var(--radius-md) 0;
+        font-weight: 700;
       }
       .skip-link:focus { top: 0; }
 
