@@ -174,6 +174,11 @@ const t = i18n[lang] ?? i18n.es;
     padding-block: var(--section-padding-lg);
     background: var(--color-bg-base);
   }
+  /* Mobile · reducir padding arriba y abajo de la sección, dar más
+   * line-height al título para que las 3 líneas respiren · feedback usuario */
+  @media (max-width: 767.98px) {
+    .split { padding-block: clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2.5rem); }
+  }
 
   .split__grid {
     display: grid;
@@ -334,6 +339,11 @@ const t = i18n[lang] ?? i18n.es;
     color: var(--color-text-primary);
     margin-bottom: var(--s-8);
   }
+  /* Mobile · el título es 3 líneas ("Un descenso / sin prisa, / pensado al
+   * detalle.") · con line-height 0.95 se ven amontonadas · subimos a 1.1 */
+  @media (max-width: 767.98px) {
+    .split__title { line-height: 1.1; }
+  }
 
   .split__title .serif-italic {
     color: var(--color-sage);
@@ -359,6 +369,12 @@ const t = i18n[lang] ?? i18n.es;
     gap: var(--s-4);
     padding-top: var(--s-8);
     border-top: 1px solid var(--color-border-subtle);
+  }
+  /* Mobile · reducir el padding-top de las stats para acercarlas al texto
+   * y eliminar el aire excesivo entre +25 / 56K / 4.8 y el cierre de sección */
+  @media (max-width: 767.98px) {
+    .split__stats { padding-top: var(--s-5); gap: var(--s-3); }
+    .split__text { margin-bottom: var(--s-6); }
   }
 
   .split__stat-value {
