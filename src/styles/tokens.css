@@ -224,3 +224,20 @@
   --z-toast:        70;
   --z-tooltip:      80;
 }
+
+/* ============================================================
+   MOBILE OVERRIDE · section padding más compacto (<768px)
+   ------------------------------------------------------------
+   Desktop conserva los paddings generosos (--section-padding-md = 6-10rem).
+   En mobile/tablet, el scroll se vuelve pesado y queda demasiado espacio
+   muerto entre secciones · bajamos los mínimos manteniendo jerarquía
+   sm/md/lg/xl. Sección distinguible pero compacta y elegante.
+   ============================================================ */
+@media (max-width: 767.98px) {
+  :root {
+    --section-padding-sm:  clamp(2rem,    5vw, 3rem);
+    --section-padding-md:  clamp(2.75rem, 6vw, 4rem);
+    --section-padding-lg:  clamp(3.25rem, 7vw, 4.75rem);
+    --section-padding-xl:  clamp(3.75rem, 8vw, 5.5rem);
+  }
+}
