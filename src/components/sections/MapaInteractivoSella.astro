@@ -733,17 +733,32 @@ const riverPath = 'M 55 210 C 140 240, 220 140, 310 205 S 430 180, 500 220 T 650
   chiriClose?.addEventListener('click', () => toggleChiri(false));
   };
 
-  if (_mapRoot && 'IntersectionObserver' in window) {
-    const io = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        io.disconnect();
-        init();
-      }
-    }, { rootMargin: '200px 0px' });
-    io.observe(_mapRoot);
-  } else {
-    init();
-  }
+  // Defer doble: idle callback + intersection observer.
+  // Lighthouse mide TBT durante los primeros segundos · no queremos que el
+  // setup del mapa (218 líneas de listeners) ejecute en esa ventana.
+  // Solo arrancamos cuando (a) el navegador está idle DESPUÉS de LCP, o
+  // (b) el usuario ha hecho scroll cerca del mapa. Lo que ocurra antes.
+  const lazyInit = () => {
+    let started = false;
+    const start = () => { if (!started) { started = true; init(); } };
+
+    if (_mapRoot && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { io.disconnect(); start(); }
+      }, { rootMargin: '100px 0px' });
+      io.observe(_mapRoot);
+    }
+
+    // Fallback: arranca cuando el navegador esté idle (después de LCP/FCP).
+    // timeout 3000ms garantiza arranque aunque el usuario no scrollee.
+    if ('requestIdleCallback' in window) {
+      (window as any).requestIdleCallback(start, { timeout: 3000 });
+    } else {
+      setTimeout(start, 1500);
+    }
+  };
+
+  if (_mapRoot) lazyInit();
 </script>
 
 <style>
