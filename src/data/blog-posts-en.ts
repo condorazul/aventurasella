@@ -188,7 +188,7 @@ export const BLOG_POSTS_EN: BlogPostEn[] = [
   },
   {
     slug: 'what-to-do-after-sella-descent-ribadesella',
-    title: 'What to do after the Sella River descent · Ribadesella and surroundings',
+    title: 'What to do after the Sella descent · Ribadesella nearby',
     h1: 'What to do after the Sella River descent',
     description: 'What to visit after the Sella River descent: Ribadesella, Cangas de Onís, Lastres, Covadonga. Afternoon and evening plans to round off the day in Asturias.',
     excerpt: 'You have already paddled the Sella. It is 15:00, you are showered and have the afternoon ahead. Five real plans to round off the day in eastern Asturias.',

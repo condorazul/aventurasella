@@ -322,6 +322,15 @@ const jsonLdGraph: any[] = [
     dateModified: post.dateModified,
     keywords: post.keyword,
     articleSection: post.category,
+    /* Estimación wordCount basada en readingTime (220 palabras/min, promedio
+     * lectura adulta en español/inglés). Señal de profundidad para search. */
+    wordCount: post.readingTime * 220,
+    /* SpeakableSpecification · Google y Bing usan esto para snippets de voz
+     * (Google Assistant, Bing voice). Selecciona el lead + las respuestas FAQ. */
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.ed__lead', '.rrfI__a', '.edFAQ__answer'],
+    },
     isPartOf: { '@id': `${baseUrl}${blogBasePath}/#blog` },
   },
   {
@@ -343,6 +352,17 @@ if (faqs.length > 0) {
   jsonLdGraph.push({
     '@type': 'FAQPage',
     '@id': `${canonicalUrl}#faq`,
+    /* speakable también en FAQPage para que Google/Bing usen las respuestas
+     * en resultados de búsqueda por voz */
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.rrfI__a', '.edFAQ__answer'],
+    },
+    inLanguage:
+      lang === 'en' ? 'en-GB' :
+      lang === 'fr' ? 'fr-FR' :
+      lang === 'pt' ? 'pt-PT' :
+      'es-ES',
     mainEntity: faqs.map(f => ({
       '@type': 'Question',
       name: f.q,
