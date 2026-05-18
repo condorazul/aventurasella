@@ -82,6 +82,17 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
       });
     </script>
 
+    <!-- ============== Google Analytics 4 ==============
+         ID: G-QHQ5JKWPL5 · respeta Consent Mode v2 declarado arriba.
+         Si analytics_storage = denied → GA recibe pings sin cookies (cookieless ping).
+         Si granted (post-consent) → tracking completo. -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QHQ5JKWPL5"></script>
+    <script is:inline>
+      gtag('js', new Date());
+      gtag('config', 'G-QHQ5JKWPL5', { anonymize_ip: true });
+    </script>
+
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Aventura en el Sella" />
