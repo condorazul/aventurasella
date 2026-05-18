@@ -151,6 +151,10 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
    texto largo en EN/FR/PT (ej. "Sella River descent",
    "Descente du Sella avec chien"). Reducimos el mínimo para que
    el título respire lateralmente igual que ES.
+
+   ⚠️ `!important` necesario porque los `<style>` scoped de Astro
+   añaden `[data-astro-cid-xxx]` a sus selectores y ganan por
+   especificidad. Sin !important este override no aplica.
    ============================================================ */
 @media (max-width: 480px) {
   .rrh__title,
@@ -166,8 +170,48 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
   .rpH__title,
   .blogH__title,
   .rsvH__title {
-    font-size: clamp(1.875rem, 8.5vw, 2.625rem);
-    letter-spacing: -0.02em;
+    font-size: clamp(1.75rem, 8vw, 2.375rem) !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1 !important;
+  }
+  /* El serif-italic dentro de hero H1 a menudo es la palabra "descent" o
+   * "descenso del Sella" — segunda línea visualmente. La mantenemos en el
+   * mismo tamaño que el resto del H1 (heredado) para evitar contraste
+   * grotesco edge-to-edge en idiomas con palabras largas. */
+  .rrh__title .serif-italic,
+  .cnh__title .serif-italic,
+  .cdh__title .serif-italic,
+  .meh__title .serif-italic,
+  .clh__title .serif-italic,
+  .dih__title .serif-italic,
+  .opH__title .serif-italic,
+  .qsHero__title .serif-italic,
+  .prh__title .serif-italic,
+  .ctoh__title .serif-italic,
+  .rpH__title .serif-italic,
+  .blogH__title .serif-italic,
+  .rsvH__title .serif-italic {
+    font-size: 0.92em !important;
+    letter-spacing: -0.01em !important;
+  }
+}
+/* Tablet estrecho (480-720px) · transición suave para que el H1 no salte
+ * en tamaño al cruzar el breakpoint y mantenga respiración. */
+@media (min-width: 480.01px) and (max-width: 719.98px) {
+  .rrh__title,
+  .cnh__title,
+  .cdh__title,
+  .meh__title,
+  .clh__title,
+  .dih__title,
+  .opH__title,
+  .qsHero__title,
+  .prh__title,
+  .ctoh__title,
+  .rpH__title,
+  .blogH__title,
+  .rsvH__title {
+    font-size: clamp(2.375rem, 7vw, 3.25rem) !important;
   }
 }
 
