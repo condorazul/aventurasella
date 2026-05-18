@@ -119,6 +119,39 @@ button { cursor: pointer; border: 0; background: none; padding: 0; }
 .section--dark { background: var(--color-bg-dark); color: var(--color-text-on-dark); }
 
 /* ============================================================
+   PERFORMANCE · content-visibility para secciones below-the-fold
+   ------------------------------------------------------------
+   Chrome aplica `content-visibility: auto` para skipear el render
+   de elementos off-screen hasta que entran en viewport · gran win
+   de Lighthouse Performance (LCP, TBT) sin coste visual. La hint
+   `contain-intrinsic-size` evita layout shift al estimar altura.
+   ============================================================ */
+section.section,
+section[class*="section--"],
+.split, .bento, .experiences, .parallax, .howE, .includes,
+.reviewsB, .seasonsGuide, .blogT, .faqHome, .reservaCTA,
+.locationTeaser, .trustChecklist, .finalB,
+.cld, .clt, .clmap, .clm, .clb, .clr, .clf,
+.cnj, .cns, .cnb, .cnq, .cnr, .cnrev, .cnf, .cnl,
+.rrx, .rrf, .rrcta, .rrm, .rrs, .rrb,
+.cdt, .cdq, .cds, .cdf,
+.met, .mey, .mes, .meq, .mer, .mef,
+.dih, .dis, .dif, .did, .div, .dip, .dia, .dig,
+.rpH, .rpI, .rpT, .rpF, .rpX, .rpCta,
+.opS, .opH, .opF, .opX,
+.qsHero, .qsValues, .qsCta,
+.prh, .prc, .pre, .prl, .prx, .prpay, .precf, .prw, .prT,
+.ctoh, .ctf, .cti, .ctm {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+/* Hero NUNCA · debe renderizar siempre para LCP detectable */
+.hero, .cnh, .rrh, .meh, .clh, .cdh, .dih, .rpH,
+.opH, .qsHero, .prh, .ctoh, .rsvH, .blogH {
+  content-visibility: visible;
+}
+
+/* ============================================================
    FIX GLOBAL · sticky asides de FAQ solo en desktop
    ------------------------------------------------------------
    Las secciones FAQ usan un patrón "aside con título + lista de

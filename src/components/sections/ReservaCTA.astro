@@ -113,7 +113,8 @@ const t = i18n[lang] ?? i18n.es;
   .ctaA__eyebrow {
     display: inline-block;
     font-family: var(--font-sans);
-    font-size: 0.6875rem;
+    /* Mín 12px · Lighthouse Mobile SEO flag legible-font (sube 0.6875rem→0.75rem) */
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -238,9 +239,10 @@ const t = i18n[lang] ?? i18n.es;
   }
 
   .ctaA__btn-phone-tag {
-    font-size: 0.5625rem;
+    /* Mín 12px · Lighthouse Mobile SEO flag legible-font (sube 0.5625rem→0.75rem) */
+    font-size: 0.75rem;
     letter-spacing: 1.6px;
-    color: rgba(251, 248, 241, 0.55);
+    color: rgba(251, 248, 241, 0.75);  /* también sube contraste de 55→75 */
     text-transform: uppercase;
     margin-top: 2px;
   }

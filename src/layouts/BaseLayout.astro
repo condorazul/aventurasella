@@ -98,6 +98,13 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
         <link rel="alternate" hreflang="x-default" href={`${siteBase}${alternates.es}`} />
       </>
     )}
+    <!-- Performance · preconnect a dominios externos usados (Google Maps share URL en /como-llegar/) ·
+         dns-prefetch como fallback para navegadores antiguos. Acelera la primera conexión. -->
+    <link rel="preconnect" href="https://share.google" crossorigin />
+    <link rel="dns-prefetch" href="https://share.google" />
+    <link rel="preconnect" href="https://maps.google.com" crossorigin />
+    <link rel="dns-prefetch" href="https://maps.google.com" />
+
     <!-- Favicon set completo · NO usar ?v=N cache-busters (colisionan con Disallow: /*?* en robots.txt) -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />

@@ -240,7 +240,7 @@ const cols = [
         <li><a href={getLocalePath('legal_privacidad', lang)}>{t.legal_privacidad}</a></li>
         <li><a href={getLocalePath('legal_cookies', lang)}>{t.legal_cookies}</a></li>
         <li><a href={getLocalePath('legal_terminos', lang)}>{t.legal_terminos}</a></li>
-        <li><a href="#" data-cookie-settings>{t.legal_config_cookies}</a></li>
+        <li><button type="button" class="site-footer__cookie-btn" data-cookie-settings>{t.legal_config_cookies}</button></li>
       </ul>
     </div>
   </div>
@@ -426,6 +426,21 @@ const cols = [
   }
 
   .site-footer__legal a:hover {
+    color: var(--color-primary-soft);
+  }
+
+  /* Cookie settings · era <a href="#"> (Lighthouse non-crawlable) · ahora <button>
+   * con mismo estilo visual que los otros links del legal */
+  .site-footer__cookie-btn {
+    font: inherit;
+    color: rgba(244, 240, 232, 0.5);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    transition: color var(--duration-base) var(--ease-out);
+  }
+  .site-footer__cookie-btn:hover {
     color: var(--color-primary-soft);
   }
 </style>
