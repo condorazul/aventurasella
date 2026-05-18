@@ -58,7 +58,18 @@ const faqs = [
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    localBusinessSchema(baseUrl),
+    localBusinessSchema(baseUrl, 'es'),
+    {
+      '@type': 'WebPage',
+      '@id': `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: title,
+      description,
+      inLanguage: 'es-ES',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+      about: { '@id': `${baseUrl}/#business` },
+      mainEntityOfPage: canonicalUrl,
+    },
     {
       '@type': 'Product',
       '@id': `${baseUrl}/#product`,
