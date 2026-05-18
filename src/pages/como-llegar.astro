@@ -263,7 +263,7 @@ const jsonLd = {
           <li class="cld__item" data-reveal data-reveal-delay={(i % 3) + 1}>
             <a
               class="cld__link"
-              href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(c.c)}&destination=${encodeURIComponent('Aventura en el Sella, Calle Juan Carlos I 18, Arriondas, Asturias')}&travelmode=driving`}
+              href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(c.c + ', España')}&destination=${encodeURIComponent('Aventura en el Sella, 43.3874223, -5.1866022')}&travelmode=driving`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Abrir Google Maps con ruta en coche desde ${c.c} a Aventura en el Sella en Arriondas`}
@@ -284,6 +284,11 @@ const jsonLd = {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
               {c.ruta}
             </p>
+            <span class="cld__open" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              Abrir en Google Maps
+            </span>
+            </a>
           </li>
         ))}
       </ol>
@@ -927,7 +932,6 @@ const jsonLd = {
 
   .cld__item {
     position: relative;
-    padding: clamp(1.5rem, 2.5vw, 2rem) 1.25rem 1.25rem;
     background: #fff;
     border: 1px solid rgba(26, 31, 46, 0.08);
     border-radius: 0.875rem;
@@ -941,6 +945,7 @@ const jsonLd = {
     background: linear-gradient(90deg, var(--color-sage, #3D4F3A), var(--color-primary));
     transform: scaleX(0); transform-origin: left;
     transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+    z-index: 1;
   }
   .cld__item:hover {
     transform: translateY(-3px);
@@ -948,6 +953,24 @@ const jsonLd = {
     box-shadow: 0 20px 40px rgba(26, 31, 46, 0.08);
   }
   .cld__item:hover::before { transform: scaleX(1); }
+  /* Link envolvente · cubre toda la card y abre Google Maps directions */
+  .cld__link {
+    display: flex; flex-direction: column;
+    gap: 0.625rem;
+    padding: clamp(1.5rem, 2.5vw, 2rem) 1.25rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+  }
+  .cld__open {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed rgba(26, 31, 46, 0.1);
+    font-family: var(--font-sans); font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--color-primary);
+  }
+  .cld__open svg { flex-shrink: 0; }
   .cld__num {
     position: absolute;
     top: 1rem; right: 1rem;
