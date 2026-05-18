@@ -338,6 +338,39 @@ section[class*="section--"],
    REVEAL ANIMATIONS
    ============================================================ */
 
+/* ============================================================
+   PERFORMANCE · GPU composition hints (Lighthouse "non-composited" fix)
+   ------------------------------------------------------------
+   Lighthouse detectó 39 animaciones no compuestas. Forzamos GPU layer
+   en los elementos más interactivos del above-the-fold con will-change.
+   Limitado a 6-7 selectores para no abusar de memoria GPU.
+   ============================================================ */
+.hero__cta-primary,
+.hero__cta-ghost,
+.hero__cta-phone,
+.hdr__cta,
+.finalB__primary,
+.split__cta,
+.ctaA__btn--primary {
+  will-change: transform;
+}
+
+/* Hover-frequent elements · transición explícita en lugar de `transition: all`
+ * para evitar animar propiedades costosas como `font-size`/`width`. Mantenemos
+ * background/border/shadow porque son visualmente importantes pero limitamos
+ * al set core. */
+.hero__cta-primary,
+.hero__cta-ghost,
+.hero__cta-phone,
+.hdr__cta,
+.finalB__primary {
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 220ms ease,
+              border-color 220ms ease,
+              box-shadow 220ms ease,
+              color 220ms ease;
+}
+
 /* CRITICAL FIX · 2026-05-18 · LCP/PageSpeed
  * El estado inicial `opacity:0` se aplica SOLO cuando JS está activo (clase
  * `js-ready` en <html>). Sin JS o antes de hidrate, el contenido es visible
