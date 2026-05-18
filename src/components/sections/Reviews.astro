@@ -497,15 +497,20 @@ const reviews = t.reviews;
     display: flex; justify-content: center; gap: var(--s-2);
     margin-top: var(--s-5);
   }
+  /* Touch target 24x24 mín · el dot visible queda 24x4 vía background-clip
+   * + padding vertical. El usuario ve el bar pequeño pero el tap área cumple WCAG */
   .reviewsB__dot {
-    width: 24px; height: 4px;
+    width: 24px; height: 24px;
     background: var(--color-border-subtle);
+    background-clip: content-box;
+    padding: 10px 0;       /* 24-2*10 = 4 visible */
     border: 0; border-radius: 999px;
     cursor: pointer;
     transition: background 220ms var(--ease-out), width 220ms var(--ease-out);
   }
   .reviewsB__dot.is-active {
     background: var(--color-primary);
+    background-clip: content-box;
     width: 40px;
   }
 

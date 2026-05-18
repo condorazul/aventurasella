@@ -587,25 +587,32 @@ const facts = [
     align-items: center;
   }
 
+  /* Touch target 24x24px mínimo (WCAG 2.5.8) · el punto visible queda 10px
+   * pero el área clicable es 24x24 vía background-clip + padding. El usuario
+   * ve el mismo dot pequeño pero el área de tap cumple WCAG. */
   .howE__dot {
-    width: 10px;
-    height: 10px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     border: 0;
     background: rgba(251, 248, 241, 0.3);
+    background-clip: content-box;
+    padding: 7px;       /* 24 - 2*7 = 10 visible */
     cursor: pointer;
-    padding: 0;
     transition: all var(--duration-base) var(--ease-out);
   }
 
   .howE__dot:hover {
     background: rgba(251, 248, 241, 0.55);
+    background-clip: content-box;
   }
 
   .howE__dot.is-active {
-    width: 32px;
+    width: 46px;
+    padding-inline: 7px;
     border-radius: 999px;
     background: var(--color-primary);
+    background-clip: content-box;
   }
 
   /* Nav arrows */

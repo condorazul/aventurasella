@@ -23,7 +23,7 @@
   /* COLOR — TEXT */
   --color-text-primary:             #1a1f2e;  /* Soft navy — NO #000 */
   --color-text-secondary:           #4a5267;  /* Gris secundario */
-  --color-text-muted:               #8a8578;  /* Warm grey muted */
+  --color-text-muted:               #6f6a5e;  /* Warm grey muted · 4.6:1 sobre cream · AA WCAG */
   --color-text-on-dark:             #f4f0e8;  /* Crema sobre fondo oscuro */
   --color-text-on-dark-muted:       rgba(244, 240, 232, 0.72);
   --color-text-on-primary:          #ffffff;
