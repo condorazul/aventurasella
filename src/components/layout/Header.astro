@@ -433,17 +433,17 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
         })}
       </div>
 
-      <!-- 2) Home · primera opción del menú (más fácil para volver al inicio) -->
+      <!-- 2) Home · primera opción · logo de marca en círculo (no icono casa) -->
       <div class="hdr__drawerGroup hdr__drawerGroup--home">
         <a href={urlHome} class:list={['hdr__drawerHome', currentPath === urlHome && 'is-active']} aria-label={t('nav_home', currentLocale)}>
           <span class="hdr__drawerHomeIcon" aria-hidden="true">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/></svg>
+            <img src="/images/logo/logo_sella_black.svg" alt="" width="32" height="32" loading="eager" />
           </span>
           <span>{t('nav_home', currentLocale)}</span>
         </a>
       </div>
 
-      <!-- 3) Bloque Descenso del Sella -->
+      <!-- 3) Bloque Descenso del Sella (expandido por defecto · principal) -->
       <div class="hdr__drawerGroup">
         <span class="hdr__drawerEyebrow">{ddSella.eyebrow}</span>
         <h3 class="hdr__drawerTitle">{ddSella.label}</h3>
@@ -462,10 +462,15 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
         </ul>
       </div>
 
-      <!-- 4) Bloque Guías -->
-      <div class="hdr__drawerGroup">
-        <span class="hdr__drawerEyebrow">{ddGuias.eyebrow}</span>
-        <h3 class="hdr__drawerTitle">{ddGuias.label}</h3>
+      <!-- 4) Bloque Guías · colapsable para no alargar el menú -->
+      <details class="hdr__drawerGroup hdr__drawerGroup--collapsible">
+        <summary class="hdr__drawerSummary">
+          <span class="hdr__drawerSummaryText">
+            <span class="hdr__drawerEyebrow">{ddGuias.eyebrow}</span>
+            <span class="hdr__drawerTitle">{ddGuias.label}</span>
+          </span>
+          <svg class="hdr__drawerChev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
         <ul>
           {ddGuias.items.map(item => (
             <li>
@@ -479,12 +484,17 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
             </li>
           ))}
         </ul>
-      </div>
+      </details>
 
-      <!-- 5) Bloque Blog -->
-      <div class="hdr__drawerGroup">
-        <span class="hdr__drawerEyebrow">{ddBlog.eyebrow}</span>
-        <h3 class="hdr__drawerTitle">{ddBlog.label}</h3>
+      <!-- 5) Bloque Blog · colapsable -->
+      <details class="hdr__drawerGroup hdr__drawerGroup--collapsible">
+        <summary class="hdr__drawerSummary">
+          <span class="hdr__drawerSummaryText">
+            <span class="hdr__drawerEyebrow">{ddBlog.eyebrow}</span>
+            <span class="hdr__drawerTitle">{ddBlog.label}</span>
+          </span>
+          <svg class="hdr__drawerChev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </summary>
         <ul>
           {ddBlog.items.map(item => (
             <li>
@@ -506,7 +516,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
             </a>
           </li>
         </ul>
-      </div>
+      </details>
 
       <!-- 6) Empresa: Precios, Quiénes somos, Contacto · Home ya está arriba como primera opción -->
       <div class="hdr__drawerGroup">
@@ -1090,85 +1100,126 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     letter-spacing: 1.2px; text-transform: uppercase;
   }
 
-  /* ============== DRAWER · BANDERAS CIRCULARES ARRIBA ==============
-   * Diseñadas para ser lo primero que ve el usuario al abrir el menú.
-   * 4 círculos con bandera emoji + código pequeño debajo · MUY visual,
-   * mucho más rápido de identificar que texto "Cambiar idioma". */
+  /* ============== DRAWER · BANDERAS CIRCULARES (FULL FILL) ==============
+   * El círculo ES la bandera (no un emoji rectangular dentro de un círculo).
+   * Se logra con la emoji ampliada que rebasa los bordes + overflow:hidden.
+   * Sin fondo blanco · se mezcla con el fondo cream del drawer. */
   .hdr__drawerFlags {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 0.625rem;
-    margin: 0 0 var(--s-2);
-    padding: 0.625rem 0.5rem;
-    background: #fff;
-    border: 1px solid rgba(26, 31, 46, 0.06);
-    border-radius: var(--radius-md, 0.75rem);
+    gap: 0.5rem;
+    margin: 0 0 var(--s-3);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
   }
   .hdr__drawerFlag {
     display: flex; flex-direction: column; align-items: center;
     gap: 0.3rem;
-    padding: 0.5rem 0.25rem;
+    padding: 0.375rem 0.25rem;
     border-radius: var(--radius-md, 0.75rem);
     text-decoration: none;
     color: var(--color-text-secondary);
-    transition: background 200ms ease, color 200ms ease, transform 220ms ease;
+    transition: color 200ms ease, transform 220ms ease;
   }
-  .hdr__drawerFlag:hover {
-    background: rgba(233, 133, 111, 0.08);
-    color: var(--color-text-primary);
-    transform: translateY(-1px);
-  }
-  .hdr__drawerFlag.is-active {
-    background: rgba(233, 133, 111, 0.12);
-    color: var(--color-primary);
-  }
-  .hdr__drawerFlag.is-pending {
-    opacity: 0.4; cursor: not-allowed; pointer-events: none;
-  }
+  .hdr__drawerFlag:hover { color: var(--color-text-primary); transform: translateY(-1px); }
+  .hdr__drawerFlag.is-active { color: var(--color-primary); }
+  .hdr__drawerFlag.is-pending { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
+
   .hdr__drawerFlagIcon {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    width: 52px; height: 52px;
     border-radius: 50%;
-    background: var(--color-bg-base, #FBF8F1);
-    border: 1.5px solid rgba(26, 31, 46, 0.1);
-    font-size: 1.5rem;
+    overflow: hidden;
+    background: transparent;
+    border: 1.5px solid rgba(26, 31, 46, 0.12);
     line-height: 1;
-    box-shadow: 0 2px 6px rgba(26, 31, 46, 0.06);
-    transition: border-color 200ms ease, transform 220ms ease;
+    transition: border-color 200ms ease, transform 220ms ease, box-shadow 220ms ease;
+    /* Emoji escalado para que llene el círculo · el rectángulo del flag
+     * se recorta por el border-radius del padre */
+    font-size: 56px;
+    font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', emoji, sans-serif;
   }
+  /* La emoji rebasa por arriba/abajo del cuadrado contenedor para que
+   * los lados largos de la bandera lleguen al borde del círculo. */
+  .hdr__drawerFlagIcon { letter-spacing: -0.05em; }
   .hdr__drawerFlag.is-active .hdr__drawerFlagIcon {
     border-color: var(--color-primary);
-    box-shadow: 0 4px 12px rgba(233, 133, 111, 0.32);
-    transform: scale(1.06);
+    box-shadow: 0 6px 16px rgba(233, 133, 111, 0.4);
+    transform: scale(1.08);
   }
   .hdr__drawerFlagCode {
     font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
     letter-spacing: 1.4px; text-transform: uppercase;
   }
 
-  /* ============== DRAWER · HOME (primera opción del menú) ============== */
-  .hdr__drawerGroup--home { margin-top: var(--s-1); }
+  /* ============== DRAWER · HOME (primera opción con LOGO en círculo) ============== */
+  .hdr__drawerGroup--home { margin-top: 0; margin-bottom: var(--s-1); }
   .hdr__drawerHome {
-    display: inline-flex; align-items: center; gap: 0.625rem;
+    display: flex; align-items: center; gap: 0.75rem;
     padding: 0.875rem 1rem;
     border-radius: var(--radius-md, 0.75rem);
     text-decoration: none;
     background: rgba(26, 31, 46, 0.04);
-    transition: background 200ms ease;
+    transition: background 200ms ease, transform 200ms ease;
     font-family: var(--font-display); font-weight: 900;
-    font-size: 1rem; letter-spacing: -0.01em;
+    font-size: 1.0625rem; letter-spacing: -0.01em;
     color: var(--color-text-primary);
     text-transform: uppercase;
   }
   .hdr__drawerHome:hover { background: rgba(233, 133, 111, 0.1); }
-  .hdr__drawerHome.is-active { background: rgba(233, 133, 111, 0.12); color: var(--color-primary); }
+  .hdr__drawerHome.is-active { background: rgba(233, 133, 111, 0.14); color: var(--color-primary); }
   .hdr__drawerHomeIcon {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 28px; height: 28px;
+    width: 42px; height: 42px;
     border-radius: 50%;
-    background: #fff;
-    color: var(--color-primary);
+    background: var(--color-primary);
+    color: #fff;
     flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(233, 133, 111, 0.32);
+  }
+  .hdr__drawerHomeIcon img {
+    width: 26px; height: 26px;
+    filter: brightness(0) invert(1);
+  }
+
+  /* ============== DRAWER · GRUPOS COLAPSABLES (Guías + Blog) ============== */
+  .hdr__drawerGroup--collapsible {
+    border-top: 1px solid rgba(26, 31, 46, 0.08);
+    padding-top: var(--s-3);
+  }
+  .hdr__drawerGroup--collapsible > ul {
+    list-style: none; padding: 0; margin: 0.625rem 0 0;
+    display: flex; flex-direction: column; gap: 0.25rem;
+    animation: drawerCollapse 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  @keyframes drawerCollapse {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hdr__drawerSummary {
+    list-style: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: var(--s-2);
+    padding: 0.25rem 0;
+    transition: color 200ms ease;
+  }
+  .hdr__drawerSummary::-webkit-details-marker { display: none; }
+  .hdr__drawerSummary::marker { display: none; }
+  .hdr__drawerSummary:hover { color: var(--color-primary); }
+  .hdr__drawerSummaryText { display: flex; flex-direction: column; min-width: 0; }
+  .hdr__drawerSummaryText .hdr__drawerEyebrow { margin-bottom: 0.25rem; }
+  .hdr__drawerSummaryText .hdr__drawerTitle { margin: 0; }
+  .hdr__drawerChev {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), color 200ms ease;
+  }
+  .hdr__drawerGroup--collapsible[open] .hdr__drawerChev {
+    transform: rotate(180deg);
+    color: var(--color-primary);
   }
 
   .hdr__drawerCtas { display: flex; flex-direction: column; gap: 0.625rem; margin-top: 1rem; }
