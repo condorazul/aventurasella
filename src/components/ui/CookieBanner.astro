@@ -22,6 +22,7 @@ const i18n = {
     leadStrong2: 'análisis y publicidad',
     leadMid2: ' solo se activan si las aceptas — nos ayudan a mejorar la web y medir si nuestros anuncios funcionan. Puedes rechazarlas o personalizar tu elección.',
     moreInfo: 'Más información',
+    moreInfoAria: 'Más información sobre la política de cookies de Aventura en el Sella',
     reject: 'Rechazar',
     configure: 'Configurar',
     acceptAll: 'Aceptar todas',
@@ -70,6 +71,7 @@ const i18n = {
     leadStrong2: 'Analytics and advertising',
     leadMid2: ' cookies are only enabled if you accept them — they help us improve the site and measure whether our ads work. You can reject or customize your choice.',
     moreInfo: 'More info',
+    moreInfoAria: 'More information about the cookie policy of Aventura en el Sella',
     reject: 'Reject',
     configure: 'Customize',
     acceptAll: 'Accept all',
@@ -118,6 +120,7 @@ const i18n = {
     leadStrong2: 'analyse et de publicité',
     leadMid2: ' ne s\'activent que si vous les acceptez — ils nous aident à améliorer le site et à mesurer si nos annonces fonctionnent. Vous pouvez les refuser ou personnaliser votre choix.',
     moreInfo: 'Plus d\'infos',
+    moreInfoAria: 'Plus d\'informations sur la politique de cookies d\'Aventura en el Sella',
     reject: 'Refuser',
     configure: 'Personnaliser',
     acceptAll: 'Accepter tout',
@@ -166,6 +169,7 @@ const i18n = {
     leadStrong2: 'análise e publicidade',
     leadMid2: ' só se activam se as aceitares — ajudam-nos a melhorar a web e a medir se os nossos anúncios funcionam. Podes rejeitá-las ou personalizar a tua escolha.',
     moreInfo: 'Mais info',
+    moreInfoAria: 'Mais informação sobre a política de cookies da Aventura en el Sella',
     reject: 'Rejeitar',
     configure: 'Configurar',
     acceptAll: 'Aceitar todas',
@@ -220,7 +224,7 @@ const privacyHref = getLocalePath('legal_privacidad', lang);
       <p class="ckB__lead">
         {t.leadPre}<strong>{t.leadStrong1}</strong>{t.leadMid1}<strong>{t.leadStrong2}</strong>{t.leadMid2}
       </p>
-      <a href={cookiesHref} class="ckB__more">{t.moreInfo}</a>
+      <a href={cookiesHref} class="ckB__more" aria-label={t.moreInfoAria}>{t.moreInfo}</a>
     </div>
     <div class="ckB__actions">
       <button type="button" class="ckB__btn ckB__btn--ghost" data-ck-action="reject">{t.reject}</button>

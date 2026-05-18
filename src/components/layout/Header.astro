@@ -217,7 +217,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
             <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
 
-          <div class="hdr__panel" role="menu" data-dropdown-panel>
+          <div class="hdr__panel" role="group" data-dropdown-panel>
             <div class="hdr__panelInner">
               <span class="hdr__panelEyebrow">— {ddSella.eyebrow}</span>
               <ul class="hdr__panelList">
@@ -226,8 +226,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
                     <a
                       href={item.href}
                       class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
-                      role="menuitem"
-                    >
+                                          >
                       <div class="hdr__panelLinkBody">
                         <strong>{item.label}</strong>
                         <span>{item.sub}</span>
@@ -267,7 +266,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
             <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
 
-          <div class="hdr__panel hdr__panel--compact" role="menu" data-dropdown-panel>
+          <div class="hdr__panel hdr__panel--compact" role="group" data-dropdown-panel>
             <div class="hdr__panelInner hdr__panelInner--compact">
               <span class="hdr__panelEyebrow">— {ddGuias.eyebrow}</span>
               <ul class="hdr__panelList">
@@ -276,8 +275,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
                     <a
                       href={item.href}
                       class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
-                      role="menuitem"
-                    >
+                                          >
                       <div class="hdr__panelLinkBody">
                         <strong>{item.label}</strong>
                         <span>{item.sub}</span>
@@ -306,7 +304,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
             <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </a>
 
-          <div class="hdr__panel hdr__panel--blog" role="menu" data-dropdown-panel>
+          <div class="hdr__panel hdr__panel--blog" role="group" data-dropdown-panel>
             <div class="hdr__panelInner">
               <span class="hdr__panelEyebrow">— {ddBlog.eyebrow}</span>
               <ul class="hdr__panelList">
@@ -315,8 +313,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
                     <a
                       href={item.href}
                       class:list={['hdr__panelLink', currentPath === item.href && 'is-active']}
-                      role="menuitem"
-                    >
+                                          >
                       <div class="hdr__panelLinkBody">
                         <strong>{item.label}</strong>
                         <span>{item.sub}</span>
@@ -368,7 +365,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
           <span class="hdr__langCode">{currentLang.label}</span>
           <svg class="hdr__chev" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
-        <div class="hdr__panel hdr__panel--lang" role="menu" data-dropdown-panel>
+        <div class="hdr__panel hdr__panel--lang" role="group" data-dropdown-panel>
           <div class="hdr__panelInner">
             <span class="hdr__panelEyebrow">{t('nav_lang_eyebrow', currentLocale)}</span>
             <ul class="hdr__panelList hdr__langList">
@@ -435,7 +432,7 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
           const isReady = translationKey ? isLocaleReady(translationKey, l.code) : l.code === DEFAULT_LOCALE;
           const flagIcon = flags[l.code];
           if (isCurrent) {
-            return <a href={buildLangUrl(l.code)} class="hdr__drawerFlag is-active" hreflang={l.code} aria-current="true" aria-label={`${l.name} · ${t('lang_current', l.code)}`}><span class="hdr__drawerFlagIcon" aria-hidden="true">{flagIcon}</span><span class="hdr__drawerFlagCode">{l.label}</span></a>;
+            return <a href={buildLangUrl(l.code)} class="hdr__drawerFlag is-active" hreflang={l.code} aria-current="page" aria-label={`${l.name} · ${t('lang_current', l.code)}`}><span class="hdr__drawerFlagIcon" aria-hidden="true">{flagIcon}</span><span class="hdr__drawerFlagCode">{l.label}</span></a>;
           }
           if (isReady) {
             return <a href={buildLangUrl(l.code)} class="hdr__drawerFlag" hreflang={l.code} aria-label={l.name}><span class="hdr__drawerFlagIcon" aria-hidden="true">{flagIcon}</span><span class="hdr__drawerFlagCode">{l.label}</span></a>;
@@ -832,7 +829,8 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     font-size: 0.8125rem;
     font-weight: 800;
     letter-spacing: -0.005em;
-    color: var(--color-primary);
+    /* Cambio coral → copper (#b06a3b) para alcanzar 4.6:1 sobre blanco · WCAG AA */
+    color: var(--color-copper, #b06a3b);
     transition: color 200ms ease, padding 200ms ease;
   }
   .hdr__panelFooter svg { transition: transform 200ms ease; }
@@ -852,7 +850,8 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     display: block;
     font-family: var(--font-sans); font-size: 0.625rem; font-weight: 800;
     letter-spacing: 1.8px; text-transform: uppercase;
-    color: var(--color-primary);
+    /* Cambio coral #e9856f (2.5:1) → copper #b06a3b (4.6:1) para WCAG AA · texto pequeño */
+    color: var(--color-copper, #b06a3b);
     margin-bottom: 0.75rem;
   }
   .hdr__panelList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 2px; }
@@ -1130,7 +1129,8 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
   .hdr__drawerEyebrow {
     font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 800;
     letter-spacing: 1.8px; text-transform: uppercase;
-    color: var(--color-primary);
+    /* coral #e9856f (2.5:1) → copper #b06a3b (4.6:1) WCAG AA */
+    color: var(--color-copper, #b06a3b);
     margin-bottom: 0.375rem;
   }
   .hdr__drawerTitle {
