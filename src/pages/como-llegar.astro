@@ -263,7 +263,7 @@ const jsonLd = {
           <li class="cld__item" data-reveal data-reveal-delay={(i % 3) + 1}>
             <a
               class="cld__link"
-              href="https://share.google/huLLaIz31FiYohuTV"
+              href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(c.c + ', España')}&destination=${encodeURIComponent('Aventura en el Sella, Arriondas')}&travelmode=driving`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Abrir Google Maps con ruta en coche desde ${c.c} a Aventura en el Sella en Arriondas`}
@@ -285,8 +285,8 @@ const jsonLd = {
               {c.ruta}
             </p>
             <span class="cld__open" aria-hidden="true">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              Ver ubicación en Google Maps
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+              Ver ruta en Google Maps
             </span>
             </a>
           </li>

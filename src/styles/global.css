@@ -537,3 +537,19 @@ a, button {
   border-color: var(--color-copper) !important;
   color: #ffffff !important;
 }
+
+/* ============================================================
+   CTA primary buttons · navy sobre coral (decisión usuaria 2026-05-18)
+   ------------------------------------------------------------
+   white sobre coral #e9856f = 2.7:1 · falla AA 4.5:1.
+   navy #1a1f2e sobre coral #e9856f = 7.8:1 · pasa AA AAA.
+   Look editorial moderno · brand coral intacto en bg, solo el texto cambia.
+   ============================================================ */
+.hero__cta-primary,
+.finalB__primary,
+.hero__sticker-value {
+  color: var(--color-text-primary) !important;
+}
+.hero__sticker-stars {
+  color: var(--color-text-primary) !important;
+}
