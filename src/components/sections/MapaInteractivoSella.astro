@@ -508,6 +508,12 @@ const riverPath = 'M 55 210 C 140 240, 220 140, 310 205 S 430 180, 500 220 T 650
 </section>
 
 <script>
+  // PERFORMANCE · diferir setup hasta que el mapa entre en viewport.
+  // El componente es below-the-fold en la Home → no necesitamos enganchar
+  // listeners durante el LCP. Esto saca el trabajo del critical path y
+  // mejora TBT/Speed Index.
+  const _mapRoot = document.querySelector<HTMLElement>('.routeV2__map');
+  const init = () => {
   const wrap = document.querySelector<HTMLElement>('.routeV2__map');
   const tip = document.getElementById('routeV2-tip') as HTMLElement | null;
   const tipType = document.getElementById('routeV2-tip-type') as HTMLElement | null;
@@ -725,6 +731,19 @@ const riverPath = 'M 55 210 C 140 240, 220 140, 310 205 S 430 180, 500 220 T 650
 
   chiriBtn?.addEventListener('click', () => toggleChiri());
   chiriClose?.addEventListener('click', () => toggleChiri(false));
+  };
+
+  if (_mapRoot && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        io.disconnect();
+        init();
+      }
+    }, { rootMargin: '200px 0px' });
+    io.observe(_mapRoot);
+  } else {
+    init();
+  }
 </script>
 
 <style>

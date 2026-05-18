@@ -98,12 +98,6 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
         <link rel="alternate" hreflang="x-default" href={`${siteBase}${alternates.es}`} />
       </>
     )}
-    <!-- Performance · preconnect + dns-prefetch para dominios externos -->
-    <link rel="preconnect" href="https://share.google" crossorigin />
-    <link rel="dns-prefetch" href="https://share.google" />
-    <link rel="preconnect" href="https://maps.google.com" crossorigin />
-    <link rel="dns-prefetch" href="https://maps.google.com" />
-
     <!-- A11y/UX · declarar color-scheme · evita flash blanco al cargar en modo dark del SO,
          y evita que iOS Safari renderice forms con colores nativos no controlados -->
     <meta name="color-scheme" content="light" />
@@ -160,13 +154,26 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
     <CookieBanner />
 
     <script>
-      // PageSpeed fix · solo aplica el estado inicial opacity:0 cuando JS ya
-      // está corriendo. Antes de esto el contenido es visible inmediato →
-      // Lighthouse detecta LCP/FCP rápido y no hay flash en mobile lento.
-      document.documentElement.classList.add('js-ready');
+      // PERFORMANCE · evitar "redistribución forzada" (Lighthouse) ·
+      // ORDEN ESTRICTO: 1) leer todas las dimensiones, 2) mutar layout, 3) escribir.
+      // Si mezclamos lecturas y escrituras forzamos reflows sincrónicos.
 
       // Reveal on scroll
-      const els = document.querySelectorAll('[data-reveal]');
+      const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+      // 1) READ PHASE · layout aún está limpio (sin mutar nada todavía) →
+      //    getBoundingClientRect usa cache, no fuerza reflow.
+      const vh = window.innerHeight;
+      const aboveFold = new Set<Element>();
+      els.forEach((el) => {
+        if (el.getBoundingClientRect().top < vh * 0.85) aboveFold.add(el);
+      });
+
+      // 2) WRITE PHASE · invalida layout una sola vez al añadir js-ready,
+      //    pero ya no volvemos a leer dimensiones, así que el reflow se difiere
+      //    al siguiente paint del navegador (no es síncrono).
+      document.documentElement.classList.add('js-ready');
+
       if ('IntersectionObserver' in window && els.length) {
         const observer = new IntersectionObserver(
           (entries) => {
@@ -179,12 +186,8 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
           },
           { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
         );
-        // Marcamos como visibles los elementos que ya están en viewport al
-        // cargar (hero, primera vista) sin esperar al observer · acelera FCP
-        const vh = window.innerHeight;
         els.forEach((el) => {
-          const rect = el.getBoundingClientRect();
-          if (rect.top < vh * 0.85) {
+          if (aboveFold.has(el)) {
             el.classList.add('is-visible');
           } else {
             observer.observe(el);
