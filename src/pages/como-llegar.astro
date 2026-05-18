@@ -10,12 +10,14 @@ const canonicalUrl = `${baseUrl}/como-llegar/`;
 const ogImage = '/images/optimized/como-llegar-cta-lg.jpg';
 
 // Ciudades origen más relevantes · distancias por carretera (rutas recomendadas)
+// lat/lng: centro de cada ciudad · Google Maps los necesita en el `data=` de la
+// URL de direcciones para poder calcular la ruta cuando el destino se fija con FTID.
 const ciudades = [
-  { c: 'Oviedo',    km: 52,  tiempo: '50 min',     ruta: 'A-64 + N-634',      destacado: true  },
-  { c: 'Gijón',     km: 75,  tiempo: '55 min',     ruta: 'A-8 + AS-114',       destacado: true  },
-  { c: 'Santander', km: 160, tiempo: '1 h 55 min', ruta: 'A-8',                destacado: false },
-  { c: 'Bilbao',    km: 255, tiempo: '2 h 45 min', ruta: 'A-8',                destacado: false },
-  { c: 'Madrid',    km: 440, tiempo: '4 h 30 min', ruta: 'A-6 + A-66 + A-64',  destacado: false },
+  { c: 'Oviedo',    lat: 43.36029, lng: -5.84476, km: 52,  tiempo: '50 min',     ruta: 'A-64 + N-634',      destacado: true  },
+  { c: 'Gijón',     lat: 43.53573, lng: -5.66152, km: 75,  tiempo: '55 min',     ruta: 'A-8 + AS-114',       destacado: true  },
+  { c: 'Santander', lat: 43.46472, lng: -3.80444, km: 160, tiempo: '1 h 55 min', ruta: 'A-8',                destacado: false },
+  { c: 'Bilbao',    lat: 43.26271, lng: -2.92528, km: 255, tiempo: '2 h 45 min', ruta: 'A-8',                destacado: false },
+  { c: 'Madrid',    lat: 40.41678, lng: -3.70379, km: 440, tiempo: '4 h 30 min', ruta: 'A-6 + A-66 + A-64',  destacado: false },
 ];
 
 // 3 medios de transporte en tabs
@@ -263,7 +265,7 @@ const jsonLd = {
           <li class="cld__item" data-reveal data-reveal-delay={(i % 3) + 1}>
             <a
               class="cld__link"
-              href={`https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(c.c + ', España')}&destination=${encodeURIComponent('Aventura en el Sella, Arriondas')}&travelmode=driving`}
+              href={`https://www.google.com/maps/dir/${encodeURIComponent(c.c + ', España')}/Aventura+en+el+Sella/@43.3874223,-5.1866022,9z/data=!4m13!4m12!1m5!1m1!1s0x0:0x0!2m2!1d${c.lng}!2d${c.lat}!1m5!1m1!1s0xd36195b04532889:0x9b2face87069ecfc!2m2!1d-5.1866022!2d43.3874223!3e0`}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`Abrir Google Maps con ruta en coche desde ${c.c} a Aventura en el Sella en Arriondas`}
