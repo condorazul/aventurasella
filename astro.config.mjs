@@ -16,12 +16,11 @@ export default defineConfig({
   trailingSlash: 'always',
   build: {
     format: 'directory',
-    /* Inline CSS · 2026-05-18 PageSpeed reportaba "Solicitudes que bloquean
-     * el renderizado · 1360ms" por la hoja de estilos externa. Con 'always'
-     * Astro inline TODA la CSS en el <style> del <head> → cero requests
-     * bloqueantes adicionales, FCP/LCP cae varios segundos. El HTML aumenta
-     * algunos KB pero el efecto neto en Lighthouse es positivo. */
-    inlineStylesheets: 'always',
+    /* 'auto' = Astro inline hojas pequeñas (<4KB) y deja externas las grandes.
+     * Probamos 'always' (2026-05-18) y resultó en HTML de 432KB en home
+     * (CSS gigante inline cada página · sin cache compartido entre rutas).
+     * Performance cayó de 99 → 59 en Desktop. Revertido a 'auto'. */
+    inlineStylesheets: 'auto',
   },
   i18n: {
     defaultLocale: 'es',
