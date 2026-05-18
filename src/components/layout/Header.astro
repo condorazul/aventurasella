@@ -663,6 +663,11 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
   /* Pill flotante · opaco blanco · rounded full · con breathing */
   .hdr__pill {
     pointer-events: auto;
+    /* z-index relativo para QUEDAR POR ENCIMA del drawer cuando se abre.
+     * Sin esto, el drawer (z-index 90) tapa el pill y crea un hueco vacío
+     * grande arriba (donde debería verse el pill con el X de cerrar). */
+    position: relative;
+    z-index: 5;
     display: grid;
     grid-template-columns: auto 1fr auto auto;
     align-items: center;
@@ -1019,10 +1024,11 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
   .hdr__drawer {
     position: fixed; inset: 0;
     background: var(--color-bg-base, #FBF8F1);
-    /* Padding-top reducido (5rem en vez de 6rem) · el brand badge se acerca
-     * al pill header para eliminar el espacio muerto. Sigue habiendo aire
-     * suficiente para no solaparse con el pill (height 60-68px) */
-    padding: 5rem clamp(1.25rem, 4vw, 2.5rem) 2rem;
+    /* Padding-top mínimo que clarea el pill (height 68px + ~10px top padding
+     * + 10px breathing = 88px ≈ 5.5rem). Pero como ahora el pill tiene
+     * z-index superior, podemos reducir más: 4.5rem deja un pequeño aire
+     * extra entre pill y brand badge sin hueco vacío grande. */
+    padding: 4.5rem clamp(1.25rem, 4vw, 2.5rem) 2rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     opacity: 0; visibility: hidden;
