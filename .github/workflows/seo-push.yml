@@ -1,10 +1,11 @@
-name: SEO · Push indexación semanal
+name: SEO · Push indexación (manual)
 
+# Solo disparo manual desde GitHub Actions UI o gh CLI.
+# Workflow disponible pero NO ejecuta solo. Cuando se quiera lanzar:
+#   - UI: Actions tab → "SEO · Push indexación (manual)" → Run workflow
+#   - CLI: gh workflow run seo-push.yml
+# Requiere repository secrets: GSC_KEY_JSON, INDEXNOW_KEY
 on:
-  # Cada lunes a las 06:00 UTC (08:00 Madrid en verano, 07:00 en invierno)
-  schedule:
-    - cron: '0 6 * * 1'
-  # Permite lanzarlo manualmente desde la UI de GitHub Actions
   workflow_dispatch:
 
 jobs:
