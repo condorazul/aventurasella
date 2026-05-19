@@ -1,0 +1,35 @@
+name: SEO · Push indexación semanal
+
+on:
+  # Cada lunes a las 06:00 UTC (08:00 Madrid en verano, 07:00 en invierno)
+  schedule:
+    - cron: '0 6 * * 1'
+  # Permite lanzarlo manualmente desde la UI de GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  push:
+    name: Indexing push (Google + IndexNow)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install deps
+        run: pip install google-api-python-client google-auth
+
+      - name: Push indexing (Google + IndexNow)
+        env:
+          GSC_KEY_JSON: ${{ secrets.GSC_KEY_JSON }}
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: python3 scripts/seo/push_indexing.py
+
+      - name: Resumen
+        if: always()
+        run: echo "Push completado · siguiente run automática el próximo lunes 06:00 UTC"
