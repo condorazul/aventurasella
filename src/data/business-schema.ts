@@ -44,6 +44,7 @@ export function localBusinessSchema(baseUrl: string, lang: 'es' | 'en' | 'fr' | 
     fr: 'Descente du Sella en canoë tout inclus depuis Arriondas, Asturies. Canoë, pique-nique asturien, transfert retour, parking et vestiaires. Dès 30€. Animaux gratuits.',
     pt: 'Descida do Sella em canoa tudo incluído desde Arriondas, Astúrias. Canoa, piquenique asturiano, transfer, estacionamento e balneários. Desde 30€. Animais grátis.',
   }[lang];
+  const inLanguage = { es: 'es-ES', en: 'en-GB', fr: 'fr-FR', pt: 'pt-PT' }[lang];
   return {
     '@type': 'LocalBusiness',
     additionalType: ['https://schema.org/TouristAttraction', 'https://schema.org/SportsActivityLocation'],
@@ -51,6 +52,7 @@ export function localBusinessSchema(baseUrl: string, lang: 'es' | 'en' | 'fr' | 
     name: BUSINESS.name,
     alternateName: BUSINESS.alternateName,
     description,
+    inLanguage,
     url: baseUrl,
     telephone: BUSINESS.telephone,
     email: BUSINESS.email,

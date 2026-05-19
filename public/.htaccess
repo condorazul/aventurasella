@@ -1,27 +1,28 @@
-# =================================================================
-# Aventura en el Sella · redirects y rewrites de LiteSpeed/Apache
-# =================================================================
+# ============================================================
+# Aventura en el Sella · .htaccess
+# Stack: LiteSpeed + sitio estático Astro (HTML + assets)
+# Actualizado 2026-05-18 · migración WordPress legacy → Astro
+# ============================================================
 
-# Forzar HTTPS
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # HTTP → HTTPS (solo en producción con certificado)
+  # HTTP → HTTPS
   RewriteCond %{HTTPS} off
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # www → no-www (canonical sin www)
+  # www → sin www (canónica: aventuraenelsella.es)
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
 </IfModule>
 
-# =================================================================
-# Redirecciones 301 (migración WordPress → Astro)
-# Mapeo documentado en memory/project_current_site.md
-# =================================================================
+# ============================================================
+# 301 REDIRECTS · WordPress legacy → Astro
+# Preserva autoridad SEO de URLs antiguas indexadas
+# ============================================================
 
-# Descenso Internacional del Sella — recuperar link juice de la URL antigua
+# Descenso Internacional del Sella (URL con año obsoleto)
 Redirect 301 /descenso-internacional-del-sella-2022/ /descenso-internacional-del-sella/
 Redirect 301 /descenso-internacional-del-sella-2022  /descenso-internacional-del-sella/
 
@@ -29,54 +30,132 @@ Redirect 301 /descenso-internacional-del-sella-2022  /descenso-internacional-del
 Redirect 301 /el-descenso-del-sella-una-experiencia-unica/ /
 Redirect 301 /el-descenso-del-sella-una-experiencia-unica  /
 
-# URLs antiguas WordPress → nuevos slugs Astro
-Redirect 301 /descenso-del-sella-con-ninos/      /con-ninos/
-Redirect 301 /el-descenso-del-sella-con-perro/   /con-perro/
-Redirect 301 /mapa-del-descenso-del-sella/       /recorrido-y-mapa/
-Redirect 301 /contacto-descenso-del-sella/       /contacto/
+# URLs antiguas WP → nuevos slugs Astro
+Redirect 301 /descenso-del-sella-con-ninos/       /con-ninos/
+Redirect 301 /el-descenso-del-sella-con-perro/    /con-perro/
+Redirect 301 /mapa-del-descenso-del-sella/        /recorrido-y-mapa/
+Redirect 301 /contacto-descenso-del-sella/        /contacto/
 Redirect 301 /descenso-del-sella-alquiler-canoas/ /precios/
-Redirect 301 /llegar-al-descenso-del-sella/      /arriondas/
-Redirect 301 /politica-privacidad/               /legal/privacidad/
+Redirect 301 /llegar-al-descenso-del-sella/       /como-llegar/
+Redirect 301 /politica-privacidad/                /legal/privacidad/
 
-# =================================================================
-# Cache headers (Core Web Vitals)
-# =================================================================
+# ============================================================
+# WordPress endpoints obsoletos → 410 Gone
+# Señal a Google de que ya no existen (más eficiente que 404)
+# ============================================================
+<IfModule mod_rewrite.c>
+  RewriteRule ^wp-admin(/.*)?$         - [L,R=410]
+  RewriteRule ^wp-login\.php$          - [L,R=410]
+  RewriteRule ^wp-includes(/.*)?$      - [L,R=410]
+  RewriteRule ^wp-content(/.*)?$       - [L,R=410]
+  RewriteRule ^wp-json(/.*)?$          - [L,R=410]
+  RewriteRule ^xmlrpc\.php$            - [L,R=410]
+  RewriteRule ^readme\.html$           - [L,R=410]
+  RewriteRule ^license\.txt$           - [L,R=410]
+  RewriteRule ^licencia\.txt$          - [L,R=410]
+</IfModule>
+
+# ============================================================
+# LiteSpeed Cache · estático con bypass en /reservar/*
+# Widget Rutevia muestra disponibilidad en tiempo real → no cachear
+# ============================================================
+<IfModule LiteSpeed>
+  # Activar cache público nativo de LiteSpeed (LSCache).
+  # Sitio 100% estático → cache agresivo en HTML mejora TTFB drásticamente.
+  CacheLookup public on
+
+  RewriteEngine On
+
+  # HTML estático → cache 1 hora en LiteSpeed (revalida cuando expira)
+  RewriteRule \.html$ - [E=Cache-Control:max-age=3600]
+  RewriteRule (^|/)$ - [E=Cache-Control:max-age=3600]
+
+  # Páginas con widget en tiempo real → NO cachear (Rutevia consulta disponibilidad)
+  RewriteRule ^reservar(/|$)        - [E=Cache-Control:no-cache]
+  RewriteRule ^en/book(/|$)         - [E=Cache-Control:no-cache]
+  RewriteRule ^fr/reserver(/|$)     - [E=Cache-Control:no-cache]
+  RewriteRule ^pt/reservar(/|$)     - [E=Cache-Control:no-cache]
+
+  # Vary por encoding (Brotli/Gzip) y por idioma (Accept-Language no, sirvemos
+  # rutas distintas por locale, así que no hace falta vary por language)
+</IfModule>
+
+# ============================================================
+# Browser cache · Core Web Vitals
+# Astro hashea CSS/JS bajo /_astro/ → immutable 1 año
+# ============================================================
 <IfModule mod_expires.c>
   ExpiresActive On
 
   # Imágenes
-  ExpiresByType image/avif "access plus 1 year"
-  ExpiresByType image/webp "access plus 1 year"
-  ExpiresByType image/jpeg "access plus 1 year"
-  ExpiresByType image/png  "access plus 1 year"
+  ExpiresByType image/avif    "access plus 1 year"
+  ExpiresByType image/webp    "access plus 1 year"
+  ExpiresByType image/jpeg    "access plus 1 year"
+  ExpiresByType image/png     "access plus 1 year"
   ExpiresByType image/svg+xml "access plus 1 year"
-  ExpiresByType image/x-icon "access plus 1 year"
+  ExpiresByType image/x-icon  "access plus 1 year"
 
-  # Fuentes
+  # Fuentes self-hosted (path estable /fonts/*)
   ExpiresByType font/woff2 "access plus 1 year"
   ExpiresByType font/woff  "access plus 1 year"
 
-  # CSS/JS
-  ExpiresByType text/css               "access plus 1 month"
-  ExpiresByType application/javascript "access plus 1 month"
+  # CSS/JS (hasheados por Astro, contenido único por hash)
+  ExpiresByType text/css               "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
 
-  # HTML (corto — permitir actualizaciones rápidas de copy)
+  # HTML · 1 hora en navegador (LiteSpeed sirve desde LSCache mientras tanto)
   ExpiresByType text/html "access plus 1 hour"
+
+  # Manifest, JSON
+  ExpiresByType application/manifest+json "access plus 1 day"
 </IfModule>
 
-# =================================================================
-# Compresión (CWV)
-# =================================================================
+# Astro hashed assets explícitos · immutable
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|woff2|woff)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # HTML · cache navegador 1h · must-revalidate para que cualquier deploy nuevo
+  # se vea en máximo 1h (LiteSpeed se purga al cambiar archivos en disco)
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# ============================================================
+# Compresión · LiteSpeed Brotli automático, Gzip de respaldo
+# ============================================================
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml text/javascript application/javascript application/json application/xml image/svg+xml
 </IfModule>
 
-# =================================================================
-# Security headers básicos
-# =================================================================
+# ============================================================
+# Security headers (no-rompedores)
+# ============================================================
 <IfModule mod_headers.c>
   Header set X-Content-Type-Options "nosniff"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set Permissions-Policy "geolocation=(self), camera=(), microphone=()"
+
+  # Cross-origin para fuentes preloaded (link rel=preload necesita crossorigin)
+  <FilesMatch "\.(woff2|woff)$">
+    Header set Access-Control-Allow-Origin "*"
+  </FilesMatch>
+
+  # HSTS · activar tras 1 semana de producción estable. Hoy comentado.
+  # Header set Strict-Transport-Security "max-age=31536000; includeSubDomains"
 </IfModule>
+
+# ============================================================
+# Custom error pages · Astro genera 404 i18n
+# ============================================================
+ErrorDocument 404 /404.html
+
+# ============================================================
+# Seguridad · ocultar dotfiles y artefactos de build
+# ============================================================
+<FilesMatch "(^\.ht|\.bak$|\.swp$|\.dist$|\.example$|composer\.(json|lock)|package(-lock)?\.json|astro\.config\.mjs|tsconfig\.json)">
+  Require all denied
+</FilesMatch>

@@ -18,7 +18,7 @@ import { localBusinessSchema } from '@data/business-schema';
 import { getLocalePath } from '@utils/i18n';
 
 const title = 'Reservar descenso del Sella · Desde 30€ · Sin pagar ahora';
-const description = 'Reserva online tu descenso del Sella en canoa desde Arriondas. Sin pagar ahora, cambio o cancelación flexible antes del día, confirmación inmediata por WhatsApp y email. 4,5★ con 147 reseñas reales.';
+const description = 'Reserva online tu descenso del Sella desde Arriondas. Sin pagar ahora, cancelación flexible, confirmación al momento por WhatsApp. 4,5★ · 147 reseñas.';
 
 const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsella.es';
 const canonicalUrl = `${baseUrl}/reservar/`;
@@ -138,6 +138,7 @@ const jsonLd = {
       '@id': `${canonicalUrl}#service`,
       name: 'Reserva del descenso del Sella en canoa',
       description: 'Servicio de reserva online del descenso turístico del Sella desde Arriondas (Asturias). Cambio o cancelación flexible antes del día (24 h si pagaste con tarjeta). Sin pagar ahora.',
+      inLanguage: 'es-ES',
       provider: { '@id': `${baseUrl}/#business` },
       serviceType: 'Canoe rental and guided river descent',
       areaServed: { '@type': 'Place', name: 'Arriondas, Asturias, España' },
@@ -163,6 +164,31 @@ const jsonLd = {
         { '@type': 'ListItem', position: 2, name: 'Reservar', item: canonicalUrl },
       ],
     },
+    /* HowTo · Google muestra carruseles "Cómo reservar el descenso del Sella"
+     * en SERP cuando hay schema HowTo bien formado · ranking + visibilidad voice search */
+    {
+      '@type': 'HowTo',
+      '@id': `${canonicalUrl}#howto`,
+      name: 'Cómo reservar el descenso del Sella en canoa',
+      description: 'Guía paso a paso para reservar tu descenso del Sella sin pagar ahora, con confirmación inmediata por WhatsApp y email.',
+      inLanguage: 'es-ES',
+      totalTime: 'PT2M',
+      estimatedCost: { '@type': 'MonetaryAmount', currency: 'EUR', value: '30' },
+      supply: [
+        { '@type': 'HowToSupply', name: 'Edades de los participantes (mínimo 5 años y 1,15 m de altura)' },
+        { '@type': 'HowToSupply', name: 'Fecha deseada para el descenso' },
+      ],
+      tool: [
+        { '@type': 'HowToTool', name: 'Calendario online en aventuraenelsella.es/reservar' },
+        { '@type': 'HowToTool', name: 'WhatsApp +34 681 09 36 73' },
+      ],
+      step: [
+        { '@type': 'HowToStep', position: 1, name: 'Elige tu día', text: 'Abre el calendario en aventuraenelsella.es/reservar y elige el día con plazas disponibles (en verde). Selecciona ruta Mini (7 km) o Completo (14,5 km).', url: `${canonicalUrl}#booking-widget` },
+        { '@type': 'HowToStep', position: 2, name: 'Indica personas y edades', text: 'Añade número de adultos y niños (mínimo 5 años y 1,15 m). Mascotas gratis sin contar como persona.' },
+        { '@type': 'HowToStep', position: 3, name: 'Confirma sin pagar ahora', text: 'Elige pagar online con tarjeta o pagar el día de la actividad (tarjeta, Bizum, efectivo o transferencia). Sin fianza ni extras escondidos.' },
+        { '@type': 'HowToStep', position: 4, name: 'Recibe confirmación instantánea', text: 'En 2 minutos recibes confirmación por WhatsApp y email con instrucciones de llegada al horario abierto Premium 10:30–12:30.' },
+      ],
+    },
   ],
 };
 ---
@@ -171,6 +197,9 @@ const jsonLd = {
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-lg.avif" type="image/avif" media="(min-width: 1024px)" fetchpriority="high" />
+    <!-- Warm-up DNS para el widget de reservas Rutevia -->
+    <link rel="preconnect" href="https://panel.rutevia.com" crossorigin />
+    <link rel="preconnect" href="https://api.rutevia.com" crossorigin />
   </Fragment>
 
   <!-- ============== HERO COVER ============== -->
@@ -239,28 +268,21 @@ const jsonLd = {
         </p>
       </header>
 
-      <!--
-        ╔════════════════════════════════════════════════════════════════════════╗
-        ║  ESPACIO RESERVADO PARA EL MOTOR DE RESERVAS                          ║
-        ║                                                                        ║
-        ║  Sustituir el siguiente bloque #booking-widget por el código (iframe, ║
-        ║  script o embed) que entregue el proveedor del motor de reservas.     ║
-        ║  El contenedor tiene altura mínima y borde elegante para que mientras ║
-        ║  no haya código se vea profesional · cuando llegue el código,         ║
-        ║  reemplazar el contenido interno del div manteniendo el contenedor.   ║
-        ╚════════════════════════════════════════════════════════════════════════╝
-      -->
+      <!-- Widget de reservas Rutevia · contenedor desnudo (sin placeholder)
+           para no interferir con el diseño propio del widget. Mantenemos el id
+           `booking-widget` para los anchors internos de la página. -->
       <div id="booking-widget" class="rsvB__slot" aria-live="polite">
-        <div class="rsvB__placeholder">
-          <span class="rsvB__placeholderIcon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </span>
-          <p class="rsvB__placeholderTitle">Calendario de reservas</p>
-          <p class="rsvB__placeholderText">
-            Estamos cargando el calendario en tiempo real. Si no aparece en unos segundos, escríbenos por <a href="https://wa.me/34681093673" target="_blank" rel="noopener noreferrer">WhatsApp</a> o al <a href="tel:+34681093673">+34 681 09 36 73</a> · te reservamos al momento.
-          </p>
-        </div>
+        <div id="reservas-widget-351f5a02"></div>
       </div>
+      <script
+        is:inline
+        src="https://panel.rutevia.com/widget.js"
+        data-api-key="97bafc90-8b2e-4613-94b9-12ac6a9c6ae8"
+        data-calendario-id="351f5a02-5503-4470-879d-751ea72f5908"
+        data-pagina-id="88e63a58-3898-4b25-94c1-caf6b8447d21"
+        data-api-base="https://api.rutevia.com"
+        data-container="#reservas-widget-351f5a02"
+      ></script>
     </div>
   </section>
 
@@ -638,13 +660,27 @@ const jsonLd = {
     box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.55);
   }
   .rsvH__cta--primary:hover { background: #d96f57; transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(233, 133, 111, 0.65); }
+  /* Glass CTAs (WhatsApp + Llamar) · más presencia con blur fuerte +
+   * opacity suficiente para legibilidad sobre la imagen del hero */
   .rsvH__cta--ghost {
-    background: rgba(251, 248, 241, 0.12);
+    background: rgba(255, 255, 255, 0.22);
     color: #FBF8F1;
-    border: 1.5px solid rgba(251, 248, 241, 0.4);
-    backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+      0 12px 32px -8px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   }
-  .rsvH__cta--ghost:hover { background: rgba(251, 248, 241, 0.22); border-color: #FBF8F1; }
+  .rsvH__cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+    box-shadow:
+      0 16px 40px -8px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  }
 
   .rsvH__trust {
     list-style: none; padding: 0; margin: 0;
@@ -677,23 +713,11 @@ const jsonLd = {
   .rsvB__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
   .rsvB__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
 
+  /* Contenedor desnudo del widget Rutevia · sin fondo, borde, sombra ni min-height
+   * fija para que el widget defina su propio aspecto cuando renderice. */
   .rsvB__slot {
-    background: #fff;
-    border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08));
-    border-radius: var(--radius-3xl, 1.5rem);
-    box-shadow: 0 24px 56px -28px rgba(26, 31, 46, 0.18);
-    overflow: hidden;
-    min-height: clamp(460px, 60vh, 680px);
-    display: flex; align-items: center; justify-content: center;
     scroll-margin-top: 120px;
-    transition: box-shadow 280ms var(--ease-out);
   }
-  .rsvB__slot:hover { box-shadow: 0 32px 72px -32px rgba(26, 31, 46, 0.25); }
-  .rsvB__placeholder { text-align: center; padding: clamp(2rem, 5vw, 4rem); max-width: 460px; }
-  .rsvB__placeholderIcon { display: inline-flex; width: 72px; height: 72px; align-items: center; justify-content: center; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); border-radius: 50%; margin-bottom: var(--s-5); }
-  .rsvB__placeholderTitle { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.5rem); font-weight: 800; color: var(--color-text-primary); margin: 0 0 var(--s-3); }
-  .rsvB__placeholderText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
-  .rsvB__placeholderText a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
 
   /* ============== 3 COL TRUST ============== */
   .rsvT { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }

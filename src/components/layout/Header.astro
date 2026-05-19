@@ -192,14 +192,16 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
 <header class={`hdr hdr--${theme}`} id="hdr" data-theme={theme} data-label-open-menu={t('nav_open_menu', currentLocale)} data-label-close-menu={t('nav_close_menu', currentLocale)}>
   <div class="hdr__pill" role="navigation" aria-label={t('nav_main_aria', currentLocale)}>
 
-    <!-- LOGO (izquierda) -->
+    <!-- LOGO (izquierda) · badge cream píldora con ilustración SVG sin texto +
+         wordmark "Aventura / en el Sella" estilo desktop · consistente
+         desktop y mobile · sin filter. -->
     <a href={urlHome} class="hdr__logo" aria-label={t('nav_logo_aria', currentLocale)}>
       <span class="hdr__logoBadge">
-        <img src="/images/logo/logo_sella_black.svg" alt="" width="40" height="40" loading="eager" aria-hidden="true" />
-      </span>
-      <span class="hdr__wordmark">
-        <span class="hdr__wordmark-l1">Aventura</span>
-        <span class="hdr__wordmark-l2">en el Sella</span>
+        <img src="/images/logo/logo_sella_icon.svg" alt="" width="40" height="40" loading="eager" aria-hidden="true" />
+        <span class="hdr__wordmark">
+          <span class="hdr__wordmark-l1">Aventura</span>
+          <span class="hdr__wordmark-l2">en el Sella</span>
+        </span>
       </span>
     </a>
 
@@ -422,7 +424,13 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
       <!-- 1) Header del drawer · brand badge (izq) + X cerrar (der) · estilo bicisenda -->
       <div class="hdr__drawerHead">
         <a href={urlHome} class:list={['hdr__drawerBrand', currentPath === urlHome && 'is-active']} aria-label={`${t('nav_home', currentLocale)} · Aventura en el Sella`}>
-          <img src="/images/logo/logo_sella_black.svg" alt="Aventura en el Sella" width="120" height="40" loading="eager" />
+          <span class="hdr__logoBadge">
+            <img src="/images/logo/logo_sella_icon.svg" alt="" width="40" height="40" loading="eager" aria-hidden="true" />
+            <span class="hdr__wordmark">
+              <span class="hdr__wordmark-l1">Aventura</span>
+              <span class="hdr__wordmark-l2">en el Sella</span>
+            </span>
+          </span>
         </a>
         <button type="button" class="hdr__drawerClose" data-drawer-close aria-label={t('nav_close_menu', currentLocale)}>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
@@ -717,15 +725,24 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     transition: background 220ms ease;
   }
   .hdr__logo:hover { background: rgba(26, 31, 46, 0.04); }
+  /* Badge pill cream · envuelve icono + wordmark "Aventura / en el Sella"
+   * para look unificado desktop y mobile. */
   .hdr__logoBadge {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.75rem 0.375rem 0.5rem;
     background: var(--color-bg-warm, #F6F1E3);
-    border-radius: 50%;
+    border: 1px solid rgba(26, 31, 46, 0.06);
+    border-radius: 9999px;
     flex-shrink: 0;
   }
-  .hdr__logoBadge img { width: 28px; height: auto; display: block; }
-  .hdr__wordmark { display: none; flex-direction: column; line-height: 0.95; }
+  .hdr__logoBadge img { width: 32px; height: 32px; display: block; object-fit: contain; }
+  .hdr__wordmark {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.95;
+  }
   .hdr__wordmark-l1 {
     font-family: var(--font-serif); font-style: italic; font-weight: 400;
     font-size: 1rem;
@@ -737,7 +754,6 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     letter-spacing: 1.5px; text-transform: uppercase;
     color: var(--color-text-muted);
   }
-  @media (min-width: 500px) { .hdr__wordmark { display: flex; } }
 
   /* ============== NAV ============== */
   .hdr__nav { display: none; }
@@ -1002,7 +1018,9 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
   .hdr__toggle:hover { background: rgba(26, 31, 46, 0.05); }
   .hdr__toggle span {
     display: block; width: 20px; height: 1.5px;
-    background: var(--color-text-primary);
+    /* Fallback hex explícito para sobrevivir a cualquier fallo de --color-text-primary */
+    background: #1a1f2e;
+    background: var(--color-text-primary, #1a1f2e);
     border-radius: 2px;
     transition: transform 260ms var(--ease-out), opacity 180ms;
   }
@@ -1059,26 +1077,24 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
       gap: 0;
     }
     .hdr__logo:hover { background: transparent; }
+    /* Badge mobile · pill cream más grande con sombra · contiene icono + wordmark */
     .hdr__logoBadge {
-      width: clamp(60px, 16vw, 76px);
-      height: clamp(60px, 16vw, 76px);
-      background: var(--color-sage, #3D4F3A);
-      border-radius: 1.125rem;
-      padding: 0.625rem;
-      box-shadow: 0 10px 28px rgba(61, 79, 58, 0.32);
+      gap: 0.625rem;
+      padding: 0.5rem 1rem 0.5rem 0.625rem;
+      box-shadow:
+        0 2px 6px -1px rgba(26, 31, 46, 0.08),
+        0 12px 30px -8px rgba(26, 31, 46, 0.2);
       transition: transform 220ms ease, box-shadow 220ms ease;
     }
     .hdr__logoBadge:hover {
       transform: translateY(-1px);
-      box-shadow: 0 14px 32px rgba(61, 79, 58, 0.42);
+      box-shadow:
+        0 4px 8px -1px rgba(26, 31, 46, 0.12),
+        0 18px 40px -10px rgba(26, 31, 46, 0.28);
     }
-    .hdr__logoBadge img {
-      width: 100%;
-      height: 100%;
-      filter: brightness(0) invert(1);  /* Logo blanco sobre sage */
-    }
-    /* Wordmark texto fuera en mobile · el badge ya es identidad suficiente */
-    .hdr__wordmark { display: none !important; }
+    .hdr__logoBadge img { width: 40px; height: 40px; }
+    .hdr__wordmark-l1 { font-size: 1.0625rem; }
+    .hdr__wordmark-l2 { font-size: 0.5625rem; }
 
     /* Hamburger · círculo blanco con sombra · simétrico al logo badge */
     .hdr__toggle {
@@ -1095,7 +1111,8 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     .hdr__toggle:hover { background: rgba(255, 255, 255, 1); }
     .hdr__toggle span {
       width: 22px;
-      background: var(--color-text-primary);
+      background: #1a1f2e;
+      background: var(--color-text-primary, #1a1f2e);
     }
   }
 
@@ -1253,24 +1270,22 @@ const currentLang = langs.find(l => l.code === currentLocale) ?? langs[0];
     border-bottom: 1px solid rgba(26, 31, 46, 0.08);
   }
   .hdr__drawerBrand {
+    /* Wrapper transparente · el badge cream que va dentro ya provee fondo y borde
+     * (evita "doble fondo" con el `.hdr__logoBadge` interno · 2026-05-18) */
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 0.5rem 1rem;
-    background: var(--color-bg-warm, #F5F1E8);
-    border: 1px solid rgba(26, 31, 46, 0.06);
-    border-radius: 1rem;
+    padding: 0;
+    background: transparent;
+    border: 0;
     text-decoration: none;
-    transition: transform 220ms ease, box-shadow 220ms ease, border-color 200ms ease, background 200ms ease;
+    transition: transform 220ms ease;
     flex: 0 1 auto;
     min-width: 0;
   }
   .hdr__drawerBrand:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(26, 31, 46, 0.06);
-    border-color: rgba(233, 133, 111, 0.22);
   }
-  .hdr__drawerBrand.is-active {
-    background: rgba(233, 133, 111, 0.06);
-    border-color: rgba(233, 133, 111, 0.28);
+  .hdr__drawerBrand.is-active .hdr__logoBadge {
+    border-color: rgba(233, 133, 111, 0.32);
   }
   .hdr__drawerBrand img {
     display: block;

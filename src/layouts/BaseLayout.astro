@@ -23,7 +23,7 @@ interface Props {
 const {
   title,
   description,
-  ogImage = '/images/og/og-home-es.jpg',
+  ogImage: ogImageProp,
   currentPath = Astro.url.pathname,
   translationKey,
   customAlternates,
@@ -32,6 +32,9 @@ const {
 // Detecta locale desde Astro.currentLocale (Astro i18n) o desde la URL como fallback
 const lang: Locale = (((Astro as any).currentLocale as Locale) ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
 const htmlLang = getHtmlLang(lang);
+
+// OG image localizada · si la página no especifica una propia, usa la del idioma actual
+const ogImage = ogImageProp ?? `/images/og/og-home-${lang}.jpg`;
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 
@@ -82,15 +85,91 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
       });
     </script>
 
-    <!-- ============== Google Analytics 4 ==============
-         ID: G-QHQ5JKWPL5 · respeta Consent Mode v2 declarado arriba.
-         Si analytics_storage = denied → GA recibe pings sin cookies (cookieless ping).
-         Si granted (post-consent) → tracking completo. -->
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QHQ5JKWPL5"></script>
+    <!-- ============== Atribución last-touch (rb_attrib v1) ==============
+         Captura UTMs + click IDs (gclid/fbclid/ttclid/msclkid) + referrer del
+         primer aterrizaje externo. Persiste 90 días en localStorage y re-inyecta
+         los UTMs al querystring en visitas posteriores para que el motor de
+         reservas (Rutevia) los reciba en la conversión. Funciona sin consent
+         (sólo functional_storage). -->
     <script is:inline>
-      gtag('js', new Date());
-      gtag('config', 'G-QHQ5JKWPL5', { anonymize_ip: true });
+    (function () {
+      try {
+        var KEY = 'rb_attrib';
+        var TTL = 90 * 24 * 60 * 60 * 1000; // 90 días
+        var KEYS = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','gclid','fbclid','ttclid','msclkid'];
+
+        var qs = new URLSearchParams(window.location.search);
+        var fresh = {};
+        var hasFresh = false;
+        for (var i = 0; i < KEYS.length; i++) {
+          var v = qs.get(KEYS[i]);
+          if (v) { fresh[KEYS[i]] = v; hasFresh = true; }
+        }
+        // Referrer del primer aterrizaje externo
+        var ref = document.referrer || '';
+        if (ref && ref.indexOf(window.location.hostname) === -1) fresh.ref = ref;
+
+        var stored = null;
+        try { stored = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+        if (stored && stored._t && Date.now() - stored._t > TTL) stored = null;
+
+        // Merge: lo nuevo gana (last-touch). Si no hay nada nuevo, conserva lo viejo.
+        var merged = Object.assign({}, stored || {}, fresh);
+        if (hasFresh || (fresh.ref && !(stored && stored.ref))) {
+          merged._t = Date.now();
+          try { localStorage.setItem(KEY, JSON.stringify(merged)); } catch (e) {}
+        }
+
+        // Re-inyectar UTMs al query string si vienen de localStorage y no están ya en la URL
+        if (!hasFresh && stored) {
+          var inject = false;
+          var injectKeys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+          for (var j = 0; j < injectKeys.length; j++) {
+            var k = injectKeys[j];
+            if (stored[k] && !qs.get(k)) { qs.set(k, stored[k]); inject = true; }
+          }
+          if (inject && window.history && history.replaceState) {
+            var url = window.location.pathname + '?' + qs.toString() + window.location.hash;
+            try { history.replaceState(null, '', url); } catch (e) {}
+          }
+        }
+      } catch (e) {}
+    })();
+    </script>
+
+    <!-- ============== Google Analytics 4 · LOAD DEFERIDO ==============
+         ID: G-QHQ5JKWPL5 · Consent Mode v2 ya inicializado arriba.
+         PERFORMANCE: cargamos GA4 sólo cuando el usuario interactúa (scroll/click/touch)
+         o tras 5s de idle. Esto quita ~50-100ms del main thread en LCP/TBT.
+         Las primeras pageviews siguen reportándose porque GA detecta la sesión
+         inmediatamente al ejecutarse, respetando Consent Mode declarado antes. -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+    <script is:inline>
+      (function () {
+        var loaded = false;
+        function loadGA() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-QHQ5JKWPL5';
+          s.onload = function () {
+            gtag('js', new Date());
+            gtag('config', 'G-QHQ5JKWPL5', { anonymize_ip: true });
+          };
+          document.head.appendChild(s);
+        }
+        var events = ['scroll', 'click', 'touchstart', 'keydown', 'mousemove'];
+        events.forEach(function (ev) {
+          addEventListener(ev, loadGA, { once: true, passive: true, capture: true });
+        });
+        // Fallback · cargar tras 5s aunque el usuario no interactúe
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(loadGA, { timeout: 5000 });
+        } else {
+          setTimeout(loadGA, 5000);
+        }
+      })();
     </script>
 
     <title>{title}</title>
@@ -116,6 +195,13 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
     <!-- Evita que iOS auto-linkee números de teléfono (causa layout shift + UX inconsistente) ·
          nosotros declaramos los <a href="tel:..."> manualmente donde corresponde -->
     <meta name="format-detection" content="telephone=no" />
+
+    <!-- Preload de fuentes críticas above-the-fold (Inter body + Fraunces hero italic)
+         · self-hosted en /fonts/ con path estable. Rompe la cadena CSS→@font-face→woff2
+         que detectaba Lighthouse (-900ms por fuente). Sólo preloadeamos `latin` (la
+         mayoría del texto); `latin-ext` se descarga sólo si aparece algún glifo. -->
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/inter-latin-wght-normal.woff2" crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-latin-wght-italic.woff2" crossorigin />
 
     <!-- Favicon set completo · NO usar ?v=N cache-busters (colisionan con Disallow: /*?* en robots.txt) -->
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
@@ -165,24 +251,13 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
     <CookieBanner />
 
     <script>
-      // PERFORMANCE · evitar "redistribución forzada" (Lighthouse) ·
-      // ORDEN ESTRICTO: 1) leer todas las dimensiones, 2) mutar layout, 3) escribir.
-      // Si mezclamos lecturas y escrituras forzamos reflows sincrónicos.
-
-      // Reveal on scroll
+      // PERFORMANCE · Reveal on scroll · zero forced reflow
+      // ANTES: bucle de 133 getBoundingClientRect() para pre-marcar above-fold
+      //        → ~386ms forced reflow en mobile (Lighthouse).
+      // AHORA: IntersectionObserver decide qué está visible. Su primer callback
+      //        se ejecuta en el siguiente frame y marca above-fold sin coste
+      //        de main thread. Eliminamos todo el initial getBoundingClientRect.
       const els = document.querySelectorAll<HTMLElement>('[data-reveal]');
-
-      // 1) READ PHASE · layout aún está limpio (sin mutar nada todavía) →
-      //    getBoundingClientRect usa cache, no fuerza reflow.
-      const vh = window.innerHeight;
-      const aboveFold = new Set<Element>();
-      els.forEach((el) => {
-        if (el.getBoundingClientRect().top < vh * 0.85) aboveFold.add(el);
-      });
-
-      // 2) WRITE PHASE · invalida layout una sola vez al añadir js-ready,
-      //    pero ya no volvemos a leer dimensiones, así que el reflow se difiere
-      //    al siguiente paint del navegador (no es síncrono).
       document.documentElement.classList.add('js-ready');
 
       if ('IntersectionObserver' in window && els.length) {
@@ -195,15 +270,9 @@ const siteBase = Astro.site?.toString().replace(/\/$/, '') ?? 'https://aventurae
               }
             });
           },
-          { threshold: 0.12, rootMargin: '0px 0px -80px 0px' }
+          { threshold: 0.1, rootMargin: '40px 0px -40px 0px' }
         );
-        els.forEach((el) => {
-          if (aboveFold.has(el)) {
-            el.classList.add('is-visible');
-          } else {
-            observer.observe(el);
-          }
-        });
+        els.forEach((el) => observer.observe(el));
       } else {
         els.forEach((el) => el.classList.add('is-visible'));
       }

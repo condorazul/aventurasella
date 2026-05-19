@@ -28,12 +28,13 @@ const baseUrl = Astro.site?.href?.replace(/\/$/, '') ?? 'https://aventuraenelsel
 const jsonLd = {
   '@context': 'https://schema.org',
   '@graph': [
-    localBusinessSchema(baseUrl),
+    localBusinessSchema(baseUrl, 'es'),
     {
       '@type': 'TouristAttraction',
       '@id': `${baseUrl}/#descenso`,
       name: 'Descenso del Sella en canoa',
       description: 'Descenso turístico en canoa por el río Sella desde Arriondas hasta Toraño (7 km) o Fríes (14,5 km). Todo incluido: canoa insumergible, chaleco, pala doble, neopreno en fechas frías, mini clase con monitores titulados, transfer de regreso, picnic asturiano (empanada de bonito, bollín preñao), vestuarios con duchas, taquillas con llave, parking vigilado y seguros.',
+      inLanguage: 'es-ES',
       url: baseUrl,
       image: `${baseUrl}/images/optimized/hero-canoa-lago.jpg`,
       touristType: ['Familias', 'Parejas', 'Grupos', 'Turismo activo'],
@@ -52,6 +53,7 @@ const jsonLd = {
       '@id': `${baseUrl}/#product`,
       name: 'Descenso del Sella en canoa · Todo incluido',
       description: 'Reserva del descenso del Sella en canoa con todo incluido. Dos recorridos (7 km Mini o 14,5 km Completo), picnic asturiano (empanada de bonito, bollín preñao), transfer, parking vigilado, taquillas con llave, seguros y vestuarios con duchas. Mascotas gratis.',
+      inLanguage: 'es-ES',
       brand: { '@type': 'Brand', name: 'Aventura en el Sella' },
       image: `${baseUrl}/images/optimized/includes-b.jpg`,
       offers: [
@@ -117,6 +119,43 @@ const jsonLd = {
       name: 'Aventura en el Sella',
       inLanguage: 'es-ES',
       publisher: { '@id': `${baseUrl}/#business` },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: { '@type': 'EntryPoint', urlTemplate: `${baseUrl}/?q={search_term_string}` },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+    /* WebPage + speakable · captura voice search snippets ("Ok Google, descenso del Sella")
+     * los headings h1/h2 de la home son los más relevantes en voz */
+    {
+      '@type': 'WebPage',
+      '@id': `${baseUrl}/#webpage`,
+      url: baseUrl,
+      name: 'Descenso del Sella en canoa · Desde 30 € · Arriondas',
+      description,
+      inLanguage: 'es-ES',
+      isPartOf: { '@id': `${baseUrl}/#website` },
+      about: { '@id': `${baseUrl}/#business` },
+      primaryImageOfPage: { '@type': 'ImageObject', url: `${baseUrl}/images/optimized/hero-canoa-lago.jpg` },
+      speakable: {
+        '@type': 'SpeakableSpecification',
+        cssSelector: ['h1', '.hero__lead', '.includes-b__title', '.faq__q'],
+      },
+    },
+    /* ItemList · 6 chiringuitos del recorrido (Google muestra carousels desde ItemList) */
+    {
+      '@type': 'ItemList',
+      '@id': `${baseUrl}/#chiringuitos`,
+      name: 'Chiringuitos del descenso del Sella',
+      numberOfItems: 6,
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Riverland · km 1' },
+        { '@type': 'ListItem', position: 2, name: 'El Oasis · km 3' },
+        { '@type': 'ListItem', position: 3, name: 'El Prau · km 3' },
+        { '@type': 'ListItem', position: 4, name: 'El Bosque · km 4' },
+        { '@type': 'ListItem', position: 5, name: 'La Mediana · km 4' },
+        { '@type': 'ListItem', position: 6, name: 'Toraño · km 8' },
+      ],
     },
   ],
 };

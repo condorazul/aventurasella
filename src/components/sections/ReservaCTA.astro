@@ -14,6 +14,9 @@ const i18n = {
     titleLine2Pre: 'empieza tu descenso ',
     titleEm: 'sin complicaciones',
     subtitle: 'Tres formas fáciles de reservar. Tú eliges.',
+    premiumLeadPre: 'Todas las reservas incluyen taquillas, picnic asturiano y horario abierto 10:30–12:30 · ',
+    premiumLinkText: 'descubre qué incluye la Reserva Premium del Sella',
+    premiumLeadPost: '.',
     bookNow: 'Reservar ahora',
     whatsapp: 'WhatsApp',
     callTag: 'Llamar',
@@ -25,6 +28,9 @@ const i18n = {
     titleLine2Pre: 'start your descent ',
     titleEm: 'with no hassle',
     subtitle: 'Three easy ways to book. You choose.',
+    premiumLeadPre: 'Every booking includes lockers, Asturian picnic and open hours 10:30–12:30 · ',
+    premiumLinkText: 'see everything our Premium Sella descent includes',
+    premiumLeadPost: '.',
     bookNow: 'Book now',
     whatsapp: 'WhatsApp',
     callTag: 'Call',
@@ -36,6 +42,9 @@ const i18n = {
     titleLine2Pre: 'commence ta descente ',
     titleEm: 'sans complications',
     subtitle: 'Trois façons faciles de réserver. À toi de choisir.',
+    premiumLeadPre: 'Toutes les réservations incluent vestiaires, pique-nique asturien et horaires ouverts 10h30–12h30 · ',
+    premiumLinkText: 'découvre ce qu’inclut la Descente Premium du Sella',
+    premiumLeadPost: '.',
     bookNow: 'Réserver maintenant',
     whatsapp: 'WhatsApp',
     callTag: 'Appeler',
@@ -47,6 +56,9 @@ const i18n = {
     titleLine2Pre: 'começa a tua descida ',
     titleEm: 'sem complicações',
     subtitle: 'Três formas fáceis de reservar. Tu escolhes.',
+    premiumLeadPre: 'Todas as reservas incluem cacifos, piquenique asturiano e horário aberto 10:30–12:30 · ',
+    premiumLinkText: 'descobre o que inclui a Descida Premium do Sella',
+    premiumLeadPost: '.',
     bookNow: 'Reservar agora',
     whatsapp: 'WhatsApp',
     callTag: 'Ligar',
@@ -54,6 +66,7 @@ const i18n = {
   },
 } as const;
 const t = i18n[lang] ?? i18n.es;
+const premiumHref = getLocalePath('reserva_premium', lang);
 ---
 
 <section class="ctaA">
@@ -64,6 +77,10 @@ const t = i18n[lang] ?? i18n.es;
       {t.titleLine2Pre}<span class="ctaA__title-em">{t.titleEm}</span>
     </h2>
     <p class="ctaA__subtitle">{t.subtitle}</p>
+
+    <p class="ctaA__premiumLead">
+      {t.premiumLeadPre}<a href={premiumHref} class="ctaA__premiumLink">{t.premiumLinkText}</a>{t.premiumLeadPost}
+    </p>
 
     <div class="ctaA__buttons">
       <a href={getLocalePath('reservar', lang)} class="ctaA__btn ctaA__btn--primary">
@@ -145,8 +162,28 @@ const t = i18n[lang] ?? i18n.es;
     font-family: var(--font-sans);
     font-size: 1rem;
     color: rgba(251, 248, 241, 0.7);
-    margin: 0 0 var(--s-8);
+    margin: 0 0 var(--s-4);
   }
+
+  /* Cross-link sutil a /reserva-premium/ · refuerza anchor SEO sin saturar el CTA principal */
+  .ctaA__premiumLead {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    color: rgba(251, 248, 241, 0.6);
+    max-width: 640px;
+    margin: 0 auto var(--s-7);
+    text-wrap: pretty;
+  }
+
+  .ctaA__premiumLink {
+    color: var(--color-primary-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--duration-base) var(--ease-out);
+  }
+
+  .ctaA__premiumLink:hover { color: var(--color-primary); }
 
   .ctaA__buttons {
     display: flex;

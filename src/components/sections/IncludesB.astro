@@ -5,7 +5,7 @@
  * Fondo sage sutil para crear corte visual con la sección anterior
  */
 import { DEFAULT_LOCALE, type Locale } from '@i18n/ui';
-import { getLocaleFromPath, localizeUrl } from '@utils/i18n';
+import { getLocaleFromPath, getLocalePath } from '@utils/i18n';
 
 const lang: Locale = ((Astro as any).currentLocale ?? getLocaleFromPath(Astro.url.pathname)) || DEFAULT_LOCALE;
 
@@ -129,7 +129,8 @@ const i18n = {
 } as const;
 const t = i18n[lang] ?? i18n.es;
 
-const reservarHref = localizeUrl('/reservar/', lang);
+// getLocalePath usa el slug correcto por idioma: en→/en/book/ · fr→/fr/reserver/ · pt→/pt/reservar/
+const reservarHref = getLocalePath('reservar', lang);
 ---
 
 <section class="incEd">

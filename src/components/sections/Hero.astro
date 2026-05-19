@@ -253,12 +253,14 @@ const t = i18n[lang] ?? i18n.es;
     object-position: center;
     animation: heroZoom 20s var(--ease-out) forwards;
     will-change: transform;
+    transform-origin: center top;
   }
 
   @keyframes heroZoom {
     from { transform: scale(1.1); }
     to   { transform: scale(1.0); }
   }
+
 
   .hero__overlay {
     position: absolute;
@@ -363,19 +365,35 @@ const t = i18n[lang] ?? i18n.es;
 
   .hero__title-line--italic {
     font-size: clamp(2rem, 4.5vw, 3.75rem);
-    margin-top: clamp(0.5rem, 1vw, 1rem);
+    /* Margen muy ajustado · "en canoa" casi pegado al título grande */
+    margin-top: clamp(0, 0.25vw, 0.25rem);
   }
 
   .hero__title-line--italic .serif-italic {
-    color: var(--color-primary-soft);
+    /* Coral intermedio (primary-hover = #dd7359) · entre #e9856f y #c85c44.
+     * Sombra suavizada (era triple muy profunda · ahora doble más discreta). */
+    color: var(--color-primary-hover, #dd7359);
     font-weight: var(--fw-regular);
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.45),
+      0 5px 16px rgba(0, 0, 0, 0.3);
   }
 
   .hero__subtitle {
     max-width: 600px;
-    color: rgba(251, 248, 241, 0.82);
+    /* Cream más sólido (0.82→0.95) + text-shadow profundo para legibilidad
+     * sobre cualquier zona de la foto · especialmente "sin prisa, sin sorpresas" */
+    color: rgba(251, 248, 241, 0.95);
     text-wrap: balance;
     margin-bottom: var(--s-10);
+    text-shadow:
+      0 2px 6px rgba(0, 0, 0, 0.75),
+      0 5px 18px rgba(0, 0, 0, 0.55),
+      0 1px 0 rgba(0, 0, 0, 0.4);
+  }
+  .hero__subtitle strong {
+    color: #FFFFFF;
+    font-weight: 800;
   }
 
   .hero__actions {

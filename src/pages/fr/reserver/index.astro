@@ -134,6 +134,9 @@ const jsonLd = {
   <Fragment slot="head">
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <link rel="preload" as="image" href="/images/optimized/hero-canoa-lago-lg.avif" type="image/avif" media="(min-width: 1024px)" fetchpriority="high" />
+    <!-- Préchargement DNS du widget de réservation Rutevia -->
+    <link rel="preconnect" href="https://panel.rutevia.com" crossorigin />
+    <link rel="preconnect" href="https://api.rutevia.com" crossorigin />
   </Fragment>
 
   <section class="rsvH" aria-labelledby="rsvH-title">
@@ -201,16 +204,17 @@ const jsonLd = {
       </header>
 
       <div id="booking-widget" class="rsvB__slot" aria-live="polite">
-        <div class="rsvB__placeholder">
-          <span class="rsvB__placeholderIcon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </span>
-          <p class="rsvB__placeholderTitle">Calendrier de réservation</p>
-          <p class="rsvB__placeholderText">
-            Nous chargeons le calendrier en temps réel. S'il n'apparaît pas en quelques secondes, écris-nous sur <a href="https://wa.me/34681093673" target="_blank" rel="noopener noreferrer">WhatsApp</a> ou appelle le <a href="tel:+34681093673">+34 681 09 36 73</a> · nous te réservons immédiatement.
-          </p>
-        </div>
+        <div id="reservas-widget-351f5a02"></div>
       </div>
+      <script
+        is:inline
+        src="https://panel.rutevia.com/widget.js"
+        data-api-key="97bafc90-8b2e-4613-94b9-12ac6a9c6ae8"
+        data-calendario-id="351f5a02-5503-4470-879d-751ea72f5908"
+        data-pagina-id="88e63a58-3898-4b25-94c1-caf6b8447d21"
+        data-api-base="https://api.rutevia.com"
+        data-container="#reservas-widget-351f5a02"
+      ></script>
     </div>
   </section>
 
@@ -482,8 +486,21 @@ const jsonLd = {
   .rsvH__cta { display: inline-flex; align-items: center; gap: var(--s-2); padding: 0.95rem 1.5rem; border-radius: var(--radius-pill, 999px); font-family: var(--font-sans); font-size: 0.875rem; font-weight: 800; letter-spacing: -0.005em; text-decoration: none; transition: all 220ms var(--ease-out); }
   .rsvH__cta--primary { background: var(--color-primary); color: #fff; box-shadow: 0 14px 32px -10px rgba(233, 133, 111, 0.55); }
   .rsvH__cta--primary:hover { background: #d96f57; transform: translateY(-2px); box-shadow: 0 18px 40px -10px rgba(233, 133, 111, 0.65); }
-  .rsvH__cta--ghost { background: rgba(251, 248, 241, 0.12); color: #FBF8F1; border: 1.5px solid rgba(251, 248, 241, 0.4); backdrop-filter: blur(8px); }
-  .rsvH__cta--ghost:hover { background: rgba(251, 248, 241, 0.22); border-color: #FBF8F1; }
+  .rsvH__cta--ghost {
+    background: rgba(255, 255, 255, 0.22);
+    color: #FBF8F1;
+    border: 1.5px solid rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow: 0 12px 32px -8px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.4);
+    text-shadow: 0 1px 4px rgba(0,0,0,0.35);
+  }
+  .rsvH__cta--ghost:hover {
+    background: rgba(255, 255, 255, 0.32);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-1px);
+    box-shadow: 0 16px 40px -8px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
   .rsvH__trust { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: clamp(1rem, 2.5vw, 2rem); border-top: 1px solid rgba(251, 248, 241, 0.18); padding-top: clamp(1.25rem, 3vw, 2rem); }
   @media (min-width: 720px) { .rsvH__trust { grid-template-columns: repeat(4, 1fr); } }
   .rsvH__trust li { display: flex; flex-direction: column; gap: 4px; }
@@ -497,13 +514,8 @@ const jsonLd = {
   .rsvB__title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; line-height: 1.02; letter-spacing: -0.02em; text-transform: uppercase; color: var(--color-text-primary); margin: 0 0 var(--s-5); text-wrap: balance; }
   .rsvB__title .serif-italic { color: var(--color-primary); font-family: var(--font-serif); font-weight: 400; font-style: italic; text-transform: none; }
   .rsvB__lead { font-family: var(--font-sans); font-size: 1rem; line-height: 1.7; color: var(--color-text-secondary); max-width: 56ch; margin: 0 auto; }
-  .rsvB__slot { background: #fff; border: 1px solid var(--color-border-subtle, rgba(26,31,46,0.08)); border-radius: var(--radius-3xl, 1.5rem); box-shadow: 0 24px 56px -28px rgba(26, 31, 46, 0.18); overflow: hidden; min-height: clamp(460px, 60vh, 680px); display: flex; align-items: center; justify-content: center; scroll-margin-top: 120px; transition: box-shadow 280ms var(--ease-out); }
-  .rsvB__slot:hover { box-shadow: 0 32px 72px -32px rgba(26, 31, 46, 0.25); }
-  .rsvB__placeholder { text-align: center; padding: clamp(2rem, 5vw, 4rem); max-width: 460px; }
-  .rsvB__placeholderIcon { display: inline-flex; width: 72px; height: 72px; align-items: center; justify-content: center; background: rgba(233, 133, 111, 0.12); color: var(--color-primary); border-radius: 50%; margin-bottom: var(--s-5); }
-  .rsvB__placeholderTitle { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.5rem); font-weight: 800; color: var(--color-text-primary); margin: 0 0 var(--s-3); }
-  .rsvB__placeholderText { font-family: var(--font-sans); font-size: 0.9375rem; line-height: 1.65; color: var(--color-text-secondary); margin: 0; }
-  .rsvB__placeholderText a { color: var(--color-primary); font-weight: 600; border-bottom: 1px dashed var(--color-primary); }
+  /* Conteneur nu du widget Rutevia · sans styles décoratifs (le widget apporte les siens) */
+  .rsvB__slot { scroll-margin-top: 120px; }
 
   .rsvT { padding-block: clamp(4rem, 8vw, 6rem); background: var(--color-bg-warm, #F5F1E8); }
   .rsvT__inner { max-width: 1240px; margin: 0 auto; padding-inline: clamp(1.25rem, 4vw, 2.5rem); }
